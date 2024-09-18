@@ -1,0 +1,40 @@
+<?php
+
+use App\Models\Role;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('accounts', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Role::class)->constrained();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->string('avatar')->nullable();
+            $table->string('phone');
+            $table->string('address');
+            $table->decimal('balance', 15, 2)->comment('Số dư tài khoản');
+            $table->string('district')->comment('Quận / Huyện');
+            $table->string('province')->comment('Tỉnh / TP');
+            $table->string('zip_code');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('accounts');
+    }
+};
