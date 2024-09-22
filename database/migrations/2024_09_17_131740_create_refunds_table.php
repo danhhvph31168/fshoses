@@ -2,6 +2,8 @@
 
 use App\Models\Account;
 use App\Models\Order;
+use App\Models\Refund;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,14 +15,14 @@ return new class extends Migration {
     public function up(): void
     {
 
-        // redenrings === return do php ko cho pheps dat ten nhu vay
-        Schema::create('renderings', function (Blueprint $table) {
+        // refunds === return do php ko cho pheps dat ten nhu vay
+        Schema::create('refunds', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->foreignIdFor(Account::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->string('reason')->nullable();
             $table->dateTime('return_date');
-            $table->string('status')->default('');
+            $table->string('status')->default(Refund::STATUS_PENDING);
             $table->timestamps();
         });
     }

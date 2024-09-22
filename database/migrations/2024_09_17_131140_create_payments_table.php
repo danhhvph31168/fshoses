@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,9 +16,8 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->string('payments_method')->default('');
-            $table->string('status')->default('');
-            $table->dateTime('payments_date');
+            $table->string('payments_method')->default(Payment::PAYMENTS_METHOD_CASH);
+            $table->string('status')->default(Payment::STATUS_PENDING);
             $table->timestamps();
         });
     }

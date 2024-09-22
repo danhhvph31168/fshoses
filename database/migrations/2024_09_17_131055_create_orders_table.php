@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Account;
+use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Account::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Role::class)->constrained();
             $table->string('sku_order')->unique();
             $table->string('user_name');
@@ -25,8 +26,8 @@ return new class extends Migration
             $table->string('user_address');
             $table->text('user_note')->nullable();
 
-            $table->string('status_order')->default('');
-            $table->string('status_payment')->default('');
+            $table->string('status_order')->default(Order::STATUS_ORDER_PENDING);
+            $table->string('status_payment')->default(Order::STATUS_PAYMENT_UNPAID);
             $table->double('total_amount');
             $table->timestamps();
         });
