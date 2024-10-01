@@ -21,4 +21,19 @@ class Product extends Model
         'is_show_home',
         'is_delete',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function galleries()
+    {
+        return $this->hasMany(ProductGallery::class);
+    }
+
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
 }
