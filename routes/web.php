@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
 
+    $products = Product::query()->latest('id')->limit(4)->get();
 
-Route::get('products', function () {
-    return view('products');
-});
+    $categories = Category::query()->get();
+    
+    return view('home', compact('products', 'categories'));
+})->name('home');
