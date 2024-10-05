@@ -4,6 +4,9 @@ use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\EmployeeController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsEmployee;
+use App\Http\Middleware\IsUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,20 +24,25 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('login', [AuthenController::class, 'showFormLogin'])->name('login');
+Route::get('login', [AuthenController::class, 'showFormLogin']);
 Route::post('login', [AuthenController::class, 'handleLogin']);
 
-Route::get('register', [AuthenController::class, 'showFormRegister'])->name('register');
+Route::get('register', [AuthenController::class, 'showFormRegister']);
 Route::post('register', [AuthenController::class, 'handleRegister']);
 
-Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
+Route::post('logout', [AuthenController::class, 'logout']);
 
-Route::get('user', [UserController::class, 'dashboard'])
-    ->name('user.dashboard')
-    ->middleware(['auth']);
-Route::get('admin', [AdminController::class, 'admin'])
-    ->name('admin.dashboard')
-    ->middleware(['auth']);
-Route::get('employee', [EmployeeController::class, 'employee'])
-    ->name('employee.dashboard')
-    ->middleware(['auth']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('user', [UserController::class, 'dashboard'])
+        ->middleware(IsUser::class);
+
+    Route::get('admin', [AdminController::class, 'admin'])
+
+        ->middleware(IsAdmin::class);
+
+    Route::get('employee', [EmployeeController::class, 'employee'])
+        ->middleware(IsEmployee::class);
+
+});
+
