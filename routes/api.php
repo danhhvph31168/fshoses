@@ -3,6 +3,10 @@
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\EmployeeController;
+use App\Http\Controllers\Auth\ForgotPassController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsEmployee;
@@ -24,25 +28,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('login', [AuthenController::class, 'showFormLogin']);
-Route::post('login', [AuthenController::class, 'handleLogin']);
 
-Route::get('register', [AuthenController::class, 'showFormRegister']);
-Route::post('register', [AuthenController::class, 'handleRegister']);
+Route::prefix('auth')
+->name('auth.')
+->group(function () {
+    Route::get('register', [RegisterController::class, 'showFormRegister'])->name('showFormRegister');
+    Route::post('register', [RegisterController::class, 'handleRegister'])->name('handleRegister');
 
-Route::post('logout', [AuthenController::class, 'logout']);
+    Route::get('login', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
+    Route::post('login', [LoginController::class, 'handleLogin'])->name('handleLogin');
 
+    Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function () {
-    Route::get('user', [UserController::class, 'dashboard'])
-        ->middleware(IsUser::class);
-
-    Route::get('admin', [AdminController::class, 'admin'])
-
-        ->middleware(IsAdmin::class);
-
-    Route::get('employee', [EmployeeController::class, 'employee'])
-        ->middleware(IsEmployee::class);
-
+    Route::get('forgotPass', [ForgotPassController::class, 'showForgotPassForm'])->name('showForgotPassForm');
+    Route::post('forgotPass', [ForgotPassController::class, 'handleForgotPass'])->name('handleForgotPass');
 });
-
