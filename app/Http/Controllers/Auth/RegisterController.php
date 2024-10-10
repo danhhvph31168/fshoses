@@ -43,46 +43,30 @@ class RegisterController extends Controller
             'province' => 'nullable|string|max:255',  // Có thể để trống, kiểu chuỗi, tối đa 255 ký tự
             'zip_code' => 'nullable|string|max:10',  // Có thể để trống, kiểu chuỗi, tối đa 10 ký tự
         ]);
-         // Kiểm tra xem email đã tồn tại hay chưa
-    $check = User::where('email', $request->email)->exists();
-    
-    if (!$check) {
-        // Kiểm tra xem mật khẩu và xác nhận mật khẩu có trùng khớp không
-        if ($request->password === $request->confirmPassword) {
-            // Tạo mảng dữ liệu để lưu vào cơ sở dữ liệu
-            $data = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' =>$request->password,
-                'phone' =>$request->phone,
-                'address' =>$request->address,
-                'balance' =>$request->balance,
-                'district' =>$request->district,
-                'province' =>$request->province,
-                'zip_code' =>$request->zip_code,
-            ];
-            
-            // Tạo người dùng mới
-            User::create($data);
-            
-            // Trả về phản hồi thành công
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Đăng ký thành công!',
-            ], 201); // Mã lỗi 201 cho yêu cầu thành công và tạo mới
-        }
+        // Tạo mảng dữ liệu để lưu vào cơ sở dữ liệu
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'balance' => $request->balance,
+            'district' => $request->district,
+            'province' => $request->province,
+            'zip_code' => $request->zip_code,
+            'role_id' => 0,
+        ];
 
-        // Nếu mật khẩu không khớp, trả về lỗi
+        // Tạo người dùng mới
+        $newUser = User::create($data);
+
+        // Trả về phản hồi thành công
         return response()->json([
-            'status' => 'error',
-            'message' => 'Mật khẩu xác nhận không khớp.',
-        ], 422); // Mã lỗi 422 cho yêu cầu không hợp lệ
-    } else {
-        // Nếu email đã tồn tại, trả về lỗi
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Email đã được sử dụng.',
-        ], 409); // Mã lỗi 409 cho xung đột
+            'status' => 'success',
+            'message' => 'Đăng ký thành công!',
+            'data' => $newUser
+        ], 201); // Mã lỗi 201 cho yêu cầu thành công và tạo mới
+
     }
-    }
+
 }

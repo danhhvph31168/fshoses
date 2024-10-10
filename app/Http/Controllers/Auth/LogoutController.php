@@ -3,18 +3,24 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Request;
 
 class LogoutController extends Controller
 {
     public function logout()
     {
-        Auth::logout();  // Đăng xuất người dùng
+        // Lấy người dùng hiện tại
+    $user = Auth::user();
 
+    if ($user) {
+        // Xóa tất cả các token của người dùng
+        $user->tokens()->delete();
+        
         return response()->json([
             'status' => 'success',
             'message' => 'Đăng xuất thành công!'
         ]);
+    }
     }
 }

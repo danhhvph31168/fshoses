@@ -38,29 +38,35 @@ class LoginController extends Controller
             // Lấy thông tin người dùng hiện tại
             $user = Auth::user();
 
+            // Tạo token cho người dùng
+            $token = $user->createToken("token")->plainTextToken;
             // Kiểm tra vai trò người dùng
             if ($user->role_id === 0) {
                 // Nếu là user
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Đăng nhập thành công!',
-                    'role' => 0,  // User
+                    'message' => 'Đăng nhập thành công User!',
+                    'role' => 'user',  // User
+                    'token' => $token,  
                     'data' => $user,  // Trả về thông tin người dùng
                 ]);
-            } elseif ($user->role_id === 1) {
+            } else if ($user->role_id === 1) {
+            
                 // Nếu là employee
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Đăng nhập thành công!',
-                    'role' => 1,    //  Employee
+                    'message' => 'Đăng nhập thành công Employee!',
+                    'role' => 'employee',  //  Employee
+                    'token' => $token,    
                     'data' => $user,      // Trả về thông tin người dùng
                 ]);
             } elseif ($user->role_id === 2) {
                 // Nếu là admin
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Đăng nhập thành công!',
-                    'role' => 2, // Admin
+                    'message' => 'Đăng nhập thành công Admin!',
+                    'role' => 'admin', // Admin
+                    'token' => $token,
                     'data' => $user,    // Trả về thông tin người dùng
                 ]);
             }
