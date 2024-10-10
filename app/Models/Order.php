@@ -55,4 +55,13 @@ class Order extends Model
     const STATUS_PAYMENT_PAID       = 'paid';
     const STATUS_PAYMENT_REFUNDED   = 'refunded';
     const STATUS_PAYMENT_FAILED     = 'failed';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

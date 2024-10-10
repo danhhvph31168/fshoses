@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+</head>
+<style>
+    .swiper-container {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .swiper-slide {
+        background-color: #f1f1f1;
+        text-align: center;
+        font-size: 18px;
+        width: calc(33.33% - 20px);
+        /* Cách đều các sản phẩm */
+        margin-right: 20px;
+        /* Khoảng cách giữa các sản phẩm */
+        transition: margin-right 0.5s ease;
+    }
+</style>
+
+<body>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">Sản phẩm 1</div>
+            <div class="swiper-slide">Sản phẩm 2</div>
+            <div class="swiper-slide">Sản phẩm 3</div>
+            <div class="swiper-slide">Sản phẩm 4</div>
+            <div class="swiper-slide">Sản phẩm 5</div>
+            <!-- Add more slides as needed -->
+        </div>
+    </div>
+    <a href=""><img class="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeViKxAyvqTM5AUcLtccwdOYareVd_SlsQtQ&s" width="40px" height="40px"></a>
+
+</body>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        on: {
+            slideChange: function () {
+                var totalSlides = this.slides.length;
+                var activeIndex = this.activeIndex;
+
+                // Nếu là sản phẩm cuối cùng thì khoảng cách từ lề phải là 20px
+                if (activeIndex === totalSlides - 3) {
+                    this.slides[totalSlides - 1].style.marginRight = "20px";
+                } else {
+                    this.slides[totalSlides - 1].style.marginRight = "0px";
+                }
+            }
+        }
+    });
+</script>
+
+</html>
