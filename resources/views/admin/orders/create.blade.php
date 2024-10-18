@@ -43,7 +43,7 @@
                                 <div class="col-md-2 mt-3">
                                     <label for="sku" class="form-label">Status Order</label>
                                     <select name="status_order" class="form-control">
-                                        @foreach ($statusOrder as $id => $name)
+                                        @foreach ($data['statusOrder'] as $id => $name)
                                             <option value="{{ $id }}">{{ $id }}</option>
                                         @endforeach
                                     </select>
@@ -52,7 +52,7 @@
                                 <div class="col-md-2 mt-3">
                                     <label for="sku" class="form-label">Status Payment</label>
                                     <select name="status_payment" class="form-control">
-                                        @foreach ($statusPayment as $id => $name)
+                                        @foreach ($data['statusPayment'] as $id => $name)
                                             <option value="{{ $id }}">{{ $id }}</option>
                                         @endforeach
                                     </select>
@@ -61,7 +61,7 @@
                                 <div class="col-md-3 mt-3">
                                     <label for="sku" class="form-label">User</label>
                                     <select name="user_id" class="form-control">
-                                        @foreach ($users as $id => $name)
+                                        @foreach ($data['users'] as $id => $name)
                                             <option value="{{ $id }}">{{ $name }}</option>
                                         @endforeach
                                     </select>
@@ -70,7 +70,7 @@
                                 <div class="col-md-3 mt-3">
                                     <label for="sku" class="form-label">Role</label>
                                     <select name="role_id" class="form-control">
-                                        @foreach ($roles as $id => $name)
+                                        @foreach ($data['roles'] as $id => $name)
                                             <option value="{{ $id }}">{{ $name }}</option>
                                         @endforeach
                                     </select>
@@ -98,7 +98,7 @@
                                 <div class="col-md-6">
                                     <label for="sku" class="form-label">Product</label>
                                     <select name="product[1][id]" id="" class="form-control">
-                                        @foreach ($products as $product)
+                                        @foreach ($data['products'] as $product)
                                             <option value="{{ $product->id }}">
                                                 <p>{{ $product->name }}</p>:
                                                 <span>{{ $product->price_sale }}</span>
@@ -113,7 +113,7 @@
                                         <div class="col-md-4">
                                             <label for="sku" class="form-label">Size</label>
                                             <select name="product[1][size]" id="" class="form-control">
-                                                @foreach ($sizes as $id => $name)
+                                                @foreach ($data['sizes'] as $id => $name)
                                                     <option value="{{ $id }}">{{ $name }}</option>
                                                 @endforeach
                                             </select>
@@ -121,7 +121,7 @@
                                         <div class="col-md-4">
                                             <label for="sku" class="form-label">Color</label>
                                             <select name="product[1][color]" id="" class="form-control">
-                                                @foreach ($colors as $id => $name)
+                                                @foreach ($data['colors'] as $id => $name)
                                                     <option value="{{ $id }}">{{ $name }}</option>
                                                 @endforeach
                                             </select>
@@ -189,6 +189,39 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Payment Method</h4>
+                    </div><!-- end card header -->
+                    <div class="card-body">
+                        <div class="live-preview">
+                            <div class="row gy-4">
+                                <div class="col-md-6">
+                                    <input type="radio" class="btn-check" name="outlined"
+                                        value="{{ App\Models\Payment::PAYMENTS_METHOD_CASH }}" id="success-outlined"
+                                        autocomplete="on" checked>
+                                    <label style="width: 100%" class="btn btn-outline-success"
+                                        for="success-outlined">Cash Payment</label>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <select name="payment_status" class="form-control">
+                                        <option value="{{ App\Models\Payment::STATUS_COMPLETED }}">
+                                            {{ ucwords(App\Models\Payment::STATUS_COMPLETED) }}</option>
+                                        <option value="{{ App\Models\Payment::STATUS_PENDING }}">
+                                            {{ ucwords(App\Models\Payment::STATUS_PENDING) }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
                         <button class="btn btn-primary" type="submit">Save</button>
                     </div><!-- end card header -->
                 </div>
@@ -215,7 +248,7 @@
                         <div class="col-md-6">
                             <label for="sku" class="form-label">Product</label>
                             <select name="product[${i}][id]" id="" class="form-control">
-                                @foreach ($products as $product)
+                                @foreach ($data['products'] as $product)
                                     <option value="{{ $product->id }}">
                                         <p>{{ $product->name }}</p>:
                                         <span>{{ $product->price_sale }}</span>
@@ -230,7 +263,7 @@
                                 <div class="col-md-4">
                                     <label for="sku" class="form-label">Size</label>
                                     <select name="product[${i}][size]" id="" class="form-control">
-                                        @foreach ($sizes as $id => $name)
+                                        @foreach ($data['sizes'] as $id => $name)
                                             <option value="{{ $id }}">{{ $name }}</option>
                                         @endforeach
                                     </select>
@@ -238,7 +271,7 @@
                                 <div class="col-md-4">
                                     <label for="sku" class="form-label">Color</label>
                                     <select name="product[${i}][color]" id="" class="form-control">
-                                        @foreach ($colors as $id => $name)
+                                        @foreach ($data['colors'] as $id => $name)
                                             <option value="{{ $id }}">{{ $name }}</option>
                                         @endforeach
                                     </select>

@@ -17,11 +17,16 @@ class ProductVariant extends Model
     ];
     public function size()
     {
-        return $this->belongsTo(ProductSize::class);
+        return $this->belongsTo(ProductSize::class, 'product_size_id', 'id');
     }
 
     public function color()
     {
-        return $this->belongsTo(ProductColor::class);
+        return $this->belongsTo(ProductColor::class, 'product_color_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }
