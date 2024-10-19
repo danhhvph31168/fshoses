@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const TYPE_ADMIN = 2;
+    const TYPE_EMPLOYEE = 1;
+    const TYPE_USER = 0;
     /**
      * The attributes that are mass assignable.
      *
@@ -53,5 +56,14 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+    public function isAdmin(){
+        return $this->role_id == self::TYPE_ADMIN;
+    }
+    public function isEmployee(){
+        return $this->role_id == self::TYPE_EMPLOYEE;
+    }
+    public function isUser(){
+        return $this->role_id == self::TYPE_USER;
     }
 }

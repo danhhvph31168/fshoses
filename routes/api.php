@@ -3,15 +3,11 @@
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\EmployeeController;
-use App\Http\Controllers\Auth\ForgotPassController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\LogoutController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\UserController;
-use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\IsEmployee;
-use App\Http\Middleware\IsUser;
-use Illuminate\Http\Request;
+use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\CheckEmployee;
+use App\Http\Middleware\CheckUser;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,17 +28,30 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')
     ->name('auth.')
     ->group(function () {
-        Route::get('register', [RegisterController::class, 'showFormRegister'])->name('showFormRegister');
-        Route::post('register', [RegisterController::class, 'handleRegister'])->name('handleRegister');
+        // Route::get('register', [AuthenController::class, 'showFormRegister'])->name('showFormRegister');
+        Route::post('register', [AuthenController::class, 'handleRegister'])->name('handleRegister');
 
-        Route::get('login', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
-        Route::post('login', [LoginController::class, 'handleLogin'])->name('handleLogin');
+        // Route::get('login', [AuthenController::class, 'showFormLogin'])->name('showFormLogin');
+        Route::post('login', [AuthenController::class, 'handleLogin'])->name('handleLogin');
 
-        Route::middleware('auth:sanctum')
-            ->group(function () {
-                Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
-            });
-
-        Route::get('forgotPass', [ForgotPassController::class, 'showForgotPassForm'])->name('showForgotPassForm');
-        Route::post('forgotPass', [ForgotPassController::class, 'handleForgotPass'])->name('handleForgotPass');
+        Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
     });
+
+// Route::get('clickToForgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
+Route::post('handleSendMailForgot', [AuthenController::class, 'handleSendMailForgot'])->name('handleSendMailForgot');
+Route::get('clickInEmailForgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
+Route::post('handleForgotPass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
+
+
+Route::get('user', [UserController::class, 'dashboard'])
+    ->name('user.dashboard')
+    ->middleware(['auth', CheckUser::class]);
+
+
+Route::get('employee', [EmployeeController::class, 'dashboard'])
+    ->name('employee.dashboard')
+    ->middleware(['auth', CheckEmployee::class]);
+
+Route::get('admin', [AdminController::class, 'dashboard'])
+    ->name('admin.dashboard')
+    ->middleware(['auth', CheckAdmin::class]);
