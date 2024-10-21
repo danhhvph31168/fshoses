@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Client\ProfileController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckEmployee;
 use App\Http\Middleware\CheckUser;
@@ -43,6 +44,11 @@ Route::get('clickToForgot', [AuthenController::class, 'clickToForgot'])->name('c
 Route::post('handleSendMailForgot', [AuthenController::class, 'handleSendMailForgot'])->name('handleSendMailForgot');
 Route::get('clickInEmailForgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handleForgotPass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
+
+Route::middleware('profile')->group(function () {
+    Route::get('profile/{id}', [ProfileController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::put('profile/{id}/update', [ProfileController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
+});
 
 
 Route::get('user', [UserController::class, 'dashboard'])

@@ -9,14 +9,14 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-        </script>
+    </script>
     <title>Form Register</title>
 </head>
 
 <body>
     <h1>Đây là trang admin</h1>
-    <a href="">Hi {{Auth::user()->name}}</a>
-    <form action="{{ route('auth.logout') }}" method="POST">
+    <a href="{{ route('showFormUpdateProfile', Auth::user()->id) }}">Hi {{ Auth::user()->name }}</a>
+    <form class="mt-4" action="{{ route('auth.logout') }}" method="POST">
         @csrf
         <button type="submit" class="btn btn-danger">Logout</button>
 
