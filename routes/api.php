@@ -28,16 +28,16 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')
     ->name('auth.')
     ->group(function () {
-        // Route::get('register', [AuthenController::class, 'showFormRegister'])->name('showFormRegister');
+        Route::get('register', [AuthenController::class, 'showFormRegister'])->name('showFormRegister');
         Route::post('register', [AuthenController::class, 'handleRegister'])->name('handleRegister');
 
-        // Route::get('login', [AuthenController::class, 'showFormLogin'])->name('showFormLogin');
+        Route::get('login', [AuthenController::class, 'showFormLogin'])->name('showFormLogin');
         Route::post('login', [AuthenController::class, 'handleLogin'])->name('handleLogin');
 
         Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
     });
 
-// Route::get('clickToForgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
+Route::get('clickToForgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
 Route::post('handleSendMailForgot', [AuthenController::class, 'handleSendMailForgot'])->name('handleSendMailForgot');
 Route::get('clickInEmailForgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handleForgotPass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');

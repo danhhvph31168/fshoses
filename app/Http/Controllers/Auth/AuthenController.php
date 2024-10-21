@@ -12,15 +12,22 @@ use Password;
 
 class AuthenController extends Controller
 {
-    // public function showFormRegister()
-    // {
-    //     // Hiển thị giao diện form đăng ký
-    //     return view('auth.register');
-    // }
+    public function showFormRegister()
+    {
+
+        return view('auth.register');
+        // Hiển thị giao diện form đăng ký
+        // return response()->json([
+        //     'name' => '',
+        //     'email' => '',
+        //     'password' => '',
+        //     'confirm_password' => ''
+        // ]);
+    }
     public function handleRegister(Request $request)
     {
         // Validate dữ liệu nhập vào form đăng ký
-        $data = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
@@ -38,35 +45,49 @@ class AuthenController extends Controller
             'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role_id' => 0
+        ];
         // Thêm mới User vào cơ sở dữ liệu
         $user = User::query()->create($data);
+
         // Sau khi đăng kí thì tự động đăng nhập
         Auth::login($user);
         //  Tạo 1 session mới cho người dùng giúp bảo mật 
         $request->session()->regenerate();
         // Trả về dữ liệu JSON cho frontend
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Đăng ký thành công!',
-            'user' => $user,
-        ]);
+        return redirect()->route('user.dashboard');
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Đăng ký thành công!',
+        //     'user' => $user,
+        // ]);
     }
-    // public function showFormLogin()
-    // {
-    //     // Hiển thị form đăng nhập
-    //     return view('auth.login');
-    // }
+    public function showFormLogin()
+    {
+        // Hiển thị form đăng nhập
+        return view('auth.login');
+        // return response()->json([
+        //     'email' => '',
+        //     'password' => '',
+        // ]);
+    }
     public function handleLogin(Request $request)
     {
         // Validate dữ liệu
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:8',
         ], [ // Ghi đè lại lỗi bằng tiếng việt
             'email.required' => 'Email là bắt buộc.',
             'email.email' => 'Email không hợp lệ.',
+            'email.exists' => 'Email không tồn tại.',
             'password.required' => 'Mật khẩu là bắt buộc.',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         ]);
         // Tạo remember_token khi người dùng tích vào ô checkbox
         $remember = $request->has('remember');
@@ -81,48 +102,47 @@ class AuthenController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role->name,
-                'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,
             ];
             // dd($userData);
             if ($user->isAdmin()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Đăng nhập thành công.',
-                    'role' => 'admin',
-                    'account' => $userData,
-                    'redirect' => route('admin.dashboard')
-                ]);
+                return redirect()->route('admin.dashboard');
+                // return response()->json([
+                //     'success' => true,
+                //     'message' => 'Đăng nhập thành công.',
+                //     'role' => 'admin',
+                //     'account' => $userData,
+                //     'redirect' => route('admin.dashboard')
+                // ]);
             }
             if ($user->isEmployee()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Đăng nhập thành công.',
-                    'role' => 'employee',
-                    'account' => $userData,
-                    'redirect' => route('employee.dashboard')
-                ]);
+                return redirect()->route('employee.dashboard');
+                // return response()->json([
+                //     'success' => true,
+                //     'message' => 'Đăng nhập thành công.',
+                //     'role' => 'employee',
+                //     'account' => $userData,
+                //     'redirect' => route('employee.dashboard')
+                // ]);
             }
             if ($user->isUser()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Đăng nhập thành công.',
-                    'role' => 'user',
-                    'account' => $userData,
-                    'redirect' => route('user.dashboard')
-                ]);
+                return redirect()->route('user.dashboard');
+                // return response()->json([
+                //     'success' => true,
+                //     'message' => 'Đăng nhập thành công.',
+                //     'role' => 'user',
+                //     'account' => $userData,
+                //     'redirect' => route('user.dashboard')
+                // ]);
             }
-            return response()->json([
-                'success' => true,
-                'message' => 'Đăng nhập thành công.',
-                'redirect' => route('user.dashboard')
-            ]);
+            return redirect()->route('user.dashboard');
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Đăng nhập thành công.',
+            //     'redirect' => route('user.dashboard')
+            // ]);
         }
-
-        return back()->withErrors([
-            'email' => 'Thông tin đăng nhập không tồn tại trên hệ thống của chúng tôi.',
-        ])->onlyInput('email');
     }
+
     public function logout(Request $request)
     {
         // Đăng xuất người dùng
@@ -134,18 +154,23 @@ class AuthenController extends Controller
         //  Tạo 1 session mới cho người dùng giúp bảo mật 
         $request->session()->regenerate();
 
+
+        return redirect()->route('auth.showFormLogin');
         // Trả về cho frontend
-        return response()->json([
-            'success' => true,
-            'message' => 'Đăng xuất thành công.'
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Đăng xuất thành công.'
+        // ]);
     }
 
 
-    // public function clickToForgot()
-    // {
-    //     return view('auth.forgot'); // Hiển thị trang quên mật khẩu
-    // }
+    public function clickToForgot()
+    {
+        // Hiển thị trang quên mật khẩu
+        return response()->json([
+            'email' => '',
+        ]);
+    }
     public function handleSendMailForgot(Request $request)
     {
         // Validate dữ liệu nhập vào form email
