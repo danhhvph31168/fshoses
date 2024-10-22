@@ -12,6 +12,7 @@ use Hash;
 use Illuminate\Support\Facades\Auth;
 use Mail;
 use Password;
+use Request;
 
 class AuthenController extends Controller
 {
@@ -80,67 +81,67 @@ class AuthenController extends Controller
             ];
             // dd($userData);
             if ($user->isAdmin()) {
-                return redirect()->route('admin.dashboard');
-                // return response()->json([
-                //     'success' => true,
-                //     'message' => 'Đăng nhập thành công.',
-                //     'role' => 'admin',
-                //     'account' => $userData,
-                //     'token' => $token,
-                //     'redirect' => route('admin.dashboard')
-                // ], 200);
+                // return redirect()->route('admin.dashboard');
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Đăng nhập thành công.',
+                    'role' => 'admin',
+                    'account' => $userData,
+                    'token' => $token,
+                    'redirect' => route('admin.dashboard')
+                ], 200);
             }
             if ($user->isEmployee()) {
-                return redirect()->route('employee.dashboard');
-                // return response()->json([
-                //     'success' => true,
-                //     'message' => 'Đăng nhập thành công.',
-                //     'role' => 'employee',
-                //     'account' => $userData,
-                //     'token' => $token,
-                //     'redirect' => route('employee.dashboard')
-                // ], 200);
+                // return redirect()->route('employee.dashboard');
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Đăng nhập thành công.',
+                    'role' => 'employee',
+                    'account' => $userData,
+                    'token' => $token,
+                    'redirect' => route('employee.dashboard')
+                ], 200);
             }
             if ($user->isUser()) {
-                return redirect()->route('user.dashboard');
-                // return response()->json([
-                //     'success' => true,
-                //     'message' => 'Đăng nhập thành công.',
-                //     'role' => 'user',
-                //     'account' => $userData,
-                //     'token' => $token,
-                //     'redirect' => route('user.dashboard')
-                // ], 200);
+                // return redirect()->route('user.dashboard');
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Đăng nhập thành công.',
+                    'role' => 'user',
+                    'account' => $userData,
+                    'token' => $token,
+                    'redirect' => route('user.dashboard')
+                ], 200);
             }
-            return redirect()->route('user.dashboard');
-            // return response()->json([
-            //     'success' => true,
-            //     'message' => 'Đăng nhập thành công.',
-            //     'token' => $token,
-            //     'redirect' => route('user.dashboard')
-            // ]);
+            // return redirect()->route('user.dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'Đăng nhập thành công.',
+                'token' => $token,
+                'redirect' => route('user.dashboard')
+            ]);
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         // Lấy người dùng hiện tại (nếu đã đăng nhập)
         $user = Auth::user();
 
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        if (!$user) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Bạn chưa đăng nhập!',
-            ], 401); // Trả về mã lỗi 401 (Unauthorized)
-        }
+        // if (!$user) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Bạn chưa đăng nhập!',
+        //     ], 401); // Trả về mã lỗi 401 (Unauthorized)
+        // }
         // Xóa token hiện tại
-        $user->currentAccessToken()->delete();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Đăng xuất thành công!',
-        ], 200);
+        // $user->currentAccessToken()->delete();
+        return view('auth.login');
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Đăng xuất thành công!',
+        // ], 200);
     }
 
 

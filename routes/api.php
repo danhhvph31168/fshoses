@@ -44,12 +44,12 @@ Route::post('handle-send-mail-forgot', [AuthenController::class, 'handleSendMail
 Route::get('click-in-email-forgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handle-forgot-pass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 
-Route::middleware(['profile'])->group(function () {
+Route::middleware(['profile','auth:sanctum'])->group(function () {
     Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
     Route::get('change-password', [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
-    Route::put('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
+    Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 });
 
 Route::get('user', [UserController::class, 'dashboard'])

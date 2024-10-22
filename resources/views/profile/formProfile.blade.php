@@ -17,8 +17,23 @@
 
     <div class="container">
         <h1>Cập nhật người dùng</h1>
-        <form action="{{ route('handleUpdateProfile', $user->id) }}" method="POST" enctype="multipart/form-user">
+        @if (session('message'))
+            <div class="alert alert-success mt-5 w-50" role="alert">
+                {{ session('message') }}
+            </div>
+        @endif
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+        <form method="POST" action="{{ route('handleUpdateProfile', $user->id) }}"  enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Name</label>
                 <input type="text" name="name" value="{{ $user->name }}" class="form-control"
@@ -33,7 +48,7 @@
                 <label for="exampleInputEmail1" class="form-label">Avatar</label>
                 <input type="file" name="avatar" class="form-control" id="exampleInputEmail1"
                     aria-describedby="emailHelp">
-                <img src="{{ $user->avatar }}" alt="">
+                <img src="{{ $user->avatar }}" alt="" width="100px" height="100px">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Phone</label>

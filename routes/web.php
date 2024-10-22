@@ -46,7 +46,7 @@ Route::middleware('profile')->group(function () {
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
     Route::get('change-password', [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
-    Route::put('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
+    Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 });
 
 Route::get('user', [UserController::class, 'dashboard'])
