@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\EmployeeController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Client\AccountController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckEmployee;
@@ -38,14 +39,17 @@ Route::prefix('auth')
         Route::post('logout', [AuthenController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
     });
 
-Route::get('clickToForgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
-Route::post('handleSendMailForgot', [AuthenController::class, 'handleSendMailForgot'])->name('handleSendMailForgot');
-Route::get('clickInEmailForgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
-Route::post('handleForgotPass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
+Route::get('click-to-forgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
+Route::post('handle-send-mail-forgot', [AuthenController::class, 'handleSendMailForgot'])->name('handleSendMailForgot');
+Route::get('click-in-email-forgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
+Route::post('handle-forgot-pass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 
-Route::middleware('profile')->group(function () {
-    Route::get('profile/{id}', [ProfileController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
-    Route::put('profile/{id}/update', [ProfileController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
+Route::middleware(['profile'])->group(function () {
+    Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
+
+    Route::get('change-password', [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
+    Route::put('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 });
 
 Route::get('user', [UserController::class, 'dashboard'])

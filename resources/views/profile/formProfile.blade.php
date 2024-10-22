@@ -17,47 +17,47 @@
 
     <div class="container">
         <h1>Cập nhật người dùng</h1>
-        <form action="{{ route('handleUpdateProfile', $data->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('handleUpdateProfile', $user->id) }}" method="POST" enctype="multipart/form-user">
             @csrf
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Name</label>
-                <input type="text" name="name" value="{{ $data->name }}" class="form-control"
+                <input type="text" name="name" value="{{ $user->name }}" class="form-control"
                     id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" name="email" value="{{ $data->email }}" class="form-control"
+                <input type="email" name="email" value="{{ $user->email }}" class="form-control"
                     id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Avatar</label>
                 <input type="file" name="avatar" class="form-control" id="exampleInputEmail1"
                     aria-describedby="emailHelp">
-                <img src="{{ $data->avatar }}" alt="">
+                <img src="{{ $user->avatar }}" alt="">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Phone</label>
-                <input type="text" name="phone" value="{{ $data->phone }}" class="form-control"
+                <input type="text" name="phone" value="{{ $user->phone }}" class="form-control"
                     id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">address</label>
-                <input type="text" name="address" value="{{ $data->address }}" class="form-control"
+                <input type="text" name="address" value="{{ $user->address }}" class="form-control"
                     id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">district</label>
-                <input type="text" name="district" value="{{ $data->district }}" class="form-control"
+                <input type="text" name="district" value="{{ $user->district }}" class="form-control"
                     id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">province</label>
                 <input type="text" name="province" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" value="{{ $data->province }}">
+                    aria-describedby="emailHelp" value="{{ $user->province }}">
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">zip_code</label>
-                <input type="text" name="zip_code" value="{{ $data->zip_code }}" class="form-control"
+                <input type="text" name="zip_code" value="{{ $user->zip_code }}" class="form-control"
                     id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <button type="submit" class="btn btn-primary">Cập nhật</button>
