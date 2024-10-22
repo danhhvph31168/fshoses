@@ -40,20 +40,20 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarCatalogues" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarCatalogues">
+                    <a class="nav-link menu-link" href="#sidebarCategory" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarCategory">
                         <i class="ri-layout-3-line"></i> <span data-key="t-layout">Categories</span>
                         {{-- <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span> --}}
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarCatalogues">
+                    <div class="collapse menu-dropdown" id="sidebarCategory">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                {{-- <a href="{{ route('admin.catalogues.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a> --}}
+                                <a href="{{ route('admin.categories.index') }}" class="nav-link"
+                                    data-key="t-horizontal">List</a>
                             </li>
                             <li class="nav-item">
-                                {{-- <a href="{{ route('admin.catalogues.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a> --}}
+                                <a href="{{ route('admin.categories.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Add</a>
                             </li>
                         </ul>
                     </div>
@@ -73,7 +73,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.products.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Add New</a>
+                                    data-key="t-horizontal">Add</a>
                             </li>
                         </ul>
                     </div>

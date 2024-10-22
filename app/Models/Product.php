@@ -11,15 +11,24 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'name',
+        'slug',
+        'sku',
         'img_thumbnail',
         'price_regular',
         'price_sale',
         'views',
         'description',
+        'content',
         'is_active',
         'is_hot_deal',
         'is_show_home',
         'is_delete',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_hot_deal' => 'boolean',
+        'is_show_home' => 'boolean',
     ];
 
     public function category()

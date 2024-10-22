@@ -25,15 +25,9 @@ class ProductSeeder extends Seeder
 
         ProductVariant::query()->truncate();
         ProductGallery::query()->truncate();
-        // DB::table('product_tag')->truncate();
         Product::query()->truncate();
         ProductSize::query()->truncate();
         ProductColor::query()->truncate();
-        // Tag::query()->truncate();
-
-
-        // Tag::factory(15)->create();
-
 
         for ($i = 25; $i < 40; $i++) {
             ProductSize::query()->create([
@@ -41,7 +35,7 @@ class ProductSeeder extends Seeder
             ]);
         }
 
-        foreach (['Black', 'Grey', 'Blue', 'Gold', 'Pink', 'White'] as $item) {
+        foreach (['Black', 'Grey', 'White'] as $item) {
             ProductColor::query()->create([
                 'name' => $item,
             ]);
@@ -51,13 +45,15 @@ class ProductSeeder extends Seeder
             $name = fake()->text(100);
             $price_regular = rand(1000000, 5000000);
             Product::query()->create([
-                'category_id' => rand(6, 9),
+                'category_id' => rand(1, 9),
                 'name' => $name,
                 'slug' => Str::slug($name) . '-' . Str::random(8),
                 'sku' => Str::random(7) . $i,
                 'img_thumbnail' => 'https://sadesign.vn/wp-content/uploads/2021/04/phong-cach-chup-anh-giay-dep-2021.jpg',
                 'price_regular' =>  $price_regular,
                 'price_sale' =>  $price_regular * 0.9,
+                'description' => fake()->text(30),
+                'content' => fake()->text(100),
             ]);
         }
 

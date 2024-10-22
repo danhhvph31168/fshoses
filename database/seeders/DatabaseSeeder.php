@@ -29,5 +29,7 @@ class DatabaseSeeder extends Seeder
                 'parent_id' => random_int(1, 10)
             ]);
         }
+
+        
     }
 }
