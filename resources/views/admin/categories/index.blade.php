@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Products List
+    Categories List
 @endsection
 @section('content')
     <!-- start page title -->
@@ -10,7 +10,7 @@
             <div class="page-title-box  align-items-center">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">Categories</a></li>
                         <li class="breadcrumb-item text-danger">List</li>
                     </ol>
                 </div>
@@ -60,10 +60,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="card-title mb-0 align-content-center">
-                        <h3>Products List</h3>
+                        <h3>Categories List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.products.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.categories.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -72,16 +72,9 @@
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
-                                <th>Thumbnail</th>
                                 <th>Name</th>
-                                <th>SKU</th>
-                                <th>Category</th>
-                                <th>Price Regular</th>
-                                <th>Price Sale</th>
-                                <th>Views</th>
-                                <th>Is Active</th>
-                                {{-- <th>Is Hot Deal</th>
-                                <th>Is Show Home</th> --}}
+                                {{-- <th>Parent</th> --}}
+                                <th>Status</th>
                                 <th>Created at</th>
                                 <th>Updated at</th>
                                 <th>Action</th>
@@ -90,44 +83,21 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr class="align-middle">
-                                    <th style="width: 10px">{{ $item->id }}</th>
-                                    <td style="width: 100px"> <img src="{{ Storage::url($item->img_thumbnail) }}"
-                                            alt="" width="50px">
+                                    <th class="text-center" style="">{{ $item->id }}</th>
+                                    <td style="">{{ $item->name }}</td>
+                                    {{-- <td style="">{{ $item->parent?->name }}</td> --}}
+                                    <td class="text-center">{!! $item->is_active ? '<span class="text-success">Active</span>' : '<span class="text-danger">Inactive</span>' !!}
                                     </td>
-                                    <td style="width: 400px">{{ $item->name }}</td>
-                                    <td>{{ $item->sku }}</td>
-                                    <td>
-                                        {{ $item->category->name }}
-                                    </td>
-                                    <td class="text-success">{{ number_format($item->price_regular, 0, ',', '.') }}</td>
-                                    <td class="text-danger">{{ number_format($item->price_sale, 0, ',', '.') }}</td>
-                                    <td>{{ $item->views }}</td>
-                                    <td>{!! $item->is_active ? '<span class="text-success">Active</span>' : '<span class="text-danger">Inactive</span>' !!}
-                                    </td>
-                                    {{-- <td>{!! $item->is_hot_deal ? '<span class="text-success">Hiển thị</span>' : '<span class="text-danger">Ẩn</span>' !!}</td> --}}
-                                    {{-- <td>{!! $item->is_good_deal ? '<span class="text-success">Hiển thị</span>' : '<span class="text-danger">Ẩn</span>' !!}</td> --}}
-                                    {{-- <td>{!! $item->is_new ? '<span class="text-success">Hiển thị</span>' : '<span class="text-danger">Ẩn</span>' !!}</td> --}}
-                                    {{-- <td>{!! $item->is_show_home ? '<span class="text-success">Hiển thị</span>' : '<span class="text-danger">Ẩn</span>' !!}</td> --}}
-                                    {{-- <td>
-                                        @foreach ($item->tags as $tag)
-                                            <span class="badge bg-info">{{ $tag->name }}</span>
-                                        @endforeach
-                                    </td> --}}
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
-                                    <td>
-                                        <div class="d-flex mt-2 align-item-center">
-                                            <a href="{{ route('admin.products.edit', $item->id) }}" type="submit"
+                                    <td class="text-center">{{ $item->created_at }}</td>
+                                    <td class="text-center">{{ $item->updated_at }}</td>
+                                    <td class="">
+                                        <div class="d-flex text-center">
+                                            <a href="{{ route('admin.categories.edit', $item->id) }}" type="submit"
                                                 class="btn btn-warning me-2">EDIT</a>
 
-                                            <form action="{{ route('admin.products.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">DELETE</button>
-
-                                            </form>
+                                            <a href="{{ route('admin.categories.destroy', $item->id) }}"
+                                                class="btn btn-danger me-2"
+                                                onclick="return confirm('Bạn có chắc chắn xóa không ?')">DELETE</a>
                                         </div>
                                     </td>
                                 </tr>
