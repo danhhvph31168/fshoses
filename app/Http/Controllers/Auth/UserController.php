@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function dashboard(){
+    public function dashboard()
+    {
         return view('user.dashboard');
+        // return response()->json([
+        //     'status' => "Success",
+        //     "message" => "Đây là trang người dùng"
+        // ], 201);
     }
 }

@@ -34,6 +34,10 @@
             font-size: 16px;
             line-height: 1.5;
         }
+        a{
+            color: #ffffff;
+            font-weight: 500;
+        }
 
         .button-container {
             text-align: center;

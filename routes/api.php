@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\EmployeeController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Client\ProfileController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckEmployee;
 use App\Http\Middleware\CheckUser;
@@ -34,7 +35,7 @@ Route::prefix('auth')
         Route::get('login', [AuthenController::class, 'showFormLogin'])->name('showFormLogin');
         Route::post('login', [AuthenController::class, 'handleLogin'])->name('handleLogin');
 
-        Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
+        Route::post('logout', [AuthenController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
     });
 
 Route::get('clickToForgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
@@ -42,6 +43,10 @@ Route::post('handleSendMailForgot', [AuthenController::class, 'handleSendMailFor
 Route::get('clickInEmailForgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handleForgotPass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 
+Route::middleware('profile')->group(function () {
+    Route::get('profile/{id}', [ProfileController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::put('profile/{id}/update', [ProfileController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
+});
 
 Route::get('user', [UserController::class, 'dashboard'])
     ->name('user.dashboard')

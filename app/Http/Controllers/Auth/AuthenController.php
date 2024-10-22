@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\HandleForgotPassRequest;
+use App\Http\Requests\API\HandleLoginRequest;
+use App\Http\Requests\API\HandleRegisterRequest;
+use App\Http\Requests\API\HandleSendMailForgotRequest;
 use App\Models\User;
-use Auth;
 use Hash;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Mail;
 use Password;
 
@@ -24,27 +27,8 @@ class AuthenController extends Controller
         //     'confirm_password' => ''
         // ]);
     }
-    public function handleRegister(Request $request)
+    public function handleRegister(HandleRegisterRequest $request)
     {
-        // Validate dữ liệu nhập vào form đăng ký
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ], [
-            // Ghi đè lại lỗi bằng tiếng việt
-            'name.required' => 'Tên là bắt buộc.',
-            'name.string' => 'Tên phải là chuỗi ký tự.',
-            'name.max' => 'Tên không được vượt quá :max ký tự.',
-
-            'email.required' => 'Email là bắt buộc.',
-            'email.email' => 'Email không hợp lệ.',
-            'email.unique' => 'Email đã tồn tại.',
-
-            'password.required' => 'Mật khẩu là bắt buộc.',
-            'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-        ]);
         $data = [
             'name' => $request->name,
             'email' => $request->email,
@@ -53,48 +37,40 @@ class AuthenController extends Controller
         // Thêm mới User vào cơ sở dữ liệu
         $user = User::query()->create($data);
 
-        // Sau khi đăng kí thì tự động đăng nhập
-        Auth::login($user);
-        //  Tạo 1 session mới cho người dùng giúp bảo mật 
-        $request->session()->regenerate();
-        // Trả về dữ liệu JSON cho frontend
 
         return redirect()->route('user.dashboard');
+
+        // Trả về dữ liệu JSON cho frontend
         // return response()->json([
         //     'status' => 'success',
         //     'message' => 'Đăng ký thành công!',
         //     'user' => $user,
-        // ]);
+        // ],201);
     }
     public function showFormLogin()
     {
         // Hiển thị form đăng nhập
         return view('auth.login');
         // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Form đăng nhập.',
         //     'email' => '',
         //     'password' => '',
-        // ]);
+        // ], 200);
     }
-    public function handleLogin(Request $request)
+    public function handleLogin(HandleLoginRequest $request)
     {
-        // Validate dữ liệu
-        $credentials = $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|min:8',
-        ], [ // Ghi đè lại lỗi bằng tiếng việt
-            'email.required' => 'Email là bắt buộc.',
-            'email.email' => 'Email không hợp lệ.',
-            'email.exists' => 'Email không tồn tại.',
-            'password.required' => 'Mật khẩu là bắt buộc.',
-            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
-        ]);
+        $data = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
         // Tạo remember_token khi người dùng tích vào ô checkbox
         $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
+        if (Auth::attempt($data, $remember)) {
             $user = Auth::user();
-
+            // Tạo token
+            $token = $user->createToken('auth_token')->plainTextToken;
             // Dữ liệu người dùng trả về cho frontend
             $userData = [
                 'id' => $user->id,
@@ -110,8 +86,9 @@ class AuthenController extends Controller
                 //     'message' => 'Đăng nhập thành công.',
                 //     'role' => 'admin',
                 //     'account' => $userData,
+                //     'token' => $token,
                 //     'redirect' => route('admin.dashboard')
-                // ]);
+                // ], 200);
             }
             if ($user->isEmployee()) {
                 return redirect()->route('employee.dashboard');
@@ -120,8 +97,9 @@ class AuthenController extends Controller
                 //     'message' => 'Đăng nhập thành công.',
                 //     'role' => 'employee',
                 //     'account' => $userData,
+                //     'token' => $token,
                 //     'redirect' => route('employee.dashboard')
-                // ]);
+                // ], 200);
             }
             if ($user->isUser()) {
                 return redirect()->route('user.dashboard');
@@ -130,36 +108,39 @@ class AuthenController extends Controller
                 //     'message' => 'Đăng nhập thành công.',
                 //     'role' => 'user',
                 //     'account' => $userData,
+                //     'token' => $token,
                 //     'redirect' => route('user.dashboard')
-                // ]);
+                // ], 200);
             }
             return redirect()->route('user.dashboard');
             // return response()->json([
             //     'success' => true,
             //     'message' => 'Đăng nhập thành công.',
+            //     'token' => $token,
             //     'redirect' => route('user.dashboard')
             // ]);
         }
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        // Đăng xuất người dùng
-        Auth::logout();
+        // Lấy người dùng hiện tại (nếu đã đăng nhập)
+        $user = Auth::user();
 
-        // Hủy và xóa hết dữ liệu hiên tại của người dùng đó
-        $request->session()->invalidate();
+        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Bạn chưa đăng nhập!',
+            ], 401); // Trả về mã lỗi 401 (Unauthorized)
+        }
+        // Xóa token hiện tại
+        $user->currentAccessToken()->delete();
 
-        //  Tạo 1 session mới cho người dùng giúp bảo mật 
-        $request->session()->regenerate();
-
-
-        return redirect()->route('auth.showFormLogin');
-        // Trả về cho frontend
-        // return response()->json([
-        //     'success' => true,
-        //     'message' => 'Đăng xuất thành công.'
-        // ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Đăng xuất thành công!',
+        ], 200);
     }
 
 
@@ -170,15 +151,8 @@ class AuthenController extends Controller
             'email' => '',
         ]);
     }
-    public function handleSendMailForgot(Request $request)
+    public function handleSendMailForgot(HandleSendMailForgotRequest $request)
     {
-        // Validate dữ liệu nhập vào form email
-        $request->validate([
-            'email' => ['required', 'email'],
-        ], [
-            'email.required' => 'Email là bắt buộc.',
-            'email.email' => 'Email không hợp lệ.',
-        ]);
 
         // Tìm kiếm người dùng qua email
         $user = User::where('email', $request->email)->first();
@@ -201,7 +175,9 @@ class AuthenController extends Controller
         });
         return response()->json([
             'success' => true,
-            'message' => 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.'
+            'message' => 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.',
+            'token' => $token,
+
         ]);
     }
     public function clickInEmailForgot($id, $token)
@@ -219,17 +195,8 @@ class AuthenController extends Controller
             ]
         ]);
     }
-    public function handleForgotPass(Request $request, $id, $token)
+    public function handleForgotPass(HandleForgotPassRequest $request, $id, $token)
     {
-
-        // Validate dữ liệu nhập vào form quên mật khẩu
-        $request->validate([
-            'password' => 'required|confirmed|min:8',
-        ], [
-            'password.required' => 'Mật khẩu là bắt buộc.',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
-        ]);
 
         // Tìm người dùng
         $user = User::where('id', $id)->first();
