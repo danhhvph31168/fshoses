@@ -2,23 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Role;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        // Kiểm tra nếu vai trò 'Admin' đã tồn tại
-        if (!Role::where('name', 'Admin')->exists()) {
-            Role::create(['name' => 'Admin']);
-        }
-
-        // Kiểm tra và tạo các vai trò khác nếu cần
-        if (!Role::where('name', 'User')->exists()) {
-            Role::create(['name' => 'User']);
-        }
-
-        // Thêm các vai trò khác nếu cần
+        Role::factory()->count(10)->create();
     }
 }

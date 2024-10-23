@@ -12,4 +12,9 @@ class Category extends Model
         'name',
         'parent_id',
     ];
+    public function products()
+    {
+        // Categories 1-n Products:
+        return $this->hasMany(Product::class);
+    }
 }

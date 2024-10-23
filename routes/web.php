@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Auth\AuthenController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Client\AccountController;
+use App\Http\Controllers\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 
@@ -14,13 +19,46 @@ use App\Http\Controllers\CartController;
 |
 */
 
-Route::get('/', function () {
-    return view('shop');
+
+Route::get('product-detail/{id}', [ProductController::class, 'productDetail'])->name('productDetail');
+
+Route::get('/', [UserController::class, 'dashboard'])
+    ->name('home.dashboard');
+
+Route::prefix('auth')
+    ->name('auth.')
+    ->group(function () {
+        Route::get('register', [AuthenController::class, 'showFormRegister'])->name('showFormRegister');
+        Route::post('register', [AuthenController::class, 'handleRegister'])->name('handleRegister');
+
+        Route::get('login', [AuthenController::class, 'showFormLogin'])->name('showFormLogin');
+        Route::post('login', [AuthenController::class, 'handleLogin'])->name('handleLogin');
+
+        Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
+        // ->middleware('auth:sanctum');
+    });
+
+Route::get('click-to-forgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
+Route::post('handle-send-mail-forgot', [AuthenController::class, 'handleSendMailForgot'])->name('handleSendMailForgot');
+Route::get('click-in-email-forgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
+Route::post('handle-forgot-pass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
+
+Route::middleware(['profile', 'auth:sanctum'])->group(function () {
+    Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
+
+    Route::get('change-password', [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
+    Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 });
-Route::group(['prefix' => 'cart'], function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index');
-    Route::get('/add/{product}', [CartController::class, 'add'])->name('cart.add');
-    Route::get('/delete/{product}', [CartController::class, 'delete'])->name('cart.delete');
-    Route::get('/update/{product}', [CartController::class, 'update'])->name('cart.update');
-    Route::get('/clear', [CartController::class, 'clear'])->name('cart.clear');
-});
+
+Route::get('admin', [UserController::class, 'dashboard'])
+    ->name('admin.dashboard')
+    ->middleware(['auth']);
+
+Route::get('admin', [AdminController::class, 'dashboard'])
+    ->name('admin.dashboard')
+    ->middleware(['auth']);
+
+// routes/web.php
+Route::get('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');

@@ -2,18 +2,23 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ */
 class CategoryFactory extends Factory
 {
-    protected $model = Category::class;
-
-    public function definition()
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
     {
         return [
-            'parent_id' => Category::inRandomOrder()->first()->id ?? null,  // Chọn ngẫu nhiên một category cha hoặc null nếu chưa có
-            'name' => $this->faker->unique()->word(),  // Tạo tên category ngẫu nhiên và đảm bảo duy nhất
+            'name'=> $this->faker->name(),
+            'parent_id'=> $this->faker->numberBetween()
         ];
     }
 }

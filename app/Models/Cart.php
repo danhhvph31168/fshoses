@@ -8,21 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     use HasFactory;
-    protected $timestamp = false;
+
     protected $fillable = [
-        'user_id',
-        'product_id',
-        'price',
-        'quantity',
+        'user_id', // Khóa ngoại đến bảng users
     ];
 
+    // Mối quan hệ một-nhiều với CartItem
+    public function items()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    // Mối quan hệ với User (nếu có)
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
     }
 }
