@@ -14,39 +14,29 @@
 </head>
 
 <body>
-
-    <div class="container">
-        <h1>Chi tiet san pham</h1>
-
+    <div class="container m-4">
+        <h1>Đây là trang chu</h1>
+        @foreach ($products as $product)
         <div class="card m-4" style="width: 18rem;">
             <img src="..." class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">{{$product->name}}</h5>
                 <h6 class="card-title">{{$product->category->name}}</h6>
-                <h6 class="card-title"></h6>
-              
                 <h5 class="card-title">{{$product->price}}</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                     card's
                     content.</p>
-                <a href="#" class="btn btn-primary">Chi tiet day</a>
+                <a href="{{route('productDetail',$product->id)}}" class="btn btn-primary">Xem chi tiet</a>
             </div>
         </div>
-        <form>
+        @endforeach
+       
+        <form action="{{ route('auth.logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger">Logout</button>
 
-            <div class="mb-3 position-relative">
-                <label for="exampleFormControlTextarea1" class="form-label">Viet binh luan</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-
-                <div class="position-absolute" style="right: 0; bottom: -50px;">
-                    <a href="" class="btn btn-info">Sửa</a>
-                    <a href="" class="btn btn-danger">Xóa</a>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Gui</button>
         </form>
     </div>
-
 </body>
 
 </html>

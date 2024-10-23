@@ -23,6 +23,16 @@ class Product extends Model
     ];
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+       // Products n-1 Categories:
+        return $this->belongsTo(Category::class);
+    }
+    public function galleries()
+    {
+        return $this->hasMany(ProductGallery::class);
+    }
+    public function variants()
+    {
+        // Products 1-n Variants:
+        return $this->hasMany(ProductVariant::class);
     }
 }

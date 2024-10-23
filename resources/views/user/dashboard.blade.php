@@ -16,6 +16,8 @@
 <body>
     <div class="container m-4">
         <h1>Đây là trang user</h1>
+        <a href="{{route('auth.showFormRegister')}}" class="btn btn-primary">Dang ky</a>
+        <a href="{{route('auth.showFormLogin')}}" class="btn btn-success">Dang nhap</a>
         @foreach ($products as $product)
         <div class="card m-4" style="width: 18rem;">
             <img src="..." class="card-img-top" alt="...">

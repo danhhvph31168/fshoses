@@ -12,7 +12,6 @@ use Hash;
 use Illuminate\Support\Facades\Auth;
 use Mail;
 use Password;
-use Request;
 
 class AuthenController extends Controller
 {
@@ -36,8 +35,10 @@ class AuthenController extends Controller
             'password' => $request->password,
         ];
         // Thêm mới User vào cơ sở dữ liệu
-        $user = User::query()->create($data);
+       $user = User::query()->create($data);
 
+       Auth::login( $user);
+        // dd($user);
 
         return redirect()->route('user.dashboard');
 
@@ -81,15 +82,15 @@ class AuthenController extends Controller
             ];
             // dd($userData);
             if ($user->isAdmin()) {
-                // return redirect()->route('admin.dashboard');
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Đăng nhập thành công.',
-                    'role' => 'admin',
-                    'account' => $userData,
-                    'token' => $token,
-                    'redirect' => route('admin.dashboard')
-                ], 200);
+                return redirect()->route('admin.dashboard');
+                // return response()->json([
+                //     'success' => true,
+                //     'message' => 'Đăng nhập thành công.',
+                //     'role' => 'admin',
+                //     'account' => $userData,
+                //     'token' => $token,
+                //     'redirect' => route('admin.dashboard')
+                // ], 200);
             }
             if ($user->isEmployee()) {
                 return redirect()->route('employee.dashboard');
@@ -113,9 +114,9 @@ class AuthenController extends Controller
                 //     'redirect' => route('user.dashboard')
                 // ], 200);
             }
-      
+            return redirect()->route('home.dashboard');
         }
-        return redirect()->route('home.dashboard');
+
         // return response()->json([
         //     'success' => true,
         //     'message' => 'Đăng nhập thành công.',
@@ -124,10 +125,11 @@ class AuthenController extends Controller
         // ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         // Lấy người dùng hiện tại (nếu đã đăng nhập)
-        $user = Auth::user();
+        // $user = Auth::user();
+        Auth::logout();
 
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         // if (!$user) {

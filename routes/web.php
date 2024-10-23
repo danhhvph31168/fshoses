@@ -22,12 +22,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 Route::get('product-detail/{id}', [ProductController::class, 'productDetail'])->name('productDetail');
 
-Route::get('home', [UserController::class, 'dashboard'])
+Route::get('/', [UserController::class, 'dashboard'])
     ->name('home.dashboard');
 
 Route::prefix('auth')
