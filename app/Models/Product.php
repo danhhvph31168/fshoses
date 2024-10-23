@@ -21,4 +21,8 @@ class Product extends Model
         'is_show_home',
         'is_delete',
     ];
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\EmployeeController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Client\AccountController;
+use App\Http\Controllers\Product\ProductController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckEmployee;
 use App\Http\Middleware\CheckUser;
@@ -24,6 +25,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('product-detail/{id}', [ProductController::class, 'productDetail'])->name('productDetail');
+
+Route::get('home', [UserController::class, 'dashboard'])
+    ->name('home.dashboard');
+
 Route::prefix('auth')
     ->name('auth.')
     ->group(function () {
@@ -41,7 +47,7 @@ Route::post('handle-send-mail-forgot', [AuthenController::class, 'handleSendMail
 Route::get('click-in-email-forgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handle-forgot-pass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 
-Route::middleware('profile')->group(function () {
+Route::middleware(['profile', 'auth:sanctum'])->group(function () {
     Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
