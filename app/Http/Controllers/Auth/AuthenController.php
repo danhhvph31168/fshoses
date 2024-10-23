@@ -140,11 +140,11 @@ class AuthenController extends Controller
         // }
         // Xóa token hiện tại
         // $user->currentAccessToken()->delete();
-        return view('auth.login');
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Đăng xuất thành công!',
-        // ], 200);
+        // return view('auth.login');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Đăng xuất thành công!',
+        ], 200);
     }
 
 
