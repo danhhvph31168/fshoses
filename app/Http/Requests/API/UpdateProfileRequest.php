@@ -65,13 +65,13 @@ class UpdateProfileRequest extends FormRequest
             'zip_code.digits_between' => 'Mã bưu điện phải có từ 3 đến 10 chữ số.',
         ];
     }
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = $validator->errors();
+    // protected function failedValidation(Validator $validator)
+    // {
+    //     $errors = $validator->errors();
 
-        $response = response()->json([
-            'errors' => $errors->messages(),
-        ], 400);
-        throw new HttpResponseException($response);
-    }
+    //     $response = response()->json([
+    //         'errors' => $errors->messages(),
+    //     ], 400);
+    //     throw new HttpResponseException($response);
+    // }
 }

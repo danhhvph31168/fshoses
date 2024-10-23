@@ -2,13 +2,9 @@
 
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthenController;
-use App\Http\Controllers\Auth\EmployeeController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Client\AccountController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Middleware\CheckAdmin;
-use App\Http\Middleware\CheckEmployee;
-use App\Http\Middleware\CheckUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +33,8 @@ Route::prefix('auth')
         Route::get('login', [AuthenController::class, 'showFormLogin'])->name('showFormLogin');
         Route::post('login', [AuthenController::class, 'handleLogin'])->name('handleLogin');
 
-        Route::post('logout', [AuthenController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
+        Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
+        // ->middleware('auth:sanctum');
     });
 
 Route::get('click-to-forgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
@@ -53,15 +50,10 @@ Route::middleware(['profile', 'auth:sanctum'])->group(function () {
     Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 });
 
-Route::get('user', [UserController::class, 'dashboard'])
-    ->name('user.dashboard')
-    ->middleware(['auth', CheckUser::class]);
-
-
-Route::get('employee', [EmployeeController::class, 'dashboard'])
-    ->name('employee.dashboard')
-    ->middleware(['auth', CheckEmployee::class]);
+Route::get('admin', [UserController::class, 'dashboard'])
+    ->name('admin.dashboard')
+    ->middleware(['auth']);
 
 Route::get('admin', [AdminController::class, 'dashboard'])
     ->name('admin.dashboard')
-    ->middleware(['auth', CheckAdmin::class]);
+    ->middleware(['auth']);

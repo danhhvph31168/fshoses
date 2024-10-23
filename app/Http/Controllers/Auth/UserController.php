@@ -11,7 +11,7 @@ class UserController extends Controller
     {
 
         $products = Product::all();
-        return view('user.dashboard', compact('products'));
+        return view('home.dashboard', compact('products'));
 
 
 

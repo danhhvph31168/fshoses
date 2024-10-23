@@ -23,8 +23,15 @@
             </ul>
         </div>
     @endif
-    @if (session('status'))
-        <span class='alert alert-success'>{{ session('status') }}</span>
+    @if (session('message'))
+        <div class="alert alert-success">
+            <span>{{ session('message') }}</span>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            <span>{{ session('error') }}</span>
+        </div>
     @endif
     <form action="{{ route('auth.handleLogin') }}" method="POST">
         @csrf

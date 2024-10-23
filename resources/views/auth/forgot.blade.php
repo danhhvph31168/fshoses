@@ -23,9 +23,14 @@
             </ul>
         </div>
     @endif
-    @if (session('status'))
+    @if (session('message'))
         <div class="alert alert-success">
-            <span>{{ session('status') }}</span>
+            <span>{{ session('message') }}</span>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            <span>{{ session('error') }}</span>
         </div>
     @endif
     <form action="{{ route('handleSendMailForgot') }}" method="POST">

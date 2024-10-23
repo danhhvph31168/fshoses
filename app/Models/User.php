@@ -58,12 +58,12 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
     }
     public function isAdmin(){
-        return $this->role_id == self::TYPE_ADMIN;
+        return $this->role_id === self::TYPE_ADMIN;
     }
     public function isEmployee(){
-        return $this->role_id == self::TYPE_EMPLOYEE;
+        return $this->role_id === self::TYPE_EMPLOYEE;
     }
     public function isUser(){
-        return $this->role_id == self::TYPE_USER;
+        return $this->role_id === self::TYPE_USER;
     }
 }

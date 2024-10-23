@@ -15,13 +15,8 @@
 
 <body>
     <h1>Đây là trang admin</h1>
-    <a href="{{ route('showFormUpdateProfile', Auth::user()->id) }}">Hi {{ Auth::user()->name }}</a>
-    <a href="{{route("showFormChangePassword")}}">Change Password</a>
-    <form class="mt-4" action="{{ route('auth.logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="btn btn-danger">Logout</button>
-
-    </form>
+    <!-- Example single danger button -->
+    <a href="{{ route('home.dashboard') }}" class="btn btn-primary">Home</a>
 
 </body>
 

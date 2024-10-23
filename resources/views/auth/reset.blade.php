@@ -27,17 +27,17 @@
         @csrf
         <div>
             <label for="password">Nhập mật khẩu mới:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" name="password">
         </div>
-    
+
         <div>
             <label for="password_confirmation">Xác nhận mật khẩu mới:</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" required>
+            <input type="password" name="password_confirmation">
         </div>
-    
+
         <button type="submit">Đặt lại mật khẩu</button>
     </form>
-    
+
 </body>
 
 </html>

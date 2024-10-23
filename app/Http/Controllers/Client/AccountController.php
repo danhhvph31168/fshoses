@@ -19,17 +19,12 @@ class AccountController extends Controller
     public function showFormUpdateProfile()
     {
         $user = Auth::user();
-        if (!$user) {
-            return response()->json([
-                'message' => 'Người dùng chưa được xác thực'
-            ], 401);
-        }
 
-        // return view('profile.formProfile', compact('user'));
-        return response()->json([
-            'status' => 'Success',
-            'account' => $user,
-        ], 200);
+        return view('profile.formProfile', compact('user'));
+        // return response()->json([
+        //     'status' => 'Success',
+        //     'account' => $user,
+        // ], 200);
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
@@ -65,21 +60,21 @@ class AccountController extends Controller
 
         $user->update($data);
 
-        // return redirect()->back()->with('message', 'Cập nhật người dùng thành công.');
-        return response()->json([
-            'status' => 'Thành công',
-            'message' => 'Cập nhật người dùng thành công.',
-            'account' => $user, // Trả về thông tin người dùng đã cập nhật
-        ], 200);
+        return redirect()->back()->with('message', 'Cập nhật người dùng thành công.');
+        // return response()->json([
+        //     'status' => 'Thành công',
+        //     'message' => 'Cập nhật người dùng thành công.',
+        //     'account' => $user, // Trả về thông tin người dùng đã cập nhật
+        // ], 200);
     }
 
     public function showFormChangePassword()
     {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Form thay đổi mật khẩu.',
-        ], 200);
-        // return view('profile.showFormChangePassword');
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Form thay đổi mật khẩu.',
+        // ], 200);
+        return view('profile.showFormChangePassword');
     }
     public function handleChangePassword(ChangePasswordRequest $request)
     {
@@ -87,13 +82,13 @@ class AccountController extends Controller
 
         // Kiểm tra mật khẩu hiện tại
         if (!Hash::check($request->old_password, $user->password)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Mật khẩu hiện tại không đúng.'
-            ], 422);
-            // throw ValidationException::withMessages([
-            //     'old_password' => ['Mật khẩu hiện tại không đúng.'],
-            // ]);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Mật khẩu hiện tại không đúng.'
+            // ], 422);
+            throw ValidationException::withMessages([
+                'old_password' => ['Mật khẩu hiện tại không đúng.'],
+            ]);
         }
 
         // Cập nhật mật khẩu mới
@@ -101,12 +96,12 @@ class AccountController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Thay đổi mật khẩu thành công.'
-        ], 200);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Thay đổi mật khẩu thành công.'
+        // ], 200);
         // Chuyển hướng hoặc trả về thông báo thành công
-        // return redirect()->back()->with('message', 'Thay đổi mật khẩu thành công.');
+        return redirect()->back()->with('message', 'Thay đổi mật khẩu thành công.');
     }
 
 }

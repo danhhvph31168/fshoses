@@ -36,13 +36,13 @@ class HandleForgotPassRequest extends FormRequest
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         ];
     }
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = $validator->errors();
+    // protected function failedValidation(Validator $validator)
+    // {
+    //     $errors = $validator->errors();
 
-        $response = response()->json([
-            'errors' => $errors->messages(),
-        ], 400);
-        throw new HttpResponseException($response);
-    }
+    //     $response = response()->json([
+    //         'errors' => $errors->messages(),
+    //     ], 400);
+    //     throw new HttpResponseException($response);
+    // }
 }
