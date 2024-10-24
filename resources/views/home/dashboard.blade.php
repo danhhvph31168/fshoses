@@ -15,7 +15,7 @@
 
 <body>
     <div class="container m-4">
-        <h1>Đây là trang chu</h1>
+        <h1>Đây là trang chủ</h1>
         @if (!Auth::check())
             <a href="{{ route('auth.showFormRegister') }}" class="btn btn-primary">Đăng ký</a>
             <a href="{{ route('auth.showFormLogin') }}" class="btn btn-success">Đăng nhập</a>
@@ -60,7 +60,8 @@
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                         card's
                         content.</p>
-                    <a href="{{ route('productDetail', $product->id) }}" class="btn btn-primary">Xem chi tiet</a>
+                        <a href="{{ route('cart.add', $product->id) }}" class="btn btn-primary">addToCart</a>
+
                 </div>
             </div>
         @endforeach

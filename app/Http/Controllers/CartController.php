@@ -9,18 +9,18 @@ use App\Models\CartItem;
 
 class CartController extends Controller
 {
-    public function addToCart(Request $request)
+    public function addToCart(Request $request, $productId)
     {
         // Kiểm tra dữ liệu đầu vào
-        $request->validate([
-            'product_id' => 'required|integer|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0'
-        ]);
+        // $request->validate([
+        //     'product_id' => 'required|integer|exists:products,id',
+        //     'quantity' => 'required|integer|min:1',
+        //     'price' => 'required|numeric|min:0'
+        // ]);
 
-        $productId = $request->input('product_id');
+
         $quantity = $request->input('quantity');
-        $price = $request->input('price');
+        // $price = $request->input('price');
         // Kiểm tra nếu người dùng đã đăng nhập
         if (auth()->check()) {
             $user = auth()->user();
@@ -54,6 +54,7 @@ class CartController extends Controller
                 $cart[$productId]['quantity'] += $quantity;
             } else {
                 $product = Product::find($productId); // Lấy thông tin sản phẩm từ DB
+              
                 $cart[$productId] = [
                     'product_id' => $productId,
                     'quantity' => $quantity,
@@ -65,7 +66,7 @@ class CartController extends Controller
             // Lưu lại giỏ hàng vào session
             session()->put('cart', $cart);
         }
-        return redirect()->route('cart.show')->with('success', 'Product added to cart!');
+        return redirect()->route('home.dashboard')->with('success', 'Product added to cart!');
     }
 
     public function showCart()

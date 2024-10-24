@@ -60,5 +60,5 @@ Route::get('admin', [AdminController::class, 'dashboard'])
     ->middleware(['auth']);
 
 // routes/web.php
-Route::get('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
