@@ -10,7 +10,7 @@ class UserController extends Controller
     public function dashboard()
     {
 
-        $products = Product::all();
+        $products = Product::with(['category'])->latest('id')->paginate(5);
         return view('home.dashboard', compact('products'));
 
 

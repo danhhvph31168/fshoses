@@ -4,23 +4,20 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
+
 
 class ProductController extends Controller
 {
 
-    public function productDetail(Request $request)
+    public function productDetail($id)
     {
-        // Tìm sản phẩm theo ID, hoặc trả về lỗi nếu không tìm thấy
-        $product = Product::findOrFail($request->id);
-
-        // Trả về JSON
-        // return response()->json([
-        //     'status' => 'success',
-        //     'data' => $product
-        // ]);
-
-        // Nếu bạn sử dụng view, trả về view với dữ liệu sản phẩm
-        return view('product.detail', compact('product'));
+        $product = Product::query()->with(['variants', 'galleries', 'category'])->where('id', $id)->first();
+        $colors = ProductColor::query()->pluck('name', 'id')->all();
+        $sizes = ProductSize::query()->pluck('name', 'id')->all();
+    
+        return view('product.detail', compact('product', 'colors', 'sizes'));
     }
+    
 }
