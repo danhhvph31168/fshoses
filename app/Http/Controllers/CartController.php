@@ -2,84 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Cart;
+use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\CartItem;
+use App\Models\ProductVariant;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
-    public function addToCart(Request $request, $productId)
+    public function list()
     {
-        // Kiểm tra dữ liệu đầu vào
-        // $request->validate([
-        //     'product_id' => 'required|integer|exists:products,id',
-        //     'quantity' => 'required|integer|min:1',
-        //     'price' => 'required|numeric|min:0'
-        // ]);
+        $cart = session('cart');
 
-
-        $quantity = $request->input('quantity');
-        // $price = $request->input('price');
-        // Kiểm tra nếu người dùng đã đăng nhập
-        if (auth()->check()) {
-            $user = auth()->user();
-
-            // Kiểm tra xem người dùng đã có giỏ hàng chưa
-            $cart = Cart::firstOrCreate([
-                'user_id' => $user->id,
-            ]);
-
-            // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
-            $cartItem = $cart->items()->where('product_id', $productId)->first();
-
-            if ($cartItem) {
-                // Nếu có, cập nhật số lượng
-                $cartItem->quantity += $quantity;
-                $cartItem->save();
-            } else {
-                // Nếu không có, thêm mới sản phẩm vào giỏ hàng
-                $cart->items()->create([
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                    'price' => Product::find($productId)->price, // Giả sử có bảng products
-                ]);
+        $total = 0;
+        if (session()->has('cart')) {
+            foreach ($cart as $item) {
+                $total += $item['quantity'] * ($item['price_sale'] ?: $item['price_regular']);
             }
         } else {
-            // Nếu người dùng chưa đăng nhập, lưu vào session
-            $cart = session()->get('cart', []);
-
-            // Kiểm tra nếu sản phẩm đã tồn tại trong session
-            if (isset($cart[$productId])) {
-                $cart[$productId]['quantity'] += $quantity;
-            } else {
-                $product = Product::find($productId); // Lấy thông tin sản phẩm từ DB
-              
-                $cart[$productId] = [
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                    'price' => $product->price,
-                    'name' => $product->name,
-                ];
-            }
-
-            // Lưu lại giỏ hàng vào session
-            session()->put('cart', $cart);
+            $cart = [];
         }
-        return redirect()->route('home.dashboard')->with('success', 'Product added to cart!');
+
+        return view('client.cart-list', compact('totalAmount', 'cart'));
     }
-
-    public function showCart()
+    public function addToCart(Request $request)
     {
-        // Nếu người dùng đã đăng nhập, hiển thị giỏ hàng từ cơ sở dữ liệu
-        if (auth()->check()) {
-            $user = auth()->user();
-            $cart = Cart::with('items')->where('user_id', $user->id)->first();
+        $product = Product::query()->findOrFail(\request('product_id'));
+
+        $productVariant = ProductVariant::query()
+            ->with(['color', 'size'])
+            ->where([
+                'product_id' => \request('product_id'),
+                'product_size_id' => \request('product_size_id'),
+                'product_color_id' => \request('product_color_id'),
+            ])
+            ->firstOrFail();
+
+        if (!isset(session('cart')[$productVariant->id])) {
+
+            $data = $product->toArray() + $productVariant->toArray();
+
+            $data['quantity'] = \request('quantity');
+
+            session()->put('cart.' . $productVariant->id, $data);
         } else {
-            // Nếu chưa đăng nhập, hiển thị giỏ hàng từ session
-            $cart = session()->get('cart', []);
+
+            $data = session('cart')[$productVariant->id];
+
+            $data['quantity'] += \request('quantity');
+
+            session()->put('cart.' . $productVariant->id, $data);
         }
 
-        return view('cart.index', compact('cart'));
+        return redirect()->route('cart.list');
+    }
+    public function deleteItem($id)
+    {
+        $cart = session('cart');
+
+        foreach ($cart as $key => $value) {
+            if ($value['id'] == $id) {
+                unset($cart[$key]);
+            }
+        }
+
+        session()->put('cart', $cart);
+    }
+    public function updateCart(Request $request, $id)
+    {
+        $cart = session('cart');
+
+        foreach ($cart as $item) {
+            $item['quantity'] = $request->query('quantity');
+        }
+        Log::info($cart);
+
+        session()->put('cart', $cart);
     }
 }

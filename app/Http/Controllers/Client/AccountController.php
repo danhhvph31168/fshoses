@@ -103,5 +103,4 @@ class AccountController extends Controller
         // Chuyển hướng hoặc trả về thông báo thành công
         return redirect()->back()->with('message', 'Thay đổi mật khẩu thành công.');
     }
-
 }

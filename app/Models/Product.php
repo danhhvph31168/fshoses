@@ -23,7 +23,7 @@ class Product extends Model
     ];
     public function category()
     {
-       // Products n-1 Categories:
+        // Products n-1 Categories:
         return $this->belongsTo(Category::class);
     }
     public function galleries()
