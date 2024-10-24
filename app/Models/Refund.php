@@ -33,4 +33,12 @@ class Refund extends Model
     const STATUS_COMPLETED  = 'completed';
     const STATUS_CANCELED   = 'canceled';
     const STATUS_FAILED     = 'failed';
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function order(){
+        return $this->belongsTo(Order::class);
+    }
 }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\StoreRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\{Order};
 use App\Services\OrderAdmin\OrderFormServices;
 use App\Services\OrderAdmin\OrderServices;
@@ -16,7 +19,7 @@ class OrderController extends Controller
     public function __construct(public OrderServices $orderServices, public OrderFormServices $orderFormServices) {}
     public function index()
     {
-        $data = Order::query()->with(['user', 'role'])->latest('id')->get();
+        $data = Order::query()->with(['user', 'role'])->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -26,7 +29,7 @@ class OrderController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         try {
             DB::transaction(function () {
@@ -40,27 +43,26 @@ class OrderController extends Controller
                 $this->orderServices->createPayment($order);
             });
 
-            return redirect()->route('admin.dashboard')->with('success', 'Đặt hàng thành công');
+            return back()->with('success', 'Đặt hàng thành công');
         } catch (\Exception $th) {
 
             dd($th->getMessage());
 
-            return back()->with('error', 'Lỗi đặt hàng');
+            return back()->with('error', 'Lỗi đặt hàng: ' . $th->getMessage());
         }
     }
 
     public function edit($id)
     {
         $order = Order::query()->with(['user', 'role', 'orderItems', 'payment', 'refund'])->findOrFail($id);
-        // dd($order->refund);
 
         $dataOrderItem = [];
         foreach ($order->orderItems as $orderItems) {
             $dataOrderItem[] = [
-                'product' => $orderItems->productVariant->product,
-                'size' => $orderItems->productVariant->size,
-                'color' => $orderItems->productVariant->color,
-                'quantity' => $orderItems->quantity,
+                'product'   => $orderItems->productVariant->product,
+                'size'      => $orderItems->productVariant->size,
+                'color'     => $orderItems->productVariant->color,
+                'quantity'  => $orderItems->quantity,
             ];
         }
 
@@ -74,5 +76,32 @@ class OrderController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('order', 'data', 'dataProductVariant'));
     }
 
-    public function update() {}
+    public function update($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $order = Order::query()->findOrFail($id);
+            if (!($order->status_order == Order::STATUS_ORDER_CANCELED || $order->status_order == Order::STATUS_ORDER_DELIVERED)) {
+                $order->update([
+                    'status_order'   => request('status_order'),
+                    'status_payment' => request('status_payment'),
+                ]);
+            }
+
+            $payment = $order->payment;
+            $payment->update([
+                'status' => request('payment_status'),
+            ]);
+
+            DB::commit();
+
+            return back()->with('success', 'Đặt hàng thành công');
+        } catch (\Exception $th) {
+
+            dd($th->getMessage());
+
+            return back()->with('error', 'Lỗi đặt hàng: ' . $th->getMessage());
+        }
+    }
 }

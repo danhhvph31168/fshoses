@@ -38,17 +38,16 @@
                     <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                     </a>
-                </li> <!-- end Dashboard Menu -->
-
+                </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarCategories" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarCategories">
+                    <a class="nav-link menu-link" href="#sidebarOrder" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarOrder">
                         <i class="ri-layout-3-line"></i>
                         <span data-key="t-layouts">Orders</span>
 
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarCategories">
+                    <div class="collapse menu-dropdown" id="sidebarOrder">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.orders.index') }}" class="nav-link"
@@ -60,6 +59,18 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.refunds.index') }}">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Refund</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.reviews.index') }}">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Review</span>
+                    </a>
                 </li>
 
             </ul>

@@ -21,6 +21,16 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('admin.orders.update', $order) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -30,6 +40,9 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Edit Order</h4>
+                        @if ($order->total_amount >= 500000)
+                            <span class="badge text-bg-success p-3">Free Ship</span>
+                        @endif
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="live-preview">
@@ -38,7 +51,7 @@
                                 <div class="col-md-3">
                                     <label for="sku" class="form-label">Sku</label>
                                     <input type="text" class="form-control" name="sku_order" id="sku"
-                                        value="{{ $order->sku_order }}">
+                                        value="{{ $order->sku_order }}" disabled>
                                 </div>
 
                                 <div class="col-md-3">
@@ -241,8 +254,8 @@
                             <div class="row gy-4">
 
                                 <div class="col-md-6">
-                                    <input type="radio" class="btn-check" name="outlined" id="success-outlined"
-                                        autocomplete="on" checked>
+                                    <input type="radio" class="btn-check" id="success-outlined" autocomplete="on"
+                                        checked>
                                     <label style="width: 100%" class="btn btn-outline-success"
                                         for="success-outlined">{{ $order->payment->payments_method }} payment</label>
                                 </div>
@@ -263,73 +276,6 @@
             </div>
             <!--end col-->
         </div>
-
-        @if ($order->refund !== null)
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">Refund</h4>
-                        </div><!-- end card header -->
-                        <div class="card-body">
-                            <div class="live-preview">
-                                <div class="row gy-4">
-
-                                    <div class="col-md-6">
-                                        <label for="sku" class="form-label">Refund Status</label>
-                                        <select name="refund_status" class="form-control">
-                                            @foreach ($data['refundStatus'] as $id => $vi)
-                                                <option @selected($order->refund->status == $id) value="{{ $id }}">
-                                                    {{ $id }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="sku" class="form-label">Reason</label>
-                                        <textarea class="form-control" cols="30" rows="1">{{ $order->refund->reason }}</textarea>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-        @else
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">Refund</h4>
-                        </div><!-- end card header -->
-                        <div class="card-body">
-                            <div class="live-preview">
-                                <div class="row gy-4">
-
-                                    <div class="col-md-6">
-                                        <label for="sku" class="form-label">Refund Status</label>
-                                        <select name="refund_status" class="form-control">
-                                            @foreach ($data['refundStatus'] as $id => $vi)
-                                                <option value="{{ $id }}">{{ $id }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="sku" class="form-label">Reason</label>
-                                        <textarea class="form-control" cols="30" rows="1" name="reason"></textarea>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-        @endif
 
         <div class="row">
             <div class="col-lg-12">

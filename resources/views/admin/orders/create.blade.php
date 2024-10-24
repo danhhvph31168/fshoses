@@ -24,6 +24,22 @@
     <form action="{{ route('admin.orders.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <h1>bbbbbb</h1>
+        @else
+            <h1>aaaaaa</h1>
+        @endif
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -152,8 +168,15 @@
                             <div class="row gy-4">
 
                                 <div class="col-md-4 mt-3">
-                                    <label for="sku" class="form-label">User Name</label>
+                                    <label for="name" class="form-label @error('user_name') is-invalid @enderror">User
+                                        Name</label>
                                     <input type="text" class="form-control" name="user_name">
+
+                                    @error('user_name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4 mt-3">

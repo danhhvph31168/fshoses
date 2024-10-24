@@ -59,7 +59,6 @@
                                     <td>{{ $item->created_at->format('d/m/y') }}</td>
                                     <td>
                                         <a href="{{ route('admin.orders.edit', $item) }}" class="btn btn-warning">Edit</a>
-                                        
                                     </td>
                                 </tr>
                             @endforeach

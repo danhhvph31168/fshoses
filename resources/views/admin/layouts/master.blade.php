@@ -98,7 +98,7 @@
     @yield('script-libs')
 
     <!-- App js -->
-    {{-- <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script> --}}
+    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
 
     @yield('scripts')
 
