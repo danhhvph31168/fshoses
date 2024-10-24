@@ -17,14 +17,14 @@
 
     <div class="container">
         <h1>Chi tiết sản phẩm : {{$product->name}}</h1>
-        <!-- <h5>Hình ảnh galleries</h5>
+        <h5>Hình ảnh galleries</h5>
         <div class="product-gallery">
                 @foreach($product->galleries as $gallery)
                     <div class="col-md-3 mb-3">
                         <img src="{{ $gallery->image }}" class="img-thumbnail" alt="Product Image">
                     </div>
                 @endforeach
-        </div> -->
+        </div>
 
         <div class="card m-4" style="width: 18rem;">
             <h5>Hình ảnh sản phẩm</h5>
@@ -32,7 +32,7 @@
             <div class="product-gallery">
       
                     <div class="col-md-5 mb-4">
-                        <img src="{{ $product->galleries->first()->image }}" class="img-thumbnail" alt="Product Image" width="200px"
+                        <img src="{{ $product->img_thumbnail }}" class="img-thumbnail" alt="Product Image" width="200px"
                             height="200px">
                     </div>
 
