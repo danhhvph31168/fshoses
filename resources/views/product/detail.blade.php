@@ -19,22 +19,22 @@
         <h1>Chi tiết sản phẩm : {{$product->name}}</h1>
         <h5>Hình ảnh galleries</h5>
         <div class="product-gallery">
-                @foreach($product->galleries as $gallery)
-                    <div class="col-md-3 mb-3">
-                        <img src="{{ $gallery->image }}" class="img-thumbnail" alt="Product Image">
-                    </div>
-                @endforeach
+            @foreach($product->galleries as $gallery)
+                <div class="col-md-3 mb-3">
+                    <img src="{{ $gallery->image }}" class="img-thumbnail" alt="Product Image">
+                </div>
+            @endforeach
         </div>
 
         <div class="card m-4" style="width: 18rem;">
             <h5>Hình ảnh sản phẩm</h5>
 
             <div class="product-gallery">
-      
-                    <div class="col-md-5 mb-4">
-                        <img src="{{ $product->img_thumbnail }}" class="img-thumbnail" alt="Product Image" width="200px"
-                            height="200px">
-                    </div>
+
+                <div class="col-md-5 mb-4">
+                    <img src="{{ $product->img_thumbnail }}" class="img-thumbnail" alt="Product Image" width="200px"
+                        height="200px">
+                </div>
 
             </div>
             <div class="card-body">
@@ -62,19 +62,46 @@
                 <a href="#" class="btn btn-primary">Thêm vào giỏ hàng</a>
             </div>
         </div>
-        <form>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if (Auth::check())
+            <form action="{{route('handleAddComment', $product->id)}}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Viết bình luận</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
 
-            <div class="mb-3 position-relative">
-                <label for="exampleFormControlTextarea1" class="form-label">Viet binh luan</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-
-                <div class="position-absolute" style="right: 0; bottom: -50px;">
-                    <a href="" class="btn btn-info">Sửa</a>
-                    <a href="" class="btn btn-danger">Xóa</a>
+                </div>
+                <button type="submit" class="btn btn-primary">Gửi</button>
+            </form>
+        @else
+            <div class="alert alert-danger">
+                Vui lòng đăng nhập để bình luận. <a href="{{route('auth.showFormLogin')}}">Đăng nhập</a>
+            </div>
+        @endif
+        <div class="comments-list mt-4">
+            @foreach ($comments as $comment)
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-subtitle mb-2 text-primary">{{Auth::user()->name}}</h6> <!-- Tên người dùng -->
+                        <small class="text-muted">{{$comment->created_at}}</small> <!-- Ngày bình luận -->
+                    </div>
+                    <p class="card-text">{{$comment->comment}}</p> <!-- Nội dung bình luận -->
+                    <a href="#" class="btn btn-info">Sửa</a>
+                    <a href="#" class="btn btn-danger">Xóa</a>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Gui</button>
-        </form>
+            @endforeach
+            
+        </div>
     </div>
 
 </body>

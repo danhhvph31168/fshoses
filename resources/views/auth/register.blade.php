@@ -14,7 +14,8 @@
 </head>
 
 <body>
-    @if ($errors->any())
+   <div class="container">
+   @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -23,6 +24,7 @@
             </ul>
         </div>
     @endif
+    <h1>Đăng ký</h1>
     <form action="{{ route('auth.handleRegister') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -45,6 +47,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
     </form>
+   </div>
 </body>
 
 </html>

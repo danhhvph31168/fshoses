@@ -15,7 +15,7 @@
 
 <body>
     <div class="container m-4">
-        <h1>Đây là trang chu</h1>
+        <h1>Đây là trang chủ</h1>
         @if (!Auth::check())
             <a href="{{ route('auth.showFormRegister') }}" class="btn btn-primary">Đăng ký</a>
             <a href="{{ route('auth.showFormLogin') }}" class="btn btn-success">Đăng nhập</a>
@@ -28,9 +28,9 @@
             @endif
 
             <div class="btn-group">
-                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    Hi {{ Auth::user()->name }}
+                    Xin chào {{ Auth::user()->name }}
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}">Cập nhật
@@ -63,7 +63,7 @@
                                 the
                                 card's
                                 content.</p>
-                            <a href="{{ route('productDetail', $product->id) }}" class="btn btn-primary">Xem chi tiet</a>
+                            <a href="{{ route('productDetail', $product->id) }}" class="btn btn-primary">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>

@@ -14,7 +14,8 @@
 </head>
 
 <body>
-    @if ($errors->any())
+   <div class="container">
+   @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -33,6 +34,7 @@
             <span>{{ session('error') }}</span>
         </div>
     @endif
+    <h1>Đăng nhập</h1>
     <form action="{{ route('auth.handleLogin') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -50,6 +52,7 @@
         <a href="{{ route('clickToForgot') }}">Quên mật khẩu?</a><br>
         <button type="submit" class="btn btn-primary mt-3">Submit</button>
     </form>
+   </div>
 </body>
 
 </html>
