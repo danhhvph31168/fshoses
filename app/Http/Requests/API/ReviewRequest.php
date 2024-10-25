@@ -4,7 +4,7 @@ namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CommentRequest extends FormRequest
+class ReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class CommentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'comment.required' => 'Bình luận là bắt buộc.',
+            'comment.required' => 'Bình luận không được để trống. Vui lòng nhập nội dung bình luận.',
             'comment.string' => 'Bình luận phải là chuỗi ký tự.',
             'comment.max' => 'Bình luận không được vượt quá 1000 ký tự.',
         ];

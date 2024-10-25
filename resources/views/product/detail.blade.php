@@ -64,11 +64,9 @@
         </div>
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                @foreach ($errors->all() as $error)
+                    {{ $error }}
+                @endforeach
             </div>
         @endif
         @if (Auth::check())
@@ -88,19 +86,22 @@
         @endif
         <div class="comments-list mt-4">
             @foreach ($comments as $comment)
+
             <div class="card mb-3">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="card-subtitle mb-2 text-primary">{{Auth::user()->name}}</h6> <!-- Tên người dùng -->
-                        <small class="text-muted">{{$comment->created_at}}</small> <!-- Ngày bình luận -->
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-subtitle mb-2 text-primary">{{$comment->user->name}}</h6>
+                            <small class="text-muted">{{$comment->created_at->format('d/m/Y')}}</small>
+                        </div>
+                        <p class="card-text">{{$comment->comment}}</p>
+                        @can('my-comment', $comment)
+                            <a href="#" class="btn btn-info">Sửa</a>
+                            <a href="#" class="btn btn-danger">Xóa</a>
+                        @endcan
                     </div>
-                    <p class="card-text">{{$comment->comment}}</p> <!-- Nội dung bình luận -->
-                    <a href="#" class="btn btn-info">Sửa</a>
-                    <a href="#" class="btn btn-danger">Xóa</a>
                 </div>
-            </div>
             @endforeach
-            
+
         </div>
     </div>
 

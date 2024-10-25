@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Client\AccountController;
-use App\Http\Controllers\Client\CommentController;
+use App\Http\Controllers\Client\ReviewController;
 use App\Http\Controllers\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,8 +50,8 @@ Route::middleware(['profile', 'auth:sanctum'])->group(function () {
     Route::get('change-password', [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
     Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 
-    Route::post('add-comment/{product_id}', [CommentController::class, 'handleAddComment'])->name('handleAddComment');
-    // Route::put(uri: 'update-comment/{user_id}/{product_id}', [CommentController::class, 'handleUpdateComment'])->name('handleUpdateComment');
+    Route::post('add-comment/{product_id}', [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
+    // Route::get(uri: 'update-comment/{user_id}/{product_id}', [CommentController::class, 'handleUpdateComment'])->name('handleUpdateComment');
     // Route::post('add-comment/{user_id}/{product_id}', [CommentController::class, 'handleChangePassword'])->name('handleChangePassword');
 });
 

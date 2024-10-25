@@ -57,13 +57,20 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
-    public function isAdmin(){
+    public function isAdmin()
+    {
         return $this->role_id === self::TYPE_ADMIN;
     }
-    public function isEmployee(){
+    public function isEmployee()
+    {
         return $this->role_id === self::TYPE_EMPLOYEE;
     }
-    public function isUser(){
+    public function isUser()
+    {
         return $this->role_id === self::TYPE_USER;
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

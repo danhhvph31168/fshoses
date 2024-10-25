@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\CommentRequest;
+use App\Http\Requests\API\ReviewRequest;
 use App\Models\Review;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CommentController extends Controller
+class ReviewController extends Controller
 {
-    public function handleAddComment(CommentRequest $request, $product_id)
+    public function handleAddComment(ReviewRequest $request, $product_id)
     {
         $data = [
             'comment' => $request->comment,
