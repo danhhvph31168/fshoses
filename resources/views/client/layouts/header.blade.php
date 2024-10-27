@@ -15,7 +15,9 @@
                         <li><a href="#">Sản phẩm</a>
                             <ul class="dropdown">
                                 @foreach ($categories as $item)
-                                    <li><a href="#">{{ $item->name }}</a></li>
+                                    @if ($item->is_active === 1)
+                                        <li><a href="#">{{ $item->name }}</a></li>
+                                    @endif
                                 @endforeach
 
                                 {{-- <li><a href="./shop-details.html">Samsung</a></li>

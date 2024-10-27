@@ -1,18 +1,22 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Categories List
+    Orders List
 @endsection
+
+@section('content')
+    <h1>Đây là trang quản lý đơn hàng</h1>
+@endsection
+
 @section('content')
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box align-items-center">
-                {{-- <h4 class="mb-sm-0">Danh sách tài khoản</h4> --}}
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.create') }}">Categories</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.create') }}">Orders</a></li>
                         <li class="breadcrumb-item text-danger">List</li>
                     </ol>
                 </div>
@@ -27,22 +31,23 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="card-title mb-0">
-                        <h3>Categories List</h3>
+                        <h3>Orders List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.categories.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.orders.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
+
                     {{-- Hiển thị thông báo thành công --}}
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismis="alert" aria-label="Close">
-                            </button>
+                            <button type="button" class="btn-close" disabled aria-label="alert"></button>
                         </div>
                     @endif
-                    <table id="example"
+
+                    {{-- <table id="example"
                         class="table table-bordered dt-responsive nowrap table-striped align-middle text-center"
                         style="width:100%">
                         <thead>
@@ -84,11 +89,11 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $data->links() }}
+                    {{ $data->links() }} --}}
                 </div>
             </div>
         </div><!--end col-->
-    </div><!--end row-->
+    </div> <!--end row-->
 @endsection
 
 @section('css')

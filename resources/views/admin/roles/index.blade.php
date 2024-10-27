@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Categories List
+    Roles List
 @endsection
 @section('content')
     <!-- start page title -->
@@ -12,7 +12,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.create') }}">Categories</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.roles.create') }}">Roles</a></li>
                         <li class="breadcrumb-item text-danger">List</li>
                     </ol>
                 </div>
@@ -27,10 +27,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="card-title mb-0">
-                        <h3>Categories List</h3>
+                        <h3>Roles List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.categories.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.roles.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -60,18 +60,18 @@
                                 <tr class="align-middle">
                                     <th>{{ $key + 1 }}</th>
                                     <th>{{ $item->name }}</th>
-                                    <th class="{{ $item->is_active == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->is_active == 1 ? 'Active' : 'Inactive' }}</th>
+                                    <th class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
+                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</th>
                                     <th>{{ $item->created_at }}</th>
                                     <th>{{ $item->updated_at }}</th>
                                     <th>
-                                        <a href="{{ route('admin.categories.show', $item->id) }}" class="me-2">
+                                        <a href="{{ route('admin.roles.show', $item->id) }}" class="me-2">
                                             <i class="ri-search-line text-muted fs-18 rounded-2 border p-2"></i></a>
 
-                                        <a href="{{ route('admin.categories.edit', $item->id) }}"><i
+                                        <a href="{{ route('admin.roles.edit', $item->id) }}"><i
                                                 class="ri-pencil-fill text-muted fs-18 rounded-2 border p-2"></i></a>
 
-                                        <form action="{{ route('admin.categories.destroy', $item->id) }}" method="POST"
+                                        <form action="{{ route('admin.roles.destroy', $item->id) }}" method="POST"
                                             class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this category?')">
                                             @csrf
