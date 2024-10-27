@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Products List
+    Accounts List
 @endsection
 @section('content')
     <!-- start page title -->
@@ -10,7 +10,7 @@
             <div class="page-title-box  align-items-center">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Accounts</a></li>
                         <li class="breadcrumb-item text-danger">List</li>
                     </ol>
                 </div>
@@ -60,10 +60,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="card-title mb-0 align-content-center">
-                        <h3>Products List</h3>
+                        <h3>Accounts List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.products.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.users.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
                     </div>
                 </div>
 
@@ -73,12 +73,12 @@
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
-                                <th>Img_Thumbnail</th>
+                                <th>Avatar</th>
                                 <th>Name</th>
-                                <th>SKU</th>
-                                <th>Category</th>
-                                <th>Price Regular</th>
-                                <th>Price Sale</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Role</th>
+                                <th>Status</th>
                                 <th>Created at</th>
                                 <th>Updated at</th>
                                 <th>Action</th>
@@ -86,39 +86,100 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
+                                {{-- @if ($item->role_id === 1 || $item->role_id === 2) --}}
                                 <tr class="align-middle text-center">
                                     <th style="width: 10px">{{ $item->id }}</th>
-                                    <td style="width: 100px"> <img src="{{ Storage::url($item->img_thumbnail) }}"
-                                            alt="" width="50px">
+                                    <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}" alt=""
+                                            width="50px">
                                     </td>
                                     <td style="width: 400px">{{ $item->name }}</td>
-                                    <td>{{ $item->sku }}</td>
-                                    <td>{{ $item->category->name }}</td>
-                                    <td class="text-danger">{{ number_format($item->price_regular, 0, ',', '.') }} VNĐ</td>
-                                    <td class="text-success">{{ number_format($item->price_sale, 0, '.', '.') }} VNĐ</td>
+                                    <td>{{ $item->email }}</td>
+                                    <td>{{ $item->phone }}</td>
+                                    <td>{{ $item->role->name }}</td>
+                                    <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
+                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
-                                    <th>
-                                        <a href="{{ route('admin.products.show', $item->id) }}" class="me-2">
+                                    <td>
+                                        <a href="{{ route('admin.users.show', $item->id) }}" class="me-2">
                                             <i class="ri-search-line text-muted fs-18 rounded-2 border p-2"></i></a>
 
-                                        <a href="{{ route('admin.products.edit', $item->id) }}"><i
+                                        <a href="{{ route('admin.users.edit', $item->id) }}"><i
                                                 class="ri-pencil-fill text-muted fs-18 rounded-2 border p-2"></i></a>
 
-                                        <form action="{{ route('admin.products.destroy', $item->id) }}" method="POST"
-                                            class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                        <form action="{{ route('admin.users.destroy', $item->id) }}" method="POST"
+                                            class="d-inline" onsubmit="return confirm('Are you sure you want to delete this account?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="border-0 bg-white"><i
                                                     class="ri-delete-bin-5-fill text-muted fs-18 rounded-2 border p-2"></i></button>
                                         </form>
-                                    </th>
+                                    </td>
                                 </tr>
+                                {{-- @endif --}}
                             @endforeach
                         </tbody>
                     </table>
                     {{ $data->links() }}
                 </div>
+
+                {{-- <div class="card-body">
+                    <table id="example" class="table table-bordered nowrap dt-responsive table-striped align-middle"
+                        style="width:100%">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Avatar</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Role</th>
+                                <th>Balance</th>
+                                <th>Status</th>
+                                <th>Created at</th>
+                                <th>Updated at</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data as $item)
+                                @if ($item->role_id !== 1 && $item->role_id !== 2)
+                                    <tr class="align-middle text-center">
+                                        <th style="width: 10px">{{ $item->id }}</th>
+                                        <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}"
+                                                alt="" width="50px">
+                                        </td>
+                                        <td style="width: 400px">{{ $item->name }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td>{{ $item->phone }}</td>
+                                        <td>{{ $item->role->name }}</td>
+                                        <td>{{ $item->balance }}</td>
+                                        <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
+                                            {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                        <td>{{ $item->created_at }}</td>
+                                        <td>{{ $item->updated_at }}</td>
+                                        <td>
+                                            <div class="d-flex mt-2 align-item-center">
+                                                <a href="{{ route('admin.users.edit', $item->id) }}" type="submit"
+                                                    class="btn btn-warning me-2">EDIT</a>
+
+                                                <form action="{{ route('admin.users.destroy', $item->id) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">DELETE</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $data->links() }}
+                </div> --}}
             </div>
         </div><!--end col-->
     </div><!--end row-->
