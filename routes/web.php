@@ -62,12 +62,5 @@ Route::get('admin', [AdminController::class, 'dashboard'])
 // routes/web.php
 // Route::get('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
 // Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
-Route::get('/', [ProductController::class, 'index']);
-
-Route::get('cart', [ProductController::class, 'cart'])->name('cart');
-
-Route::get('/cart/add/{product_id}', [ProductController::class, 'addToCart'])->name('addToCart');
-
-Route::patch('update-cart', [ProductController::class, 'updateCart'])->name('updateCart');
-
-Route::delete('remove-from-cart', [ProductController::class, 'removeCart'])->name('removeCart');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/add-cart', [CartController::class, 'add'])->name('cart.add');

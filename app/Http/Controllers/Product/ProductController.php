@@ -67,11 +67,11 @@ class ProductController extends Controller
     }
 
 
-    public function detail($slug)
+    public function productDetail($id)
     {
-        $product = Product::query()->with(['variants', 'galleries'])->where('slug', $slug)->first();
+        $product = Product::query()->with(['variants', 'galleries'])->where('id', $id)->first();
         $colors = ProductColor::query()->pluck('name', 'id')->all();
         $sizes = ProductSize::query()->pluck('name', 'id')->all();
-        return view('client.product-detail', compact('product', 'colors', 'sizes'));
+        return view('product.detail', compact('product', 'colors', 'sizes'));
     }
 }

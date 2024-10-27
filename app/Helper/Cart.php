@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Helper;
+
+class Cart
+{
+    private $items = [];
+    private $total_quantity = 0;
+    private $total_price = 0;
+
+    public function __construct()
+    {
+        $this->items = session('cart') ? session('cart') : [];
+    }
+    public function list()
+    {
+        return $this->items;
+    }
+    public function add($product, $quantity = 1)
+    {
+        $item = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'price_regular' => $product->price_sale > 0 ? $product->price_sale : $product->price_regular,
+            'quantity' => $quantity
+        ];
+        $this->items[$product->id] = $item;
+        session(['cart' => $this->items]);
+    }
+
+    //Tổng tiền thanh toán
+    public function getTotalPrice()
+    {
+        $totalPrice = 0;
+        foreach ($this->items as $item) {
+            $totalPrice += $item['price_regular'] * $item['quantity'];
+        }
+        return $totalPrice;
+    }
+}
