@@ -3,7 +3,7 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Dark Logo-->
-        <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
+        <a href="{{ route('admin.') }}" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
                     </span>
@@ -12,7 +12,7 @@
                     </span>
         </a>
         <!-- Light Logo-->
-        <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
+        <a href="{{ route('admin.') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
                     </span>
@@ -35,7 +35,7 @@
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
+                    <a class="nav-link menu-link" href="{{ route('admin.') }}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                     </a>
                 </li>

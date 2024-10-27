@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @yield('meta')
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">

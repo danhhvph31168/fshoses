@@ -29,7 +29,7 @@ class OrderController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
         try {
             DB::transaction(function () {
