@@ -22,10 +22,10 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('phone');
             $table->string('address');
-            $table->decimal('balance', 15, 2)->comment('Số dư tài khoản');
+            $table->decimal('balance', 15, 2)->comment('Số dư tài khoản')->default(0);
             $table->string('district')->comment('Quận / Huyện');
             $table->string('province')->comment('Tỉnh / TP');
-            $table->string('zip_code');
+            $table->string('zip_code')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
