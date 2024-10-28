@@ -66,6 +66,11 @@
                     id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">balance</label>
+                <input type="text" name="balance" value="{{ $user->balance }}" class="form-control"
+                    id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">province</label>
                 <input type="text" name="province" class="form-control" id="exampleInputEmail1"
                     aria-describedby="emailHelp" value="{{ $user->province }}">
