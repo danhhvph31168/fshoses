@@ -7,21 +7,56 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    use HasFactory;
+    private $items = [];
+    private $total_quantity = 0;
+    private $total_price = 0;
 
-    protected $fillable = [
-        'user_id', // Khóa ngoại đến bảng users
-    ];
-
-    // Mối quan hệ một-nhiều với CartItem
-    public function items()
+    public function __construct()
     {
-        return $this->hasMany(CartItem::class);
+        $this->items = session('cart') ? session('cart') : [];
+    }
+    public function list()
+    {
+        return $this->items;
     }
 
-    // Mối quan hệ với User (nếu có)
-    public function user()
+    public function add($product, $quantity = 1)
     {
-        return $this->belongsTo(User::class);
+        $item = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'img_thumbnail,' => $product->img_thumbnail,
+            'price' => $product->price_sale > 0 ? $product->price_sale : $product->price_regular,
+            'quantity' => $quantity
+        ];
+        $this->items[$product->id] = $item;
+        session(['cart' => $this->items]);
+    }
+
+    //Tổng tiền thanh toán
+    public function getTotalPrice()
+    {
+        $totalPrice = 0;
+        foreach ($this->items as $item) {
+            $totalPrice += $item['price'] * $item['quantity'];
+        }
+        return $totalPrice;
+    }
+
+    public function getTotalQuantity()
+    {
+        $total = 0;
+        foreach ($this->items as $item) {
+            $total += $item['quantity'];
+        }
+        return $total;
+    }
+
+    public function deleteItems($id)
+    {
+        if (isset($this->items[$id])) {
+            unset($this->items[$id]);
+            session(['cart' => $this->items]);
+        }
     }
 }

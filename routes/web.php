@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Client\AccountController;
 use App\Http\Controllers\Product\ProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\Client\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,8 +59,9 @@ Route::get('admin', [AdminController::class, 'dashboard'])
     ->name('admin.dashboard')
     ->middleware(['auth']);
 
-// routes/web.php
-// Route::get('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
-// Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/add-cart', [CartController::class, 'add'])->name('cart.add');
+Route::get('/delete-cart/{id}', [CartController::class, 'delete'])->name('cart.delete');
+// Route::post('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
+
+Route::get('/checkout', [CartController::class, 'checkoutForm'])->name('checkout.form');

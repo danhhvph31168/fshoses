@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Helper\Cart;
+use App\Models\Cart;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +19,8 @@ class CartController extends Controller
     {
         $product = Product::find($request->id);
         $quantity = $request->quantity;
-        $cart->add($product, $quantity);
+        $img_thumbnail = $request->img_thumbnail;
+        $cart->add($product, $quantity, $img_thumbnail);
 
         return redirect()->route('cart.index');
     }
@@ -55,7 +56,7 @@ class CartController extends Controller
 
     //     return redirect()->route('cart.list');
     // }
-    public function deleteItem($id)
+    public function delete($id)
     {
         $cart = session('cart');
 
@@ -64,8 +65,8 @@ class CartController extends Controller
                 unset($cart[$key]);
             }
         }
-
         session()->put('cart', $cart);
+        return redirect()->route('cart.index');
     }
     public function updateCart(Request $request, $id)
     {
@@ -77,5 +78,11 @@ class CartController extends Controller
         Log::info($cart);
 
         session()->put('cart', $cart);
+    }
+
+    public function checkoutForm()
+    {
+        $cart = session('cart', []); // Lấy giỏ hàng từ session
+        return view('home/checkout', compact('cart'));
     }
 }
