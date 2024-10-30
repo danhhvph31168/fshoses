@@ -24,7 +24,7 @@ class HandleSendMailForgotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email'
+            'email' => 'required|email|exists:users,email'
         ];
     }
     public function messages()
@@ -32,6 +32,7 @@ class HandleSendMailForgotRequest extends FormRequest
         return [
             'email.required' => 'Email là bắt buộc.',
             'email.email' => 'Email không hợp lệ.',
+            'email.exists' => 'Email không tồn tại trong hệ thống..',
         ];
     }
     // protected function failedValidation(Validator $validator)

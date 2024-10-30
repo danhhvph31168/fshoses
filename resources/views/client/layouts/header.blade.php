@@ -27,36 +27,51 @@
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
                         <li><a href="./contact.html">Contacts</a></li>
+
                     </ul>
                 </nav>
             </div>
 
             <div class="col-md-3">
 
-                <div class="dropdown ms-sm-3 header__menu topbar-user">
-                    <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="d-flex align-items-center">
-                            <i class="bi bi-person-circle"></i>
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Tài khoản</span>
+                @if (Auth::check())
+                    <div class="dropdown ms-sm-3 header__menu topbar-user">
+                        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="d-flex align-items-center">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Xin chào
+                                        {{ Auth::user()->name }}</span>
+                                </span>
                             </span>
-                        </span>
-                    </button>
+                        </button>
 
-                    <div class="dropdown-menu dropdown-menu-end">
-                        {{-- <a class="dropdown-item" href="{{ route('login') }}"><i
-                                class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Login</span></a>
-                        <a class="dropdown-item" href="{{ route('register') }}"><i
-                                class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Register</span></a>
-                        <a class="dropdown-item" href="pages-faqs.html"><i
-                                class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Help</span></a> --}}
-                    </div>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
+                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i
+                                        class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                                    <span class="align-middle">Trang Admin</span></a>
+                            @endif
+                            <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
+                                    class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Cập nhật thông tin tài khoản</span></a>
 
-                    {{-- <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
+                            <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
+                                    class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Thay đổi mật khẩu</span></a>
+
+                            <form action="{{ route('auth.logout') }}" method="POST" style="margin: 0;">
+                                @csrf
+                                <button type="submit" class="dropdown-item w-100 text-start"
+                                    style="background: none; border: none; padding: .25rem 1.5rem;">
+                                    <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>
+                                    <span class="align-middle">Logout</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        {{-- <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
                         aria-haspopup="true" aria-expanded="false">
                         <a href="{{ route('cart.list') }}" class="d-flex align-items-center  text-black">
                             <i class="bi bi-cart"></i>
@@ -65,7 +80,22 @@
                             </span>
                         </a>
                     </button> --}}
-                </div>
+                    </div>
+                @else
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li> <a href="{{ route('auth.showFormLogin') }}">Login</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('auth.showFormRegister') }}">Register</a>
+                            </li>
+
+                        </ul>
+
+
+
+                    </nav>
+                @endif
             </div>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>

@@ -1,89 +1,226 @@
-<!DOCTYPE html>
-<html lang="en">
+{{-- @section('content') --}}
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable">
 
 <head>
-    <meta charset="UTF-8">
+
+    <meta charset="utf-8" />
+    <title>Profile | Velzon - Admin & Dashboard Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
-    <title>Form Register</title>
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
+
+    <!-- Layout config Js -->
+    <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
+    <!-- Bootstrap Css -->
+    <link href="{{ asset('theme/admin/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{ asset('theme/admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{{ asset('theme/admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+
 </head>
 
-<body>
 
-    <div class="container">
-        <h1>Cập nhật người dùng</h1>
-        @if (session('message'))
-            <div class="alert alert-success mt-5 w-50" role="alert">
-                {{ session('message') }}
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('Cập nhật') }}</div>
+
+                    <div class="card-body">
+
+                        <form method="POST" action="{{ route('handleUpdateProfile') }}" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="row mb-3">
+                                <label for="name"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="text"
+                                        class="form-control @error('email') is-invalid @enderror" name="name"
+                                        value="{{ $user->name }}" autocomplete="name" autofocus>
+
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="email"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="text"
+                                        class="form-control @error('email') is-invalid @enderror" name="email"
+                                        value="{{ $user->email }}" autocomplete="email" autofocus>
+
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="avatar"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Avatar') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="file"
+                                        class="form-control mb-4 @error('email') is-invalid @enderror" name="avatar"
+                                        autocomplete="email" autofocus>
+                                    <img src="{{ $user->avatar }}" alt="" width="100px" height="100px">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="phone"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="phone" type="text"
+                                        class="form-control @error('phone') is-invalid @enderror" name="phone"
+                                        value="{{ $user->phone }}" autocomplete="phone" autofocus>
+
+                                    @error('phone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="address"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="address" type="text"
+                                        class="form-control @error('address') is-invalid @enderror" name="address"
+                                        value="{{ $user->address }}" autocomplete="address" autofocus>
+
+                                    @error('address')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="address"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('District') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="district" type="text"
+                                        class="form-control @error('district') is-invalid @enderror" name="district"
+                                        value="{{ $user->district }}" autocomplete="district" autofocus>
+
+                                    @error('district')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="address"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Balance') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="balance" type="text"
+                                        class="form-control @error('balance') is-invalid @enderror" name="balance"
+                                        value="{{ $user->balance }}" autocomplete="balance" autofocus>
+
+                                    @error('balance')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="province"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Province') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="province" type="text"
+                                        class="form-control @error('province') is-invalid @enderror" name="province"
+                                        value="{{ $user->province }}" autocomplete="province" autofocus>
+
+                                    @error('province')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="zip_code"
+                                    class="col-md-4 col-form-label text-md-end">{{ __('Zip_code') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="zip_code" type="text"
+                                        class="form-control @error('zip_code') is-invalid @enderror" name="zip_code"
+                                        value="{{ $user->zip_code }}" autocomplete="zip_code" autofocus>
+
+                                    @error('zip_code')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+
+
+                            <div class="row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Update
+                                    </button>
+                                    <a href="{{ route('home') }}" class="btn btn-primary">
+                                        {{ __('Back') }}
+                                    </a>
+                                </div>
+
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
             </div>
-        @endif
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
         </div>
-    @endif
-        <form method="POST" action="{{ route('handleUpdateProfile', $user->id) }}"  enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Name</label>
-                <input type="text" name="name" value="{{ $user->name }}" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" name="email" value="{{ $user->email }}" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Avatar</label>
-                <input type="file" name="avatar" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp">
-                <img src="{{ $user->avatar }}" alt="" width="100px" height="100px">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Phone</label>
-                <input type="text" name="phone" value="{{ $user->phone }}" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">address</label>
-                <input type="text" name="address" value="{{ $user->address }}" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">district</label>
-                <input type="text" name="district" value="{{ $user->district }}" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">balance</label>
-                <input type="text" name="balance" value="{{ $user->balance }}" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">province</label>
-                <input type="text" name="province" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" value="{{ $user->province }}">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">zip_code</label>
-                <input type="text" name="zip_code" value="{{ $user->zip_code }}" class="form-control"
-                    id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <button type="submit" class="btn btn-primary">Cập nhật</button>
-        </form>
     </div>
+    <!-- end auth-page-wrapper -->
+
+    <!-- JAVASCRIPT -->
+    <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
+
+    <!-- password-addon init -->
+    <script src="{{ asset('theme/admin/assets/js/pages/password-addon.init.js') }}"></script>
 
 </body>
 
 </html>
+{{-- @endsection --}}
