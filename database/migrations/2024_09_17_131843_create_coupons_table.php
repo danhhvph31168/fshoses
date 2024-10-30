@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->enum('type',['fixed','percent'])->default('fixed');
             $table->decimal('value',20,2);
+            $table->integer('quantity')->default(0);
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

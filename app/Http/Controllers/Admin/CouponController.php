@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -11,12 +10,12 @@ class CouponController extends Controller
     public function index()
     {
         $coupons = Coupon::latest()->paginate(10);
-        return view('admin.coupons.index', compact('coupons'));
+        return response()->json($coupons);
     }
 
     public function create()
     {
-        return view('admin.coupons.create');
+        return response()->json();
     }
 
     public function store(Request $request)
@@ -25,23 +24,23 @@ class CouponController extends Controller
             'code' => 'required|string|unique:coupons',
             'type' => 'required|in:fixed,percent',
             'value' => 'required|numeric',
+            'quantity' => 'required|integer|min:1',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date'
         ]);
 
         $coupon = Coupon::create($validatedData);
 
-        if ($coupon) {
-            return redirect()->route('admin.coupons.index')->with('success', 'Coupon added');
-        } else {
-            return redirect()->route('admin.coupons.index')->with('error', 'Failed to add coupon');
-        }
+        return response()->json([
+            'message' => 'Coupon added successfully',
+            'coupon' => $coupon
+        ], 201);
     }
 
     public function edit($id)
     {
         $coupon = Coupon::findOrFail($id);
-        return view('admin.coupons.edit', compact('coupon'));
+        return response()->json($coupon);
     }
 
     public function update(Request $request, $id)
@@ -58,13 +57,16 @@ class CouponController extends Controller
 
         $coupon->update($validatedData);
 
-        return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated');
+        return response()->json([
+            'message' => 'Coupon updated successfully',
+            'coupon' => $coupon
+        ]);
     }
 
     public function destroy($id)
     {
         $coupon = Coupon::findOrFail($id);
         $coupon->delete();
-        return redirect()->route('admin.coupons.index')->with('success', 'Coupon deleted');
+        return response()->json(['message' => 'Coupon deleted successfully']);
     }
 }
