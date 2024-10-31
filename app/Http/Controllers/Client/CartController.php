@@ -21,7 +21,7 @@ class CartController extends Controller
         $quantity = $request->quantity;
         $img_thumbnail = $request->img_thumbnail;
         $cart->add($product, $quantity, $img_thumbnail);
-
+       
         return redirect()->route('cart.index');
     }
 
@@ -68,17 +68,41 @@ class CartController extends Controller
         session()->put('cart', $cart);
         return redirect()->route('cart.index');
     }
-    public function updateCart(Request $request, $id)
-    {
-        $cart = session('cart');
+    public function updateCart(Request $request)
+{
+    $quantity = $request->query('quantity');
+    $id = $request->query('id');
 
-        foreach ($cart as $item) {
-            $item['quantity'] = $request->query('quantity');
-        }
-        Log::info($cart);
+    $totalPrice = 0;
+    $cart = session('cart', []); 
 
-        session()->put('cart', $cart);
+    if (isset($cart[$id])) {
+        $cart[$id]['quantity'] = $quantity;
+
+        $totalPrice = $cart[$id]['price'] * $quantity;
     }
+
+    session()->put('cart', $cart);
+    $totalCart = 0;
+    foreach ($cart as $item) {
+        $totalCart += $item['price'] * $item['quantity'];
+    }
+
+    Log::info($cart);
+
+    return response()->json([
+        'success' => true,
+        'cart' => $cart,
+        'message' => 'Cart updated successfully.',
+        "data" => [
+            "quantity" => (int)$quantity,
+            "price" => $totalPrice * (int)($quantity), // price for the updated item
+            "totalCart" => $totalCart 
+        ]
+    ]);
+}
+
+    
 
     public function checkoutForm()
     {

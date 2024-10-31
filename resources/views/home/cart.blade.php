@@ -7,11 +7,14 @@
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Male-Fashion | Template</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
+
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('css/boostrap.min.css') }}" type="text/css">
@@ -165,6 +168,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($cart->list() as $key => $value)
+                                
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
@@ -176,14 +180,18 @@
                                         </div>
                                     </td>
                                     <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
+                                        <form action="">
+                                            @csrf
+                                            <div class="quantity">
+                                                <div class="pro-qty-2">
 
-                                                <input class="quantity-input" type="text"
-                                                    value="{{ $value['quantity'] ?? 1 }}">
+                                                    <input class="quantity-input" type="text"
+                                                        value="{{ $value['quantity'] ?? 1 }}"  data-id="{{ $value['id'] }}">
 
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
+
                                     </td>
                                     {{-- <form action="{{ route('cart.add') }}" method="post">
                                         @csrf
@@ -204,7 +212,7 @@
                                                 @foreach ($colors as $id => $name)
                                                 <input type="radio" id="radio_color_{{ $id }}" name="product_color_id"
                                                     value="{{ $id }}">
-                                                <label style="background: {{ $name }};"></label>
+                                                <!-- <label style="background: {{ $name }};"></label> -->
                                                 @endforeach
                                             </div>
                                         </div>
@@ -360,8 +368,35 @@
     <script src="{{ asset('js/mixitup.min.js') }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    <script src="{{ asset('js/cartAjax.js') }}"></script>
+    <script>
+        $(document).on("click", ".qtybtn", function() {
+        var input = $(this).siblings(".quantity-input");
+        var quantity = parseInt(input.val()); // Chuyển đổi giá trị input thành số nguyên
+        var id = parseInt(input.data("id")); 
+        console.log(id,quantity);
+        $.ajax({
+                url: "http://127.0.0.1:8000/cart-update", // Địa chỉ URL đến server
+                method: "POST",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    id: id,
+                    quantity: quantity,
+                    
+                },
+                success: function(result) {
+                    data = result.data
+                    console.log(data)
+                    $(".cart__price").html(data.price) // Cập nhật nội dung của div1
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error); // Xử lý lỗi
+                }
+            });
+        });
 
+
+    </script>
+    
 </body>
 
 </html>

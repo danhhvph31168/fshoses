@@ -62,6 +62,6 @@ Route::get('admin', [AdminController::class, 'dashboard'])
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/add-cart', [CartController::class, 'add'])->name('cart.add');
 Route::get('/delete-cart/{id}', [CartController::class, 'delete'])->name('cart.delete');
-// Route::post('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
+Route::post('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
 
 Route::get('/checkout', [CartController::class, 'checkoutForm'])->name('checkout.form');
