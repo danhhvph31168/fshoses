@@ -35,7 +35,11 @@
                     <div class="card-header">{{ __('Cập nhật') }}</div>
 
                     <div class="card-body">
-
+                        @if (session('message'))
+                            <div class="alert alert-success">
+                                {{ session('message') }}
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('handleUpdateProfile') }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -80,7 +84,8 @@
                                     <input id="email" type="file"
                                         class="form-control mb-4 @error('email') is-invalid @enderror" name="avatar"
                                         autocomplete="email" autofocus>
-                                    <img src="{{ $user->avatar }}" alt="" width="100px" height="100px">
+                                    <img src="{{ $user->avatar_url }}" alt="" width="100px" height="100px">
+                                    {{-- {{dd($user->avatar)}} --}}
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
