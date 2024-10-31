@@ -43,9 +43,7 @@
 
                 <del class="card-title">{{$product->price_regular}}</del>
                 <h6 class="card-title">{{$product->price_sale}}</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
+                <p class="card-text">{{$product->description}}</p>
                 <h6 class="card-title">Chọn màu sắc</h6>
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                     @foreach ($colors as $color_id => $color_name)

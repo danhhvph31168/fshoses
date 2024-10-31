@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\HandleForgotPassRequest;
-use App\Http\Requests\API\HandleLoginRequest;
-use App\Http\Requests\API\HandleRegisterRequest;
-use App\Http\Requests\API\HandleSendMailForgotRequest;
+use App\Http\Requests\Auth\HandleForgotPassRequest;
+use App\Http\Requests\Auth\HandleLoginRequest;
+use App\Http\Requests\Auth\HandleRegisterRequest;
+use App\Http\Requests\Auth\HandleSendMailForgotRequest;
 use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;

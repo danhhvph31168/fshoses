@@ -13,12 +13,13 @@ class ProductController extends Controller
 
     public function productDetail($id)
     {
-        $product = Product::query()->with(['variants', 'galleries', 'category'])->where('id', $id)->first();
+        $product = Product::query()->with(['variants', 'category'])->find($id);
+        $product->galleries =  $product->galleries()->limit(4)->get();
         $colors = ProductColor::query()->pluck('name', 'id')->all();
         $sizes = ProductSize::query()->pluck('name', 'id')->all();
         $comments = Review::where('product_id', $id)->orderBy('id', 'DESC')->get();
-
-        return view('product.detail', compact('product', 'colors', 'sizes', 'comments'));
+        // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
+        $relatedProducts = Product::with(['galleries', 'variants'])->where('category_id', $product->category_id)->where('id', '<>', $id)->limit(4)->get();
+        return view('product.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts'));
     }
-
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\ReviewRequest;
+use App\Http\Requests\Auth\ReviewRequest;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 

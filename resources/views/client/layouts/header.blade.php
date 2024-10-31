@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="header__logo">
-                    <a href="\"><img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt=""></a>
+                    <a href="\"><img src="{{ asset('theme/client/img/logo.png') }}" alt=""></a>
                 </div>
             </div>
             <div class="col-md-6">
@@ -14,11 +14,11 @@
                         <li><a href="./shop.html">Shop</a></li>
                         <li><a href="#">Sản phẩm</a>
                             <ul class="dropdown">
-                                @foreach ($categories as $item)
+                                {{-- @foreach ($categories as $item)
                                     @if ($item->is_active === 1)
                                         <li><a href="#">{{ $item->name }}</a></li>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
 
                                 {{-- <li><a href="./shop-details.html">Samsung</a></li>
                                 <li><a href="./shopping-cart.html">Oppo</a></li>
@@ -39,7 +39,7 @@
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
-                                <img src="{{Auth::user()->avatar}}" alt="" width="100px" height="100px">
+                                {{-- <img src="{{Auth::user()->avatar}}" alt="" width="100px" height="100px"> --}}
                                 <i class="bi bi-person-circle"></i>
                                 <span class="text-start ms-xl-2">
                                     <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Xin chào

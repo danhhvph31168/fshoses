@@ -64,14 +64,6 @@ Route::middleware(['profile', 'auth:sanctum'])->group(function () {
     // Route::post('add-comment/{user_id}/{product_id}', [CommentController::class, 'handleChangePassword'])->name('handleChangePassword');
 });
 
-// Route::get('admin', [UserController::class, 'dashboard'])
-//     ->name('admin.dashboard')
-//     ->middleware(['auth']);
-
-Route::get('admin', [AdminController::class, 'dashboard'])
-    ->name('admin.dashboard')
-    ->middleware(['auth']);
-
 Route::get('/', function () {
 
     $products = Product::query()->latest('id')->limit(4)->get();
@@ -81,11 +73,4 @@ Route::get('/', function () {
     return view('home', compact('products', 'categories'));
 })->name('home');
 
-
-// Route::get('auth/login', [LoginController::class, 'showFormLogin'])->name('login');
-// Route::post('auth/login', [LoginController::class, 'login']);
-
-// Route::post('auth/logout', [LoginController::class, 'logout'])->name('logout');
-
-// Route::post('auth/logout', [LoginController::class, 'logout'])->name('logout');
 

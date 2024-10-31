@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API;
-
+namespace App\Http\Requests\Auth;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class HandleForgotPassRequest extends FormRequest
+class HandleSendMailForgotRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +23,15 @@ class HandleForgotPassRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'required|confirmed|min:8',
+            'email' => 'required|email|exists:users,email'
         ];
     }
-    public function messages(): array
+    public function messages()
     {
         return [
-
-            'password.required' => 'Mật khẩu là bắt buộc.',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+            'email.required' => 'Email là bắt buộc.',
+            'email.email' => 'Email không hợp lệ.',
+            'email.exists' => 'Email không tồn tại trong hệ thống..',
         ];
     }
     // protected function failedValidation(Validator $validator)
