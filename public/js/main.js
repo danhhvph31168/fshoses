@@ -8,6 +8,13 @@
 ---------------------------------------------------------  */
 
 'use strict';
+function formatCurrencyVN(amount) {
+    return new Intl.NumberFormat('vi-VN', { 
+        style: 'currency', 
+        currency: 'VND',
+        minimumFractionDigits: 0 // Đảm bảo không có phần thập phân
+    }).format(amount);
+}
 
 (function ($) {
 
@@ -197,6 +204,7 @@
         }
         $button.parent().find('input').val(newVal);
     });
+
 
     /*------------------
         Achieve Counter

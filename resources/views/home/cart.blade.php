@@ -168,7 +168,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($cart->list() as $key => $value)
-                                
+
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
@@ -186,7 +186,7 @@
                                                 <div class="pro-qty-2">
 
                                                     <input class="quantity-input" type="text"
-                                                        value="{{ $value['quantity'] ?? 1 }}"  data-id="{{ $value['id'] }}">
+                                                        value="{{ $value['quantity'] ?? 1 }}" data-id="{{ $value['id'] }}">
 
                                                 </div>
                                             </div>
@@ -194,38 +194,38 @@
 
                                     </td>
                                     {{-- <form action="{{ route('cart.add') }}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                                        <div class="product__details__option">
-                                            <div class="product__details__option__size">
-                                                <span>Size:</span>
-                                                @foreach ($sizes as $id => $name)
-                                                <label for="radio_size_{{ $id }}">{{ $name }}
-                                                    <input type="radio" id="radio_size_{{ $id }}" name="product_size_id"
-                                                        value="{{ $id }}">
-                                                </label>
-                                                @endforeach
-                                            </div>
-                                            <div class="product__details__option__color">
-                                                <span>Color:</span>
-                                                @foreach ($colors as $id => $name)
-                                                <input type="radio" id="radio_color_{{ $id }}" name="product_color_id"
+                                    <div class="product__details__option">
+                                        <div class="product__details__option__size">
+                                            <span>Size:</span>
+                                            @foreach ($sizes as $id => $name)
+                                            <label for="radio_size_{{ $id }}">{{ $name }}
+                                                <input type="radio" id="radio_size_{{ $id }}" name="product_size_id"
                                                     value="{{ $id }}">
-                                                <!-- <label style="background: {{ $name }};"></label> -->
-                                                @endforeach
+                                            </label>
+                                            @endforeach
+                                        </div>
+                                        <div class="product__details__option__color">
+                                            <span>Color:</span>
+                                            @foreach ($colors as $id => $name)
+                                            <input type="radio" id="radio_color_{{ $id }}" name="product_color_id"
+                                                value="{{ $id }}">
+                                            <!-- <label style="background: {{ $name }};"></label> -->
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="product__details__cart__option">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" value="1" name="quatity">
                                             </div>
                                         </div>
-                                        <div class="product__details__cart__option">
-                                            <div class="quantity">
-                                                <div class="pro-qty">
-                                                    <input type="text" value="1" name="quatity">
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="primary-btn border-0">Thêm giỏ hàng</button>
-                                        </div>
+                                        <button type="submit" class="primary-btn border-0">Thêm giỏ hàng</button>
+                                    </div>
                                     </form> --}}
-                                    <td class="cart__price">
+                                    <td class="cart__price cart-price-{{ $value['id']}}">
                                         {{ number_format(($value['price'] ?? 0) * ($value['quantity'] ?? 1)) }}
                                     </td>
                                     <td class="cart__close">
@@ -243,7 +243,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
+                                <a href="{{ route('home.dashboard') }}">Continue Shopping</a>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -263,13 +263,9 @@
                     </div>
                     <div class="cart__total">
                         <h6>Cart total</h6>
-                        <h6>{{number_format(($cart->getTotalPrice()))}}</h6>
-                        <ul>
-                            {{-- <li>Subtotal <span>{{number_format($value['price_regular']*$value['quantity'])}}</span>
-                            </li>
-                            <li>Total <span>{{number_format($value['price_regular']*$value['quantity'])}}</span></li>
-                            --}}
-                        </ul>
+                        <h6 class="cart__total-price cart-price-{{ $value['id']}}">
+                            {{number_format(($cart->getTotalPrice()))}}
+                        </h6>
                         <a href="{{ route('checkout.form')}}" class="primary-btn">Proceed to checkout</a>
                     </div>
                 </div>
@@ -370,33 +366,32 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
         $(document).on("click", ".qtybtn", function() {
-        var input = $(this).siblings(".quantity-input");
-        var quantity = parseInt(input.val()); // Chuyển đổi giá trị input thành số nguyên
-        var id = parseInt(input.data("id")); 
-        console.log(id,quantity);
-        $.ajax({
+            var input = $(this).siblings(".quantity-input");
+            var quantity = parseInt(input.val()); // Chuyển đổi giá trị input thành số nguyên
+            var id = parseInt(input.data("id"));
+            console.log(id, quantity);
+
+            $.ajax({
                 url: "http://127.0.0.1:8000/cart-update", // Địa chỉ URL đến server
                 method: "POST",
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
                     id: id,
                     quantity: quantity,
-                    
                 },
                 success: function(result) {
-                    data = result.data
-                    console.log(data)
-                    $(".cart__price").html(data.price) // Cập nhật nội dung của div1
+                    data = result.data;
+                    console.log(data);
+                    $(`.cart-price-${id}`).html(formatCurrencyVN(data.price)); // Cập nhật 
+                    $(".cart__total-price").html(formatCurrencyVN(data.total_cart));
                 },
                 error: function(xhr, status, error) {
                     console.error("AJAX Error: ", status, error); // Xử lý lỗi
+                    console.log("Response Text: ", xhr.responseText); // Xem chi tiết lỗi từ server
                 }
             });
         });
-
-
     </script>
-    
 </body>
 
 </html>

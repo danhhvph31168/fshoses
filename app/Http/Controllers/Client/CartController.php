@@ -21,41 +21,9 @@ class CartController extends Controller
         $quantity = $request->quantity;
         $img_thumbnail = $request->img_thumbnail;
         $cart->add($product, $quantity, $img_thumbnail);
-       
+
         return redirect()->route('cart.index');
     }
-
-    // public function add(Request $request)
-    // {
-    //     $product = Product::query()->findOrFail(\request('product_id'));
-
-    //     $productVariant = ProductVariant::query()
-    //         ->with(['color', 'size'])
-    //         ->where([
-    //             'product_id' => \request('product_id'),
-    //             'product_size_id' => \request('product_size_id'),
-    //             'product_color_id' => \request('product_color_id'),
-    //         ])
-    //         ->firstOrFail();
-
-    //     if (!isset(session('cart')[$productVariant->id])) {
-
-    //         $data = $product->toArray() + $productVariant->toArray();
-
-    //         $data['quantity'] = \request('quantity');
-
-    //         session()->put('cart.' . $productVariant->id, $data);
-    //     } else {
-
-    //         $data = session('cart')[$productVariant->id];
-
-    //         $data['quantity'] += \request('quantity');
-
-    //         session()->put('cart.' . $productVariant->id, $data);
-    //     }
-
-    //     return redirect()->route('cart.list');
-    // }
     public function delete($id)
     {
         $cart = session('cart');
@@ -69,40 +37,47 @@ class CartController extends Controller
         return redirect()->route('cart.index');
     }
     public function updateCart(Request $request)
-{
-    $quantity = $request->query('quantity');
-    $id = $request->query('id');
+    {
+        // Kiểm tra id và quantity để đảm bảo chúng hợp lệ
+        $request->validate([
+            'id' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
+        ]);
 
-    $totalPrice = 0;
-    $cart = session('cart', []); 
+        // Lấy id và quantity từ request
+        $id = $request->input('id');
+        $quantity = $request->input('quantity');
 
-    if (isset($cart[$id])) {
+        // Lấy giỏ hàng từ session và kiểm tra xem sản phẩm có tồn tại không
+        $cart = session('cart', []);
+        if (!isset($cart[$id])) {
+            return response()->json(['error' => 'Item not found in cart'], 400);
+        }
+
+        // Cập nhật số lượng và tính lại tổng giá cho sản phẩm đó
         $cart[$id]['quantity'] = $quantity;
+        $cart[$id]['total_price'] = $cart[$id]['price'] * $quantity;
 
-        $totalPrice = $cart[$id]['price'] * $quantity;
+        // Lưu giỏ hàng đã cập nhật vào session
+        session()->put('cart', $cart);
+        
+        //Tính tổng giá giỏ hàng 
+        $totalCart = 0;
+        foreach ($cart as $item) {
+            $totalCart += $item['price'] * $item['quantity'];
+        }
+
+        // Trả về kết quả cho AJAX
+        return response()->json([
+            'data' => [
+                'price' => $cart[$id]['total_price'],
+                "total_cart" => $totalCart
+            ]
+        ], 200);
     }
 
-    session()->put('cart', $cart);
-    $totalCart = 0;
-    foreach ($cart as $item) {
-        $totalCart += $item['price'] * $item['quantity'];
-    }
 
-    Log::info($cart);
 
-    return response()->json([
-        'success' => true,
-        'cart' => $cart,
-        'message' => 'Cart updated successfully.',
-        "data" => [
-            "quantity" => (int)$quantity,
-            "price" => $totalPrice * (int)($quantity), // price for the updated item
-            "totalCart" => $totalCart 
-        ]
-    ]);
-}
-
-    
 
     public function checkoutForm()
     {
