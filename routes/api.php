@@ -15,17 +15,18 @@ use App\Http\Controllers\Admin\CouponController;
 |
 */
 
-//rating
-Route::get('/ratings',[RatingController::class, 'index']);
-Route::get('/ratingsget',[RatingController::class, 'indexstore']);
-Route::post('/ratingspost', [RatingController::class, 'store']);
+
+Route::prefix('ratings')->group(function () {
+    Route::get('/', [RatingController::class, 'index']);
+    Route::post('/post', [RatingController::class, 'store']);
+});
 
 
-//coupon
-
-    Route::get('/coupons', [CouponController::class, 'index']);
-    Route::post('/coupons', [CouponController::class, 'store']);
-    Route::get('/coupons/{id}', [CouponController::class, 'edit']);
-    Route::put('/coupons/{id}', [CouponController::class, 'update']);
-    Route::delete('/coupons/{id}', [CouponController::class, 'destroy']);
+Route::prefix('coupons')->group(function () {
+    Route::get('/', [CouponController::class, 'index']);
+    Route::post('/', [CouponController::class, 'store']);
+    Route::get('/{id}', [CouponController::class, 'edit']);
+    Route::put('/{id}', [CouponController::class, 'update']);
+    Route::delete('/{id}', [CouponController::class, 'destroy']);
+});
 
