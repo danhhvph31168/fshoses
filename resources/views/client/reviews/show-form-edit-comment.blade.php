@@ -223,45 +223,46 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (Auth::check())
-                                <div class="product__details__tab__content">
-                                    <div class="contact__form">
-                                        <form action="{{ route('handleAddComment', $product->id) }}" method="POST">
-                                            @csrf
-                                            <div class="row">
+                            <div class="product__details__tab__content">
+                                <div class="contact__form">
+                                    <form action="{{ route('updateComment', $product->id) }}" method="POST">
+                                        @csrf
+                                        <div class="row">
 
-                                                <div class="col-lg-12">
-                                                    <textarea placeholder="Message" name="comment" class="@error('comment') is-invalid @enderror"></textarea>
-                                                    @error('comment')
-                                                        <span class="invalid-feedback mb-3" role="alert">
-                                                            <strong>{{ $message }}</strong>
+                                            <div class="col-lg-12">
+                                                <textarea placeholder="Message" name="comment" class="@error('comment') is-invalid @enderror">{{ $comment->comment }}</textarea>
+                                                @error('comment')
+                                                    <span class="invalid-feedback mb-3" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                                @if (session('success'))
+                                                    <div class=" mb-3">
+                                                        <span class="text-success" role="alert">
+                                                            <strong>{{ session('success') }}</strong>
                                                         </span>
-                                                    @enderror
-                                                    <button type="submit" class="site-btn">Comment</button>
-                                                </div>
+                                                    </div>
+                                                @endif
+                                                <button type="submit" class="site-btn">Comment</button>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            @else
-                                <div class="alert alert-danger mt-4">
-                                    Vui lòng đăng nhập để bình luận. <a href="{{ route('auth.showFormLogin') }}">Đăng
-                                        nhập</a>
-                                </div>
-                            @endif
+                            </div>
+
                             <div class="product__details__tab__content contact__form">
                                 @foreach ($comments as $comment)
                                     <div class="product__details__tab__content__item border border-info rounded p-3 mb-3">
                                         <h5>{{ $comment->user->name }}</h5>
                                         <p class="pb-2">{{ $comment->comment }}</p>
                                         @can('my-comment', $comment)
-                                            <a href="#" class="badge bg-primary">Sửa</a>
+                                            <a href="{{ route('editComment', $product->id) }}"
+                                                class="badge bg-primary">Sửa</a>
                                             <a href="#" class="badge bg-danger">Xóa</a>
                                         @endcan
                                     </div>
                                 @endforeach
                             </div>
-
                         </div>
                     </div>
                 </div>

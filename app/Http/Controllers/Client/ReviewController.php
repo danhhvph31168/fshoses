@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ReviewRequest;
+use App\Models\Product;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,4 +26,5 @@ class ReviewController extends Controller
         }
         return redirect()->back();
     }
+    
 }

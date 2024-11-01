@@ -20,6 +20,6 @@ class ProductController extends Controller
         $comments = Review::where('product_id', $id)->orderBy('id', 'DESC')->get();
         // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
         $relatedProducts = Product::with(['galleries', 'variants'])->where('category_id', $product->category_id)->where('id', '<>', $id)->limit(4)->get();
-        return view('client.product.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts'));
+        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts'));
     }
 }
