@@ -1,17 +1,23 @@
-
-
 var ordersData = JSON.parse(
     document.querySelector('meta[name="orders-data"]').getAttribute("content")
 );
+
 var ordersCancelData = JSON.parse(
-    document.querySelector('meta[name="orderscancel-data"]').getAttribute("content")
+    document
+        .querySelector('meta[name="orderscancel-data"]')
+        .getAttribute("content")
 );
 
 var earningsData = JSON.parse(
     document.querySelector('meta[name="earnings-data"]').getAttribute("content")
 );
+
 var refundsData = JSON.parse(
     document.querySelector('meta[name="refunds-data"]').getAttribute("content")
+);
+
+var productData = JSON.parse(
+    document.querySelector('meta[name="product-data"]').getAttribute("content")
 );
 
 function getChartColorsArray(e) {
@@ -63,6 +69,11 @@ var options,
                         name: "Order Cancel",
                         type: "line",
                         data: ordersCancelData,
+                    },
+                    {
+                        name: "Product",
+                        type: "area",
+                        data: productData,
                     },
                 ],
                 chart: { height: 370, type: "line", toolbar: { show: !1 } },
@@ -149,7 +160,16 @@ var options,
                         },
                         {
                             formatter: function (e) {
-                                return void 0 !== e ? e.toFixed(0) + " Canceled Orders" : e;
+                                return void 0 !== e
+                                    ? e.toFixed(0) + " "
+                                    : e;
+                            },
+                        },
+                        {
+                            formatter: function (e) {
+                                return void 0 !== e
+                                    ? e.toFixed(0) + " "
+                                    : e;
                             },
                         },
                     ],

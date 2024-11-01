@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\Refund;
+use App\Models\OrderItem;
+use App\Models\Product;
 use App\Services\DashBoard\HandleChartServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -15,6 +17,10 @@ class DashboardController extends Controller
 
     public function orderStatistical(Request $request)
     {
+        // date today
+        $dataDate = [];
+        $dataDate = $this->handleChartServices->handleFilterDay($request, $dataDate);
+
         // xử lý biểu đồ apexcharts
         $currentYear = Carbon::now()->year;
 
@@ -22,13 +28,37 @@ class DashboardController extends Controller
         $orderCounts = [];
         $refundCounts = [];
         $orderCountsCancel = [];
+        $productCounts = [];
 
-        [$totalAmounts, $orderCounts, $refundCounts, $orderCountsCancel] = $this->handleChartServices->handleChart($request, $currentYear, $totalAmounts, $orderCounts, $refundCounts, $orderCountsCancel);
+        [$totalAmounts, $orderCounts, $refundCounts, $orderCountsCancel, $productCounts] =
+            $this->handleChartServices->handleChart($request, $currentYear, $totalAmounts, $orderCounts, $refundCounts, $orderCountsCancel, $productCounts);
 
         // xử lý thống kê map
         $orderPercentages = [];
-        [$orderPercentages] = $this->handleChartServices->handleMap($orderPercentages);
+        $orderPercentages = $this->handleChartServices->handleMap($orderPercentages);
 
-        return view("admin/dashboard", compact('totalAmounts', 'orderCounts', 'refundCounts', 'currentYear', 'orderPercentages', 'orderCountsCancel'));
+        // xử lý best selling product
+        $topProducts = $this->handleChartServices->handleSellingProduct($request);
+        $topCategory = $this->handleChartServices->handleSellingProduct($request);
+        $topProducts = $topProducts[0];
+        $topCategory = $topCategory[1];
+
+        // dd($topProducts);
+
+        return view(
+            "admin/dashboard",
+            compact(
+                'totalAmounts',
+                'orderCounts',
+                'refundCounts',
+                'currentYear',
+                'orderPercentages',
+                'orderCountsCancel',
+                'productCounts',
+                'dataDate',
+                'topProducts',
+                'topCategory',
+            )
+        );
     }
 }

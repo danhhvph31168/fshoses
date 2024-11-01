@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\RefundCreate;
 use App\Http\Controllers\Controller;
 use App\Models\{Order, Refund, User};
 use Illuminate\Http\Request;
@@ -38,12 +39,14 @@ class RefundController extends Controller
             ]);
         }
 
-        Refund::query()->create([
+        $refund = Refund::query()->create([
             'order_id'  => $refund['order_id'],
             'user_id'   => $order->user_id,
             'reason'    => $refund['reason'],
             'status'    => $refund['status'],
         ]);
+
+        RefundCreate::dispatch($refund);
 
         return back();
     }
