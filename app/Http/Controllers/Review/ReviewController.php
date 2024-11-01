@@ -1,12 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\Review;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ReviewRequest;
-use App\Models\Product;
-use App\Models\ProductColor;
-use App\Models\ProductSize;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 

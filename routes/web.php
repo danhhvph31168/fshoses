@@ -1,17 +1,14 @@
 <?php
 
-
-use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Auth\AuthenController;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\Client\AccountController;
-use App\Http\Controllers\Client\ReviewController;
 
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MessageSuccessResetController;
 use App\Http\Controllers\Client\Product\ProductController;
+use App\Http\Controllers\Review\ReviewController;
 
 /*
 |--------------------------------------------------------------------------

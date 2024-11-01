@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 
@@ -20,11 +20,11 @@ class AccountController extends Controller
     {
         $user = Auth::user();
 
-        return view('profile.formProfile', compact('user'));
+        return view('profiles.formProfile', compact('user'));
         // return response()->json([
         //     'status' => 'Success',
         //     'account' => $user,
-        // ], 200);
+        // ], 200); 
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
@@ -49,7 +49,7 @@ class AccountController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'avatar' => $linkAvatar,
+            'avatar' => $linkAvatar,    
             'phone' => $request->phone,
             'address' => $request->address,
             'balance' => $request->balance,
@@ -74,7 +74,7 @@ class AccountController extends Controller
         //     'status' => 'success',
         //     'message' => 'Form thay đổi mật khẩu.',
         // ], 200);
-        return view('profile.showFormChangePassword');
+        return view('profiles.showFormChangePassword');
     }
     public function handleChangePassword(ChangePasswordRequest $request)
     {
