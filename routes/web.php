@@ -6,13 +6,12 @@ use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Client\AccountController;
 use App\Http\Controllers\Client\ReviewController;
-use App\Http\Controllers\Product\ProductController;
 
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MessageSuccessResetController;
+use App\Http\Controllers\Client\Product\ProductController;
 
 /*
 |--------------------------------------------------------------------------
