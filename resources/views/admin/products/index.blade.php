@@ -98,21 +98,24 @@
                                     <td class="text-success">{{ number_format($item->price_sale, 0, '.', '.') }} VNĐ</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
-                                    <th>
-                                        <a href="{{ route('admin.products.show', $item->id) }}" class="me-2">
-                                            <i class="ri-search-line text-muted fs-18 rounded-2 border p-2"></i></a>
+                                    <td>
+                                        <a href="{{ route('admin.products.show', $item->id) }}" class="btn btn-light"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
+                                                class="ri-eye-fill align-bottom"></i></a>
 
-                                        <a href="{{ route('admin.products.edit', $item->id) }}"><i
-                                                class="ri-pencil-fill text-muted fs-18 rounded-2 border p-2"></i></a>
+                                        <a href="{{ route('admin.products.edit', $item->id) }}" class="btn btn-light"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
+                                                class="ri-pencil-fill align-bottom"></i></a>
 
                                         <form action="{{ route('admin.products.destroy', $item->id) }}" method="POST"
-                                            class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                            class="d-inline"
+                                            onsubmit="return confirm('Are you sure you want to delete this product?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="border-0 bg-white"><i
-                                                    class="ri-delete-bin-5-fill text-muted fs-18 rounded-2 border p-2"></i></button>
+                                            <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
+                                                title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
                                         </form>
-                                    </th>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

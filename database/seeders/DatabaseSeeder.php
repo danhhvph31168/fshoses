@@ -4,10 +4,11 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Category;
+use App\Models\Role;
 use App\Models\Product;
-use Illuminate\Database\Seeder;
 use Nette\Utils\Random;
+use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,6 +31,21 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        
+        Role::query()->insert(
+            [
+                [
+                    'name' => 'Admin',
+                    'Status' => '1',
+                ],
+                [
+                    'name' => 'Staff',
+                    'Status' => '1',
+                ],
+                [
+                    'name' => 'User',
+                    'Status' => '1',
+                ]
+            ],
+        );
     }
 }
