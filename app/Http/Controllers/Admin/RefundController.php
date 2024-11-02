@@ -46,7 +46,9 @@ class RefundController extends Controller
             'status'    => $refund['status'],
         ]);
 
-        RefundCreate::dispatch($refund);
+        if ($refund->status == Refund::STATUS_COMPLETED) {
+            RefundCreate::dispatch($refund);
+        }
 
         return back();
     }
@@ -63,6 +65,8 @@ class RefundController extends Controller
             Order::query()->find($refund->order->id)->update([
                 'status_order' => Order::STATUS_ORDER_CANCELED,
             ]);
+
+            RefundCreate::dispatch($refund);
         }
 
         return back();

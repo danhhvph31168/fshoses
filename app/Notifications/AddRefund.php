@@ -35,9 +35,11 @@ class AddRefund extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line($this->refund->reason)
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you');
+            ->subject('Fshoes refund notice')
+            ->greeting('Fshoes hello ' . $this->refund->user->name)
+            ->line('We have confirmed your return request successfully for the following reasons: ' . $this->refund->reason)
+            ->action('Notification Action', url('/'))
+            ->salutation('Thank you');
     }
 
     /**
