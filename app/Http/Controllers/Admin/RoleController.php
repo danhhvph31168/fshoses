@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -14,9 +15,13 @@ class RoleController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $data = Role::query()->latest('id')->paginate(10);
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        if ($user->role_id === 1) {
+            return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     /**
@@ -24,7 +29,12 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $user = Auth::user();
+        if ($user->role_id === 1) {
+            return view(self::PATH_VIEW . __FUNCTION__);
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     /**
@@ -32,9 +42,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         Role::query()->create($request->all());
-
-        return redirect()->route('admin.roles.index');
+        if ($user->role_id === 1) {
+            return redirect()->route('admin.roles.index')->with('success', 'Role created successfully!');
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     /**
@@ -42,7 +56,11 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = Auth::user();
+        if ($user->role_id === 1) {
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     /**
@@ -50,9 +68,13 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
+        $user = Auth::user();
         $model = Role::query()->findOrFail($id);
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('model'));
+        if ($user->role_id === 1) {
+            return view(self::PATH_VIEW . __FUNCTION__, compact('model'));
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     /**
@@ -61,11 +83,15 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
 
+        $user = Auth::user();
         $model = Role::query()->findOrFail($id);
 
         $model->update($request->all());
-
-        return redirect()->route('admin.roles.index');
+        if ($user->role_id === 1) {
+            return redirect()->route('admin.roles.index')->with('success', 'Role updated successfully!');
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     /**
@@ -73,10 +99,14 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
+        $user = Auth::user();
         $model = Role::query()->findOrFail($id);
+        if ($user->role_id === 1) {
+            $model->delete();
 
-        $model->delete();
-
-        return back();
+            return back()->with('success', 'Role deleted successfully!');
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 }
