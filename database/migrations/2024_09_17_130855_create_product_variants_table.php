@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(ProductColor::class)->constrained();
             $table->string('image');
             $table->unsignedBigInteger('quantity');
+            $table->unique(['product_id', 'product_size_id', 'product_color_id'], 'product_variants_unique');
             $table->timestamps();
         });
     }

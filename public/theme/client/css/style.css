@@ -138,7 +138,11 @@ ol {
 }
 
 .spad {
+<<<<<<< HEAD
 	padding-top: 100px;
+=======
+	padding-top: 50px;
+>>>>>>> tuanndph31135
 	padding-bottom: 100px;
 }
 
@@ -211,12 +215,20 @@ ol {
 		border: 4px solid #f44336;
 		border-left-color: transparent;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	50% {
 		-webkit-transform: rotate(180deg);
 		transform: rotate(180deg);
 		border: 4px solid #673ab7;
 		border-left-color: transparent;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	100% {
 		-webkit-transform: rotate(360deg);
 		transform: rotate(360deg);
@@ -231,11 +243,19 @@ ol {
 		border: 4px solid #f44336;
 		border-left-color: transparent;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	50% {
 		-webkit-transform: rotate(180deg);
 		border: 4px solid #673ab7;
 		border-left-color: transparent;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	100% {
 		-webkit-transform: rotate(360deg);
 		border: 4px solid #f44336;
@@ -1502,7 +1522,11 @@ ol {
 -----------------------*/
 
 .product__details__pic {
+<<<<<<< HEAD
 	text-align: center;
+=======
+	/* text-align: center; */
+>>>>>>> tuanndph31135
 	background: #f3f2ee;
 	padding: 40px 0 60px;
 	margin-bottom: 100px;
@@ -1605,9 +1629,15 @@ ol {
 	margin-left: -28px;
 }
 
+<<<<<<< HEAD
 .product__details__text {
 	text-align: center;
 }
+=======
+/* .product__details__text {
+	text-align: center;
+} */
+>>>>>>> tuanndph31135
 
 .product__details__text h4 {
 	color: #111111;
@@ -1671,7 +1701,11 @@ ol {
 	font-weight: 700;
 	text-transform: uppercase;
 	display: inline-block;
+<<<<<<< HEAD
 	border: 1px solid #e5e5e5;
+=======
+	/* border: 1px solid #e5e5e5; */
+>>>>>>> tuanndph31135
 	padding: 6px 15px;
 	margin-bottom: 0;
 	margin-right: 5px;
@@ -3376,6 +3410,7 @@ ol {
 	.categories__text h2 {
 		font-size: 26px;
 	}
+<<<<<<< HEAD
 	.header__menu ul li {
 		margin-right: 38px;
 	}
@@ -3385,6 +3420,21 @@ ol {
 	.hero__slider.owl-carousel .owl-nav button.owl-next {
 		right: 2px;
 	}
+=======
+
+	.header__menu ul li {
+		margin-right: 38px;
+	}
+
+	.hero__slider.owl-carousel .owl-nav button {
+		left: 2px;
+	}
+
+	.hero__slider.owl-carousel .owl-nav button.owl-next {
+		right: 2px;
+	}
+
+>>>>>>> tuanndph31135
 	.testimonial__text {
 		padding: 130px 45px 175px;
 	}
@@ -3396,6 +3446,7 @@ ol {
 	.header__menu ul li {
 		margin-right: 10px;
 	}
+<<<<<<< HEAD
 	.header__nav__option a {
 		margin-right: 10px;
 	}
@@ -3429,30 +3480,101 @@ ol {
 	.instagram__text {
 		padding-top: 70px;
 	}
+=======
+
+	.header__nav__option a {
+		margin-right: 10px;
+	}
+
+	.header__nav__option .price {
+		margin-left: 0;
+	}
+
+	.hero__slider.owl-carousel .owl-nav button {
+		left: 2px;
+	}
+
+	.hero__slider.owl-carousel .owl-nav button.owl-next {
+		right: 2px;
+	}
+
+	.banner__item.banner__item--middle {
+		margin-top: 0;
+	}
+
+	.banner__item.banner__item--last {
+		margin-top: 0;
+	}
+
+	.banner__item {
+		margin-bottom: 40px;
+	}
+
+	.banner {
+		padding-bottom: 60px;
+	}
+
+	.categories__text {
+		margin-bottom: 40px;
+	}
+
+	.categories__hot__deal {
+		margin-bottom: 40px;
+	}
+
+	.instagram__text {
+		padding-top: 70px;
+	}
+
+>>>>>>> tuanndph31135
 	.shop__sidebar {
 		padding-right: 0;
 		padding-top: 40px;
 	}
+<<<<<<< HEAD
 	.cart__discount {
 		margin-top: 40px;
 	}
 	.testimonial__text {
 		padding: 100px 105px 100px;
 	}
+=======
+
+	.cart__discount {
+		margin-top: 40px;
+	}
+
+	.testimonial__text {
+		padding: 100px 105px 100px;
+	}
+
+>>>>>>> tuanndph31135
 	.blog__details__share {
 		position: relative;
 		left: 0;
 		margin-bottom: 18px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.blog__details__share span {
 		margin-bottom: 14px;
 		margin-right: 0;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.blog__details__share ul li {
 		margin-bottom: 15px;
 		display: inline-block;
 		margin-right: 10px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.blog__details__share ul li:last-child {
 		margin-right: 0;
 	}
@@ -3476,6 +3598,10 @@ ol {
 		right: 15px;
 		top: 25px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas-menu-overlay {
 		position: fixed;
 		left: 0;
@@ -3490,9 +3616,17 @@ ol {
 		transition: all, 0.5s;
 		visibility: hidden;
 	}
+<<<<<<< HEAD
 	.offcanvas-menu-overlay.active {
 		visibility: visible;
 	}
+=======
+
+	.offcanvas-menu-overlay.active {
+		visibility: visible;
+	}
+
+>>>>>>> tuanndph31135
 	.offcanvas-menu-wrapper {
 		position: fixed;
 		left: -300px;
@@ -3508,24 +3642,48 @@ ol {
 		transition: all, 0.5s;
 		opacity: 0;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas-menu-wrapper.active {
 		opacity: 1;
 		left: 0;
 	}
+<<<<<<< HEAD
 	.offcanvas__menu {
 		display: none;
 	}
 	.slicknav_btn {
 		display: none;
 	}
+=======
+
+	.offcanvas__menu {
+		display: none;
+	}
+
+	.slicknav_btn {
+		display: none;
+	}
+
+>>>>>>> tuanndph31135
 	.slicknav_menu {
 		background: transparent;
 		padding: 0;
 		margin-bottom: 20px;
 	}
+<<<<<<< HEAD
 	.slicknav_nav ul {
 		margin: 0;
 	}
+=======
+
+	.slicknav_nav ul {
+		margin: 0;
+	}
+
+>>>>>>> tuanndph31135
 	.slicknav_nav .slicknav_row,
 	.slicknav_nav a {
 		padding: 7px 0;
@@ -3533,30 +3691,58 @@ ol {
 		color: #111111;
 		font-weight: 600;
 	}
+<<<<<<< HEAD
 	.slicknav_nav .slicknav_arrow {
 		color: #111111;
 	}
+=======
+
+	.slicknav_nav .slicknav_arrow {
+		color: #111111;
+	}
+
+>>>>>>> tuanndph31135
 	.slicknav_nav .slicknav_row:hover {
 		border-radius: 0;
 		background: transparent;
 		color: #111111;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.slicknav_nav a:hover {
 		border-radius: 0;
 		background: transparent;
 		color: #111111;
 	}
+<<<<<<< HEAD
 	.slicknav_nav {
 		display: block !important;
 	}
+=======
+
+	.slicknav_nav {
+		display: block !important;
+	}
+
+>>>>>>> tuanndph31135
 	.offcanvas__option {
 		text-align: center;
 		margin-bottom: 30px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__links {
 		display: inline-block;
 		margin-right: 25px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__links a {
 		color: #111111;
 		font-size: 13px;
@@ -3566,18 +3752,34 @@ ol {
 		display: inline-block;
 		font-weight: 600;
 	}
+<<<<<<< HEAD
 	.offcanvas__links a:last-child {
 		margin-right: 0;
 	}
+=======
+
+	.offcanvas__links a:last-child {
+		margin-right: 0;
+	}
+
+>>>>>>> tuanndph31135
 	.offcanvas__top__hover {
 		display: inline-block;
 		position: relative;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__top__hover:hover ul {
 		top: 24px;
 		opacity: 1;
 		visibility: visible;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__top__hover span {
 		color: #111111;
 		font-size: 13px;
@@ -3587,12 +3789,20 @@ ol {
 		cursor: pointer;
 		font-weight: 600;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__top__hover span i {
 		font-size: 20px;
 		position: relative;
 		top: 3px;
 		right: 2px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__top__hover ul {
 		background: #111111;
 		display: inline-block;
@@ -3607,6 +3817,10 @@ ol {
 		-o-transition: all, 0.3s;
 		transition: all, 0.3s;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__top__hover ul li {
 		list-style: none;
 		font-size: 13px;
@@ -3614,15 +3828,27 @@ ol {
 		padding: 2px 15px;
 		cursor: pointer;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__nav__option {
 		text-align: center;
 		margin-bottom: 25px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__nav__option a {
 		display: inline-block;
 		margin-right: 26px;
 		position: relative;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__nav__option a span {
 		color: #0d0d0d;
 		font-size: 11px;
@@ -3630,9 +3856,17 @@ ol {
 		left: 5px;
 		top: 8px;
 	}
+<<<<<<< HEAD
 	.offcanvas__nav__option a:last-child {
 		margin-right: 0;
 	}
+=======
+
+	.offcanvas__nav__option a:last-child {
+		margin-right: 0;
+	}
+
+>>>>>>> tuanndph31135
 	.offcanvas__nav__option .price {
 		font-size: 15px;
 		color: #111111;
@@ -3642,10 +3876,15 @@ ol {
 		position: relative;
 		top: 3px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.offcanvas__text p {
 		color: #111111;
 		margin-bottom: 0;
 	}
+<<<<<<< HEAD
 	.header__top {
 		display: none;
 	}
@@ -3658,18 +3897,46 @@ ol {
 	.header__nav__option {
 		display: none;
 	}
+=======
+
+	.header__top {
+		display: none;
+	}
+
+	.header .container {
+		position: relative;
+	}
+
+	.header__menu {
+		display: none;
+	}
+
+	.header__nav__option {
+		display: none;
+	}
+
+>>>>>>> tuanndph31135
 	.search-model-form input {
 		width: 100%;
 		font-size: 24px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.hero__slider.owl-carousel .owl-nav button {
 		left: 15px;
 		top: 80%;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.hero__slider.owl-carousel .owl-nav button.owl-next {
 		left: 75px;
 		right: 0;
 	}
+<<<<<<< HEAD
 	.banner__item.banner__item--middle {
 		margin-top: 0;
 	}
@@ -3688,12 +3955,40 @@ ol {
 	.banner__item__pic img {
 		min-width: 100%;
 	}
+=======
+
+	.banner__item.banner__item--middle {
+		margin-top: 0;
+	}
+
+	.banner__item.banner__item--last {
+		margin-top: 0;
+	}
+
+	.banner__item {
+		margin-bottom: 40px;
+	}
+
+	.banner {
+		padding-bottom: 60px;
+	}
+
+	.banner__item__pic {
+		float: none;
+	}
+
+	.banner__item__pic img {
+		min-width: 100%;
+	}
+
+>>>>>>> tuanndph31135
 	.banner__item__text {
 		max-width: 100%;
 		position: relative;
 		top: 0;
 		padding-top: 22px;
 	}
+<<<<<<< HEAD
 	.filter__controls li {
 		margin-right: 15px;
 	}
@@ -3709,33 +4004,81 @@ ol {
 	.instagram__pic__item {
 		width: 50%;
 	}
+=======
+
+	.filter__controls li {
+		margin-right: 15px;
+	}
+
+	.categories__text {
+		margin-bottom: 40px;
+	}
+
+	.categories__hot__deal {
+		margin-bottom: 40px;
+	}
+
+	.instagram__text {
+		padding-top: 70px;
+	}
+
+	.instagram__pic__item {
+		width: 50%;
+	}
+
+>>>>>>> tuanndph31135
 	.shop__product__option__right {
 		text-align: left;
 		padding-top: 20px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.shop__sidebar {
 		padding-right: 0;
 		margin-bottom: 40px;
 	}
+<<<<<<< HEAD
 	.testimonial__text {
 		padding: 100px 40px 100px;
 	}
 	.product__details__breadcrumb {
 		text-align: left;
 	}
+=======
+
+	.testimonial__text {
+		padding: 100px 40px 100px;
+	}
+
+	.product__details__breadcrumb {
+		text-align: left;
+	}
+
+>>>>>>> tuanndph31135
 	.product__details__pic .nav-tabs {
 		width: auto;
 		margin-bottom: 40px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.product__details__pic .nav-tabs .nav-item {
 		margin-bottom: 0;
 		margin-right: 10px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.product__details__option__size {
 		display: block;
 		margin-right: 0;
 		margin-bottom: 25px;
 	}
+<<<<<<< HEAD
 	.product__details__last__option h5:before {
 		width: 440px;
 	}
@@ -3745,50 +4088,113 @@ ol {
 	.shopping__cart__table {
 		overflow-y: auto;
 	}
+=======
+
+	.product__details__last__option h5:before {
+		width: 440px;
+	}
+
+	.product__details__tab .nav-tabs .nav-item {
+		margin-bottom: 15px;
+	}
+
+	.shopping__cart__table {
+		overflow-y: auto;
+	}
+
+>>>>>>> tuanndph31135
 	.shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__pic {
 		float: none;
 		margin-right: 0;
 	}
+<<<<<<< HEAD
 	.continue__btn {
 		text-align: center;
 	}
+=======
+
+	.continue__btn {
+		text-align: center;
+	}
+
+>>>>>>> tuanndph31135
 	.continue__btn.update__btn {
 		text-align: center;
 		margin-top: 20px;
 	}
+<<<<<<< HEAD
 	.cart__discount {
 		margin-top: 40px;
 	}
 	.checkout__order {
 		margin-top: 20px;
 	}
+=======
+
+	.cart__discount {
+		margin-top: 40px;
+	}
+
+	.checkout__order {
+		margin-top: 20px;
+	}
+
+>>>>>>> tuanndph31135
 	.blog__details__share {
 		position: relative;
 		left: 0;
 		margin-bottom: 18px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.blog__details__share span {
 		margin-bottom: 14px;
 		margin-right: 0;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.blog__details__share ul li {
 		margin-bottom: 15px;
 		display: inline-block;
 		margin-right: 10px;
 	}
+<<<<<<< HEAD
 	.blog__details__share ul li:last-child {
 		margin-right: 0;
 	}
+=======
+
+	.blog__details__share ul li:last-child {
+		margin-right: 0;
+	}
+
+>>>>>>> tuanndph31135
 	.blog__details__author {
 		text-align: center;
 		margin-bottom: 20px;
 	}
+<<<<<<< HEAD
 	.blog__details__tags {
 		text-align: center;
 	}
 	.contact__text {
 		margin-bottom: 40px;
 	}
+=======
+
+	.blog__details__tags {
+		text-align: center;
+	}
+
+	.contact__text {
+		margin-bottom: 40px;
+	}
+
+>>>>>>> tuanndph31135
 	.hero__social {
 		margin-top: 180px;
 	}
@@ -3800,15 +4206,24 @@ ol {
 	.cart__total {
 		padding: 35px 30px 40px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.hero__items {
 		height: auto;
 		padding-top: 130px;
 		padding-bottom: 40px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.hero__text h2 {
 		font-size: 36px;
 		line-height: 48px;
 	}
+<<<<<<< HEAD
 	.hero__social {
 		margin-top: 145px;
 	}
@@ -3824,27 +4239,74 @@ ol {
 	.product__details__pic .nav-tabs .nav-item .nav-link .product__thumb__pic {
 		width: 100%;
 	}
+=======
+
+	.hero__social {
+		margin-top: 145px;
+	}
+
+	.categories__deal__countdown .categories__deal__countdown__timer {
+		margin-left: 0;
+	}
+
+	.instagram__pic__item {
+		width: 100%;
+	}
+
+	.testimonial__text {
+		padding: 60px 40px 60px;
+	}
+
+	.product__details__pic .nav-tabs .nav-item .nav-link .product__thumb__pic {
+		width: 100%;
+	}
+
+>>>>>>> tuanndph31135
 	.product__details__pic .nav-tabs .nav-item {
 		margin-bottom: 10px;
 		width: calc(33.33% - 10px);
 	}
+<<<<<<< HEAD
 	.product__details__last__option h5:before {
 		width: 280px;
 	}
+=======
+
+	.product__details__last__option h5:before {
+		width: 280px;
+	}
+
+>>>>>>> tuanndph31135
 	.product__details__cart__option .quantity {
 		margin-right: 0;
 		margin-bottom: 15px;
 	}
+<<<<<<< HEAD
 	.product__details__last__option h5 span {
 		font-size: 16px;
 	}
 	.blog__hero__text h2 {
 		font-size: 36px;
 	}
+=======
+
+	.product__details__last__option h5 span {
+		font-size: 16px;
+	}
+
+	.blog__hero__text h2 {
+		font-size: 36px;
+	}
+
+>>>>>>> tuanndph31135
 	.categories__text h2 {
 		font-size: 30px;
 		line-height: 55px;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanndph31135
 	.categories__text:before {
 		height: 250px;
 	}

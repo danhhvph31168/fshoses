@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductColor;
@@ -15,6 +16,9 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use App\Models\Category;
+use Nette\Utils\Random;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -108,20 +112,26 @@ class DatabaseSeeder extends Seeder
         //     ]);
         // }
 
-        for ($productID = 1; $productID < 21; $productID++) {
-            $data = [];
-            for ($sizeID = 1; $sizeID < 16; $sizeID++) {
-                for ($colorID = 1; $colorID < 7; $colorID++) {
-                    $data[] = [
-                        'product_id' => $productID,
-                        'product_size_id' => $sizeID,
-                        'product_color_id' => $colorID,
-                        'quantity' => 100,
-                        'image' => 'https://sadesign.vn/wp-content/uploads/2021/04/phong-cach-chup-anh-giay-dep-2021.jpg'
-                    ];
-                }
-            }
-            DB::table('product_variants')->insert($data);
-        }
+        // for ($productID = 1; $productID < 21; $productID++) {
+        //     $data = [];
+        //     for ($sizeID = 1; $sizeID < 16; $sizeID++) {
+        //         for ($colorID = 1; $colorID < 7; $colorID++) {
+        //             $data[] = [
+        //                 'product_id' => $productID,
+        //                 'product_size_id' => $sizeID,
+        //                 'product_color_id' => $colorID,
+        //                 'quantity' => 100,
+        //                 'image' => 'https://sadesign.vn/wp-content/uploads/2021/04/phong-cach-chup-anh-giay-dep-2021.jpg'
+        //             ];
+        //         }
+        //     }
+        //     DB::table('product_variants')->insert($data);
+
+        // for ($i = 1; $i < 11; $i++) {
+        //     Category::query()->create([
+        //         'name' => 'Danh mục ' . $i,
+        //         'parent_id' => random_int(1, 10)
+        //     ]);
+        // }
     }
 }

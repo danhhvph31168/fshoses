@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Category::class)->constrained();
             $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('sku')->unique();
             $table->string('img_thumbnail');
             $table->double('price_regular');
             $table->double('price_sale')->nullable();

@@ -160,16 +160,12 @@ var options,
                         },
                         {
                             formatter: function (e) {
-                                return void 0 !== e
-                                    ? e.toFixed(0) + " "
-                                    : e;
+                                return void 0 !== e ? e.toFixed(0) + " " : e;
                             },
                         },
                         {
                             formatter: function (e) {
-                                return void 0 !== e
-                                    ? e.toFixed(0) + " "
-                                    : e;
+                                return void 0 !== e ? e.toFixed(0) + " " : e;
                             },
                         },
                     ],
