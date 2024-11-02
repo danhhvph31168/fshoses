@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->string('phone');
-            $table->string('address');
-            $table->decimal('balance', 15, 2)->comment('Số dư tài khoản')->default(0);
-            $table->string('district')->comment('Quận / Huyện');
-            $table->string('province')->comment('Tỉnh / TP');
-            $table->string('zip_code')->default(0);
+            $table->string('address')->nullable();
+            $table->decimal('balance', 15, 0)->comment('Số dư tài khoản')->default(value: '0');
+            $table->string('district')->nullable()->comment('Quận / Huyện');
+            $table->string('province')->nullable()->comment('Tỉnh / TP');
+            $table->string('zip_code')->nullable()->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

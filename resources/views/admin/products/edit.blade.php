@@ -237,6 +237,7 @@
                 </div>
             </div>
         </div>
+        
         {{-- Gallery --}}
         <div class="row">
             <div class="col-lg-12">
