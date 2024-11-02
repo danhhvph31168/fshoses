@@ -41,6 +41,26 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarProducts" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarproducts">
+                        <i class="ri-file-list-3-line"></i> <span data-key="t-forms">Products</span>
+                        {{-- <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span> --}}
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarProducts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.products.index') }}" class="nav-link"
+                                    data-key="t-horizontal">List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.products.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Add New</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarOrder" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarOrder">
                         <i class="ri-layout-3-line"></i>

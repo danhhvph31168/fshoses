@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
     <?php
 
     use App\Http\Controllers\Admin\DashboardController;
@@ -16,7 +16,7 @@
     Route::prefix('admin')->as('admin.')
         ->group(function () {
 
-            //dashboard
+            // dashboard
             Route::get('/', [DashboardController::class, 'orderStatistical']);
             Route::post('/', [DashboardController::class, 'orderStatistical'])->name('dashboard.year');
 
@@ -28,7 +28,7 @@
             Route::get('orders/{id}/edit',  [OrderController::class, 'edit'])->name('orders.edit');
             Route::put('orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
 
-            //refund
+            // refund
             Route::get('refunds',               [RefundController::class, 'index'])->name('refunds.index');
             Route::post('refunds/store',        [RefundController::class, 'store'])->name('refunds.store');
             Route::put('refunds/{id}/update',   [RefundController::class, 'update'])->name('refunds.update');
@@ -36,29 +36,32 @@
             //review
             Route::get('reviews',               [ReviewController::class, 'index'])->name('reviews.index');
             Route::put('reviews/{id}/update',   [ReviewController::class, 'update'])->name('reviews.update');
-        });
 
-    Route::prefix('admin')
-        ->as('admin.')
-        // ->middleware(['auth', 'auth.admin'])
-        ->group(function () {
-
-            // Route::get('/', function () {
-            //     return view('admin.dashboard');
-            // })->name('dashboard');
-
-
-            // Route::prefix('Categorys')
-            //     ->as('Categorys.')
-            //     ->group(function () {
-            //         Route::get('/', [CategoryController::class, 'index'])->name('index');
-            //         Route::get('create', [CategoryController::class, 'create'])->name('create');
-            //         Route::post('store', [CategoryController::class, 'store'])->name('store');
-            //         Route::get('show/{id}', [CategoryController::class, 'show'])->name('show');
-            //         Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('edit');
-            //         Route::put('{id}/update', [CategoryController::class, 'update'])->name('update');
-            //         Route::get('{id}/destroy', [CategoryController::class, 'destroy'])->name('destroy');
-            //     });
-
+            // product
             Route::resource('products', ProductController::class);
         });
+
+    // Route::prefix('admin')
+    //     ->as('admin.')
+    //     // ->middleware(['auth', 'auth.admin'])
+    //     ->group(function () {
+
+    //         // Route::get('/', function () {
+    //         //     return view('admin.dashboard');
+    //         // })->name('dashboard');
+
+
+    //         // Route::prefix('Categorys')
+    //         //     ->as('Categorys.')
+    //         //     ->group(function () {
+    //         //         Route::get('/', [CategoryController::class, 'index'])->name('index');
+    //         //         Route::get('create', [CategoryController::class, 'create'])->name('create');
+    //         //         Route::post('store', [CategoryController::class, 'store'])->name('store');
+    //         //         Route::get('show/{id}', [CategoryController::class, 'show'])->name('show');
+    //         //         Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('edit');
+    //         //         Route::put('{id}/update', [CategoryController::class, 'update'])->name('update');
+    //         //         Route::get('{id}/destroy', [CategoryController::class, 'destroy'])->name('destroy');
+    //         //     });
+
+    //         Route::resource('products', ProductController::class);
+    //     });
