@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rating;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class RatingController extends Controller
@@ -40,5 +41,20 @@ class RatingController extends Controller
         $rating = Rating::create($validatedData);
 
         return response()->json($rating, 201);
+    }
+    public function calculateAverageRating($productId)
+    {
+        // Tìm sản phẩm theo ID
+        $product = Product::findOrFail($productId);
+        $ratings = $product->ratings;
+        if ($ratings->isEmpty()) {
+            $average = 0;
+        } else {
+            $average = $ratings->avg('value');
+        }
+        return response()->json([
+            'product_id' => $productId,
+            'average_rating' => $average
+        ]);
     }
 }

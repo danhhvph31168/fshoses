@@ -18,15 +18,16 @@ use App\Http\Controllers\Admin\CouponController;
 
 Route::prefix('ratings')->group(function () {
     Route::get('/', [RatingController::class, 'index']);
-    Route::post('/post', [RatingController::class, 'store']);
+    Route::post('/store', [RatingController::class, 'store']);
+    Route::get('/{id}/average-rating', [RatingController::class, 'calculateAverageRating']);
 });
 
 
 Route::prefix('coupons')->group(function () {
     Route::get('/', [CouponController::class, 'index']);
-    Route::post('/', [CouponController::class, 'store']);
-    Route::get('/{id}', [CouponController::class, 'edit']);
-    Route::put('/{id}', [CouponController::class, 'update']);
+    Route::post('/store', [CouponController::class, 'store']);
+    Route::get('/{id}/edit', [CouponController::class, 'edit']);
+    Route::put('/{id}/update', [CouponController::class, 'update']);
     Route::delete('/{id}', [CouponController::class, 'destroy']);
 });
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Coupon;
@@ -39,20 +40,12 @@ class Cart extends Model
         foreach ($this->items as $item) {
             $totalPrice += $item['price_regular'] * $item['quantity'];
         }
-        // die($coupon);
-        // Nếu coupon là null, không áp dụng discount
         if ($coupon) {
 
-            $discountAmount = $coupon->discount($totalPrice); // Tính discount
+            $discountAmount = $coupon->discount($totalPrice);
 
-            return $totalPrice =  $totalPrice - $discountAmount; // Trả về tổng tiền sau khi trừ discount
+            return $totalPrice =  $totalPrice - $discountAmount;
         }
-
-        // Nếu không có coupon, trả về tổng tiền nguyên bản
-
         return $totalPrice;
     }
-
-
 }
-
