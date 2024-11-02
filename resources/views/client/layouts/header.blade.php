@@ -15,7 +15,9 @@
                         <li><a href="#">Sản phẩm</a>
                             <ul class="dropdown">
                                 @foreach ($categories as $item)
-                                    <li><a href="#">{{ $item->name }}</a></li>
+                                    @if ($item->is_active === 1)
+                                        <li><a href="#">{{ $item->name }}</a></li>
+                                    @endif
                                 @endforeach
 
                                 {{-- <li><a href="./shop-details.html">Samsung</a></li>
@@ -25,6 +27,15 @@
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
                         <li><a href="./contact.html">Contacts</a></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="post">
+                                @csrf
+                                <button type="submit" class="border-0 dropdown-item">
+                                    <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                                    <span class="align-middle" data-key="t-logout">Logout</span>
+                                </button>
+                            </form>
+                        </li>
                     </ul>
                 </nav>
             </div>

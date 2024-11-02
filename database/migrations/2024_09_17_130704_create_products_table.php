@@ -23,6 +23,7 @@ return new class extends Migration
             $table->double('price_sale')->nullable();
             $table->unsignedBigInteger('views')->default(0);
             $table->text('description')->nullable();
+            $table->text('content')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_hot_deal')->default(false);
             $table->boolean('is_show_home')->default(false);

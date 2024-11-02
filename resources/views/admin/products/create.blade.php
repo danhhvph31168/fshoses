@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-Add New Product
+    Add New Product
 @endsection
 @section('content')
     <!-- start page title -->
@@ -96,12 +96,12 @@ Add New Product
                                     </div>
 
                                     <div class="mt-3">
-                                        <label for="catelogue_id" class="form-label">Category:</label>
-                                        <select name="catelogue_id" id="catelogue_id" type="text" class="form-select">
+                                        <label for="category_id" class="form-label">Category:</label>
+                                        <select name="category_id" id="category_id" type="text" class="form-select">
                                             <option>-- Select Category --</option>
-                                            {{-- @foreach ($catelogues as $id => $name)
+                                            @foreach ($categories as $id => $name)
                                                 <option value="{{ $id }}">{{ $name }}</option>
-                                            @endforeach --}}
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -118,13 +118,13 @@ Add New Product
                                             $is = [
                                                 'is_active' => 'info',
                                                 'is_hot_deal' => 'secondary',
-                                                'is_new' => 'success',
-                                                'is_good_deal' => 'warning',
+                                                // 'is_new' => 'success',
+                                                // 'is_good_deal' => 'warning',
                                                 'is_show_home' => 'danger',
                                             ];
                                         @endphp
 
-                                        {{-- @foreach ($is as $key => $color)
+                                        @foreach ($is as $key => $color)
                                             <div class="col-md-2">
                                                 <div class="form-check form-switch form-switch-{{ $color }}">
                                                     <input class="form-check-input" type="checkbox" role="switch"
@@ -134,7 +134,7 @@ Add New Product
                                                         for="{{ $key }}">{{ \Str::convertCase($key, MB_CASE_TITLE) }}</label>
                                                 </div>
                                             </div>
-                                        @endforeach --}}
+                                        @endforeach
                                     </div>
 
                                     <div class="row">
@@ -179,7 +179,7 @@ Add New Product
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($sizes as $sizeID => $sizeName)
+                                        @foreach ($sizes as $sizeID => $sizeName)
                                             @php($flagRowspan = true)
 
                                             @foreach ($colors as $colorID => $colorName)
@@ -204,7 +204,7 @@ Add New Product
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        @endforeach --}}
+                                        @endforeach
                                 </table>
                             </div>
                         </div>
