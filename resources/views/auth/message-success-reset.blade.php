@@ -34,9 +34,9 @@
                     <div class="card-header">{{ __('Reset Password') }}
                     </div>
                     <div class="card-body">
-                        @if (session('message'))
+                        @if (session('success'))
                             <div class="alert alert-success">
-                                {{ session('message') }} <a href="{{ route('auth.showFormLogin') }}">Đăng nhập</a>
+                                {{ session('success') }} <a href="{{ route('auth.showFormLogin') }}">Đăng nhập</a>
                             </div>
                         @endif
                     </div>

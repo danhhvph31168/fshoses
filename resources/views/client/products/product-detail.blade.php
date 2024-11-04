@@ -255,9 +255,13 @@
                                         <h5>{{ $comment->user->name }}</h5>
                                         <p class="pb-2">{{ $comment->comment }}</p>
                                         @can('my-comment', $comment)
-                                            <a href=""
-                                                class="badge bg-primary">Sửa</a>
-                                            <a href="#" class="badge bg-danger">Xóa</a>
+                                            {{-- <a href=""
+                                                class="badge bg-primary">Sửa</a> --}}
+                                            <form action="" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="badge bg-danger">Xóa</button>
+                                            </form>
                                         @endcan
                                     </div>
                                 @endforeach

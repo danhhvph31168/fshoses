@@ -35,9 +35,9 @@
                     <div class="card-header">{{ __('Cập nhật') }}</div>
 
                     <div class="card-body">
-                        @if (session('message'))
+                        @if (session('success'))
                             <div class="alert alert-success">
-                                {{ session('message') }}
+                                {{ session('success') }}
                             </div>
                         @endif
                         <form method="POST" action="{{ route('handleUpdateProfile') }}" enctype="multipart/form-data">
@@ -66,7 +66,7 @@
                                 <div class="col-md-6">
                                     <input id="email" type="text"
                                         class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ $user->email }}" autocomplete="email" autofocus>
+                                        value="{{ $user->email }}" autocomplete="email" autofocus disabled>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -86,7 +86,7 @@
                                         autocomplete="email" autofocus>
                                     <img src="{{ $user->avatar_url }}" alt="" width="100px" height="100px">
                                     {{-- {{dd($user->avatar)}} --}}
-                                    @error('email')
+                                    @error('avatar')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -148,7 +148,7 @@
                                 <div class="col-md-6">
                                     <input id="balance" type="text"
                                         class="form-control @error('balance') is-invalid @enderror" name="balance"
-                                        value="{{ $user->balance }}" autocomplete="balance" autofocus>
+                                        value="{{ $user->balance }}" disabled autocomplete="balance" autofocus>
 
                                     @error('balance')
                                         <span class="invalid-feedback" role="alert">

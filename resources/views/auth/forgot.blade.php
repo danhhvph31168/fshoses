@@ -34,9 +34,9 @@
                     <div class="card-header">{{ __('Forgot Password') }}</div>
 
                     <div class="card-body">
-                        @if (session('message'))
+                        @if (session('success'))
                             <div class="alert alert-success">
-                                {{ session('message') }}
+                                {{ session('success') }}
                             </div>
                         @endif
                         <form method="POST" action="{{ route('handleSendMailForgot') }}">

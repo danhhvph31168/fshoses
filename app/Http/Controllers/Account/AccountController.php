@@ -48,11 +48,9 @@ class AccountController extends Controller
         // Cập nhật dữ liệu người dùng
         $data = [
             'name' => $request->name,
-            'email' => $request->email,
             'avatar' => $linkAvatar,    
             'phone' => $request->phone,
             'address' => $request->address,
-            'balance' => $request->balance,
             'district' => $request->district,
             'province' => $request->province,
             'zip_code' => $request->zip_code,
@@ -60,7 +58,7 @@ class AccountController extends Controller
 
         $user->update($data);
 
-        return redirect()->back()->with('message', 'Cập nhật người dùng thành công.');
+        return redirect()->back()->with('success', 'Account information updated successfully.');
         // return response()->json([
         //     'status' => 'Thành công',
         //     'message' => 'Cập nhật người dùng thành công.',
@@ -87,7 +85,7 @@ class AccountController extends Controller
             //     'message' => 'Mật khẩu hiện tại không đúng.'
             // ], 422);
             throw ValidationException::withMessages([
-                'old_password' => ['Mật khẩu hiện tại không đúng.'],
+                'old_password' => ['The current password is incorrect.'],
             ]);
         }
 
@@ -101,7 +99,8 @@ class AccountController extends Controller
         //     'message' => 'Thay đổi mật khẩu thành công.'
         // ], 200);
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->back()->with('message', 'Thay đổi mật khẩu thành công.');
+        return redirect()->back()->with('success', '
+Password changed successfully.');
     }
 
 }

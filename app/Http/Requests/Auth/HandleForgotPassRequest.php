@@ -27,15 +27,15 @@ class HandleForgotPassRequest extends FormRequest
             'password' => 'required|confirmed|min:8',
         ];
     }
-    public function messages(): array
-    {
-        return [
+    // public function messages(): array
+    // {
+    //     return [
 
-            'password.required' => 'Mật khẩu là bắt buộc.',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
-        ];
-    }
+    //         'password.required' => 'Mật khẩu là bắt buộc.',
+    //         'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+    //         'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+    //     ];
+    // }
     // protected function failedValidation(Validator $validator)
     // {
     //     $errors = $validator->errors();

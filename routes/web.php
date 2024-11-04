@@ -23,7 +23,7 @@ use App\Http\Controllers\Review\ReviewController;
 
 
 
-Route::get('product-detail/{id}', [ProductController::class, 'productDetail'])->name('productDetail');
+Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 
 // Route::get('/', [UserController::class, 'dashboard'])
 //     ->name('home.dashboard');

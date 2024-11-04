@@ -72,10 +72,11 @@ class AuthenController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($data, $remember)) {
-            return redirect()->route('home')->with('message', 'Login successful');
+            return redirect()->route('home')->with('success', 'Login successfully');
+            // return redirect()->intended('productDetail');
         } else {
             // If authentication fails
-            return redirect()->back()->with(['error' => 'Thông tin đăng nhập không hợp lệ, vui lòng thử lại.']);
+            return redirect()->back()->with(['error' => 'The login credentials are invalid. Please try again.']);
         }
     }
 
@@ -99,7 +100,7 @@ class AuthenController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth.showFormLogin');
+        return redirect()->route('home')->with('success', 'Logout successfully');;
         // return response()->json([
         //     'status' => 'success',
         //     'message' => 'Đăng xuất thành công!',
@@ -138,7 +139,7 @@ class AuthenController extends Controller
             $message->to($user->email);
             $message->subject('Liên kết đặt lại mật khẩu của bạn');
         });
-        return redirect()->back()->with('message', 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.');
+        return redirect()->back()->with('success', 'A password reset link has been sent to your email.');
         // return response()->json([
         //     'success' => true,
         //     'message' => 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.',
@@ -152,7 +153,7 @@ class AuthenController extends Controller
         $user = User::find($id);
         // Kiểm tra user có tồn tại hay token có hợp lệ không
         if (!$user || !Password::tokenExists($user, $token)) {
-            return redirect()->route('auth.showFormLogin')->with('error', 'Liên kết không hợp lệ hoặc đã hết hạn.');
+            return redirect()->route('auth.showFormLogin')->with('error', 'The link is invalid or has expired.');
         }
         // Nếu hợp lệ, hiển thị form đặt lại mật khẩu
         return view('auth.reset', ['user' => $user, 'token' => $token]);
@@ -173,7 +174,7 @@ class AuthenController extends Controller
 
         // Kiểm tra token có hợp lệ không
         if (!Password::tokenExists($user, $token)) {
-            return redirect()->route('auth.showFormLogin')->with('error', 'Liên kết đặt lại mật khẩu không hợp lệ.');
+            return redirect()->route('auth.showFormLogin')->with('error', 'The password reset link is invalid.');
             // return response()->json([
             //     'success' => false,
             //     'message' => 'Liên kết đặt lại mật khẩu không hợp lệ.'
@@ -187,7 +188,7 @@ class AuthenController extends Controller
 
         // Xóa token sau khi mật khẩu được cập nhật
         Password::deleteToken($user);
-        return redirect()->route('messageSuccessReset')->with('message', 'Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại.');
+        return redirect()->route('messageSuccessReset')->with('success', 'Your password has been successfully reset. Please log in again.');
         // return response()->json([
         //     'success' => true,
         //     'message' => 'Mật khẩu của bạn đã được đặt lại thành công.'

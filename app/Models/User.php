@@ -30,7 +30,6 @@ class User extends Authenticatable
         'phone',
         'status',
         'address',
-        'balance',
         'district',
         'province',
         'zip_code',
