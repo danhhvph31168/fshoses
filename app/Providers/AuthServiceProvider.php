@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Auth;
-use App\Models\Cart;
+use App\Models\Review;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Auth\Events\Authenticated;
-use Illuminate\Support\Facades\Event;
+use App\Models\Order;
+use App\Policies\OrderPolicy;
+use App\Policies\UserPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,46 +18,21 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        'App\Model' => 'App\Policies\ModelPolicy',
+        User::class => UserPolicy::class,
+        Order::class => OrderPolicy::class,
     ];
 
     /**
      * Register any authentication / authorization services.
      */
-    public function boot()
+    public function boot(): void
     {
-
-        // Lắng nghe sự kiện khi người dùng đăng nhập
-        Event::listen(Authenticated::class, function ($event) {
-            $user = $event->user; // Lấy đối tượng người dùng đã đăng nhập
-
-            // Kiểm tra nếu có giỏ hàng trong session
-            $sessionCart = session()->get('cart', []);
-
-            if (!empty($sessionCart)) {
-                // Tạo giỏ hàng trong DB cho người dùng nếu chưa có
-                $cart = Cart::firstOrCreate(['user_id' => $user->id]);
-
-                foreach ($sessionCart as $productId => $cartItem) {
-                    // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
-                    $existingItem = $cart->items()->where('product_id', $productId)->first();
-                    if ($existingItem) {
-                        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
-                        $existingItem->quantity += $cartItem['quantity'];
-                        $existingItem->save();
-                    } else {
-                        // Thêm sản phẩm từ session vào giỏ hàng DB
-                        $cart->items()->create([
-                            'product_id' => $productId,
-                            'quantity' => $cartItem['quantity'],
-                            'price' => $cartItem['price'],
-                        ]);
-                    }
-                }
-
-                // Xóa giỏ hàng từ session sau khi chuyển sang DB
-                session()->forget('cart');
+        Gate::define(
+            'my-comment',
+            function (User $user, Review $review) {
+                return $user->id == $review->user_id;
             }
-        });
+        );
     }
 }

@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Auth\AuthenController;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\Client\AccountController;
-use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Client\Cart\CartController;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Auth\MessageSuccessResetController;
+use App\Http\Controllers\Client\Product\ProductController;
+use App\Http\Controllers\Review\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +22,11 @@ use App\Http\Controllers\Client\CartController;
 */
 
 
+
 Route::get('product-detail/{id}', [ProductController::class, 'productDetail'])->name('productDetail');
 
-Route::get('/', [UserController::class, 'dashboard'])
-    ->name('home.dashboard');
+// Route::get('/', [UserController::class, 'dashboard'])
+//     ->name('home.dashboard');
 
 Route::prefix('auth')
     ->name('auth.')
@@ -42,26 +45,36 @@ Route::get('click-to-forgot', [AuthenController::class, 'clickToForgot'])->name(
 Route::post('handle-send-mail-forgot', [AuthenController::class, 'handleSendMailForgot'])->name('handleSendMailForgot');
 Route::get('click-in-email-forgot/{id}/{token}', [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handle-forgot-pass/{id}/{token}', [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
+Route::get('handle-forgot-pass', [MessageSuccessResetController::class, 'messageSuccessReset'])->name('messageSuccessReset');
+
 
 Route::middleware(['profile', 'auth:sanctum'])->group(function () {
-    Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::get('profile/{id}', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
     Route::get('change-password', [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
     Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
+
+    Route::post('add-comment/{product_id}', [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
+    // Route::get('edit-comment/{product_id}', [ReviewController::class, 'showEditForm'])->name('editComment');
+    // Route::post('update-comment/{product_id}', [ReviewController::class, 'handleUpdateComment'])->name('updateComment');
+    // Route::post('destroy-comment/{product_id}', [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
 });
 
-Route::get('admin', [UserController::class, 'dashboard'])
-    ->name('admin.dashboard')
-    ->middleware(['auth']);
+Route::get('/', function () {
 
-Route::get('admin', [AdminController::class, 'dashboard'])
-    ->name('admin.dashboard')
-    ->middleware(['auth']);
+    $products = Product::query()->latest('id')->limit(4)->get();
 
+    $categories = Category::query()->get();
+
+    return view('home', compact('products', 'categories'));
+})->name('home');
+
+///Route Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/add-cart', [CartController::class, 'add'])->name('cart.add');
 Route::get('/delete-cart/{id}', [CartController::class, 'delete'])->name('cart.delete');
 Route::post('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
 
 Route::get('/checkout', [CartController::class, 'checkoutForm'])->name('checkout.form');
+Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.applyCoupon');

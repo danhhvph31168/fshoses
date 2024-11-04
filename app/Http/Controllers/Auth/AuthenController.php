@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\HandleForgotPassRequest;
-use App\Http\Requests\API\HandleLoginRequest;
-use App\Http\Requests\API\HandleRegisterRequest;
-use App\Http\Requests\API\HandleSendMailForgotRequest;
+use App\Http\Requests\Auth\HandleForgotPassRequest;
+use App\Http\Requests\Auth\HandleLoginRequest;
+use App\Http\Requests\Auth\HandleRegisterRequest;
+use App\Http\Requests\Auth\HandleSendMailForgotRequest;
 use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
@@ -42,7 +42,7 @@ class AuthenController extends Controller
         Auth::login($user);
         // dd($user);
 
-        return redirect()->route('home.dashboard');
+        return redirect()->route('home');
 
         // Trả về dữ liệu JSON cho frontend
         // return response()->json([
@@ -70,9 +70,9 @@ class AuthenController extends Controller
         ];
         // Tạo remember_token khi người dùng tích vào ô checkbox
         $remember = $request->has('remember');
-
         if (Auth::attempt($data, $remember)) {
-            return redirect()->route('home.dashboard')->with('message', 'Login successful');
+
+            return redirect()->route('home')->with('message', 'Login successful');
         } else {
             // If authentication fails
             return redirect()->back()->with(['error' => 'Thông tin đăng nhập không hợp lệ, vui lòng thử lại.']);
@@ -122,13 +122,13 @@ class AuthenController extends Controller
         $user = User::where('email', $request->email)->first();
 
         // Kiểm tra xem email có tồn tại trên db hay không
-        if (!$user) {
-            return redirect()->back()->with('error', 'Email không tồn tại trong hệ thống.');
-            // return response()->json([
-            //     'success' => false,
-            //     'message' => 'Email không tồn tại trong hệ thống.'
-            // ], 404);
-        }
+        // if (!$user) {
+        //     return redirect()->back()->with('error', 'Email không tồn tại trong hệ thống.');
+        //     // return response()->json([
+        //     //     'success' => false,
+        //     //     'message' => 'Email không tồn tại trong hệ thống.'
+        //     // ], 404);
+        // }
 
         // Tạo token đặt lại mật khẩu
         $token = Password::createToken($user);
@@ -187,11 +187,10 @@ class AuthenController extends Controller
 
         // Xóa token sau khi mật khẩu được cập nhật
         Password::deleteToken($user);
-        return redirect()->route('auth.showFormLogin')->with('message', 'Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại.');
+        return redirect()->route('messageSuccessReset')->with('message', 'Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại.');
         // return response()->json([
         //     'success' => true,
         //     'message' => 'Mật khẩu của bạn đã được đặt lại thành công.'
         // ]);
     }
-
 }

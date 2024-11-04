@@ -12,9 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    const TYPE_ADMIN = 2;
-    const TYPE_EMPLOYEE = 1;
-    const TYPE_USER = 0;
+
+    protected $guarded = ['id'];
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,12 +28,18 @@ class User extends Authenticatable
         'password',
         'avatar',
         'phone',
+        'status',
         'address',
         'balance',
         'district',
         'province',
         'zip_code',
     ];
+      // Accessor để lấy đường dẫn đầy đủ của avatar
+      public function getAvatarUrlAttribute()
+      {
+          return asset($this->avatar ?: 'image-default/avatar.jpg');
+      }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -53,17 +60,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
-    public function isAdmin(){
-        return $this->role_id === self::TYPE_ADMIN;
-    }
-    public function isEmployee(){
-        return $this->role_id === self::TYPE_EMPLOYEE;
-    }
-    public function isUser(){
-        return $this->role_id === self::TYPE_USER;
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }
