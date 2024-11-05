@@ -56,9 +56,10 @@ Route::middleware(['profile', 'auth:sanctum'])->group(function () {
     Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 
     Route::post('add-comment/{product_id}', [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
+        Route::delete('destroy-comment/{product_id}', [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
     // Route::get('edit-comment/{product_id}', [ReviewController::class, 'showEditForm'])->name('editComment');
     // Route::post('update-comment/{product_id}', [ReviewController::class, 'handleUpdateComment'])->name('updateComment');
-    // Route::post('destroy-comment/{product_id}', [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
+
 });
 
 Route::get('/', function () {

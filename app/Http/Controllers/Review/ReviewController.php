@@ -23,5 +23,14 @@ class ReviewController extends Controller
         }
         return redirect()->back();
     }
-    
+    public function handleDestroyComment($product_id)
+    {
+        $review = Review::where('product_id', $product_id)->where('user_id', Auth::id())->first();
+        // dd($review);
+        if ($review) {
+            $review->delete();
+            return redirect()->back()->with('success', 'Comment was deleted successfully.');
+        }
+     
+    }
 }

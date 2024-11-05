@@ -257,11 +257,14 @@
                                         @can('my-comment', $comment)
                                             {{-- <a href=""
                                                 class="badge bg-primary">Sửa</a> --}}
-                                            <form action="" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="badge bg-danger">Xóa</button>
-                                            </form>
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                <form action="{{ route('destroyComment', $product->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="badge badge-danger p-1 border-0" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+                                                </form>
+                                            </div>
                                         @endcan
                                     </div>
                                 @endforeach
