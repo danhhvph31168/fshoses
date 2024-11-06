@@ -16,11 +16,11 @@ use App\Http\Controllers\Admin\CouponController;
 */
 
 
-Route::prefix('ratings')->group(function () {
-    Route::get('/', [RatingController::class, 'index']);
-    Route::post('/store', [RatingController::class, 'store']);
-    Route::get('/{id}/average-rating', [RatingController::class, 'calculateAverageRating']);
-});
+// Route::prefix('ratings')->group(function () {
+//     Route::get('/', [RatingController::class, 'index']);
+//     Route::post('/store', [RatingController::class, 'store']);
+//     Route::get('/{id}/average-rating', [RatingController::class, 'calculateAverageRating']);
+// });
 
 
 Route::prefix('coupons')->group(function () {

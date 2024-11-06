@@ -16,9 +16,7 @@ return new class extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            // $table->integer('user_id')->default(0);
-            // $table->integer('product_id')->default(0);
-            // $table->integer('order_id')->default(0);
+            
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Order::class)->constrained();
             $table->foreignIdFor(Product::class)->constrained();

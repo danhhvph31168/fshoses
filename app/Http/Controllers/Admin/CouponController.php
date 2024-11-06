@@ -1,72 +1,56 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCouponRequest;
+use App\Http\Requests\UpdateCouponRequest;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
+
     public function index()
     {
         $coupons = Coupon::latest()->paginate(10);
-        return response()->json($coupons);
+        return view('admin.coupons.index', compact('coupons'));
     }
 
     public function create()
     {
-        return response()->json();
+        return view('admin.coupons.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCouponRequest $request)
     {
-        $validatedData = $request->validate([
-            'code' => 'required|string|unique:coupons',
-            'type' => 'required|in:fixed,percent',
-            'value' => 'required|numeric',
-            'quantity' => 'required|integer|min:1',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date'
-        ]);
 
-        $coupon = Coupon::create($validatedData);
+            Coupon::query()->create($request->all());
+            return redirect()->route('admin.coupons.index')->with('success', 'Coupon added successfully');
 
-        return response()->json([
-            'message' => 'Coupon added successfully',
-            'coupon' => $coupon
-        ], 201);
     }
 
     public function edit($id)
     {
         $coupon = Coupon::findOrFail($id);
-        return response()->json($coupon);
+        return view('admin.coupons.edit', compact('coupon'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateCouponRequest $request, $id)
     {
         $coupon = Coupon::findOrFail($id);
 
-        $validatedData = $request->validate([
-            'code' => 'required|string|unique:coupons,code,' . $id,
-            'type' => 'required|in:fixed,percent',
-            'value' => 'required|numeric',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date'
-        ]);
+        $validatedData = $request->validated(); // Sử dụng validated() để lấy dữ liệu đã kiểm tra
 
         $coupon->update($validatedData);
 
-        return response()->json([
-            'message' => 'Coupon updated successfully',
-            'coupon' => $coupon
-        ]);
+        return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated successfully');
     }
 
     public function destroy($id)
     {
         $coupon = Coupon::findOrFail($id);
         $coupon->delete();
-        return response()->json(['message' => 'Coupon deleted successfully']);
+        return redirect()->route('admin.coupons.index')->with('success', 'Coupon deleted successfully');
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('type',['fixed','percent'])->default('fixed');
             $table->decimal('value',20,2);
             $table->integer('quantity')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Client\Coupon\CouponController;
+use App\Http\Controllers\Client\Rating\RatingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('cart.applyCoupon');
+
