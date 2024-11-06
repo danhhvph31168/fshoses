@@ -26,7 +26,7 @@ class LoginController extends Controller
 
             if (Auth::user()->status == 1) {
                 if (Auth::user()->role_id == 1) {
-                    return redirect()->route('admin.dashboard')->with('success', 'Login successful!');
+                    return redirect()->route('admin.')->with('success', 'Login successful!');
                 } else if (Auth::user()->role_id == 2) {
                     return redirect()->route('admin.orders.index')->with('success', 'Login successful!');
                 }

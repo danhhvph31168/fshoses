@@ -66,71 +66,18 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn btn-warning edit-item-btn"
-                                                data-bs-toggle="modal" data-bs-target="#showModal">Detail</button>
+                                            <a class="btn btn btn-warning edit-item-btn"
+                                                href="{{ route('admin.reviews.show', $item->id) }}" data-bs-toggle="modal"
+                                                data-info="{{ $item->id }}" id="detail"
+                                                data-bs-target="#showModal">Detail</a>
+
+                                            {{-- <button type="button" class="btn btn btn-warning edit-item-btn"
+                                                data-bs-toggle="modal" data-bs-target="#showModal">Detail</button> --}}
                                             <button class="btn btn-info">Update</button>
                                         </td>
                                     </form>
 
                                 </tr>
-
-                                {{-- detail review --}}
-                                <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-light p-3">
-                                                <h5 class="modal-title" id="exampleModalLabel">Review Detail</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close" id="close-modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div>
-                                                    <label for="">Comment</label>
-                                                    <textarea class="form-control" cols="30" rows="4">{{ $item->comment }}</textarea>
-                                                </div>
-                                                <hr>
-                                                <div>
-                                                    <div class="text-center">
-                                                        <img width="50px" height="50px" src="{{ $item->user->avatar }}"
-                                                            class="rounded-circle mb-3"><br>
-                                                        <b>{{ $item->user->email }}</b>
-                                                    </div>
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-6">
-                                                            <p>{{ $item->user->name }}</p>
-                                                            <p>{{ $item->user->phone }}</p>
-                                                            <p>{{ $item->user->balance }}</p>
-                                                            <p>{{ $item->user->zip_code }}</p>
-                                                        </div>
-
-                                                        <div class="col-md-6 text-end">
-                                                            <p>{{ $item->user->role->name }}</p>
-                                                            <p>{{ $item->user->address }}</p>
-                                                            <p>{{ $item->user->district }}</p>
-                                                            <p>{{ $item->user->province }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div>
-                                                    <div class="text-center">
-                                                        <img width="50%" height="50%"
-                                                            src="{{ $item->product->img_thumbnail }}" class="mb-3">
-                                                    </div>
-                                                    <div class="row mt-2">
-                                                        <b>{{ $item->product->name }}</b>
-                                                        <p class="mt-3">Category: {{ $item->product->category->name }}</p>
-                                                        <p>Price Regular: {{ $item->product->price_regular }}</p>
-                                                        <p>Price Sale: {{ $item->product->price_sale }}</p>
-                                                        <p>Description: {{ $item->product->description }}</p>
-                                                        <p>View: {{ $item->product->view }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @endforeach
                         </tbody>
 
@@ -139,6 +86,71 @@
             </div>
         </div><!--end col-->
     </div>
+
+    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-light p-3">
+                    <h5 class="modal-title" id="exampleModalLabel">Review Detail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for="">Comment</label>
+                        <textarea class="form-control" cols="30" rows="4" disabled>{{ isset($review) ? $review->comment : 0 }}</textarea>
+                    </div>
+                    <hr>
+                    {{-- <div>
+                            <div class="text-center">
+                                <img width="50px" height="50px" src="{{ $review->user->avatar }}"
+                                    class="rounded-circle mb-3"><br>
+                                <b>{{ $review->user->email }}</b>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <p>{{ $review->user->name }}</p>
+                                    <p>{{ $review->user->phone }}</p>
+                                    <p>{{ $review->user->balance }}</p>
+                                    <p>{{ $review->user->zip_code }}</p>
+                                </div>
+
+                                <div class="col-md-6 text-end">
+                                    <p>{{ $review->user->role->name }}</p>
+                                    <p>{{ $review->user->address }}</p>
+                                    <p>{{ $review->user->district }}</p>
+                                    <p>{{ $review->user->province }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div>
+                            <div class="text-center">
+                                <img width="50%" height="50%" src="{{ $review->product->img_thumbnail }}"
+                                    class="mb-3">
+                            </div>
+                            <div class="row mt-2">
+                                <b>{{ $review->product->name }}</b>
+                                <p class="mt-3">Category: {{ $review->product->category->name }}</p>
+                                <p>Price Regular: {{ $review->product->price_regular }}</p>
+                                <p>Price Sale: {{ $review->product->price_sale }}</p>
+                                <p>Description: {{ $review->product->description }}</p>
+                                <p>View: {{ $review->product->view }}</p>
+                            </div>
+                        </div> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function {
+            var url = $('#detail').data('info');
+            alert(url);
+        })
+    </script>
 @endsection
 
 @section('style-libs')

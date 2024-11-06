@@ -13,7 +13,15 @@ class ReviewController extends Controller
     public function index()
     {
         $reviews = Review::query()->with(['user', 'product'])->get();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('reviews'));
+    }
+
+    public function show($id)
+    {
+        $review = Review::query()->findOrFail($id);
+
+        return view('admin.reviews.index', compact('review'));
     }
 
     public function update($id, Request $request)

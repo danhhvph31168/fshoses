@@ -11,7 +11,7 @@ Route::get('/', function () {
     $products = Product::query()->latest('id')->limit(4)->get();
 
     $categories = Category::query()->get();
-    
+
     return view('home', compact('products', 'categories'));
 })->name('home');
 
@@ -21,4 +21,3 @@ Route::post('auth/login', [LoginController::class, 'login']);
 
 Route::post('auth/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::post('auth/logout', [LoginController::class, 'logout'])->name('logout');

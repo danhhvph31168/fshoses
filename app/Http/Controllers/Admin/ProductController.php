@@ -52,7 +52,7 @@ class ProductController extends Controller
         } else {
             return back()->with('error', 'Access denied!');
         };
-    }   
+    }
 
 
     public function store(StoreProductRequest $request)
@@ -176,7 +176,7 @@ class ProductController extends Controller
             $product->load(relations: [
                 'category',
                 'galleries',
-                'variants'
+                'productVariants'
             ]);
             $categories = Category::pluck('name', 'id')->all();
             $colors = ProductColor::query()->pluck('name', 'id')->all();
