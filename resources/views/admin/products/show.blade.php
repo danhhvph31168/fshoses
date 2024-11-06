@@ -194,7 +194,7 @@
                                                                 @php
                                                                     $variants = [];
                                                                     $totalQuantity = 0;
-                                                                    $product->variants->map(function ($item) use (
+                                                                    $product->productVariants->map(function ($item) use (
                                                                         &$variants,
                                                                     ) {
                                                                         $key =
@@ -396,7 +396,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-sm-6">
                                         <div class="mt-3">
                                             <h5 class="fs-14">Services :</h5>

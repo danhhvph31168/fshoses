@@ -34,12 +34,6 @@
             </div>
         @endif
 
-        @if ($errors->any())
-            <h1>bbbbbb</h1>
-        @else
-            <h1>aaaaaa</h1>
-        @endif
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -77,6 +71,7 @@
                                 <div class="col-md-3 mt-3">
                                     <label for="sku" class="form-label">User</label>
                                     <select name="user_id" class="form-control">
+                                        <option value="">User</option>
                                         @foreach ($data['users'] as $id => $name)
                                             <option value="{{ $id }}">{{ $name }}</option>
                                         @endforeach

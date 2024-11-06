@@ -36,12 +36,12 @@
 
     @yield('styles')
 
-    <style>
+    {{-- <style>
         * {
             font-family: 'Times New Roman', Times, serif;
             font-size: 0.8vw;
         }
-    </style>
+    </style> --}}
 
 </head>
 
