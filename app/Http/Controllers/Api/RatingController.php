@@ -32,7 +32,7 @@ class RatingController extends Controller
             ->where('order_id', $validatedData['order_id'])
             ->where('product_id', $validatedData['product_id'])
             ->first();
-
+//aaaa
         if ($existingRating) {
             return response()->json(['message' => 'Tài khoản đã đánh giá cho sản phẩm trong đơn hàng này.'], 400);
         }
