@@ -1,0 +1,33 @@
+<style>
+    /* Ẩn radio mặc định */
+    input[type="radio"].color-radio {
+        display: none;
+    }
+
+    /* Tạo vòng tròn bên ngoài */
+    input[type="radio"].color-radio + label {
+        width: 20px; /* Kích thước của vòng tròn */
+        height: 20px;
+        border: 2px solid #ccc; /* Màu viền khi chưa chọn */
+        border-radius: 50%;
+        display: inline-block;
+        cursor: pointer;
+        transition: border-color 0.3s;
+    }
+
+    /* Đổi màu khi radio được chọn */
+    input[type="radio"].color-radio:checked + label {
+        border-color: red; /* Màu viền khi chọn */
+        background-color: red; /* Màu nền khi chọn */
+    }
+</style>
+
+<!-- HTML -->
+    <input type="radio" id="color-2" name="product_color" value="{{ $id }}" class="color-radio">
+    <label for="color-2"></label>
+
+    <input type="radio" id="color-3" name="product_color" value="{{ $id }}" class="color-radio">
+    <label for="color-3"></label>
+
+    <input type="radio" id="color-4" name="product_color" value="{{ $id }}" class="color-radio">
+    <label for="color-4"></label>

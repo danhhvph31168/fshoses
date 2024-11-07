@@ -31,6 +31,8 @@
 
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
+
+    @yield('css')
 </head>
 
 <body>
@@ -78,6 +80,8 @@
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/main.js') }}"></script>
+
+    @yield('js')
 
 </body>
 
