@@ -64,7 +64,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="cart__price">$
+                                            <td class="cart__price cart-price-{{ $item['id'] }} ">$
                                                 {{ number_format($item['quatity'] * $item['price_sale']) }}
                                             </td>
                                             <td class="cart__close">
