@@ -39,7 +39,7 @@ Route::prefix('admin')->as('admin.')
 
         //review
         Route::get('reviews',               [ReviewController::class, 'index'])->name('reviews.index');
-        Route::put('reviews/{id}/show',     [ReviewController::class, 'show'])->name('reviews.show');
+        Route::get('reviews/{id}/show',     [ReviewController::class, 'show'])->name('reviews.show');
         Route::put('reviews/{id}/update',   [ReviewController::class, 'update'])->name('reviews.update');
 
         // Route::get('/', function () {

@@ -50,9 +50,9 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        @include('admin.layouts.partials.header');
+        @include('admin.layouts.partials.header')
 
-        @include('admin.layouts.partials.sidebar');
+        @include('admin.layouts.partials.sidebar')
 
         <div class="vertical-overlay"></div>
 
@@ -66,7 +66,7 @@
             </div>
             <!-- End Page-content -->
 
-            @include('admin.layouts.partials.footer');
+            @include('admin.layouts.partials.footer')
         </div>
     </div>
     <!-- end main content-->
