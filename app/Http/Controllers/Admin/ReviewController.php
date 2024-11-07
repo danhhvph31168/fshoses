@@ -20,8 +20,8 @@ class ReviewController extends Controller
     public function show($id)
     {
         $review = Review::query()->findOrFail($id);
-
-        return view('admin.reviews.index', compact('review'));
+        
+        return view(self::PATH_VIEW . __FUNCTION__, compact('review'));
     }
 
     public function update($id, Request $request)
