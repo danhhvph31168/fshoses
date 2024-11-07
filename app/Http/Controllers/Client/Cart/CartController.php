@@ -58,8 +58,10 @@ class CartController extends Controller
         // Cập nhật số lượng và tính lại tổng giá cho sản phẩm đó
         $cart[$id]['quantity'] = $quantity;
         $cart[$id]['total_price'] = $cart[$id]['price'] * $quantity;
+
         // Lưu giỏ hàng đã cập nhật vào session
         session()->put('cart', $cart);
+        
         //Tính tổng giá giỏ hàng
         $totalCart = 0;
         foreach ($cart as $item) {
