@@ -34,14 +34,14 @@ class Cart extends Model
     }
 
     //Tổng tiền thanh toán
-    public function getTotalPrice()
-    {
-        $totalPrice = 0;
-        foreach ($this->items as $item) {
-            $totalPrice += $item['price'] * $item['quantity'];
-        }
-        return $totalPrice;
-    }
+    // public function getTotalPrice()
+    // {
+    //     $totalPrice = 0;
+    //     foreach ($this->items as $item) {
+    //         $totalPrice += $item['price'] * $item['quantity'];
+    //     }
+    //     return $totalPrice;
+    // }
 
     public function getTotalQuantity()
     {

@@ -5,8 +5,9 @@
 @endsection
 
 @section('content')
-    <!-- Shopping Cart Section Begin -->
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <section class="shopping-cart spad">
         <div class="container">
             <div class="row">
@@ -22,7 +23,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($cart->list() as $key => $value)
+                                @foreach ($cart->list() as $key => $value) @dd($value)
                                     <tr>
                                         <td class="product__cart__item">
                                             <div class="product__cart__item__pic">
@@ -86,11 +87,11 @@
                         <div class="cart__total">
                             <ul>
                                 <li>Subtotal<span class="cart__total-price cart-price-{{ $value['id'] }}">
-                                        {{ number_format($cart->getTotalPrice()) }}
+                                        {{-- {{ number_format($cart->getTotalPrice()) }} --}}
                                     </span></li>
                                 <li>
                                     Total<span class="cart__total-price cart-price-{{ $value['id'] }}">
-                                        {{ number_format($cart->getTotalPrice()) }}
+                                        {{-- {{ number_format($cart->getTotalPrice()) }} --}}
                                     </span>
                                 </li>
                             </ul>
