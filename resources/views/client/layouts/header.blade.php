@@ -39,8 +39,8 @@
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
-                                {{-- <img src="{{Auth::user()->avatar}}" alt="" width="100px" height="100px"> --}}
-                                <i class="bi bi-person-circle"></i>
+                                <img src="{{Auth::user()->avatar}}" alt="" width="15px" height="15px" style="border-radius: 50%; object-fit: cover;">
+                                {{-- <i class="bi bi-person-circle"></i> --}}
                                 <span class="text-start ms-xl-2">
                                     <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Xin chào
                                         {{ Auth::user()->name }}</span>

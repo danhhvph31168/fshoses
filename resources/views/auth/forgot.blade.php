@@ -1,93 +1,61 @@
-{{-- @section('content') --}}
-<!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
-    data-sidebar-image="none" data-preloader="disable">
+@extends('auth.layouts.master')
+@section('title')
+    Send Mail Reset Password
+@endsection
 
-<head>
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+            <div class="card mt-4">
 
-    <meta charset="utf-8" />
-    <title>Sign In | Velzon - Admin & Dashboard Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="Themesbrand" name="author" />
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
+                <div class="card-body p-4">
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <div class="text-center mt-2">
+                        <h5 class="text-primary">Forgot Password?</h5>
+                        <p class="text-muted">Reset password with Male fashion.</p>
 
-    <!-- Layout config Js -->
-    <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
-    <!-- Bootstrap Css -->
-    <link href="{{ asset('theme/admin/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="{{ asset('theme/admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="{{ asset('theme/admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- custom Css-->
-    <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+                        <lord-icon src="https://cdn.lordicon.com/rhvddzym.json" trigger="loop" colors="primary:#0ab39c"
+                            class="avatar-xl"></lord-icon>
 
-</head>
+                    </div>
 
-<body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Forgot Password') }}</div>
-
-                    <div class="card-body">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+                    <div class="alert border-0 alert-warning text-center mb-2 mx-2" role="alert">
+                        Enter your email and instructions will be sent to you!
+                    </div>
+                    <div class="p-2">
                         <form method="POST" action="{{ route('handleSendMailForgot') }}">
                             @csrf
-
-                            <div class="row mb-3">
-                                <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" autocomplete="email" autofocus>
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                            <div class="mb-4">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email"
+                                    class="form-control @error('email') is-invalid @enderror" id="email"
+                                    placeholder="Enter Email">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
-
-
-                            <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Send') }}
-                                    </button>
-
-                                </div>
+                            <div class="text-center mt-4">
+                                <button class="btn btn-success w-100" type="submit">Send Reset Link</button>
                             </div>
-                        </form>
+                        </form><!-- end form -->
                     </div>
                 </div>
+                <!-- end card body -->
             </div>
+            <!-- end card -->
+
+            <div class="mt-4 text-center">
+                <p class="mb-0">Wait, I remember my password... <a href="{{ route('auth.showFormLogin') }}"
+                        class="fw-semibold text-primary text-decoration-underline"> Click here </a> </p>
+            </div>
+
         </div>
     </div>
-    <!-- end auth-page-wrapper -->
-
-    <!-- JAVASCRIPT -->
-    <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
-
-    <!-- password-addon init -->
-    <script src="{{ asset('theme/admin/assets/js/pages/password-addon.init.js') }}"></script>
-</body>
-
-</html>
-{{-- @endsection --}}
+@endsection

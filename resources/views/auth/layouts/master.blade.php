@@ -1,4 +1,3 @@
-{{-- @section('content') --}}
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
     data-sidebar-image="none" data-preloader="disable">
@@ -6,7 +5,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Sign In | Velzon - Admin & Dashboard Template</title>
+    <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -27,25 +26,19 @@
 </head>
 
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Reset Password') }}
-                    </div>
-                    <div class="card-body">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        <div class="alert alert-success">
-                        <span>Your password has been successfully reset. Please log in again. <a href="{{route('auth.showFormLogin')}}">Đăng nhập</a></span>
-                    </div>
-                    </div>
-                </div>
-            </div>
+
+    <div class="auth-page-wrapper pt-5">
+
+
+        @include('auth.layouts.header')
+
+            @include('auth.layouts.header-title')
+            
+            @yield('content')
         </div>
+        <!-- end auth page content -->
+
+        @include('auth.layouts.footer')
     </div>
     <!-- end auth-page-wrapper -->
 
@@ -57,9 +50,12 @@
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
 
+    <!-- particles js -->
+    <script src="{{ asset('theme/admin/assets/libs/particles.js/particles.js') }}"></script>
+    <!-- particles app js -->
+    <script src="{{ asset('theme/admin/assets/js/pages/particles.app.js') }}"></script>
     <!-- password-addon init -->
     <script src="{{ asset('theme/admin/assets/js/pages/password-addon.init.js') }}"></script>
 </body>
 
 </html>
-{{-- @endsection --}}
