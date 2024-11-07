@@ -23,7 +23,7 @@ Sign In
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Email</label>
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        id="username" name="email" placeholder="Enter username">
+                                        id="username" name="email" placeholder="Enter username" autofocus>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

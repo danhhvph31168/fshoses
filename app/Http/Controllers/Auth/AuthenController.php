@@ -35,7 +35,7 @@ class AuthenController extends Controller
         Auth::login($user);
         // dd($user);
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success','Welcome, you have successfully registered an account.');
 
     }
     public function showFormLogin()

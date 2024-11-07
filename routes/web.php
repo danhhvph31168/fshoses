@@ -48,7 +48,7 @@ Route::post('handle-forgot-pass/{id}/{token}', [AuthenController::class, 'handle
 Route::get('handle-forgot-pass', [MessageSuccessResetController::class, 'messageSuccessReset'])->name('messageSuccessReset');
 
 
-Route::middleware(['profile', 'auth:sanctum'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('profile/{id}', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 

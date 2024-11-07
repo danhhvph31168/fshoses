@@ -13,13 +13,15 @@
     <!-- Banner Section End --> --}}
 
     <!-- Shop Details Section Begin -->
+
+
     <section class="shop-details">
         <div class="product__details__pic">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="product__details__breadcrumb">
-                            <a href="./index.html">Home</a>
+                            <a href="{{route('home')}}">Home</a>
                             <a href="./shop.html">Shop</a>
                             <span>Product Details</span>
                         </div>
@@ -261,8 +263,8 @@
                                                 <form action="{{ route('destroyComment', $product->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit"
-                                                        class="badge badge-danger p-1 border-0" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+                                                    <button type="submit" class="badge badge-danger p-1 border-0"
+                                                        onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
                                                 </form>
                                             </div>
                                         @endcan
@@ -331,5 +333,4 @@
             </div>
         </div>
     </section>
-    <!-- Related Section End --
 @endsection

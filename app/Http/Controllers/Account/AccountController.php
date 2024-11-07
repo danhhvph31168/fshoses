@@ -13,12 +13,13 @@ use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
-    public function showFormUpdateProfile()
+    public function showFormUpdateProfile($id)
     {
         $user = Auth::user();
-
+        if ($user->id != $id) {
+            return view('page-error.404');
+        }
         return view('profiles.formProfile', compact('user'));
-
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
@@ -42,7 +43,7 @@ class AccountController extends Controller
         // Cập nhật dữ liệu người dùng
         $data = [
             'name' => $request->name,
-            'avatar' => $linkAvatar,    
+            'avatar' => $linkAvatar,
             'phone' => $request->phone,
             'address' => $request->address,
             'district' => $request->district,
@@ -53,7 +54,6 @@ class AccountController extends Controller
         $user->update($data);
 
         return redirect()->back()->with('success', 'Account information updated successfully.');
-
     }
 
     public function showFormChangePassword()
@@ -79,7 +79,6 @@ class AccountController extends Controller
             'password' => Hash::make($request->password),
         ]);
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->back()->with('success', 'Password changed successfully.');
+        return redirect()->back()->with('message', 'Password changed successfully.');
     }
-
 }
