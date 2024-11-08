@@ -7,9 +7,12 @@
     <meta charset="utf-8" />
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @yield('meta')
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
+
+    @yield('style-libs')
 
     @yield('css')
     <!--datatable css-->
@@ -18,6 +21,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
 
     <!-- Layout config Js -->
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
@@ -29,12 +33,16 @@
     <link href="{{ asset('theme/admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
-    <style>
+
+    @yield('styles')
+
+    {{-- <style>
         * {
             font-family: 'Times New Roman', Times, serif;
             font-size: 0.8vw;
         }
-    </style>
+    </style> --}}
+
 </head>
 
 <body>
@@ -42,41 +50,55 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        @include('admin.layouts.header')
+        @include('admin.layouts.partials.header')
 
+        @include('admin.layouts.partials.sidebar')
 
-        <!-- ========== App Menu ========== -->
-        @include('admin.layouts.sidebar')
-        <!-- Left Sidebar End -->
-
-        <!-- Vertical Overlay-->
         <div class="vertical-overlay"></div>
 
-        <!-- ============================================================== -->
-
-
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="main-content">
 
             <div class="page-content">
                 <div class="container-fluid">
                     @yield('content')
                 </div>
+                <!-- container-fluid -->
             </div>
             <!-- End Page-content -->
 
-            @include('admin.layouts.footer')
+            @include('admin.layouts.partials.footer')
         </div>
-        <!-- end main content-->
+    </div>
+    <!-- end main content-->
 
     </div>
     <!-- END layout-wrapper -->
 
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="customizer-setting d-none d-md-block">
+        <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
+            data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
+            <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
+        </div>
+    </div>
+
     <script>
         const PATH_ROOT = '{{ asset('theme/admin') }}';
     </script>
-    <!-- JAVASCRIPT -->
     <!-- JAVASCRIPT -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -85,6 +107,8 @@
     <script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
+
+    @yield('script-libs')
 
     @yield('js')
 
@@ -106,6 +130,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     @yield('scripts')
+
+
 </body>
 
 </html>

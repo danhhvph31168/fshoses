@@ -38,15 +38,4 @@ class StoreUserRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'role_id.required' => 'The role name cannot be empty!',
-
-            'name.required' => 'The user name cannot be empty!',
-            'name.max' => 'The user name must not exceed 255 characters!',
-
-
-        ];
-    }
 }

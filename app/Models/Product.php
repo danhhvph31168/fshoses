@@ -44,7 +44,7 @@ class Product extends Model
         return $this->hasMany(ProductGallery::class);
     }
 
-    public function variants()
+    public function productVariants()
     {
         return $this->hasMany(ProductVariant::class);
     }

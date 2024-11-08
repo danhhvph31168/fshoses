@@ -10,16 +10,16 @@ class Category extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    
+
     protected $fillable = [
         'name',
-        // 'parent_id',
+        'parent_id',
+        'image',
         'is_active',
     ];
-
-    public function product()
+    public function products()
     {
-        return $this->hasOne(Product::class);
+        return $this->hasMany(Product::class);
     }
 
     public function parent()

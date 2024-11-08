@@ -39,4 +39,8 @@ class Payment extends Model
     const STATUS_REFUNDED       = 'refunded';
     const STATUS_CANCELED       = 'canceled';
     const STATUS_IN_PROGRESS    = 'in_progress';
+
+    public function order(){
+        return $this->hasOne(Order::class);
+    }
 }

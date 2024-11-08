@@ -16,6 +16,7 @@ class CheckAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return (Auth::user()->role_id === 1  || Auth::user()->role_id === 2) ? $next($request) : abort(403);
+        // dd(Auth::user());
+        return (Auth::user()->role_id == 1  || Auth::user()->role_id == 2) ? $next($request) : abort(403);
     }
 }
