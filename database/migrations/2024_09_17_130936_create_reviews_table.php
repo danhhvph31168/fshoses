@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Product::class)->constrained();
             $table->string('comment');
-            $table->integer('rating')->default(0);
+            $table->boolean('is_show')->default(false);
             $table->timestamps();
         });
     }

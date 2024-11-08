@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -21,9 +24,14 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user();
+
+        // dd($user);
+
         $data = User::query()->with('role')->latest('id')->paginate(5);
+
         $user = Auth::user();
         if ($user->role_id === 1) {
+
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -39,7 +47,7 @@ class UserController extends Controller
         $role = Role::query()->pluck('name', 'id')->all();
 
         // dd($role);
-        if ($user->role_id === 1) {
+        if ($user->role_id == 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('role'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -49,12 +57,14 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $user = Auth::user();
+
+        // dd($user);
         $data = $request->except('avatar');
 
-        if ($user->role_id === 1) {
+        if ($user->role_id == 1) {
 
             if ($request->hasFile('avatar')) {
                 $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
@@ -79,6 +89,7 @@ class UserController extends Controller
         $data = User::query()->findOrFail($id);
 
         if ($user->role_id === 1) {
+
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -95,7 +106,7 @@ class UserController extends Controller
         // dd($data);
 
         $role = Role::query()->pluck('name', 'id')->all();
-        if ($user->role_id === 1) {
+        if ($user->role_id == 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('model', 'role'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -105,31 +116,36 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
         $user = Auth::user();
 
         $model = User::query()->findOrFail($id);
 
-        // dd($model->status);
+        if ($user->role_id == 1) {
 
-        if ($user->role_id === 1) {
+            if ($model->email == $request->email) {
 
-            $data = $request->except('avatar');
+                $data['email'] = $model->email;
 
-            if ($request->hasFile('avatar')) {
-                $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
+                $data = $request->except('avatar');
+
+                if ($request->hasFile('avatar')) {
+                    $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
+                }
+
+                $currentAvatar = $model->avatar;
+
+                $model->update($data);
+
+                if ($request->hasFile('cover') && $currentAvatar && Storage::exists($currentAvatar)) {
+                    Storage::delete($currentAvatar);
+                }
+
+                return redirect()->route('admin.users.index')->with('success', 'Account updated successfully!');
+            } else {
+                return back()->with('error', 'The email has already been taken!');
             }
-
-            $currentAvatar = $model->avatar;
-
-            $model->update($data);
-
-            if ($request->hasFile('cover') && $currentAvatar && Storage::exists($currentAvatar)) {
-                Storage::delete($currentAvatar);
-            }
-
-            return redirect()->route('admin.users.index')->with('success', 'Account updated successfully!');
         } else {
             return back()->with('error', 'Access denied!');
         };
@@ -142,7 +158,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $model = User::query()->findOrFail($id);
-        if ($user->role_id === 1) {
+        if ($user->role_id == 1) {
             $model->delete();
 
             if ($model->avatar && Storage::exists($model->avatar)) {

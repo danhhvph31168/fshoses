@@ -86,7 +86,6 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
-                                {{-- @if ($item->role_id === 1 || $item->role_id === 2) --}}
                                 <tr class="align-middle text-center">
                                     <th style="width: 10px">{{ $item->id }}</th>
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}" alt=""
@@ -120,7 +119,6 @@
                                         </form>
                                     </td>
                                 </tr>
-                                {{-- @endif --}}
                             @endforeach
                         </tbody>
                     </table>
@@ -135,8 +133,9 @@
 
 @endsection
 
-@section('js')
 
+
+@section('js')
     {{-- <script>
         new DataTable("#example", {
             order: [0, 'asc']
