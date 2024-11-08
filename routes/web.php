@@ -21,8 +21,10 @@ Route::get('/', function () {
 Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 
 // cart
-Route::get('cart', [CartController::class, 'index'])->name('cart.list');
-Route::post('cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::get('cart',          [CartController::class, 'index'])->name('cart.list');
+Route::post('cart/add',     [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
+Route::delete('cart/deleteItem/{id}', [CartController::class, 'deleteItem'])->name('cart.delItem');
 
 // auth
 Route::prefix('auth')

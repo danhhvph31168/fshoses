@@ -12,6 +12,7 @@ class CartController extends Controller
     public function index()
     {
         $cart = session('cart');
+        // dd($cart);
 
         $totalAmount = 0;
         if (session()->has('cart')) {
@@ -58,5 +59,50 @@ class CartController extends Controller
         // dd(session('cart'));
 
         return redirect()->route('cart.list');
+    }
+
+    public function updateCart(Request $request)
+    {
+        $request->validate([
+            'variant_id' => 'required|integer',
+            'quatity' => 'required|integer|min:1',
+        ]);
+
+        $variant_id = $request->variant_id;
+        $quatity = $request->quatity;
+
+        $cart = session('cart');
+        $cart[$variant_id]['quatity'] = $quatity;
+
+        $totalAmount = $cart[$variant_id]['price_sale'] * $quatity;
+
+        session()->put('cart', $cart);
+
+        $totalCart = 0;
+        foreach (session('cart') as $item) {
+            $totalCart += $item['price_sale'] * $item['quatity'];
+        }
+
+        return response()->json([
+            'data' => [
+                'totalAmount' => $totalAmount,
+                "totalCart" => $totalCart
+            ]
+        ], 200);
+    }
+
+    public function deleteItem($id)
+    {
+        $cart = session('cart');
+
+        foreach ($cart as $key => $value) {
+            if ($key == $id) {
+                unset($cart[$key]);
+            }
+        }
+
+        session()->put('cart', $cart);
+
+        return back();
     }
 }
