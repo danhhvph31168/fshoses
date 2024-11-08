@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\OrderHistoryController;
 use App\Http\Controllers\Auth\AuthenController;
 
 use App\Models\Product;
@@ -59,6 +60,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('destroy-comment/{product_id}', [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
     // Route::get('edit-comment/{product_id}', [ReviewController::class, 'showEditForm'])->name('editComment');
     // Route::post('update-comment/{product_id}', [ReviewController::class, 'handleUpdateComment'])->name('updateComment');
+
+    Route::get('order-history',[OrderHistoryController::class,'getListOrderHistory'])->name('getListOrderHistory');
 
 });
 

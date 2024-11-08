@@ -40,9 +40,10 @@
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
                                 <i class="bi bi-cart-check-fill mr-2"></i>
-                                <img src="{{Auth::user()->avatar}}" alt="" width="18px" height="18px" style="border-radius: 50%; object-fit: cover;">
+                                <img src="{{ Auth::user()->avatar }}" alt="" width="18px" height="18px"
+                                    style="border-radius: 50%; object-fit: cover;">
                                 {{-- <i class="bi bi-person-circle"></i> --}}
-                          
+
                                 <span class="text-start ms-xl-2">
                                     <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text fw-semibold">
                                         {{ Auth::user()->name }}</span>
@@ -63,6 +64,9 @@
                             <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Thay đổi mật khẩu</span></a>
+                            <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
+                                    class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Lịch sử đơn hàng</span></a>
 
                             <form action="{{ route('auth.logout') }}" method="POST" style="margin: 0;">
                                 @csrf

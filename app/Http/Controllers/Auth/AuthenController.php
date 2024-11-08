@@ -28,6 +28,7 @@ class AuthenController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+            'role_id' => 3,
         ];
         // Thêm mới User vào cơ sở dữ liệu
         $user = User::query()->create($data);
