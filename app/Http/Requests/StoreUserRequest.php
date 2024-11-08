@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,30 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'role_id'   => ['required', Rule::exists('roles', 'id')],
+            'name'      => 'required|max:255',
+            'email'     => 'required|unique',
+            'password'  => 'required|max:30',
+            'avatar'    => 'nullable|image',
+            'phone'     => 'required|number',
+            'status'    => [Rule::in([0, 1])],
+            'address'   => 'nullable|max:255',
+            'balance'   => 'nullable|min:0',
+            'district'  => 'nullable|max:255',
+            'province'  => 'nullable|max:255',
+            'zip_code'  => 'number',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'role_id.required' => 'The role name cannot be empty!',
+
+            'name.required' => 'The user name cannot be empty!',
+            'name.max' => 'The user name must not exceed 255 characters!',
+
+
         ];
     }
 }

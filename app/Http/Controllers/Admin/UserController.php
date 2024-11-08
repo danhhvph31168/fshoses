@@ -22,12 +22,11 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = User::query()->with('role')->latest('id')->paginate(5);
-
+        $user = Auth::user();
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
-            echo "Access denied!";
-            return back();
+            return back()->with('error', 'Access denied!');
         };
     }
 
@@ -43,8 +42,7 @@ class UserController extends Controller
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('role'));
         } else {
-            echo "Access denied!";
-            return back();
+            return back()->with('error', 'Access denied!');
         };
     }
 
@@ -68,7 +66,7 @@ class UserController extends Controller
 
             return redirect()->route('admin.users.index')->with('success', 'Account created successfully!');
         } else {
-            echo "Access denied!";
+            return back()->with('error', 'Access denied!');
         };
     }
 
@@ -80,12 +78,10 @@ class UserController extends Controller
         $user = Auth::user();
         $data = User::query()->findOrFail($id);
 
-        // dd($data);
-
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
-            echo "Access denied!";
+            return back()->with('error', 'Access denied!');
         };
     }
 
@@ -102,7 +98,7 @@ class UserController extends Controller
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('model', 'role'));
         } else {
-            echo "Access denied!";
+            return back()->with('error', 'Access denied!');
         };
     }
 
@@ -135,7 +131,7 @@ class UserController extends Controller
 
             return redirect()->route('admin.users.index')->with('success', 'Account updated successfully!');
         } else {
-            echo "Access denied!";
+            return back()->with('error', 'Access denied!');
         };
     }
 
@@ -155,8 +151,7 @@ class UserController extends Controller
 
             return back()->with('success', 'Account deleted successfully');
         } else {
-            echo "Bạn không có quyền truy cập!";
-            return back();
+            return back()->with('error', 'Access denied!');
         };
     }
 }
