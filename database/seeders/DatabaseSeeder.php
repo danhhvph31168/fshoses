@@ -11,6 +11,8 @@ use App\Models\ProductGallery;
 use App\Models\ProductSize;
 use App\Models\ProductVariant;
 use App\Models\Role;
+use Nette\Utils\Random;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -123,5 +125,34 @@ class DatabaseSeeder extends Seeder
             }
             DB::table('product_variants')->insert($data);
         }
+
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        for ($i = 1; $i < 11; $i++) {
+            Category::query()->create([
+                'name' => 'Danh mục ' . $i,
+                'parent_id' => random_int(1, 10)
+            ]);
+        }
+
+        Role::query()->insert(
+            [
+                [
+                    'name' => 'Admin',
+                    'Status' => '1',
+                ],
+                [
+                    'name' => 'Staff',
+                    'Status' => '1',
+                ],
+                [
+                    'name' => 'User',
+                    'Status' => '1',
+                ]
+            ],
+        );
     }
 }

@@ -30,7 +30,23 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function orderItems(){
+    public function orderItems()
+    {
         return $this->hasMany(OrderItem::class);
+    }
+    public function product()
+    {
+        // Variants n-1 Products:
+        return $this->belongsTo(Product::class);
+    }
+    public function size()
+    {
+        // ProductVarisant n-1 ProductSize
+        return $this->belongsTo(ProductSize::class);
+    }
+    public function color()
+    {
+        // ProductVariants n-1 ProductColor
+        return $this->belongsTo(ProductColor::class);
     }
 }
