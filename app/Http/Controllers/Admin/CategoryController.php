@@ -19,9 +19,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = Category::query()->with(['parent', 'children'])->latest('id')->paginate(5);
+        if (Auth::user()->role_id === 1) {
+            $data = Category::query()->latest('id')->paginate(5);
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+            return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     /**

@@ -114,10 +114,12 @@
                         <div class="collapse menu-dropdown" id="sidebarRoles">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.roles.index') }}" class="nav-link" data-key="t-horizontal">List</a>
+                                    <a href="{{ route('admin.roles.index') }}" class="nav-link"
+                                        data-key="t-horizontal">List</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.roles.create') }}" class="nav-link" data-key="t-horizontal">Add new</a>
+                                    <a href="{{ route('admin.roles.create') }}" class="nav-link"
+                                        data-key="t-horizontal">Add new</a>
                                 </li>
                             </ul>
                         </div>

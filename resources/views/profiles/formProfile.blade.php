@@ -66,7 +66,7 @@
                                 <div class="col-md-6">
                                     <input id="email" type="text"
                                         class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ $user->email }}" autocomplete="email" autofocus>
+                                        value="{{ $user->email }}" autocomplete="email" autofocus disabled>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -84,7 +84,7 @@
                                     <input id="email" type="file"
                                         class="form-control mb-4 @error('email') is-invalid @enderror" name="avatar"
                                         autocomplete="email" autofocus>
-                                    <img src="{{ $user->avatar_url }}" alt="" width="100px" height="100px">
+                                    <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="" width="100px" height="100px">
                                     {{-- {{dd($user->avatar)}} --}}
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -148,7 +148,7 @@
                                 <div class="col-md-6">
                                     <input id="balance" type="text"
                                         class="form-control @error('balance') is-invalid @enderror" name="balance"
-                                        value="{{ $user->balance }}" autocomplete="balance" autofocus>
+                                        value="{{ $user->balance }}" autocomplete="balance" autofocus disabled>
 
                                     @error('balance')
                                         <span class="invalid-feedback" role="alert">

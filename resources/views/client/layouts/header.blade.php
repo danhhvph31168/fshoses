@@ -45,12 +45,14 @@
             <div class="col-md-3">
 
                 @if (Auth::check())
+                    {{-- @dd(Auth::user()) --}}
                     <div class="dropdown ms-sm-3 header__menu topbar-user">
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
-                                {{-- <img src="{{Auth::user()->avatar}}" alt="" width="100px" height="100px"> --}}
-                                <i class="bi bi-person-circle"></i>
+                                <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="" width="30px"
+                                    height="30px">
+                                {{-- <i class="bi bi-person-circle"></i> --}}
                                 <span class="text-start ms-xl-2">
                                     <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Xin chào
                                         {{ Auth::user()->name }}</span>
