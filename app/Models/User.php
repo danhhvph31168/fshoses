@@ -12,7 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
     protected $guarded = ['id'];
+
 
     /**
      * The attributes that are mass assignable.
@@ -33,6 +35,11 @@ class User extends Authenticatable
         'province',
         'zip_code',
     ];
+      // Accessor để lấy đường dẫn đầy đủ của avatar
+      public function getAvatarUrlAttribute()
+      {
+          return asset($this->avatar ?: 'image-default/avatar.jpg');
+      }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -56,6 +63,11 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

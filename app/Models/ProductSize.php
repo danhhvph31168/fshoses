@@ -11,4 +11,9 @@ class ProductSize extends Model
     protected $fillable = [
         'name',
     ];
+    public function variants()
+    {
+        // ProductSizes 1-n ProductVariants
+        return $this->hasMany(ProductVariant::class);
+    }
 }

@@ -31,7 +31,7 @@ class StoreProductRequest extends FormRequest
             'price_sale'                    => 'required|min:0',
             'description'                   => 'nullable|max:255',
             'content'                       => 'max:65000',
-            
+
             'is_active'                     => [Rule::in([0, 1])],
             'is_hot_deal'                   => [Rule::in([0, 1])],
             'is_show_home'                  => [Rule::in([0, 1])],

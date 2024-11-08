@@ -209,7 +209,7 @@
                             <i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle">Lock screen</span></a>
 
-                        <form action="{{ route('logout') }}" method="post">
+                        <form action="{{ route('auth.logout') }}" method="post">
                             @csrf
                             <button type="submit" class="border-0 dropdown-item">
                                 <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>

@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    
+
     protected $fillable = [
         'category_id',
         'name',
@@ -28,6 +28,7 @@ class Product extends Model
         'is_delete',
     ];
 
+
     protected $casts = [
         'is_active' => 'boolean',
         'is_hot_deal' => 'boolean',
@@ -38,7 +39,6 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
     public function galleries()
     {
         return $this->hasMany(ProductGallery::class);
