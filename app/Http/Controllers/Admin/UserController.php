@@ -59,7 +59,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        // dd($user);
+        // dd($request->all());
         $data = $request->except('avatar');
 
         if ($user->role_id == 1) {
