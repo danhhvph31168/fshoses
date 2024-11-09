@@ -182,7 +182,7 @@
                                     <tbody>
                                         @php
                                             $variants = [];
-                                            $product->variants->map(function ($item) use (&$variants) {
+                                            $product->productVariants->map(function ($item) use (&$variants) {
                                                 $key = $item->product_size_id . '-' . $item->product_color_id;
 
                                                 $variants[$key] = [
@@ -237,7 +237,7 @@
                 </div>
             </div>
         </div>
-        
+
         {{-- Gallery --}}
         <div class="row">
             <div class="col-lg-12">

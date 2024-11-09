@@ -65,10 +65,6 @@
                                     <th>{{ $item->created_at }}</th>
                                     <th>{{ $item->updated_at }}</th>
                                     <td>
-                                        <a href="{{ route('admin.categories.show', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a>
-
                                         <a href="{{ route('admin.categories.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>

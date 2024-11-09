@@ -57,6 +57,8 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
+        // dd($request->product_variants);
+
         $user = Auth::user();
         if ($user->role_id === 1) {
             list(
@@ -90,8 +92,9 @@ class ProductController extends Controller
                 return redirect()
                     ->route('admin.products.index')
                     ->with('success', 'Product added Successfully!');
-            } catch (\Exception $exception) {
+            } catch (\Throwable $th) {
                 DB::rollBack();
+                dd($th->getMessage());
 
                 if (
                     !empty($dataProduct['img_thumbnail'])
@@ -172,7 +175,6 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         if ($user->role_id === 1) {
-            // $data = Product::query()->with('variants', 'galleries')->findOrFail($id);
             $product->load(relations: [
                 'category',
                 'galleries',
@@ -204,7 +206,7 @@ class ProductController extends Controller
             $product->load(relations: [
                 'category',
                 'galleries',
-                'variants'
+                'productVariants'
             ]);
 
             $categories = Category::query()->pluck('name', 'id')->all();
@@ -222,6 +224,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+        // dd($request->all());
         $user = Auth::user();
         if ($user->role_id === 1) {
             list(
@@ -317,18 +320,19 @@ class ProductController extends Controller
         $user = Auth::user();
         if ($user->role_id === 1) {
             try {
-                $dataHasImage = $product->galleries->toArray() + $product->variants->toArray();
+                $dataHasImage = $product->galleries->toArray() + $product->productVariants->toArray();
 
                 DB::transaction(function () use ($product) {
 
                     $product->galleries()->delete();
 
-                    foreach ($product->variants as $variant) {
+                    foreach ($product->productVariants as $variant) {
                         $variant->orderItems()->delete();
                     }
-                    $product->variants()->delete();
+                    $product->productVariants()->delete();
 
                     $product->delete();
+
                 }, 3);
 
                 foreach ($dataHasImage as $item) {

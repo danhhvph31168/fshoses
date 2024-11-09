@@ -6,11 +6,9 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RefundController;
 use App\Http\Controllers\Admin\ReviewController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\RoleController;
 
@@ -53,10 +51,9 @@ Route::prefix('admin')->as('admin.')
                 Route::get('/',             [CategoryController::class, 'index'])->name('index');
                 Route::get('create',        [CategoryController::class, 'create'])->name('create');
                 Route::post('store',        [CategoryController::class, 'store'])->name('store');
-                Route::get('show/{id}',     [CategoryController::class, 'show'])->name('show');
                 Route::get('{id}/edit',     [CategoryController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',   [CategoryController::class, 'update'])->name('update');
-                Route::get('{id}/destroy',  [CategoryController::class, 'destroy'])->name('destroy');
+                Route::delete('{id}/destroy',  [CategoryController::class, 'destroy'])->name('destroy');
             });
 
         Route::resource('products',ProductController::class);
