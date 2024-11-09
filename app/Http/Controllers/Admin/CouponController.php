@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CouponController extends Controller
 {
@@ -14,26 +15,44 @@ class CouponController extends Controller
     public function index()
     {
         $coupons = Coupon::latest()->paginate(10);
-        return view('admin.coupons.index', compact('coupons'));
+        $user = Auth::user();
+        if ($user->role_id === 1) {
+            return view('admin.coupons.index', compact('coupons'));
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     public function create()
     {
-        return view('admin.coupons.create');
+        $user = Auth::user();
+        if ($user->role_id === 1) {
+            return view('admin.coupons.create');
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     public function store(StoreCouponRequest $request)
     {
-
-            Coupon::query()->create($request->all());
+        $user = Auth::user();
+        Coupon::query()->create($request->all());
+        if ($user->role_id === 1) {
             return redirect()->route('admin.coupons.index')->with('success', 'Coupon added successfully');
-
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     public function edit($id)
     {
+        $user = Auth::user();
         $coupon = Coupon::findOrFail($id);
-        return view('admin.coupons.edit', compact('coupon'));
+        if ($user->role_id === 1) {
+            return view('admin.coupons.edit', compact('coupon'));
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     public function update(UpdateCouponRequest $request, $id)
@@ -43,14 +62,24 @@ class CouponController extends Controller
         $validatedData = $request->validated(); // Sử dụng validated() để lấy dữ liệu đã kiểm tra
 
         $coupon->update($validatedData);
-
-        return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated successfully');
+        $user = Auth::user();
+        if ($user->role_id === 1) {
+            return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated successfully');
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 
     public function destroy($id)
     {
+        $user = Auth::user();
         $coupon = Coupon::findOrFail($id);
-        $coupon->delete();
-        return redirect()->route('admin.coupons.index')->with('success', 'Coupon deleted successfully');
+            $coupon->delete();
+        if ($user->role_id === 1) {
+
+            return redirect()->route('admin.coupons.index')->with('success', 'Coupon deleted successfully');
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
     }
 }

@@ -78,15 +78,13 @@
                                 <div class="col-md-4">
                                     <div>
                                         <label for="code" class="form-label">Code</label>
-                                        <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ old('code', $coupon->code) }}" autofocus>
-                                        @error('code')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <input type="text" class="form-control" name="code" id="code" value="{{  $coupon->code }}" autofocus>
+
                                     </div>
 
                                     <div>
                                         <label for="value" class="form-label">Value</label>
-                                        <input type="number" class="form-control @error('value') is-invalid @enderror" name="value" id="value" value="{{ old('value', $coupon->value) }}">
+                                        <input type="number" class="form-control" name="value" id="value" value="{{ $coupon->value }}">
                                         @error('value')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -94,53 +92,30 @@
 
                                     <div>
                                         <label for="type">Type</label>
-                                        <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
-                                            <option value="fixed" {{ (old('type', $coupon->type) == 'fixed') ? 'selected' : '' }}>VND</option>
-                                            <option value="percent" {{ (old('type', $coupon->type) == 'percent') ? 'selected' : '' }}>%</option>
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="fixed" {{  $coupon->type == 'fixed' ? 'selected' : '' }}>VND</option>
+                                            <option value="percent" {{  $coupon->type == 'percent' ? 'selected' : '' }}>%</option>
                                         </select>
-                                        @error('type')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+
                                     </div>
 
                                     <div>
                                         <label for="quantity" class="form-label">Quantity</label>
-                                        <input type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" id="quantity" value="{{ old('quantity', $coupon->quantity) }}">
-                                        @error('quantity')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <input type="number" class="form-control" name="quantity" id="quantity" value="{{  $coupon->quantity }}">
+
                                     </div>
 
                                     <div>
                                         <label for="start_date" class="form-label">Start date</label>
-                                        <input type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" id="start_date" value="{{ old('start_date', $coupon->start_date) }}">
-                                        @error('start_date')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <input type="date" class="form-control" name="start_date" id="start_date" value="{{  $coupon->start_date }}">
+
                                     </div>
 
                                     <div>
                                         <label for="end_date" class="form-label">End date</label>
-                                        <input type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" id="end_date" value="{{ old('end_date', $coupon->end_date) }}">
-                                        @error('end_date')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <input type="date" class="form-control" name="end_date" id="end_date" value="{{  $coupon->end_date }}">
+
                                     </div>
-
-                                    {{-- <div class="mt-3">
-                                        <label for="parent_id" class="form-label">Category</label>
-                                        <select type="text" class="form-select" name="parent_id" id="parent_id">
-                                            <option value="" selected>Trống</option>
-
-                                            @foreach ($parentCategories as $parent)
-                                                @php($each = '')
-
-                                                @include('admin.categories.nested-category', [
-                                                    'category' => $parent,
-                                                ])
-                                            @endforeach
-                                        </select>
-                                    </div> --}}
 
                                     <div class="mb-3">
                                         <label for="is_active" class="form-label">Status: </label>
@@ -148,7 +123,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="is_active"
                                                     id="gridRadios1" value="1"
-                                                    {{ $model->is_active == true ? 'checked' : '' }}>
+                                                    {{ $coupon->is_active == true ? 'checked' : '' }}>
                                                 <label class="form-check-label text-success" for="gridRadios1">
                                                     Active
                                                 </label>
@@ -156,7 +131,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="is_active"
                                                     id="gridRadios2" value="0"
-                                                    {{ $model->is_active == false ? 'checked' : '' }}>
+                                                    {{ $coupon->is_active == false ? 'checked' : '' }}>
                                                 <label class="form-check-label text-danger" for="gridRadios2">
                                                     Inactive
                                                 </label>
