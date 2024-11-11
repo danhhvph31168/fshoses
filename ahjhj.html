@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Hàng Thành Công</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        /* Custom style matching your website theme */
+        body {
+            background-color: #f6f6f2;
+            /* Background màu be nhạt */
+            color: #333;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #d63031;
+            /* Màu đỏ */
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #d63031, 0 0 20px #d63031, 0 0 30px #d63031, 0 0 40px #d63031;
+            }
+
+            to {
+                text-shadow: 0 0 20px #d63031, 0 0 30px #d63031, 0 0 40px #d63031, 0 0 50px #d63031;
+            }
+        }
+
+        .card {
+            background-color: #fdfdfb;
+            border-color: #ddd;
+            /* Màu viền nhạt hơn */
+        }
+
+        .btn-primary,
+        .btn-outline-primary {
+            background-color: #d63031;
+            border-color: #d63031;
+            color: #fff;
+        }
+
+        .btn-outline-primary {
+            color: #d63031;
+            background-color: transparent;
+        }
+
+        .btn-primary:hover,
+        .btn-outline-primary:hover {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="card text-center shadow-lg border-0 rounded-4">
+            <div class="card-body">
+                <h1 class="success-icon"><i class="bi bi-check-circle"></i></h1>
+                <h2 class="card-title">Đặt Hàng Thành Công!</h2>
+                <p class="card-text fs-5">
+                    Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi. Mã đơn hàng của bạn là: <strong></strong>.
+                </p>
+                <p class="card-text fs-6">
+                    Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng và thời gian giao hàng.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="/" class="btn btn-primary btn-lg">Tiếp Tục Mua Sắm</a>
+                    <a href="/order-history" class="btn btn-outline-primary btn-lg">Xem Đơn Hàng Của Tôi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

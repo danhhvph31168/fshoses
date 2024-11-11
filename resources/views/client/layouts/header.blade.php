@@ -12,18 +12,18 @@
                     <ul>
                         <li class="active"><a href="/">Home</a></li>
                         <li><a href="./shop.html">Shop</a></li>
-                        <li><a href="#">Sản phẩm</a>
-                            <ul class="dropdown">
-                                {{-- @foreach ($categories as $item)
+                        <li><a href="#">Product</a>
+                            {{-- <ul class="dropdown">
+                                @foreach ($categories as $item)
                                     @if ($item->is_active === 1)
                                         <li><a href="#">{{ $item->name }}</a></li>
                                     @endif
-                                @endforeach --}}
+                                @endforeach
 
-                                {{-- <li><a href="./shop-details.html">Samsung</a></li>
+                                <li><a href="./shop-details.html">Samsung</a></li>
                                 <li><a href="./shopping-cart.html">Oppo</a></li>
-                                <li><a href="./checkout.html">Xiaomi</a></li> --}}
-                            </ul>
+                                <li><a href="./checkout.html">Xiaomi</a></li>
+                            </ul> --}}
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
                         <li><a href="./contact.html">Contacts</a></li>
@@ -42,7 +42,7 @@
                                 {{-- <img src="{{Auth::user()->avatar}}" alt="" width="100px" height="100px"> --}}
                                 <i class="bi bi-person-circle"></i>
                                 <span class="text-start ms-xl-2">
-                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Xin chào
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Hello
                                         {{ Auth::user()->name }}</span>
                                 </span>
                             </span>

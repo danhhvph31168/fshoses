@@ -94,13 +94,20 @@ class CartController extends Controller
     public function deleteItem($id)
     {
         $cart = session('cart');
-
         foreach ($cart as $key => $value) {
             if ($key == $id) {
                 unset($cart[$key]);
             }
         }
+        session()->put('cart', $cart);
 
+        return back();
+    }
+
+    public function delete()
+    {
+        session()->forget('cart');
+        $cart = session('cart');
         session()->put('cart', $cart);
 
         return back();

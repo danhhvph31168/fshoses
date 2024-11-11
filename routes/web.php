@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MessageSuccessResetController;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\ReviewController;
 
@@ -23,8 +24,14 @@ Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])
 // cart
 Route::get('cart',          [CartController::class, 'index'])->name('cart.list');
 Route::post('cart/add',     [CartController::class, 'add'])->name('cart.add');
-Route::get('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
+Route::get('/cart-update',  [CartController::class, 'updateCart'])->name('cart.update');
+Route::get('cart/delete',   [CartController::class, 'delete'])->name('cart.delete');
 Route::delete('cart/deleteItem/{id}', [CartController::class, 'deleteItem'])->name('cart.delItem');
+
+// checkout
+Route::get('check-out',     [CheckoutController::class, 'checkOut'])->name('check-out');
+Route::post('addOrder',     [CheckoutController::class, 'addOrder'])->name('addOrder');
+Route::get('order-success', [CheckoutController::class, 'orderSuccess'])->name('orderSuccess');
 
 // auth
 Route::prefix('auth')

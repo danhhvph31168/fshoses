@@ -100,7 +100,8 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i>Clear all</a>
+                                <a onclick="return confirm('Are you sure you want to clear your cart?')"
+                                href="{{ route('cart.delete') }}"><i class="fa fa-spinner"></i>Clear all</a>
                             </div>
                         </div>
                     </div>
@@ -121,7 +122,7 @@
                             <li>Total : <span class="cart-price total">{{ number_format($totalAmount) }}
                                     VNĐ</span></li>
                         </ul>
-                        <a href="" class="primary-btn">Mua hàng</a>
+                        <a href="{{ route('check-out') }}" class="primary-btn">Purchase</a>
                     </div>
                 </div>
             </div>

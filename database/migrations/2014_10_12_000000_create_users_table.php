@@ -18,14 +18,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('avatar')->nullable();
             $table->string('phone');
             $table->string('address')->nullable();
             $table->decimal('balance', 15, 0)->comment('Số dư tài khoản')->default(value: '0');
             $table->string('district')->nullable()->comment('Quận / Huyện');
             $table->string('province')->nullable()->comment('Tỉnh / TP');
-            $table->string('zip_code')->nullable()->default(0);
+            $table->string('zip_code')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
