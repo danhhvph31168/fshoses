@@ -29,44 +29,56 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shopping__cart__table">
-                        <table>
+                        <table class="mb-4">
                             <thead>
                                 <tr class="text-center">
                                     <th>STT</th>
                                     <th>Order Code</th>
                                     <th>Order Date</th>
                                     <th>Status Order</th>
-                                    <th>Note</th>
+                                    <th>Status Payment</th>
                                     <th>Total Amount</th>
                                     <th>Action</th>
 
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($orders as $item)
+                            <tbody class="text-center">
+                                @if ($orders->isEmpty())
                                     <tr class="text-center fw-bold">
-                                        <td>
-                                            {{ $loop->iteration }}
+                                        <td colspan="7">
+                                            <div class="text-danger">
+                                                No orders have been placed yet!
+                                            </div>
                                         </td>
-                                        <td>
-                                            <a href="#" style="color: #007bff">
-                                                {{ $item->sku_order }}</a>
-                                        </td>
-                                        <td>
-                                            <h6>{{ $item->created_at->format('d/m/Y') }}</h6>
-                                        </td>
-                                        <td>
-                                            <h6>{{ $item->status_order }}</h6>
-                                        </td>
-                                        <td>
-                                            <h6>{{ $item->user_note }}</h6>
-                                        </td>
-                                        <td>{{ $item->total_amount }}</td>
-                                        <td><a href="" class="badge badge-danger">Cancel order</a></td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach ($orders as $item)
+                                        <tr class=" text-center fw-bold">
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('getDetailOrderItem', $item->id) }}"
+                                                    style="color: #007bff">
+                                                    {{ $item->sku_order }}</a>
+                                            </td>
+                                            <td>
+                                                <h6>{{ $item->created_at->toDateString() }}</h6>
+                                            </td>
+                                            <td>
+                                                <h6>{{ $item->status_order }}</h6>
+                                            </td>
+                                            <td>
+                                                <h6>{{ $item->status_payment }}</h6>
+                                            </td>
+                                            <td>{{ $item->total_amount }}</td>
+                                            <td><a href="" class="badge badge-danger">Cancel order</a></td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
+                        {{ $orders->links() }}
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">

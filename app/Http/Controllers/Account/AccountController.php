@@ -79,6 +79,6 @@ class AccountController extends Controller
             'password' => Hash::make($request->password),
         ]);
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->back()->with('message', 'Password changed successfully.');
+        return redirect()->back()->with('success', 'Password changed successfully.');
     }
 }
