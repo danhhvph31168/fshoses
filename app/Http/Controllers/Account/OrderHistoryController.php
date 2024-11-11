@@ -20,13 +20,17 @@ class OrderHistoryController extends Controller
             ])->orderBy('id', 'DESC')->paginate(5);
         return view("client.orders.list-order", compact("orders"));
     }
-    public function getDetailOrderItem($id)
+    public function getDetailOrderItem($slug)
     {
-        $order = Order::find($id);
+        $order = Order::query()->with([
+            "orderItems.productVariant.product",
+            "orderItems.productVariant.color",
+            "orderItems.productVariant.size",
+        ])->first();
         if (!$order) {
-            return abort(404);
+            return view("page-error.404");
         }
 
-        return view("client.orders.detail-order");
+        return view("client.orders.detail-order", compact("order"));
     }
 }

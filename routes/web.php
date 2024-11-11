@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('update-comment/{product_id}', [ReviewController::class, 'handleUpdateComment'])->name('updateComment');
 
     Route::get('order-history',[OrderHistoryController::class,'getListOrderHistory'])->name('getListOrderHistory');
-    Route::get('order-item/{id}',[OrderHistoryController::class,'getDetailOrderItem'])->name('getDetailOrderItem');
+    Route::get('order-item/{slug}',[OrderHistoryController::class,'getDetailOrderItem'])->name('getDetailOrderItem');
 
 });
 

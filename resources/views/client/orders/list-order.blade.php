@@ -58,7 +58,7 @@
                                                 {{ $loop->iteration }}
                                             </td>
                                             <td>
-                                                <a href="{{ route('getDetailOrderItem', $item->id) }}"
+                                                <a href="{{ route('getDetailOrderItem', $item->sku_order) }}"
                                                     style="color: #007bff">
                                                     {{ $item->sku_order }}</a>
                                             </td>
