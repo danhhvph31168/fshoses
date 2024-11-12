@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
+use App\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,11 +18,12 @@ class OrderItemFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            'order_id'=> 
-            'product_variant_id',
-            'quantity',
-            'price',
+            'order_id' => Order::inRandomOrder()->first()->id,
+            'product_variant_id' => ProductVariant::inRandomOrder()->first()->id,
+            'quantity' => $this->faker->numberBetween(10, 100),
+            'price' => $this->faker->numberBetween(10, 100),
         ];
     }
 }

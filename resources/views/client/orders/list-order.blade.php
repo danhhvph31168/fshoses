@@ -11,11 +11,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Order history</h4>
+                        <h4>Order History</h4>
                         <div class="breadcrumb__links">
                             <a href="{{ route('home') }}">Home</a>
                             <a href="./shop.html">Shop</a>
-                            <span>Order history</span>
+                            <span>Order History</span>
                         </div>
                     </div>
                 </div>

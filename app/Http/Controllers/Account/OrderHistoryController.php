@@ -22,7 +22,7 @@ class OrderHistoryController extends Controller
     }
     public function getDetailOrderItem($slug)
     {
-        $order = Order::query()->with([
+        $order = Order::query()->where('sku_order',$slug)->with([
             "orderItems.productVariant.product",
             "orderItems.productVariant.color",
             "orderItems.productVariant.size",
@@ -30,7 +30,7 @@ class OrderHistoryController extends Controller
         if (!$order) {
             return view("page-error.404");
         }
-
+// dd  ($order);
         return view("client.orders.detail-order", compact("order"));
     }
 }

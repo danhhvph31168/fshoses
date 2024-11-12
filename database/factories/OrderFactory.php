@@ -22,7 +22,7 @@ class OrderFactory extends Factory
         return [
             'user_id' => User::factory(),
             'role_id' => Role::inRandomOrder()->first()->id,
-            'sku_order' => $this->faker->unique()->regexify('SKU-[A-Z0-9]{8}'), // Mã SKU ngẫu nhiên
+            'sku_order' => $this->faker->unique()->regexify('SKU-[A-Z0-9]{8}'),
             'user_name' => $this->faker->name(),
             'user_email' => $this->faker->unique()->safeEmail(),
             'user_phone' => $this->faker->phoneNumber(),
@@ -30,7 +30,7 @@ class OrderFactory extends Factory
             'user_note' => $this->faker->sentence(),
             'status_order' => $this->faker->randomElement(['Chờ xác nhận', 'Đã xác nhận', 'Đang xử lý', 'Đang vận chuyển', 'Đã giao hàng', 'Đơn hàng đã bị hủy', 'Đã hoàn tiền', 'Thất bại']),
             'status_payment' => $this->faker->randomElement(['Chưa thanh toán', 'Đang chờ thanh toán', 'Đã thanh toán', 'Đã hoàn tiền', 'Thanh toán thất bại',]),
-            'total_amount' => $this->faker->randomFloat(2, 50, 1000), // Số tiền ngẫu nhiên từ 50 đến 1000
+            'total_amount' => $this->faker->randomFloat(2, 50, 1000), 
         ];
     }
 }
