@@ -16,3 +16,5 @@ use App\Http\Controllers\Client\Rating\RatingController;
 
 Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('cart.applyCoupon');
 
+Route::get('ratings/create/{orderId}', [RatingController::class, 'create'])->name('ratings.create');
+Route::post('ratings/store', [RatingController::class, 'store'])->name('ratings.store');

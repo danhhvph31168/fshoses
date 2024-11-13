@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client\Rating;
 use App\Http\Controllers\Controller;
 use App\Models\Rating;
 use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class RatingController extends Controller
@@ -13,7 +14,13 @@ class RatingController extends Controller
         $ratings = Rating::all(); // Lấy tất cả đánh giá
         return view('ratings.index', ['ratings' => $ratings]); // Trả về view với danh sách đánh giá
     }
+    public function create($orderId)
+    {
+        // Lấy đơn hàng để từ đó lấy sản phẩm
+        $order = Order::with('orderItems.productVariant.product')->findOrFail($orderId);
 
+        return view('client.ratings.create', compact('order'));
+    }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -37,7 +44,7 @@ class RatingController extends Controller
         // Nếu chưa có đánh giá, tạo đánh giá mới
         $rating = Rating::create($validatedData);
 
-        return redirect()->route('ratings.index')->with('message', 'Đánh giá đã được lưu thành công!');
+        return redirect()->back()->with('message', 'Đánh giá đã được lưu thành công!');
     }
 
     public function calculateAverageRating($productId)
