@@ -192,19 +192,18 @@
                                                             </thead>
                                                             <tbody>
                                                                 @php
-                                                                    $variants = [];
+                                                                    $productVariants = [];
                                                                     $totalQuantity = 0;
 
-                                                                    $product->variants->map(function ($item) use (
-
-                                                                        &$variants,
-                                                                    ) {
+                                                                    $product->productVariants->map(function (
+                                                                        $item,
+                                                                    ) use (&$productVariants) {
                                                                         $key =
                                                                             $item->product_size_id .
                                                                             '-' .
                                                                             $item->product_color_id;
 
-                                                                        $variants[$key] = [
+                                                                        $productVariants[$key] = [
                                                                             'quantity' => $item->quantity,
                                                                             'image' => $item->image,
                                                                         ];
@@ -228,21 +227,22 @@
                                                                             @php($key = $sizeID . '-' . $colorID)
 
                                                                             <td>{{ $colorName }}</td>
+
                                                                             <td>
                                                                                 <input type="text" class="form-control"
-                                                                                    value="{{ $variants[$key]['quantity'] }}"
+                                                                                    value="{{ $productVariants[$key]['quantity'] }}"
                                                                                     name="product_variants[{{ $key }}][quantity]">
                                                                             </td>
                                                                             <td>
                                                                                 <input type="file" class="form-control"
                                                                                     name="product_variants[{{ $key }}][image]">
                                                                                 <input type="hidden" class="form-control"
-                                                                                    value="{{ $variants[$key]['image'] }}"
+                                                                                    value="{{ $productVariants[$key]['image'] }}"
                                                                                     name="product_variants[{{ $key }}][current_image]">
                                                                             </td>
                                                                             <td>
-                                                                                @if ($variants[$key]['image'])
-                                                                                    <img src="{{ \Storage::url($variants[$key]['image']) }}"
+                                                                                @if ($productVariants[$key]['image'])
+                                                                                    <img src="{{ \Storage::url($productVariants[$key]['image']) }}"
                                                                                         width="80px" height="80px">
                                                                                 @endif
                                                                             </td>
@@ -451,7 +451,12 @@
                                                         <tr>
                                                             <th scope="row">
                                                                 Brand</th>
-                                                            <td>Tommy Hilfiger
+                                                            <td>
+                                                                @foreach ($brands as $id => $name)
+                                                                    @if ($product->brand_id === $id)
+                                                                        {{ $name }}
+                                                                    @endif
+                                                                @endforeach
                                                             </td>
                                                         </tr>
                                                         <tr>

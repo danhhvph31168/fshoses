@@ -124,6 +124,27 @@
                             </ul>
                         </div>
                     </li>
+
+                    {{-- Brands --}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarBrands" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarBrands">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Brands</span>
+                            {{-- <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span> --}}
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarBrands">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.brands.index') }}" class="nav-link"
+                                        data-key="t-horizontal">List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.brands.create') }}" class="nav-link"
+                                        data-key="t-horizontal">Add new</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 @endif
 
                 @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)

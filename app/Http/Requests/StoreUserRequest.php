@@ -25,16 +25,16 @@ class StoreUserRequest extends FormRequest
         return [
             'role_id'   => ['required', Rule::exists('roles', 'id')],
             'name'      => 'required|max:255',
-            'email'     => 'required|unique',
+            'email'     => 'required|unique:users',
             'password'  => 'required|max:30',
             'avatar'    => 'nullable|image',
-            'phone'     => 'required|number',
+            'phone'     => 'required|numeric',
             'status'    => [Rule::in([0, 1])],
             'address'   => 'nullable|max:255',
             'balance'   => 'nullable|min:0',
             'district'  => 'nullable|max:255',
             'province'  => 'nullable|max:255',
-            'zip_code'  => 'number',
+            'zip_code'  => 'numeric',
         ];
     }
 

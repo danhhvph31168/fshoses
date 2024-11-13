@@ -66,9 +66,9 @@
                                     <th>{{ $item->updated_at }}</th>
 
                                     <td>
-                                        <a href="{{ route('admin.roles.show', $item->id) }}" class="btn btn-light"
+                                        {{-- <a href="{{ route('admin.roles.show', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a>
+                                                class="ri-eye-fill align-bottom"></i></a> --}}
 
                                         <a href="{{ route('admin.roles.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i

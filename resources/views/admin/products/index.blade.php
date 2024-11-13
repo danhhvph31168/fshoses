@@ -59,22 +59,25 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <div class="card-title mb-0 align-content-center">
-                        <h3>Products List</h3>
+                    <div>
+                        <a class="btn btn-success" href="{{ route('admin.products.create') }}">
+                            <i class="ri-add-fill"></i> Add product </a>
                     </div>
                     <div>
-                        <a href="{{ route('admin.products.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
+                            title="Type in a name">
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered nowrap dt-responsive table-striped align-middle"
+                    <table id="myTable" class="table table-bordered nowrap dt-responsive table-striped align-middle"
                         style="width:100%">
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
                                 <th>Img_Thumbnail</th>
                                 <th>Name</th>
+                                <th>Brand</th>
                                 <th>SKU</th>
                                 <th>Category</th>
                                 <th>Price Regular</th>
@@ -86,14 +89,16 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
+                                {{-- @dd( $item->brand->id) --}}
                                 <tr class="align-middle text-center">
-                                    <th style="width: 10px">{{ $item->id }}</th>
+                                    <td style="width: 10px">{{ $item->id }}</td>
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->img_thumbnail) }}"
                                             alt="" width="50px">
                                     </td>
                                     <td style="width: 400px">{{ $item->name }}</td>
+                                    <td>{{ $item->brand?->name }}</td>
                                     <td>{{ $item->sku }}</td>
-                                    <td>{{ $item->category->name }}</td>
+                                    <td>{{ $item->category->id }}</td>
                                     <td class="text-danger">{{ number_format($item->price_regular, 0, ',', '.') }} VNĐ</td>
                                     <td class="text-success">{{ number_format($item->price_sale, 0, '.', '.') }} VNĐ</td>
                                     <td>{{ $item->created_at }}</td>
@@ -156,4 +161,25 @@
             order: [0, 'asc']
         });
     </script> --}}
+
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 @endsection
