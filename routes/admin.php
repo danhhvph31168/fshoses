@@ -1,16 +1,15 @@
 
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RefundController;
 use App\Http\Controllers\Admin\ReviewController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\RoleController;
 
@@ -30,7 +29,7 @@ Route::prefix('admin')->as('admin.')
         Route::get('orders/create',     [OrderController::class, 'create'])->name('orders.create');
         Route::post('orders/store',     [OrderController::class, 'store'])->name('orders.store');
         Route::get('orders/{id}/edit',  [OrderController::class, 'edit'])->name('orders.edit');
-        Route::put('orders/{id}/update',[OrderController::class, 'update'])->name('orders.update');
+        Route::put('orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
 
         // refund
         Route::get('refunds',               [RefundController::class, 'index'])->name('refunds.index');
@@ -59,12 +58,13 @@ Route::prefix('admin')->as('admin.')
                 Route::get('{id}/destroy',  [CategoryController::class, 'destroy'])->name('destroy');
             });
 
-        Route::resource('products',ProductController::class);
+        Route::resource('products', ProductController::class);
         Route::resource('users', UserController::class);
         Route::resource('roles', RoleController::class);
+        Route::resource('brands', BrandController::class);
 
         // auth
         Route::get('showFormLogin', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
         Route::post('login',        [LoginController::class, 'login'])->name('login');
-        Route::get('logout',        [LoginController::class, 'logout'])->name('logout');
+        Route::post('logout',        [LoginController::class, 'logout'])->name('logout');
     });

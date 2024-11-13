@@ -20,7 +20,7 @@ class AuthenController extends Controller
     public function showFormRegister()
     {
 
-        return view('auth.register');
+        return view('client.auth.register');
         // Hiển thị giao diện form đăng ký
         // return response()->json([
         //     'name' => '',
@@ -42,7 +42,7 @@ class AuthenController extends Controller
         Auth::login($user);
         // dd($user);
 
-        return redirect()->route('home');
+        return redirect()->route('client.home');
 
         // Trả về dữ liệu JSON cho frontend
         // return response()->json([
@@ -54,7 +54,7 @@ class AuthenController extends Controller
     public function showFormLogin()
     {
         // Hiển thị form đăng nhập
-        return view('auth.login');
+        return view('client.auth.login');
         // return response()->json([
         //     'success' => true,
         //     'message' => 'Form đăng nhập.',
@@ -72,7 +72,7 @@ class AuthenController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($data, $remember)) {
-            return redirect()->route('home')->with('message', 'Login successful');
+            return redirect()->intended()->with('message', 'Login successful');
         } else {
             // If authentication fails
             return redirect()->back()->with(['error' => 'Thông tin đăng nhập không hợp lệ, vui lòng thử lại.']);
@@ -99,7 +99,7 @@ class AuthenController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth.showFormLogin');
+        return redirect()->route('home');
         // return response()->json([
         //     'status' => 'success',
         //     'message' => 'Đăng xuất thành công!',

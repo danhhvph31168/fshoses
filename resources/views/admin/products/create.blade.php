@@ -78,6 +78,26 @@
                                     </div>
 
                                     <div class="mt-3">
+                                        <label for="brand_id" class="form-label">Brand: </label>
+                                        <select id="brand_id" name="brand_id" class="form-control">
+                                            <option>-- Select Brand --</option>
+                                            @foreach ($brands as $id => $name)
+                                                <option value="{{ $id }}">{{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <label for="category_id" class="form-label">Category:</label>
+                                        <select name="category_id" id="category_id" type="text" class="form-select">
+                                            <option>-- Select Category --</option>
+                                            @foreach ($categories as $id => $name)
+                                                <option value="{{ $id }}">{{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mt-3">
                                         <label for="sku" class="form-label">SKU:</label>
                                         <input type="text" class="form-control" id="sku" name="sku"
                                             value="{{ strtoupper(\Str::random(8)) }}">
@@ -96,21 +116,10 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <label for="category_id" class="form-label">Category:</label>
-                                        <select name="category_id" id="category_id" type="text" class="form-select">
-                                            <option>-- Select Category --</option>
-                                            @foreach ($categories as $id => $name)
-                                                <option value="{{ $id }}">{{ $name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="mt-3">
                                         <label for="img_thumbnail" class="form-label">Img Thumbnail:</label>
                                         <input type="file" class="form-control" id="img_thumbnail" name="img_thumbnail">
                                     </div>
                                 </div>
-
 
                                 <div class="col-md-8">
                                     <div class="row">

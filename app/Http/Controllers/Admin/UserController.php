@@ -23,10 +23,6 @@ class UserController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-
-        // dd($user);
-
         $data = User::query()->with('role')->latest('id')->paginate(5);
 
         $user = Auth::user();
@@ -59,19 +55,17 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = Auth::user();
 
-        // dd($user);
-        $data = $request->except('avatar');
+        if (Auth::user()->role_id == 1) {
 
-        if ($user->role_id == 1) {
+            $data = $request->except('avatar');
 
             if ($request->hasFile('avatar')) {
                 $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
             } else {
                 $data['avatar'] = "users/avatar-mac-dinh.jpg";
             }
-            // dd($data);
+            
             User::query()->create($data);
 
             return redirect()->route('admin.users.index')->with('success', 'Account created successfully!');

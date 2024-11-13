@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Categories List
+    Brands List
 @endsection
 @section('content')
     <!-- start page title -->
@@ -12,7 +12,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.create') }}">Categories</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.brands.create') }}">Brands</a></li>
                         <li class="breadcrumb-item text-danger">List</li>
                     </ol>
                 </div>
@@ -27,10 +27,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="card-title mb-0">
-                        <h3>Categories List</h3>
+                        <h3>Brands List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.categories.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.brands.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -49,6 +49,7 @@
                             <tr class="">
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Image</th>
                                 <th>Status</th>
                                 <th>Created at</th>
                                 <th>Updated at</th>
@@ -56,26 +57,31 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                             @foreach ($data as $key => $item)
                                 <tr class="align-middle">
-                                    <th>{{ $key + 1 }}</th>
-                                    <th>{{ $item->name }}</th>
-                                    <th class="{{ $item->is_active == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->is_active == 1 ? 'Active' : 'Inactive' }}</th>
-                                    <th>{{ $item->created_at }}</th>
-                                    <th>{{ $item->updated_at }}</th>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td style="width: 100px"> <img src="{{ Storage::url($item->image) }}" alt=""
+                                            width="50px">
+                                    </td>
+                                    <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
+                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>{{ $item->updated_at }}</td>
+
                                     <td>
-                                        {{-- <a href="{{ route('admin.categories.show', $item->id) }}" class="btn btn-light"
+                                        {{-- <a href="{{ route('admin.brands.show', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
                                                 class="ri-eye-fill align-bottom"></i></a> --}}
 
-                                        <a href="{{ route('admin.categories.edit', $item->id) }}" class="btn btn-light"
+                                        <a href="{{ route('admin.brands.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
 
-                                        <form action="{{ route('admin.categories.destroy', $item->id) }}" method="POST"
+                                        <form action="{{ route('admin.brands.destroy', $item->id) }}" method="POST"
                                             class="d-inline"
-                                            onsubmit="return confirm('Are you sure you want to delete this category?')">
+                                            onsubmit="return confirm('Are you sure you want to delete this brand?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
@@ -94,32 +100,9 @@
 @endsection
 
 @section('css')
-    <!--datatable css-->
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" /> --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
-
-    <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
 @section('js')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-    <!--datatable js-->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-    {{-- <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script> --}}
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-
     {{-- <script>
         new DataTable("#myTable");
     </script> --}}
