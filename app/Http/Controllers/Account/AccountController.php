@@ -48,6 +48,7 @@ class AccountController extends Controller
             'address' => $request->address,
             'district' => $request->district,
             'province' => $request->province,
+            'ward' => $request->ward,
             'zip_code' => $request->zip_code,
         ];
 

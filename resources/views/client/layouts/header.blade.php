@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="header__logo">
-                    <a href="\"><img src="{{ asset('theme/client/img/logo.png') }}" alt=""></a>
+                    <a href="{{route('home')}}"><img src="{{ asset('theme/client/img/logo.png') }}" alt=""></a>
                 </div>
             </div>
             <div class="col-md-6">
@@ -28,9 +28,13 @@
                         <li><a href="./blog.html">Blog</a></li>
                         <li><a href="./contact.html">Contacts</a></li>
 
+                        <a href="#" class="" style="color: #111111;"><i
+                                class="bi bi-cart-check-fill mr-2"></i></a>
                     </ul>
                 </nav>
             </div>
+
+
 
             <div class="col-md-3">
 
@@ -39,7 +43,7 @@
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
-                                <i class="bi bi-cart-check-fill mr-2"></i>
+
                                 <img src="{{ Auth::user()->avatar }}" alt="" width="18px" height="18px"
                                     style="border-radius: 50%; object-fit: cover;">
                                 {{-- <i class="bi bi-person-circle"></i> --}}
@@ -103,7 +107,9 @@
 
                     </nav>
                 @endif
+
             </div>
+
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>

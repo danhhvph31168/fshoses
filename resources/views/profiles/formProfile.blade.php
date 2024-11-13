@@ -81,12 +81,48 @@
                                     </span>
                                 @enderror
                             </div>
+                            {{-- <select name="" id="province">
+                            </select>
+                            <select name="" id="district">
+                                <option value="">chọn quận</option>
+                            </select>
+                            <select name="" id="ward">
+                                <option value="">chọn phường</option>
+                            </select> --}}
                             <div class="mb-3">
-                                <label for="username" class="form-label">District</label>
-                                <input type="text" class="form-control @error('district') is-invalid @enderror"
-                                    name="district" value="{{ $user->district }}" id="district"
-                                    placeholder="Enter district">
+                                <label for="province" class="form-label">Province</label>
+                                <select id="province" class="form-control @error('province') is-invalid @enderror"
+                                    name="province">
+                                    <option value="">Chọn tỉnh</option>
+                                   
+                                </select>
+                                @error('province')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="district" class="form-label">District</label>
+                                <select id="district" class="form-control @error('district') is-invalid @enderror"
+                                    name="district">
+                                    <option value="">Chọn huyện</option>
+                                </select>
                                 @error('district')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ward" class="form-label">Ward</label>
+                                <select id="ward" class="form-control @error('ward') is-invalid @enderror"
+                                    name="ward">
+                                    <option value="">Chọn xã/phường</option>
+                                </select>
+                                @error('ward')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -95,20 +131,9 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Balance</label>
                                 <input type="number" class="form-control @error('balance') is-invalid @enderror"
-                                    name="balance" value="{{ $user->balance }}" id="balance" placeholder="Enter balance"
-                                    disabled>
+                                    name="balance" value="{{ $user->balance }}" id="balance"
+                                    placeholder="Enter balance" disabled>
                                 @error('balance')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Province</label>
-                                <input type="text" class="form-control @error('province') is-invalid @enderror"
-                                    name="province" value="{{ $user->province }}" id="province"
-                                    placeholder="Enter province">
-                                @error('province')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -150,4 +175,56 @@
         </div>
     </div>
     <!-- end row -->
+@endsection
+@section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const host = "https://provinces.open-api.vn/api/";
+
+        var callAPI = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data, "province");
+                });
+        };
+
+        callAPI(host + '?depth=1');
+
+        var callApiDistrict = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district");
+                });
+        };
+
+        var callApiWard = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward");
+                });
+        };
+
+        var renderData = (array, select) => {
+            let row = '<option value="">Chọn</option>';
+            array.forEach(element => {
+                row += `<option value="${element.code}">${element.name}</option>`;
+            });
+            document.querySelector("#" + select).innerHTML = row;
+        };
+
+        $("#province").change(() => {
+            const provinceCode = $("#province").val();
+            callApiDistrict(host + "p/" + provinceCode + "?depth=2");
+        });
+
+        $("#district").change(() => {
+            const districtCode = $("#district").val();
+            callApiWard(host + "d/" + districtCode + "?depth=2");
+        });
+    </script>
 @endsection
