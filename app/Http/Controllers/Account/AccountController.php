@@ -24,6 +24,7 @@ class AccountController extends Controller
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
     {
+        // dd($request->all());
         $user = Auth::user();
         $linkAvatar = $user->avatar; // Giữ lại ảnh cũ
 
@@ -46,9 +47,9 @@ class AccountController extends Controller
             'avatar' => $linkAvatar,
             'phone' => $request->phone,
             'address' => $request->address,
-            'district' => $request->district,
-            'province' => $request->province,
-            'ward' => $request->ward,
+            'district' => $request->district_text,
+            'province' => $request->province_text,
+            'ward' => $request->ward_text,
             'zip_code' => $request->zip_code,
         ];
 

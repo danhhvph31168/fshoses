@@ -93,10 +93,11 @@
                                 <label for="province" class="form-label">Province</label>
                                 <select id="province" class="form-control @error('province') is-invalid @enderror"
                                     name="province">
-                                    <option value="">Chọn tỉnh</option>
-                                   
+                                    <option value="" selected>{{ $user->province }}</option>
+
                                 </select>
-                                @error('province')
+                                <input type="hidden" name="province_text" id="province_text">
+                                @error('province') 
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -107,8 +108,10 @@
                                 <label for="district" class="form-label">District</label>
                                 <select id="district" class="form-control @error('district') is-invalid @enderror"
                                     name="district">
-                                    <option value="">Chọn huyện</option>
+                                    <option value="">{{ $user->district }}</option>
+
                                 </select>
+                                <input type="hidden" name="district_text" id="district_text">
                                 @error('district')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -120,8 +123,10 @@
                                 <label for="ward" class="form-label">Ward</label>
                                 <select id="ward" class="form-control @error('ward') is-invalid @enderror"
                                     name="ward">
-                                    <option value="">Chọn xã/phường</option>
+                                    <option value="" selected>{{ $user->ward }}</option>
                                 </select>
+                                <input type="hidden" name="ward_text" id="ward_text">
+
                                 @error('ward')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -153,7 +158,7 @@
 
 
                             <div class="mt-4">
-                                <button class="btn btn-success w-100" type="submit">Update</button>
+                                <button class="btn btn-success w-100" type="submit" id="submit">Update</button>
 
                             </div>
 
@@ -185,46 +190,62 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         const host = "https://provinces.open-api.vn/api/";
-
         var callAPI = (api) => {
             return axios.get(api)
                 .then((response) => {
                     renderData(response.data, "province");
                 });
-        };
-
-        callAPI(host + '?depth=1');
-
+        }
+        callAPI('https://provinces.open-api.vn/api/?depth=1');
         var callApiDistrict = (api) => {
             return axios.get(api)
                 .then((response) => {
                     renderData(response.data.districts, "district");
                 });
-        };
-
+        }
         var callApiWard = (api) => {
             return axios.get(api)
                 .then((response) => {
                     renderData(response.data.wards, "ward");
                 });
-        };
+        }
 
         var renderData = (array, select) => {
-            let row = '<option value="">Chọn</option>';
+            let row = '<option disable value="">Chọn</option>';
             array.forEach(element => {
-                row += `<option value="${element.code}">${element.name}</option>`;
+                row += `<option value="${element.code}">${element.name}</option>`
             });
-            document.querySelector("#" + select).innerHTML = row;
-        };
+            document.querySelector("#" + select).innerHTML = row
+        }
 
         $("#province").change(() => {
-            const provinceCode = $("#province").val();
-            callApiDistrict(host + "p/" + provinceCode + "?depth=2");
+            callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
+            printResult();
         });
-
         $("#district").change(() => {
-            const districtCode = $("#district").val();
-            callApiWard(host + "d/" + districtCode + "?depth=2");
+            callApiWard(host + "d/" + $("#district").val() + "?depth=2");
+            printResult();
         });
+        $("#ward").change(() => {
+            printResult();
+        })
+
+        var printResult = () => {
+
+            if ($("#district").val() != "" && $("#province").val() != "" &&
+                $("#ward").val() != "") {
+                let result = $("#province option:selected").text() +
+                    " | " + $("#district option:selected").text() + " | " +
+                    $("#ward option:selected").text();
+                $("#result").text(result)
+            }
+            $('#submit').click(function() {
+                $('#province_text').val($("#province option:selected").text())
+                $('#district_text').val($("#district option:selected").text())
+                $('#ward_text').val($("#ward option:selected").text())
+            })
+
+
+        }
     </script>
 @endsection

@@ -27,30 +27,32 @@
     <section class="shopping-cart spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="shopping__cart__table">
-                        <div class="breadcrumb__text">
-                            <h4>Thông tin khách hàng</h4>
+               
+                    <div class="col-lg-6">
+                        <div class="shopping__cart__table">
+                            <div class="breadcrumb__text">
+                                <h4>Thông tin khách hàng</h4>
+                            </div>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold">Họ và tên :</td>
+                                        <td>{{ $order->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Số điện thoại :</td>
+                                        <td>{{ $order->user->phone }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Địa chỉ :</td>
+                                        <td>{{ $order->user->address }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table table-hover">
-                            <tbody>
-                                <tr>
-                                    <td class="fw-bold">Họ và tên :</td>
-                                    <td>{{ $order->user->name }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold">Số điện thoại :</td>
-                                    <td>{{ $order->user->phone }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold">Địa chỉ :</td>
-                                    <td>{{ $order->user->address }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
 
-                </div>
+                    </div>
+             
                 <div class="col-lg-6">
                     <div class="shopping__cart__table">
                         <div class="breadcrumb__text">

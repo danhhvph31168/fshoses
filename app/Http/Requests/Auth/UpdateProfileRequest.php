@@ -35,8 +35,9 @@ class UpdateProfileRequest extends FormRequest
             'phone' => 'nullable|regex:/^[0-9]{10,15}$/',
             'address' => 'nullable|string|max:255',
             'balance' => 'nullable|numeric|min:0',
-            'district' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
+            'district' => 'nullable',
+            'province' => 'nullable',
+            'ward' => 'nullable',
             'zip_code' => 'nullable|numeric|digits_between:3,10',
         ];
     }
