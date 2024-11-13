@@ -35,11 +35,18 @@ class AddOrderClient extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Fshoes refund notice')
-            ->greeting('Fshoes hello ')
-            ->line('ahjhj')
-            ->action('Notification Action', url('/'))
-            ->salutation('Thank you');
+            ->subject('Successful installation notification from fshoes')
+            ->greeting('Fshoes hello ' . $this->order->user->name)
+            ->line('Confirm your information')
+            ->line('Order number : ' . $this->order->sku_order)
+            ->line('Order value : ' . number_format($this->order->total_amount) . ' vnđ')
+            ->line('Name : ' . $this->order->user_name)
+            ->line('Email : ' . $this->order->user_email)
+            ->line('Phone : ' . $this->order->user_phone)
+            ->line('Address : ' . $this->order->user_address)
+            ->line('Note : ' . $this->order->user_note)
+            ->action('Order details', url('/'))
+            ->salutation('Thank you for trusting Fshoes');
     }
 
     /**

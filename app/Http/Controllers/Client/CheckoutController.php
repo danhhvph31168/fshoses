@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Client;
 use App\Events\OrderCreateClient;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\CheckoutRequest;
-use App\Models\{Order, OrderItem, Payment, User};
+use App\Models\{Order, OrderItem, Payment, User, Vnpay};
+use App\Services\OrderClient\VnpayServices;
 use Illuminate\Support\Facades\{Auth, DB};
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
+    public function __construct(public VnpayServices $vnpayServices) {}
+
     public function checkOut()
     {
         $cart = session('cart');
@@ -31,7 +34,6 @@ class CheckoutController extends Controller
 
     public function addOrder(CheckoutRequest $request)
     {
-        // dd($request->all());
         try {
             DB::beginTransaction();
 
@@ -49,14 +51,26 @@ class CheckoutController extends Controller
             }
 
             if (Auth::check() == false) {
-                $user = User::query()->create([
-                    'name'  => $request->user_name,
-                    'email' => $request->user_email,
-                    'phone' => $request->user_phone,
-                    'address' => $request->user_address,
-                    'role_id' => 1,
-                    'status'  => 0,
-                ]);
+
+                if (User::where('email', $request->user_email)->exists()) {
+
+                    $checkStatus = User::where('email', $request->user_email)->where('status', 1)->first();
+
+                    if ($checkStatus == false) {
+                        $user = User::where('email', $request->user_email)->first();
+                    } else {
+                        return back()->with('info', 'This email already has an account, please login to purchase.');
+                    }
+                } else {
+                    $user = User::query()->create([
+                        'name'  => $request->user_name,
+                        'email' => $request->user_email,
+                        'phone' => $request->user_phone,
+                        'address' => $request->user_address,
+                        'role_id' => 1,
+                        'status'  => false,
+                    ]);
+                }
 
                 $order = Order::query()->create([
                     'user_id'    => $user->id,
@@ -91,7 +105,14 @@ class CheckoutController extends Controller
             if ($request->payment_method == Payment::PAYMENTS_METHOD_CASH) {
                 Payment::query()->create([
                     'order_id'          => $order->id,
-                    'payment_method'    => Payment::PAYMENTS_METHOD_CASH
+                    'payments_method'    => Payment::PAYMENTS_METHOD_CASH
+                ]);
+            }
+
+            if ($request->payment_method == Payment::PAYMENTS_METHOD_VNPAY) {
+                $payment = Payment::query()->create([
+                    'order_id'          => $order->id,
+                    'payments_method'    => Payment::PAYMENTS_METHOD_VNPAY
                 ]);
             }
 
@@ -100,6 +121,12 @@ class CheckoutController extends Controller
             DB::commit();
 
             session()->forget('cart');
+
+            if ($request->payment_method == Payment::PAYMENTS_METHOD_VNPAY) {
+                $order = $order->id;
+                $payment = $payment->id;
+                $this->vnpayServices->vnpay($request, $order, $payment);
+            }
 
             return redirect()->route('orderSuccess')->with('success', 'Order successful');
         } catch (\Throwable $th) {
@@ -112,5 +139,31 @@ class CheckoutController extends Controller
     public function orderSuccess()
     {
         return view('client.order-success');
+    }
+    public function vnpayReturn(Request $request, $order, $payment)
+    {
+        Vnpay::query()->create([
+            'order_id'          => $order,
+            'vnp_Amount'        => $request->vnp_Amount,
+            'vnp_BankCode'      => $request->vnp_BankCode,
+            'vnp_BankTranNo'    => $request->vnp_BankTranNo,
+            'vnp_CardType'      => $request->vnp_CardType,
+            'vnp_OrderInfo'     => $request->vnp_OrderInfo,
+            'vnp_PayDate'       => $request->vnp_PayDate,
+            'vnp_ResponseCode'  => $request->vnp_ResponseCode,
+            'vnp_TmnCode'       => $request->vnp_TmnCode,
+            'vnp_TransactionNo' => $request->vnp_TransactionNo,
+            'vnp_TxnRef'        => $request->vnp_TxnRef,
+            'vnp_SecureHash'    => $request->vnp_SecureHash,
+            'vnp_TransactionStatus' => $request->vnp_TransactionStatus,
+        ]);
+
+        Payment::query()->where('id', $payment)->update([
+            'status' => Payment::STATUS_COMPLETED
+        ]);
+
+        session()->forget('cart');
+
+        return redirect()->route('orderSuccess')->with('success', 'Order successful');
     }
 }

@@ -143,7 +143,9 @@
                                     <li>Total <span>{{ number_format($totalAmount) }} VNĐ</span></li>
                                 </ul>
 
-                                <button type="submit" class="site-btn">Pay</button>
+                                <input type="hidden" name="totalAmount" value="{{ $totalAmount }}">
+
+                                <button type="submit" name="redirect" class="site-btn">Pay</button>
                             </div>
                         </div>
                     </div>

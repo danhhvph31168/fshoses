@@ -23,12 +23,12 @@ class CheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_name'         => 'required',
-            'user_email'        => (Auth::check() == true) ? 'required|email' : 'required|email|unique:users,email',
-            'user_phone'        => (Auth::check() == true) ? 'required|numeric|digits_between:9,11' : 'required|numeric|digits_between:9,11|unique:users,phone',
-            'user_address'      => 'required',
-            'user_note'         => 'nullable',
-            'payment_method'    => 'required',
+            'user_name'      => 'required',
+            'user_email'     => 'required|email',
+            'user_phone'     => 'required|numeric|digits_between:9,11',
+            'user_address'   => 'required',
+            'user_note'      => 'nullable',
+            'payment_method' => 'required',
         ];
     }
 }
