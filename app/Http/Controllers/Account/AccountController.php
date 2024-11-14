@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -13,12 +14,15 @@ use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
-    public function showFormUpdateProfile($id)
+    public function showFormUpdateProfile()
     {
-        $user = Auth::user();
-        if ($user->id != $id) {
-            return view('page-error.404');
+
+        if (request()->query()) {
+            // Nếu có tham số, điều hướng về URL chuẩn
+            return redirect()->route('showFormUpdateProfile');
         }
+        $userId = Auth::user()->id;
+        $user = User::findOrFail($userId);
         return view('profiles.formProfile', compact('user'));
 
     }
