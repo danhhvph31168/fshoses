@@ -15,7 +15,7 @@ class OrderHistoryController extends Controller
     }
     public function getDetailOrderItem($slug)
     {
-        $order = Order::query()->where('sku_order', $slug)->with([
+        $order = Order::where('sku_order', $slug)->with([
             "orderItems.productVariant.product",
             "orderItems.productVariant.color",
             "orderItems.productVariant.size",

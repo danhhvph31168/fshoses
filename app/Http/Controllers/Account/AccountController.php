@@ -20,6 +20,7 @@ class AccountController extends Controller
             return view('page-error.404');
         }
         return view('profiles.formProfile', compact('user'));
+
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)

@@ -3,7 +3,7 @@
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\OrderHistoryController;
 use App\Http\Controllers\Auth\AuthenController;
-
+use App\Http\Controllers\Auth\GoogleController;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
@@ -26,12 +26,14 @@ use App\Http\Controllers\Review\ReviewController;
 
 Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 
-// Route::get('/', [UserController::class, 'dashboard'])
-//     ->name('home.dashboard');
-
 Route::prefix('auth')
     ->name('auth.')
     ->group(function () {
+
+        Route::get('google', [GoogleController::class, 'redirectToGoogle'])->name('google');
+        Route::get('google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+
         Route::get('register', [AuthenController::class, 'showFormRegister'])->name('showFormRegister');
         Route::post('register', [AuthenController::class, 'handleRegister'])->name('handleRegister');
 
@@ -39,7 +41,7 @@ Route::prefix('auth')
         Route::post('login', [AuthenController::class, 'handleLogin'])->name('handleLogin');
 
         Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
-        // ->middleware('auth:sanctum');
+      
     });
 
 Route::get('click-to-forgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
@@ -57,13 +59,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('change-password', [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 
     Route::post('add-comment/{product_id}', [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
-        Route::delete('destroy-comment/{product_id}', [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
-    // Route::get('edit-comment/{product_id}', [ReviewController::class, 'showEditForm'])->name('editComment');
-    // Route::post('update-comment/{product_id}', [ReviewController::class, 'handleUpdateComment'])->name('updateComment');
+    Route::delete('destroy-comment/{product_id}', [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
 
-    Route::get('order-history',[OrderHistoryController::class,'getListOrderHistory'])->name('getListOrderHistory');
-    Route::get('order-item/{slug}',[OrderHistoryController::class,'getDetailOrderItem'])->name('getDetailOrderItem');
 
+    Route::get('order-history', [OrderHistoryController::class, 'getListOrderHistory'])->name('getListOrderHistory');
+    Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 });
 
 Route::get('/', function () {
@@ -71,8 +71,6 @@ Route::get('/', function () {
     $products = Product::query()->latest('id')->limit(4)->get();
 
     $categories = Category::query()->get();
-    
+
     return view('home', compact('products', 'categories'));
 })->name('home');
-
-

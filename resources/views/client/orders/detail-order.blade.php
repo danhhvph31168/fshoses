@@ -62,15 +62,15 @@
                             <tbody>
                                 <tr>
                                     <td class="fw-bold">Họ và tên :</td>
-                                    <td>{{ $order->user->name }}</td>
+                                    <td>{{ $order->user_name }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold">Số điện thoại :</td>
-                                    <td>{{ $order->user->phone }}</td>
+                                    <td>{{ $order->user_phone }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold">Địa chỉ :</td>
-                                    <td>{{ $order->user->address }}</td>
+                                    <td>{{ $order->user_address }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -85,8 +85,8 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Product</th>
-                                    <th scope="col" class="text-center">Quantity</th>
-                                    <th scope="col" class="text-center">Color</th>
+                                    <th scope="col"class="text-center">Quantity</th>
+                                    <th scope="col"class="text-center">Color</th>
                                     <th scope="col"class="text-center">Size</th>
                                     <th scope="col"class="text-center">Total Amount</th>
                                 </tr>

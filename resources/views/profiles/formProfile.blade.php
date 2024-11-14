@@ -93,7 +93,7 @@
                                 <label for="province" class="form-label">Province</label>
                                 <select id="province" class="form-control @error('province') is-invalid @enderror"
                                     name="province">
-                                    <option value="" selected>{{ $user->province }}</option>
+                                    <option value="">{{ $user->province }}</option>
 
                                 </select>
                                 <input type="hidden" name="province_text" id="province_text">
@@ -209,9 +209,9 @@
                     renderData(response.data.wards, "ward");
                 });
         }
-
+        
         var renderData = (array, select) => {
-            let row = '<option disable value="">Chọn</option>';
+            let row = `<option disable value="">{{ $user->province ? $user->province : "Chọn" }}</option>`;
             array.forEach(element => {
                 row += `<option value="${element.code}">${element.name}</option>`
             });
