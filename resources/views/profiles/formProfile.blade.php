@@ -97,7 +97,7 @@
 
                                 </select>
                                 <input type="hidden" name="province_text" id="province_text">
-                                @error('province') 
+                                @error('province')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -191,10 +191,13 @@
     <script>
         const host = "https://provinces.open-api.vn/api/";
         var callAPI = (api) => {
-            let row = `<option  value="">{{ $user->province ? $user->province : "Chọn" }}</option>`;
+            let row = `<option value="">{{ $user->province ? $user->province : 'Chọn' }}</option>`;
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data, "province",row);
+                    // const a = $user->province
+                    // const data = response.data.filter(item => item !== a);
+                    // console.log(response.data)
+                    renderData(response.data, "province", row);
                 });
         }
         callAPI('https://provinces.open-api.vn/api/?depth=1');
@@ -202,18 +205,18 @@
         var callApiDistrict = (api) => {
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data.districts, "district",row);
+                    renderData(response.data.districts, "district", row);
                 });
         }
         var callApiWard = (api) => {
             let row = `<option  value="">Chọn</option>`;
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data.wards, "ward",row);
+                    renderData(response.data.wards, "ward", row);
                 });
         }
-        
-        var renderData = (array, select,row) => {
+
+        var renderData = (array, select, row) => {
             array.forEach(element => {
                 row += `<option value="${element.code}">${element.name}</option>`
             });
