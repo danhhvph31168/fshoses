@@ -12,6 +12,15 @@
     @include('client.layouts.banner')
     <!-- Banner Section End -->
 
+    @foreach ($categories as $item)
+        <div>
+            @foreach ($item->products()->take(3)->get() as $pr)
+            <b>{{ $item->id }}</b>
+                <p>{{ $pr->sku }}</p>
+            @endforeach
+        </div>
+    @endforeach
+
     <section class="product spad mt-5">
         <div class="container">
             <div class="row">
@@ -25,7 +34,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="row product__filter">
                 @foreach ($products as $item)
                     {{-- @if ($item->category_id == 6) --}}
