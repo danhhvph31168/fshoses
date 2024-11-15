@@ -83,20 +83,30 @@ class AuthenController extends Controller
     }
     public function handleSendMailForgot(HandleSendMailForgotRequest $request)
     {
-
         // Tìm kiếm người dùng qua email
         $user = User::where('email', $request->email)->first();
+
+        // Kiểm tra nếu người dùng không tồn tại
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email does not exist in the system.');
+        }
 
         // Tạo token đặt lại mật khẩu
         $token = Password::createToken($user);
 
         // Gửi email đến email tài khoản chứa liên kết đặt lại mật khẩu
-        Mail::send('auth.mail', ['user' => $user, 'token' => $token], function ($message) use ($user) {
-            $message->to($user->email);
-            $message->subject('Liên kết đặt lại mật khẩu của bạn');
-        });
-        return redirect()->back()->with('success', 'A password reset link has been sent to your email.');
+        try {
+            Mail::send('auth.mail', ['user' => $user, 'token' => $token], function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject('Your password reset link');
+            });
 
+            // Phản hồi nếu gửi email thành công
+            return redirect()->back()->with('success', 'A password reset link has been sent to your email.');
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu việc gửi email thất bại
+            return redirect()->back()->with('error', 'The email could not be sent. Please try again later.');
+        }
     }
     public function clickInEmailForgot($id, $token)
     {

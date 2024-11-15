@@ -42,29 +42,7 @@ class UpdateProfileRequest extends FormRequest
         ];
     }
 
-    // Tùy chỉnh thông báo lỗi
-    // public function messages()
-    // {
-    //     return [
-    //         'name.required' => 'Tên là trường bắt buộc.',
-    //         'name.string' => 'Tên phải là một chuỗi ký tự hợp lệ.',
-    //         'name.max' => 'Tên không được vượt quá 255 ký tự.',
-    //         'email.required' => 'Email là trường bắt buộc.',
-    //         'email.email' => 'Email không đúng định dạng.',
-    //         'email.unique' => 'Email đã tồn tại trong hệ thống.',
-    //         'avatar.image' => 'Ảnh đại diện phải là một tệp hình ảnh.',
-    //         'avatar.mimes' => 'Ảnh đại diện phải có định dạng jpg, jpeg, png, hoặc gif.',
-    //         'avatar.max' => 'Kích thước ảnh đại diện không được vượt quá 2MB.',
-    //         'phone.regex' => 'Số điện thoại phải là một chuỗi số từ 10 đến 15 ký tự.',
-    //         'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
-    //         'balance.numeric' => 'Số dư phải là một số hợp lệ.',
-    //         'balance.min' => 'Số dư không được nhỏ hơn 0.',
-    //         'district.max' => 'Quận/Huyện không được vượt quá 255 ký tự.',
-    //         'province.max' => 'Tỉnh/Thành phố không được vượt quá 255 ký tự.',
-    //         'zip_code.numeric' => 'Mã bưu điện phải là số.',
-    //         'zip_code.digits_between' => 'Mã bưu điện phải có từ 3 đến 10 chữ số.',
-    //     ];
-    // }
+   
     // protected function failedValidation(Validator $validator)
     // {
     //     $errors = $validator->errors();

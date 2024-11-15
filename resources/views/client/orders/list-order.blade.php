@@ -59,7 +59,7 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('getDetailOrderItem', $item->sku_order) }}"
-                                                    style="color: #007bff">
+                                                    style="color: #e53637">
                                                     {{ $item->sku_order }}</a>
                                             </td>
                                             <td>

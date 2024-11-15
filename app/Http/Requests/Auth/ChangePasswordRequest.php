@@ -28,22 +28,4 @@ class ChangePasswordRequest extends FormRequest
             'password' => 'required|string|min:8|confirmed', // Cần tối thiểu 8 ký tự và xác nhận mật khẩu
         ];
     }
-    // public function messages()
-    // {
-    //     return [
-    //         'old_password.required' => 'Mật khẩu hiện tại là bắt buộc.',
-    //         'password.required' => 'Mật khẩu mới là bắt buộc.',
-    //         'password.min' => 'Mật khẩu mới phải có ít nhất 8 ký tự.',
-    //         'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
-    //     ];
-    // }
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     $errors = $validator->errors();
-
-    //     $response = response()->json([
-    //         'errors' => $errors->messages(),
-    //     ], 400);
-    //     throw new HttpResponseException($response);
-    // }
 }
