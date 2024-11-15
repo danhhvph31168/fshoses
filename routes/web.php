@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('client.home');
 // })->name('home');
 
-Route::get('/', [ProductController::class, 'product'])->name('client.home');
+Route::get('/', [ProductController::class, 'index'])->name('client.home');
+
+Route::get('/brand/{brd}',  [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
+Route::get('/category/{cate}',  [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
 
 
 Route::get('auth/login', [AuthenController::class, 'showFormLogin'])->name('login');

@@ -71,9 +71,9 @@
                         <div class="live-preview">
                             <div class="row gy-4">
                                 <div class="col-md-4">
-                                    <div>
+                                    <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" name="name" id="name">
+                                        <input type="text" class="form-control text-uppercase" name="name" id="name">
                                     </div>
 
                                     {{-- <div class="mt-3">
@@ -90,6 +90,15 @@
                                             @endforeach
                                         </select>
                                     </div> --}}
+
+
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Image: </label>
+                                        <input type="file" id="image" name="image" class="form-control"
+                                            onchange="showImage(event)">
+                                        <img id="img_danh_muc" src="" alt="Avatar"
+                                            style="width: 80px; display:none">
+                                    </div>
                                 </div>
                             </div>
 
@@ -143,4 +152,23 @@
             order: [0, 'asc']
         });
     </script> --}}
+
+    <script>
+        function showImage(event) {
+            const img_danh_muc = document.getElementById('img_danh_muc');
+
+            const file = event.target.files[0];
+
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                img_danh_muc.src = reader.result;
+                img_danh_muc.style.display = 'block';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 @endsection

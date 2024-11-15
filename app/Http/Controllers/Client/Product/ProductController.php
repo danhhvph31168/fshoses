@@ -12,36 +12,51 @@ use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
-    public function product()
+    public function index()
     {
         // $product = Product::query()->with(['variants', 'category', 'brand'])->latest('id')->limit(4);
 
-        $products = Product::query()->with(['productVariants', 'category', 'brand'])->latest('id')->get();
+        $products = Product::query()->where('status', '1')
+            ->with(['productVariants', 'category', 'brand'])->get();
 
-        $categories = Category::query()->get();
+        $categories = Category::query()->with(['products'])->where('is_active', '1')
+        ->orderBy('name', 'ASC')->get();
 
-        $brands = Brand::query()->get();
+        $brands = Brand::query()->where('status', '1')->get();
 
-        return view('client.home', compact('products', 'categories', 'brands'));
+        $listLatestProduct = Product::query()->latest('id')->limit(10)->get();
+
+        // dd($brands);
+
+        return view('client.home', compact('products', 'categories', 'brands', 'listLatestProduct'));
     }
 
-    public function productDetail($id)
+
+    public function getCategory($category_id)
     {
-        $product = Product::query()->with(['variants', 'category'])->find($id);
+        // $data['items'] = Product::where('id', $id)->orderBy('name', 'asc')->paginate(3);
 
-        $product->galleries =  $product->galleries()->limit(4)->get();
+        $category = Category::find($category_id);
 
-        $colors = ProductColor::query()->pluck('name', 'id')->all();
 
-        $sizes = ProductSize::query()->pluck('name', 'id')->all();
+        $products = $category->products()->take(4)->get();
 
-        $brands = Brand::query()->pluck('name', 'id')->all();
+        dd($products);
 
-        $comments = Review::where('product_id', $id)->orderBy('id', 'DESC')->get();
+        return view('client.home', compact('category', 'products'));
+    }
 
-        // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
-        $relatedProducts = Product::with(['galleries', 'variants'])->where('category_id', $product->category_id)->where('id', '<>', $id)->limit(4)->get();
+    public function listProductByBrand(Brand $brd)
+    {
+        $prds = $brd->products()->paginate(3);
 
-        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts', 'brands'));
+        return view('client.products.productByBrand', compact('brd', 'prds'));
+    }
+
+    public function listProductByCategory(Category $cate)
+    {
+        $prds = $cate->products()->paginate(3);
+
+        return view('client.products.productByCategory', compact('cate', 'prds'));
     }
 }
