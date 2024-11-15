@@ -35,7 +35,7 @@ class GoogleController extends Controller
             // Đăng nhập người dùng
             Auth::login($user);
 
-            return redirect()->route('home'); // Chuyển hướng sau khi đăng nhập thành công
+            return redirect()->route('home')->with('success', 'Login successfully'); // Chuyển hướng sau khi đăng nhập thành công
         } catch (\Exception $e) {
             return redirect()->route('auth.showFormLogin')->with(['error' => 'Google login failed!']);
         }

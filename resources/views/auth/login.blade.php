@@ -23,7 +23,7 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Email</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    id="username" name="email" placeholder="Enter username" autofocus>
+                                    id="username" name="email" placeholder="Enter username" autofocus value="{{ old('email') }}">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -39,7 +39,7 @@
                                 <div class="position-relative auth-pass-inputgroup mb-3">
                                     <input type="password" name="password"
                                         class="form-control pe-5 password-input @error('password') is-invalid @enderror"
-                                        placeholder="Enter password" id="password-input">
+                                        placeholder="Enter password" id="password-input" value="{{ old('password') }}">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

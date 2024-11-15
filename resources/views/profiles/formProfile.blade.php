@@ -191,27 +191,29 @@
     <script>
         const host = "https://provinces.open-api.vn/api/";
         var callAPI = (api) => {
+            let row = `<option  value="">{{ $user->province ? $user->province : "Chọn" }}</option>`;
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data, "province");
+                    renderData(response.data, "province",row);
                 });
         }
         callAPI('https://provinces.open-api.vn/api/?depth=1');
+        let row = `<option  value="">Chọn</option>`;
         var callApiDistrict = (api) => {
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data.districts, "district");
+                    renderData(response.data.districts, "district",row);
                 });
         }
         var callApiWard = (api) => {
+            let row = `<option  value="">Chọn</option>`;
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data.wards, "ward");
+                    renderData(response.data.wards, "ward",row);
                 });
         }
         
-        var renderData = (array, select) => {
-            let row = `<option disable value="">{{ $user->province ? $user->province : "Chọn" }}</option>`;
+        var renderData = (array, select,row) => {
             array.forEach(element => {
                 row += `<option value="${element.code}">${element.name}</option>`
             });
