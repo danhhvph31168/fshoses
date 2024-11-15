@@ -13,7 +13,7 @@ class GoogleController extends Controller
     {
         // Chuyển hướng người dùng đến Google và yêu cầu chọn tài khoản mỗi lần
         return Socialite::driver('google')
-            ->scopes(['profile', 'email']) 
+            ->scopes(['profile', 'email'])
             ->with(['prompt' => 'select_account'])  // Yêu cầu người dùng chọn tài khoản mỗi lần
             ->redirect();
     }
@@ -22,8 +22,7 @@ class GoogleController extends Controller
     {
         try {
             // Lấy thông tin người dùng từ Google
-            $googleUser = Socialite::driver('google')->stateless()->user();
-
+            $googleUser = Socialite::driver('google')->user();
             // Tìm người dùng trong cơ sở dữ liệu hoặc tạo mới
             $user = User::firstOrCreate(
                 ['email' => $googleUser->getEmail()],
@@ -32,13 +31,13 @@ class GoogleController extends Controller
                     'password' => bcrypt('123456dummy'), // Tạo mật khẩu ngẫu nhiên
                 ]
             );
-
+         
             // Đăng nhập người dùng
             Auth::login($user);
 
             return redirect()->route('home'); // Chuyển hướng sau khi đăng nhập thành công
         } catch (\Exception $e) {
-            return redirect()->route('auth.login')->with(['error' => 'Google login failed!']);
+            return redirect()->route('auth.showFormLogin')->with(['error' => 'Google login failed!']);
         }
     }
 }

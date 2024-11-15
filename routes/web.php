@@ -52,7 +52,7 @@ Route::get('handle-forgot-pass', [MessageSuccessResetController::class, 'message
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('profile/{id}', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
     Route::get('change-password', [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
