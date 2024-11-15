@@ -211,7 +211,7 @@
         }
         
         var renderData = (array, select) => {
-            let row = `<option disable value="">{{ $user->province ? $user->province : "Chọn" }}</option>`;
+            let row = `<option value="">{{ $user->province ? $user->province : "Chọn" }}</option>`;
             array.forEach(element => {
                 row += `<option value="${element.code}">${element.name}</option>`
             });
