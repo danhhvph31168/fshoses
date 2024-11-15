@@ -12,11 +12,13 @@
                     <ul>
                         <li class="active"><a href="/">Trang chủ</a></li>
 
-                        <li><a href="#">Thượng hiệu</a>
+                        <li><a href="#">Thương hiệu</a>
                             <ul class="dropdown">
-                                @foreach ($brands as $item)
+                                @foreach ($brd as $item)
                                     @if ($item->status == 1)
-                                        <li><a href="#">{{ $item->name }}</a></li>
+                                        <li><a
+                                                href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
+                                        </li>
                                     @endif
                                 @endforeach
                             </ul>
@@ -24,24 +26,18 @@
 
                         <li><a href="#">Danh mục</a>
                             <ul class="dropdown">
-                                @foreach ($categories as $item)
+                                @foreach ($cate as $item)
+                                    {{-- @dd($item) --}}
                                     @if ($item->is_active == 1)
-                                        <li><a href="#">{{ $item->name }}</a></li>
+                                        <li><a
+                                                href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
+                                        </li>
                                     @endif
                                 @endforeach
                             </ul>
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
                         <li><a href="./contact.html">Liên hệ</a></li>
-                        {{-- <li>
-                            <form action="{{ route('logout') }}" method="post">
-                                @csrf
-                                <button type="submit" class="border-0 dropdown-item">
-                                    <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                                    <span class="align-middle" data-key="t-logout">Logout</span>
-                                </button>
-                            </form>
-                        </li> --}}
                     </ul>
                 </nav>
             </div>
