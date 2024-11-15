@@ -27,6 +27,9 @@ class CheckoutRequest extends FormRequest
             'user_email'     => 'required|email',
             'user_phone'     => 'required|numeric|digits_between:9,11',
             'user_address'   => 'required',
+            'user_province'  => 'required',
+            'user_district'  => 'required',
+            'user_ward'      => 'required',
             'user_note'      => 'nullable',
             'payment_method' => 'required',
         ];

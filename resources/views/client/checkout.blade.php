@@ -1,4 +1,4 @@
-@extends('client.layouts.master')
+@extends('client.layouts.checkout.checkout')
 
 @section('content')
     <section class="breadcrumb-option">
@@ -70,7 +70,56 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="checkout__input">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="checkout__input">
+                                        <p>Province<span>*</span></p>
+                                        <select class="@error('user_province') is-invalid @enderror form-control w-100"
+                                            name="user_province" id="province">
+                                        </select>
+
+                                        <input type="hidden" name="provinceText" id="provinceText">
+
+                                        @error('user_province')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="checkout__input">
+                                        <p>District<span>*</span></p>
+                                        <select class="@error('user_district') is-invalid @enderror form-control w-100"
+                                            name="user_district" id="district">
+                                            <option value="">Select district</option>
+                                        </select>
+
+                                        <input type="hidden" name="districtText" id="districtText">
+
+                                        @error('user_district')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="checkout__input">
+                                        <p>Ward<span>*</span></p>
+                                        <select class="@error('user_ward') is-invalid @enderror form-control w-100"
+                                            name="user_ward" id="ward">
+                                            <option value="">Select ward</option>
+                                        </select>
+
+                                        <input type="hidden" name="wardText" id="wardText">
+
+                                        @error('user_ward')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="checkout__input mt-4">
                                 <p>Note<span>*</span></p>
                                 <textarea class="form-control" name="user_note" cols="30" rows="3"></textarea>
                             </div>
@@ -145,12 +194,138 @@
 
                                 <input type="hidden" name="totalAmount" value="{{ $totalAmount }}">
 
-                                <button type="submit" name="redirect" class="site-btn">Pay</button>
+                                <button type="submit" name="redirect" id="submit" class="site-btn">Pay</button>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
     </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const host = "https://provinces.open-api.vn/api/";
+        var callAPI = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data, "province");
+                });
+        }
+        callAPI('https://provinces.open-api.vn/api/?depth=1');
+        var callApiDistrict = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district");
+                });
+        }
+        var callApiWard = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward");
+                });
+        }
+
+        var renderData = (array, select) => {
+            let row = ' <option disable value="">Select</option>';
+            array.forEach(element => {
+                row += `<option value="${element.code}">${element.name}</option>`
+            });
+            document.querySelector("#" + select).innerHTML = row
+        }
+
+        $("#province").change(() => {
+            callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
+            printResult();
+        });
+        $("#district").change(() => {
+            callApiWard(host + "d/" + $("#district").val() + "?depth=2");
+            printResult();
+        });
+        $("#ward").change(() => {
+            printResult();
+        })
+
+        var printResult = () => {
+            if ($("#district").val() != "" && $("#province").val() != "" &&
+                $("#ward").val() != "") {
+                let result = $("#province option:selected").text() +
+                    " | " + $("#district option:selected").text() + " | " +
+                    $("#ward option:selected").text();
+                $("#result").text(result)
+            }
+
+            $('#submit').click(function(){
+                $('#provinceText').val($('#province option:selected').text());
+                $('#districtText').val($('#district option:selected').text());
+                $('#wardText').val($('#ward option:selected').text());
+            })
+
+        }
+    </script>
 @endsection
+
+{{-- @section('js')
+    < script src = "https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity = "sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin = "anonymous" referrerpolicy = "no-referrer">
+    </>
+    <script>
+        const host = "https://provinces.open-api.vn/api/";
+        var callAPI = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data, "province");
+                });
+        }
+        callAPI('https://provinces.open-api.vn/api/?depth=1');
+        var callApiDistrict = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district");
+                });
+        }
+        var callApiWard = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward");
+                });
+        }
+
+        var renderData = (array, select) => {
+            let row = ' <option disable value="">chọn</option>';
+            array.forEach(element => {
+                row += `<option value="${element.code}">${element.name}</option>`
+            });
+            document.querySelector("#" + select).innerHTML = row
+        }
+
+        $("#province").change(() => {
+            callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
+            printResult();
+        });
+        $("#district").change(() => {
+            callApiWard(host + "d/" + $("#district").val() + "?depth=2");
+            printResult();
+        });
+        $("#ward").change(() => {
+            printResult();
+        })
+
+        var printResult = () => {
+            if ($("#district").val() != "" && $("#province").val() != "" &&
+                $("#ward").val() != "") {
+                let result = $("#province option:selected").text() +
+                    " | " + $("#district option:selected").text() + " | " +
+                    $("#ward option:selected").text();
+                $("#result").text(result)
+            }
+
+        }
+    </script>
+@endsection --}}

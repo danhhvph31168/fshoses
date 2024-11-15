@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('user_email');
             $table->string('user_phone');
             $table->string('user_address');
+            $table->string('user_province');
+            $table->string('user_district');
+            $table->string('user_ward');
             $table->text('user_note')->nullable();
 
             $table->string('status_order')->default(Order::STATUS_ORDER_PENDING);

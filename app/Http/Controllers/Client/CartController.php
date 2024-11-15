@@ -12,7 +12,6 @@ class CartController extends Controller
     public function index()
     {
         $cart = session('cart');
-        // dd($cart);
 
         $totalAmount = 0;
         if (session()->has('cart')) {
@@ -38,8 +37,6 @@ class CartController extends Controller
             ])
             ->firstOrFail();
 
-        // dd($productVariant->id);
-
         if (!isset(session('cart')[$productVariant->id])) {
 
             $data = $product->toArray() + $productVariant->toArray();
@@ -55,8 +52,6 @@ class CartController extends Controller
 
             session()->put('cart.' . $productVariant->id, $data);
         }
-
-        // dd(session('cart'));
 
         return redirect()->route('cart.list');
     }

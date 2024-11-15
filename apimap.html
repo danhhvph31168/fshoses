@@ -26,12 +26,12 @@
     <div class="container">
         <h1>Chọn danh sách tỉnh</h1>
         <form action="">
-            <select name="" id="a">
+            <select name="" id="province">
             </select>
-            <select name="" id="b">
+            <select name="" id="district">
                 <option value="">chọn quận</option>
             </select>
-            <select name="" id="c">
+            <select name="" id="ward">
                 <option value="">chọn phường</option>
             </select>
         </form>
@@ -50,20 +50,20 @@
         var callAPI = (api) => {
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data, "a");
+                    renderData(response.data, "province");
                 });
         }
         callAPI('https://provinces.open-api.vn/api/?depth=1');
         var callApiDistrict = (api) => {
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data.districts, "b");
+                    renderData(response.data.districts, "district");
                 });
         }
         var callApiWard = (api) => {
             return axios.get(api)
                 .then((response) => {
-                    renderData(response.data.wards, "c");
+                    renderData(response.data.wards, "ward");
                 });
         }
 
@@ -75,28 +75,27 @@
             document.querySelector("#" + select).innerHTML = row
         }
 
-        $("#a").change(() => {
-            callApiDistrict(host + "p/" + $("#a").val() + "?depth=2");
+        $("#province").change(() => {
+            callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
             printResult();
         });
-        $("#b").change(() => {
-            callApiWard(host + "d/" + $("#b").val() + "?depth=2");
+        $("#district").change(() => {
+            callApiWard(host + "d/" + $("#district").val() + "?depth=2");
             printResult();
         });
-        $("#c").change(() => {
+        $("#ward").change(() => {
             printResult();
         })
 
         var printResult = () => {
-            if ($("#b").val() != "" && $("#a").val() != "" &&
-                $("#c").val() != "") {
-                let result = $("#a option:selected").text() +
-                    " | " + $("#b option:selected").text() + " | " +
-                    $("#c option:selected").text();
+            if ($("#district").val() != "" && $("#province").val() != "" &&
+                $("#ward").val() != "") {
+                let result = $("#province option:selected").text() +
+                    " | " + $("#district option:selected").text() + " | " +
+                    $("#ward option:selected").text();
                 $("#result").text(result)
             }
 
-            alert($("#a option:selected").text());
         }
     </script>
 </body>
