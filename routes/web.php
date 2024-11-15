@@ -10,7 +10,8 @@ Route::get('/', function () {
 
     $products = Product::query()->latest('id')->limit(4)->get();
 
-    $categories = Category::query()->get();
+    $categories = Category::query()->with('products')->get();
+    // dd($categories->products);
 
     return view('home', compact('products', 'categories'));
 })->name('home');
