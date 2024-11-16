@@ -59,6 +59,8 @@
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>
             </div>
+
         </div>
     </div>
+
 </footer>

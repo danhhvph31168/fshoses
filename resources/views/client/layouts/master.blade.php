@@ -18,7 +18,7 @@
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+    <link href="{{ asset('theme/admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('theme/client/css/bootstrap.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/font-awesome.min.css') }}" type="text/css">
@@ -36,7 +36,7 @@
 <body>
     <div class="container-fluid p-0">
         <div class="row">
-            <div class="col-md-12">
+        
                 <!-- Header Section Begin -->
                 @include('client.layouts.header')
                 <!-- Header Section End -->
@@ -49,7 +49,7 @@
                 @include('client.layouts.footer')
                 <!-- Footer Section End -->
 
-            </div>
+      
         </div>
     </div>
 
@@ -69,7 +69,7 @@
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/main.js') }}"></script>
-    @yield("scripts")
+    @yield('scripts')
 </body>
 
 </html>

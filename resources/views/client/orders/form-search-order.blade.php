@@ -29,9 +29,9 @@
         <form class="w-50" action="{{ route('handleSearchOrder') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label fw-bold">Order Code</label>
-                <input type="text" name='sku_order' class="form-control" @error('sku_order') is-invalid @enderror
-                    id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter order code...">
+                <label for="username" class="form-label">Order Code</label>
+                <input type="text" class="form-control @error('sku_order') is-invalid @enderror"
+                    id="sku_order" name="sku_order" placeholder="Enter order code..." autofocus value="{{ old('sku_order') }}">
                 @error('sku_order')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -40,8 +40,8 @@
             </div>
             <div class="mb-4">
                 <label for="exampleInputPassword1" class="form-label fw-bold">Phone</label>
-                <input type="text" class="form-control" name="user_phone" @error('user_phone') is-invalid @enderror
-                    id="exampleInputPassword1" placeholder="Enter phone...">
+                <input type="text" name="user_phone" class="form-control @error('user_phone') is-invalid @enderror"
+                    id="exampleInputPassword1" placeholder="Enter phone..." value="{{ old('user_phone') }}">
                 @error('user_phone')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

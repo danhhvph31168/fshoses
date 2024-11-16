@@ -22,8 +22,10 @@ class SearchOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sku_order' => 'required|string',
-            'user_phone' => 'required|string',
+         
+                'sku_order' => 'required|string|max:255',
+                'user_phone' => 'required|string|max:20',
+
         ];
     }
 }

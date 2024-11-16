@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
+Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 Route::get('/', function () {
 
     $products = Product::query()->latest('id')->limit(4)->get();
