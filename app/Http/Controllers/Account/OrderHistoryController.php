@@ -26,4 +26,5 @@ class OrderHistoryController extends Controller
         // dd  ($order);
         return view("client.orders.detail-order", compact("order"));
     }
+
 }

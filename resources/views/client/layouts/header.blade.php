@@ -87,8 +87,8 @@
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href=""><i
-                                    class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                           
+                            <a class="dropdown-item" href="{{ route('showFormSearchOrder') }}">
                                 <span class="align-middle">Tra cứu đơn hàng</span></a>
                             <a class="dropdown-item" href="{{ route('auth.showFormLogin') }}"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>

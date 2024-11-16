@@ -9,6 +9,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MessageSuccessResetController;
 use App\Http\Controllers\Client\Product\ProductController;
+use App\Http\Controllers\Account\OrderSearchController ;
 use App\Http\Controllers\Review\ReviewController;
 
 /*
@@ -25,6 +26,11 @@ use App\Http\Controllers\Review\ReviewController;
 
 
 Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
+Route::get('search-order', [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
+Route::post('search-order', [OrderSearchController::class, 'handleSearchOrder'])->name('handleSearchOrder');
+
+
+
 
 Route::prefix('auth')
     ->name('auth.')
@@ -41,7 +47,6 @@ Route::prefix('auth')
         Route::post('login', [AuthenController::class, 'handleLogin'])->name('handleLogin');
 
         Route::post('logout', [AuthenController::class, 'logout'])->name('logout');
-      
     });
 
 Route::get('click-to-forgot', [AuthenController::class, 'clickToForgot'])->name('clickToForgot');
@@ -66,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 });
 
+
+
 Route::get('/', function () {
 
     $products = Product::query()->latest('id')->limit(4)->get();
@@ -74,3 +81,4 @@ Route::get('/', function () {
 
     return view('home', compact('products', 'categories'));
 })->name('home');
+
