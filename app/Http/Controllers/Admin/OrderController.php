@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\StoreRequest;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Models\{Order};
 use App\Services\OrderAdmin\OrderFormServices;
 use App\Services\OrderAdmin\OrderServices;
@@ -17,6 +14,7 @@ class OrderController extends Controller
     const PATH_VIEW = 'admin.orders.';
 
     public function __construct(public OrderServices $orderServices, public OrderFormServices $orderFormServices) {}
+    
     public function index()
     {
         $data = Order::query()->with(['user', 'role'])->get();

@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use App\Models\Review;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Order;
-use App\Models\User;
 use App\Policies\OrderPolicy;
 use App\Policies\UserPolicy;
 
@@ -27,6 +28,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define(
+            'my-comment',
+            function (User $user, Review $review) {
+                return $user->id == $review->user_id;
+            }
+        );
     }
 }

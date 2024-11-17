@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class HandleForgotPassRequest extends FormRequest
 {
@@ -27,22 +25,4 @@ class HandleForgotPassRequest extends FormRequest
             'password' => 'required|confirmed|min:8',
         ];
     }
-    public function messages(): array
-    {
-        return [
-
-            'password.required' => 'Mật khẩu là bắt buộc.',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
-            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
-        ];
-    }
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     $errors = $validator->errors();
-
-    //     $response = response()->json([
-    //         'errors' => $errors->messages(),
-    //     ], 400);
-    //     throw new HttpResponseException($response);
-    // }
 }

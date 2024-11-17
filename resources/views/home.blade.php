@@ -5,132 +5,138 @@
 @endsection
 
 @section('content')
-    <!-- Hero Section Begin -->
-    @include('client.layouts.hero')
-    <!-- Hero Section End -->
-    <!-- Banner Section Begin -->
-    @include('client.layouts.banner')
-    <!-- Banner Section End -->
 
-    @foreach ($categories as $item)
-        <div>
-            @foreach ($item->products()->take(3)->get() as $pr)
-            <b>{{ $item->id }}</b>
-                <p>{{ $pr->sku }}</p>
-            @endforeach
-        </div>
-    @endforeach
+    @include('client.layouts.banner')
 
     <section class="product spad mt-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="filter__controls">
-                        {{-- @foreach ($categories as $item)
-                            <li class="active" data-filter="*">{{ $item->name }}</li>
-                        @endforeach --}}
-                        <li data-filter=".new-arrivals">New Arrivals</li>
-                        <li data-filter=".hot-sales">Hot Sales</li>
-                    </ul>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <table class="table table-nowrap">
+                        <thead>
+                            <tr>
+                                <th scope="" class="text-bg-secondary text-center fs-4"> GIÀY MỚI NHẤT </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        @foreach ($listLatestProduct as $item)
+                            <div class="col-md-3 mb-3">
+                                <div class="card">
+                                    <div class="border-bottom" style="width: 100%">
+                                        <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                            alt="..." height="200px">
+                                    </div>
+                                    <div class="card-body" style="height: 180px">
+
+                                        <div class="mb-3">
+                                            <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
+                                        </div>
+
+                                        <a href="" class="text-dark card-title fs-6 fw-bold">
+                                            {{ $item->name }}
+                                        </a>
+                                        @if ($item->price_sale > 0)
+                                            <p class="card-text text-danger">
+                                                {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
+                                                <span class="text-decoration-line-through">
+                                                    {{ number_format($item->price_sale, 0, ',', '.') }}
+                                                    VNĐ</span>
+                                            </p>
+                                        @else
+                                            <p class="card-text text-danger">
+                                                {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
+                                            </p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <a href="{{ route('client.product-list') }}" class="btn btn-outline-secondary my-3">
+                        Xem thêm >>
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="row product__filter">
-                @foreach ($products as $item)
-                    {{-- @if ($item->category_id == 6) --}}
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                        <div class="product__item">
-                            {{-- @dd($item->category->name); --}}
-                            <div class="product__item__pic set-bg" {{-- data-setbg="{{ Storage::url($item->img_thumbnail) }}" --}}
-                                data-setbg="https://sadesign.vn/wp-content/uploads/2021/04/phong-cach-chup-anh-giay-dep-2021.jpg">
-                                <span class="">
-                                    {{-- {{ $item->is_hot_deal == 1 ? 'Hot Deal' : $item->category->name }} --}}
-                                    {!! $item->is_hot_deal == 1 ? '<span class="badge bg-danger">Hot Deal</span>' : '' !!}
-                                </span>
-                                <ul class="product__hover">
-                                    <li><a href="#"><img src="{{ asset('theme/client/img/icon/heart.png') }}"
-                                                alt=""></a></li>
-                                    <li><a href="#"><img src="{{ asset('theme/client/img/icon/compare.png') }}"
-                                                alt="">
-                                            <span>Compare</span></a></li>
-                                    {{-- <li><a href="{{ route('product.detail', $item->slug) }}"><img
-                                                src="{{ asset('theme/client/img/icon/search.png') }}" alt=""></a>
-                                    </li> --}}
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h5>{{ $item->name }}</h5>
-                                {{-- <a href="#" class="add-cart">+ Add To Cart</a> --}}
-                                <div class="rating">
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <h5>{{ number_format($item->price_sale, 0, ',', '.') }} VNĐ</h5>
-                                <span
-                                    class="text-danger text-decoration-line-through">{{ number_format($item->price_regular, 0, ',', '.') }}
-                                    VNĐ</span>
-                            </div>
+        <!-- Hero Section Begin -->
+        <div class="row mb-5">
+            @include('client.layouts.hot_product')
+        </div>
+        <!-- Banner Section End -->
+
+        {{-- Sản phẩm theo danh mục --}}
+        <div class="container my-3">
+            @foreach ($categories as $category)
+                @if ($category->products()->count() > 0)
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <table class="table table-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th scope="" class="text-bg-secondary  text-center fs-4">{{ $category->name }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
-                    </div>
-                    {{-- @endif --}}
-                @endforeach
-            </div>
 
-            <div class="div row product__filter">
-                @foreach ($products as $item)
-                    @if ($item->category_id == 6)
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
-                            <div class="product__item">
-                                {{-- @dd($item->category->name); --}}
-                                <div class="product__item__pic set-bg" {{-- data-setbg="{{ Storage::url($item->img_thumbnail) }}" --}}
-                                    data-setbg="https://sadesign.vn/wp-content/uploads/2021/04/phong-cach-chup-anh-giay-dep-2021.jpg">
-                                    <span class="">
-                                        {{-- {{ $item->is_hot_deal == 1 ? 'Hot Deal' : $item->category->name }} --}}
-                                        {!! $item->is_hot_deal == 1 ? '<span class="badge bg-danger">Hot Deal</span>' : '' !!}
-                                    </span>
-                                    <ul class="product__hover">
-                                        <li><a href="#"><img src="{{ asset('theme/client/img/icon/heart.png') }}"
-                                                    alt=""></a></li>
-                                        <li><a href="#"><img src="{{ asset('theme/client/img/icon/compare.png') }}"
-                                                    alt="">
-                                                <span>Compare</span></a></li>
-                                        {{-- <li><a href="{{ route('product.detail', $item->slug) }}"><img
-                                            src="{{ asset('theme/client/img/icon/search.png') }}" alt=""></a>
-                                </li> --}}
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h5>{{ $item->name }}</h5>
-                                    {{-- <a href="#" class="add-cart">+ Add To Cart</a> --}}
-                                    <div class="rating">
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                @foreach ($category->products()->take(4)->get() as $item)
+                                    <div class="col-md-3 mb-3">
+                                        <div class="card">
+                                            <div class="border-bottom" style="width: 100%">
+                                                <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                    alt="..." height="200px">
+                                            </div>
+                                            <div class="card-body" style="height: 180px">
+
+                                                <div class="mb-3">
+                                                    <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
+                                                </div>
+
+                                                <a href="" class="text-dark card-title fs-6 fw-bold">
+                                                    {{ $item->name }}
+                                                </a>
+                                                @if ($item->price_sale > 0)
+                                                    <p class="card-text text-danger">
+                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
+                                                        <span class="text-decoration-line-through">
+                                                            {{ number_format($item->price_sale, 0, ',', '.') }}
+                                                            VNĐ</span>
+                                                    </p>
+                                                @else
+                                                    <p class="card-text text-danger">
+                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
+                                                    </p>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
-                                    <h5>{{ number_format($item->price_sale, 0, ',', '.') }} VNĐ</h5>
-                                    <span
-                                        class="text-danger text-decoration-line-through">{{ number_format($item->price_regular, 0, ',', '.') }}
-                                        VNĐ</span>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
-                    @endif
-                @endforeach
-            </div>
+
+                        @if ($category->products()->count() > 0)
+                            <div class="col-md-12 text-center">
+                                <a href="{{ route('client.productByCategory', $category->id) }}"
+                                    class="btn btn-outline-secondary my-3">
+                                    Xem thêm >>
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+            @endforeach
         </div>
     </section>
-
-    <!-- Categories Section Begin -->
-    @include('client.layouts.hot_product')
-    <!-- Categories Section End -->
-
-
-    <!-- Latest Blog Section Begin -->
-    @include('client.layouts.trending')
-    <!-- Latest Blog Section End -->
 @endsection

@@ -76,7 +76,7 @@
                             <a class="dropdown-item" href="#"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Đổi mật khẩu</span></a>
-                            <form action="{{ route('logout') }}" method="post">
+                            <form action="{{ route('auth.logout') }}" method="post">
                                 @csrf
                                 <button type="submit" class="border-0 dropdown-item">
                                     <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
@@ -107,10 +107,10 @@
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="{{ route('login') }}"><i
+                            <a class="dropdown-item" href="{{ route('auth.showFormLogin') }}"><i
                                     class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Login</span></a>
-                            <a class="dropdown-item" href="{{ route('register') }}"><i
+                            <a class="dropdown-item" href="{{ route('auth.showFormRegister') }}"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Register</span></a>
                         </div>
