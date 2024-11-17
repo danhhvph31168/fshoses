@@ -35,17 +35,21 @@
                                             <div class="card-body" style="height: 180px">
 
                                                 <div class="mb-3">
-                                                    <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
+                                                    <a href="#" class="btn btn-outline-secondary">Thêm vào giỏ hàng</a>
                                                 </div>
 
-                                                <a href="" class="text-dark card-title fs-6 fw-bold">
-                                                    {{ $item->name }}
-                                                </a>
+                                                <div class="card-title fs-6 fw-bold">
+                                                    <a href="#" class="text-dark">
+                                                        {{ $item->name }}
+                                                    </a>
+                                                </div>
+
                                                 @if ($item->price_sale > 0)
-                                                    <p class="card-text text-danger">
+                                                    <p class="card-text text-danger fs-6">
                                                         {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
-                                                        <span class="text-decoration-line-through">
-                                                            {{ number_format($item->price_sale, 0, ',', '.') }} VNĐ</span>
+                                                        <span class="text-decoration-line-through text-black-50 fs-6">
+                                                            {{ number_format($item->price_sale, 0, ',', '.') }}
+                                                            VNĐ</span>
                                                     </p>
                                                 @else
                                                     <p class="card-text text-danger">

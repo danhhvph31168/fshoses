@@ -30,13 +30,13 @@ class ProductController extends Controller
         $listLatestProduct = Product::query()->latest('id')->limit(12)->get();
 
         $banners = Banner::query()->where('status', '1')->orderBy('name', 'asc')->get();
-        
-        return view('client.home', compact('products', 'categories', 'brands', 'listLatestProduct','banners'));
+
+        return view('client.home', compact('products', 'categories', 'brands', 'listLatestProduct', 'banners'));
     }
 
     public function getAllProducts()
     {
-        $getAllProducts = Product::query()->paginate(9);
+        $getAllProducts = Product::query()->latest('id')->paginate(9);
 
         return view('client.products.product-list', compact('getAllProducts'));
     }

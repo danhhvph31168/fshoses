@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->nullable();
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('address')->nullable();
             $table->decimal('balance', 15, 0)->comment('Số dư tài khoản')->default(0);
 
