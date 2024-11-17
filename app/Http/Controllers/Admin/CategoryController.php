@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 // use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +19,7 @@ class CategoryController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $data = Category::query()->with(['parent', 'children'])->latest('id')->paginate(10);
+        $data = Category::query()->latest('id')->paginate(10);
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {

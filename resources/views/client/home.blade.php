@@ -5,13 +5,11 @@
 @endsection
 
 @section('content')
-    <!-- Hero Section Begin -->
+
     @include('client.layouts.banner')
-    <!-- Banner Section End -->
 
     <section class="product spad mt-5">
         <div class="container">
-            {{-- Sản phẩm mới nhất --}}
             <div class="row mb-3">
                 <div class="col-md-12">
                     <table class="table table-nowrap">
