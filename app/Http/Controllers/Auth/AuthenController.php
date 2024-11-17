@@ -8,11 +8,12 @@ use App\Http\Requests\Auth\HandleLoginRequest;
 use App\Http\Requests\Auth\HandleRegisterRequest;
 use App\Http\Requests\Auth\HandleSendMailForgotRequest;
 use App\Models\User;
-use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Mail;
-use Password;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password ;
+
 
 
 class AuthenController extends Controller

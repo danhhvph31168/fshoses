@@ -22,7 +22,7 @@ class GoogleController extends Controller
     {
         try {
             // Lấy thông tin người dùng từ Google
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')->stateless()->user();
             
             // Tìm người dùng trong cơ sở dữ liệu hoặc tạo mới
             $user = User::firstOrCreate(

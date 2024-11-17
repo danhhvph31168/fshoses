@@ -37,7 +37,7 @@ Route::prefix('auth')
     ->group(function () {
 
         Route::get('google', [GoogleController::class, 'redirectToGoogle'])->name('google');
-        Route::get('google/callback', [GoogleController::class, 'handleGoogleCallback']);
+        Route::get('/callback/google', [GoogleController::class, 'handleGoogleCallback']);
 
 
         Route::get('register', [AuthenController::class, 'showFormRegister'])->name('showFormRegister');

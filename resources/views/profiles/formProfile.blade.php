@@ -134,17 +134,6 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="username" class="form-label">Balance</label>
-                                <input type="number" class="form-control @error('balance') is-invalid @enderror"
-                                    name="balance" value="{{ $user->balance }}" id="balance"
-                                    placeholder="Enter balance" disabled>
-                                @error('balance')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
                                 <label for="username" class="form-label">Zip_code</label>
                                 <input type="text" class="form-control @error('zip_code') is-invalid @enderror"
                                     name="zip_code" value="{{ $user->zip_code }}" id="zip_code"
