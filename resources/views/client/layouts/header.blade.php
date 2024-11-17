@@ -7,12 +7,12 @@
                     <a href="\"><img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt=""></a>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
                         <li class="active"><a href="/">Trang chủ</a></li>
 
-                        <li><a href="#">Thương hiệu</a>
+                        <li><a href="#">Thương hiệu</a></li>
                             <ul class="dropdown">
                                 @foreach ($brd as $item)
                                     @if ($item->status == 1)
@@ -36,13 +36,14 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Liên hệ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="./contact.html">Tra cứu đơn hàng</a></li>
                     </ul>
                 </nav>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="dropdown ms-sm-3 header__menu topbar-user">
                     @if (Auth::user())
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
