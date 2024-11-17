@@ -121,7 +121,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>Sub Total :</td>
-                                                        <td class="text-end">$359.96</td>
+                                                        <td class="text-end"> ${{ number_format($item->quantity * $item->price, 0, '.', ',') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Discount <span class="text-muted">(VELZON15)</span> : :</td>
@@ -155,8 +155,7 @@
                         <div class="d-sm-flex align-items-center">
                             <h5 class="card-title flex-grow-1 mb-0">Order Status</h5>
                             <div class="flex-shrink-0 mt-2 mt-sm-0">
-                                <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"><i
-                                        class="ri-map-pin-line align-middle me-1"></i> Change Address</a>
+                              
                                 <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
                                         class="mdi mdi-archive-remove-outline align-middle me-1"></i> Cancel Order</a>
                             </div>
@@ -341,38 +340,6 @@
                                     {{ $order->user->address }}
                                 </li>
                             </ul>
-                        </div>
-                    </div>
-                @elseif(!Auth::check())
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="d-flex">
-                                <h5 class="card-title flex-grow-1 mb-0">Customer Details</h5>
-                                <div class="flex-shrink-0">
-                                    <a href="javascript:void(0);" class="link-secondary">View Profile</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
-                                <li class="fw-medium fs-14">
-                                    <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-                                    {{ $order->user_name }}
-                                </li>
-                                <li>
-                                    <i class="mdi mdi-phone text-muted fs-16 align-middle me-1"></i>
-                                    {{ $order->user_phone }}
-                                </li>
-                                <li>
-                                    <i class="mdi mdi-email text-muted fs-16 align-middle me-1"></i>
-                                    {{ $order->user_email }}
-                                </li>
-                                <li>
-                                    <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
-                                    {{ $order->user_address }}
-                                </li>
-                            </ul>
-
                         </div>
                     </div>
                 @endif
