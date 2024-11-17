@@ -9,8 +9,10 @@
         <div class="container">
             <div class="row">
 
-                {{-- Menu navbar --}}
-                @include('client.layouts.filter')
+                <div class="col-md-3">
+                    {{-- Menu navbar --}}
+                    @include('client.layouts.sidebar')
+                </div>
 
                 {{-- Main content --}}
                 <div class="col-md-9">
@@ -35,17 +37,26 @@
                                                 <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
                                                     alt="..." height="200px">
                                             </div>
-                                            <div class="card-body" style="height: 200px">
-                                                <a href="" class="text-dark card-title fs-6">
+                                            <div class="card-body" style="height: 180px">
+
+                                                <div class="mb-3">
+                                                    <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
+                                                </div>
+
+                                                <a href="" class="text-dark card-title fs-6 fw-bold">
                                                     {{ $item->name }}
                                                 </a>
-                                                <p class="card-text text-danger">
-                                                    {{ number_format($item->price_regular, 0, ',', '.') }}
-                                                    VNĐ
-                                                </p>
-                                                <div class="">
-                                                    <a href="#" class="btn btn-secondary">Mua Hàng</a>
-                                                </div>
+                                                @if ($item->price_sale > 0)
+                                                    <p class="card-text text-danger">
+                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
+                                                        <span class="text-decoration-line-through">
+                                                            {{ number_format($item->price_sale, 0, ',', '.') }} VNĐ</span>
+                                                    </p>
+                                                @else
+                                                    <p class="card-text text-danger">
+                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

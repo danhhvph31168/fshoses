@@ -1,5 +1,9 @@
 @extends('client.layouts.master')
 
+@section('title')
+    Danh sách sản phẩm
+@endsection
+
 @section('content')
     <section class="product spad mt-5">
         <div class="container">
@@ -17,28 +21,25 @@
                             <table class="table table-nowrap">
                                 <thead>
                                     <tr>
-                                        <th scope="" class="text-bg-dark text-uppercase"> {{ $cate->name }}</th>
-
+                                        <th scope="" class="text-bg-dark text-uppercase"> Danh sách sản phẩm</th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                         <div class="col-md-12">
                             <div class="row">
-                                @foreach ($prds as $item)
+                                @foreach ($getAllProducts as $item)
                                     <div class="col-md-4 mb-3">
                                         <div class="card">
                                             <div class="border-bottom" style="width: 100%">
                                                 <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
                                                     alt="..." height="200px">
                                             </div>
-                                            <div class="card-body" style="height: 180px">
-
+                                            <div class="card-body" style="height: 200px">
                                                 <div class="mb-3">
-                                                    <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
+                                                    <a href="#" class="btn btn-secondary">Mua Hàng</a>
                                                 </div>
-
-                                                <a href="" class="text-dark card-title fs-6 fw-bold">
+                                                <a href="" class="text-dark card-title fs-6">
                                                     {{ $item->name }}
                                                 </a>
                                                 @if ($item->price_sale > 0)
@@ -58,7 +59,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        {{ $prds->links() }}
+                        {{ $getAllProducts->links() }}
                     </div>
 
                 </div>

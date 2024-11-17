@@ -133,8 +133,9 @@ ol {
 
 .set-bg {
 	background-repeat: no-repeat;
-	background-size: auto;
+	background-size: cover;
 	background-position: top center;
+
 }
 
 .spad {
@@ -3371,11 +3372,11 @@ ol {
 
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
-@media only screen and (min-width: 1200px) {
+/* @media only screen and (min-width: 1200px) {
 	.container {
 		max-width: 1170px;
 	}
-}
+} */
 
 /* Medium Device = 1200px */
 

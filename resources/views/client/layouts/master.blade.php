@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="{{ asset('theme/client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/style.css') }}" type="text/css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css"
+        type="text/css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
 </head>
@@ -78,6 +82,66 @@
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/main.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+
+            filter_data();
+
+            function filter_data() {
+                var action = 'get_data';
+                var minimum_price = $('#hidden_minimum_price').val();
+                var maximum_price = $('#hidden_maximum_price').val();
+
+                var brand = get_filter('brand');
+                var category = get_filter('category');
+
+                $.ajax({
+                    url: "get_data.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        minimum_price: minimum_price,
+                        maximum_price: maximum_price,
+                        brand: brand,
+                        category: category
+                    },
+                    success: function(data) {
+                        $('.filter_data').html(data);
+                    }
+                });
+            }
+
+            function get_filter(class_name) {
+                var filter = [];
+                $('.' + class_name + ':checked').each(function() {
+                    filter.push($(this).val());
+                })
+            }
+
+            $('.common_selector').click(function({
+                filter_data();
+            }));
+
+            $("#price_range").slider({
+                range: true,
+                min: 0,
+                max: 100000000,
+                values: [0, 100000000],
+                step: 50000,
+                stop: function(event, ui) {
+                    $('#price_show').html('Từ: ' + ui.values[0] + ' - ' + ui.values[1]);
+                    $('#hidden_minimum_price').val(ui.values[0]);
+                    $('#hidden_maximum_price').val(ui.values[1]);
+                }
+            });
+        });
+    </script>
 
 </body>
 

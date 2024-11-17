@@ -64,10 +64,15 @@
                         <a class="btn btn-success" href="{{ route('admin.users.create') }}">
                             <i class="ri-add-fill"></i> Add User </a>
                     </div>
-                    {{-- <div>
-                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
-                            title="Type in a name">
-                    </div> --}}
+                    <div class="d-flex">
+                        <form action="" method="GET" class="form-inline">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2" name="key" placeholder="Search ...">
+                                <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="card-body">
@@ -126,7 +131,7 @@
                         </tbody>
                     </table>
 
-                    {{ $data->links() }}
+                    {{ $data->appends(request()->all())->links() }}
                 </div>
             </div>
         </div><!--end col-->

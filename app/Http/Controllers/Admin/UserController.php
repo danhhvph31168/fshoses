@@ -24,10 +24,17 @@ class UserController extends Controller
     public function index()
     {
         $data = User::query()->with('role')->latest('id')->paginate(5);
+        if ($key = request()->key) {
+            $data = User::query()->with('role')->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->orWhere('email', 'like', '%' . $key . '%')
+                ->orWhere('phone', 'like', '%' . $key . '%')
+                ->orWhere('status', 'like', '%' . $key . '%')
+                ->paginate(5);
+        }
 
         $user = Auth::user();
         if ($user->role_id === 1) {
-
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -65,7 +72,7 @@ class UserController extends Controller
             } else {
                 $data['avatar'] = "users/avatar-mac-dinh.jpg";
             }
-            
+
             User::query()->create($data);
 
             return redirect()->route('admin.users.index')->with('success', 'Account created successfully!');
