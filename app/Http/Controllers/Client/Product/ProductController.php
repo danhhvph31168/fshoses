@@ -2,35 +2,63 @@
 
 namespace App\Http\Controllers\Client\Product;
 
-use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\ProductColor;
-use App\Models\ProductSize;
+use App\Models\Brand;
+use App\Models\Banner;
 use App\Models\Review;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\ProductSize;
+use App\Models\ProductColor;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
-
-    public function productDetail($slug)
+    public function index()
     {
-        $product = Product::query()->with(['variants', 'category'])->where('slug', $slug)->first();
+        $products = Product::query()->where('is_active', '1')
+            ->with(['productVariants', 'category', 'brand'])
+            ->orderBy('name', 'asc')->limit(9)->get();
 
-        // Kiểm tra sản phẩm có tồn tại hay không
-        if (!$product) {
-            abort(404);
-        }
-          // Lấy 4 hình ảnh của sản phẩm galleries
-        $product->galleries =  $product->galleries()->limit(4)->get();
+        $categories = Category::query()->with('products')->get();
 
-        // Lấy danh sách màu sắc và kích thước
-        $colors = ProductColor::query()->pluck('name', 'id')->all();
-        $sizes = ProductSize::query()->pluck('name', 'id')->all();
+        $brands = Brand::query()->where('status', '1')->get();
 
-        // Lấy các bình luận cho sản phẩm
-        $comments = Review::where('product_id', $product->id)->orderBy('id', 'DESC')->get();
-        
-        // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
-        $relatedProducts = Product::with(['galleries', 'variants'])->where('category_id', $product->category_id)->where('id', '<>',$product->id)->limit(4)->get();
-        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts'));
+        $listLatestProduct = Product::query()->latest('id')->limit(12)->get();
+
+        $banners = Banner::query()->where('status', '1')
+            ->orderBy('name', 'asc')->get();
+
+        return view(
+            'client.home',
+            compact(
+                'products',
+                'categories',
+                'brands',
+                'listLatestProduct',
+                'banners'
+            )
+        );
+    }
+
+    public function getAllProducts()
+    {
+        $getAllProducts = Product::query()->paginate(9);
+
+        return view('client.products.product-list', compact('getAllProducts'));
+    }
+
+    public function listProductByBrand(Brand $brd)
+    {
+        $prds = $brd->products()->paginate(3);
+
+        return view('client.products.productByBrand', compact('brd', 'prds'));
+    }
+
+    public function listProductByCategory(Category $cate)
+    {
+        $prds = $cate->products()->paginate(3);
+
+        return view('client.products.productByCategory', compact('cate', 'prds'));
     }
 }

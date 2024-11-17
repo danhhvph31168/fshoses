@@ -13,7 +13,6 @@ class ProductSize extends Model
     ];
     public function variants()
     {
-        // ProductSizes 1-n ProductVariants
         return $this->hasMany(ProductVariant::class);
     }
 }

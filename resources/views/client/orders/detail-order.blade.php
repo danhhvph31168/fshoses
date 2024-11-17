@@ -155,7 +155,7 @@
                         <div class="d-sm-flex align-items-center">
                             <h5 class="card-title flex-grow-1 mb-0">Order Status</h5>
                             <div class="flex-shrink-0 mt-2 mt-sm-0">
-                              
+
                                 <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
                                         class="mdi mdi-archive-remove-outline align-middle me-1"></i> Cancel Order</a>
                             </div>
@@ -384,7 +384,7 @@
                                 </p>
                             </div>
                             <div class="flex-grow-1 ms-2">
-                                <p class="mb-0 fw-bold">{{ $order->status_payment }}</p>
+                                <p class="mb-0 fw-bold">{{ $order->payment->payments_method }}</p>
                             </div>
                         </div>
 

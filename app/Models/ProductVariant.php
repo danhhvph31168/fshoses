@@ -15,19 +15,23 @@ class ProductVariant extends Model
         'image',
         'quantity',
     ];
-    public function product()
-    {
-        // Variants n-1 Products:
-        return $this->belongsTo(Product::class);
-    }
     public function size()
     {
-        // ProductVarisant n-1 ProductSize
-        return $this->belongsTo(ProductSize::class,'product_size_id');
+        return $this->belongsTo(ProductSize::class, 'product_size_id', 'id');
     }
+
     public function color()
     {
-        // ProductVariants n-1 ProductColor
-        return $this->belongsTo(ProductColor::class,'product_color_id');
+        return $this->belongsTo(ProductColor::class, 'product_color_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

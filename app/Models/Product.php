@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\ProductGallery;
+use App\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -13,6 +17,7 @@ class Product extends Model
 
     protected $fillable = [
         'category_id',
+        'brand_id',
         'name',
         'slug',
         'sku',
@@ -23,7 +28,7 @@ class Product extends Model
         'description',
         'content',
         'is_active',
-        'is_hot_deal',
+        'is_sale',
         'is_show_home',
         'is_delete',
     ];
@@ -44,8 +49,18 @@ class Product extends Model
         return $this->hasMany(ProductGallery::class);
     }
 
-    public function variants()
+    public function productVariants()
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

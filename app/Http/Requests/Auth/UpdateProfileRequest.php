@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
@@ -42,14 +40,4 @@ class UpdateProfileRequest extends FormRequest
         ];
     }
 
-   
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     $errors = $validator->errors();
-
-    //     $response = response()->json([
-    //         'errors' => $errors->messages(),
-    //     ], 400);
-    //     throw new HttpResponseException($response);
-    // }
 }

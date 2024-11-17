@@ -25,5 +25,5 @@ class ReviewRequest extends FormRequest
             'comment' => 'required|string|max:1000',
         ];
     }
-   
+
 }

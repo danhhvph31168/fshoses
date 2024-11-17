@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class HandleForgotPassRequest extends FormRequest
 {
@@ -27,5 +25,4 @@ class HandleForgotPassRequest extends FormRequest
             'password' => 'required|confirmed|min:8',
         ];
     }
-    
 }

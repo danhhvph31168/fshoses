@@ -25,4 +25,12 @@ class StoreCategoryRequest extends FormRequest
             'name' => 'required|max:255'
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'The category name cannot be empty!',
+            'name.max' => 'The category name must not exceed 255 characters!',
+        ];
+    }
 }

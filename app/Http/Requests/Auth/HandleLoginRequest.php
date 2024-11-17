@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class HandleLoginRequest extends FormRequest
 {
@@ -28,5 +26,4 @@ class HandleLoginRequest extends FormRequest
             'password' => 'required|min:8',
         ];
     }
-   
 }

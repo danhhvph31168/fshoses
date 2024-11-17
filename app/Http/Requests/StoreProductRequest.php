@@ -24,6 +24,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'category_id'                   => ['required', Rule::exists('categories', 'id')],
+            'brand_id'                      => ['required', Rule::exists('brands', 'id')],
             'name'                          => 'required|max:255',
             'sku'                           => 'required|max:255|unique:products',
             'img_thumbnail'                 => 'image',

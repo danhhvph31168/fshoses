@@ -30,8 +30,8 @@ class User extends Authenticatable
         'phone',
         'status',
         'address',
-        'district',
         'province',
+        'district',
         'ward',
         'zip_code',
     ];
@@ -60,6 +60,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
 
     public function role()
     {

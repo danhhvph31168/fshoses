@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ChangePasswordRequest extends FormRequest
 {
@@ -24,8 +22,8 @@ class ChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_password' => 'required|string',
-            'password' => 'required|string|min:8|confirmed', // Cần tối thiểu 8 ký tự và xác nhận mật khẩu
+            'old_password'  => 'required|string',
+            'password'      => 'required|string|min:8|confirmed',
         ];
     }
 }

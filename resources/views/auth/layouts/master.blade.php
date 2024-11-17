@@ -32,13 +32,13 @@
 
         @include('auth.layouts.header')
 
-            @include('auth.layouts.header-title')
-            
-            @yield('content')
-        </div>
-        <!-- end auth page content -->
+        @include('auth.layouts.header-title')
 
-        @include('auth.layouts.footer')
+        @yield('content')
+    </div>
+    <!-- end auth page content -->
+
+    @include('auth.layouts.footer')
     </div>
     <!-- end auth-page-wrapper -->
 

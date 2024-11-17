@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Requests\Auth;
-use Illuminate\Contracts\Validation\Validator;
+
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class HandleSendMailForgotRequest extends FormRequest
 {
@@ -26,5 +25,4 @@ class HandleSendMailForgotRequest extends FormRequest
             'email' => 'required|email'
         ];
     }
-    
 }
