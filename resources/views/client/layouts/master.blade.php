@@ -18,7 +18,7 @@
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+    <link href="{{ asset('theme/admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('theme/client/css/bootstrap.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/font-awesome.min.css') }}" type="text/css">
@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('theme/client/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/style.css') }}" type="text/css">
-
+    @yield('css')
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
 
@@ -36,9 +36,9 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
         <div class="row">
-            <div class="col-md-12">
+
                 <!-- Header Section Begin -->
                 @include('client.layouts.header')
                 <!-- Header Section End -->
@@ -51,16 +51,7 @@
                 @include('client.layouts.footer')
                 <!-- Footer Section End -->
 
-                <!-- Search Begin -->
-                <div class="search-model">
-                    <div class="h-100 d-flex align-items-center justify-content-center">
-                        <div class="search-close-switch">+</div>
-                        <form class="search-model-form">
-                            <input type="text" id="search-input" placeholder="Search here.....">
-                        </form>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 
@@ -83,6 +74,7 @@
 
     @yield('js')
 
+    @yield('scripts')
 </body>
 
 </html>

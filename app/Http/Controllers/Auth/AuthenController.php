@@ -8,11 +8,11 @@ use App\Http\Requests\Auth\HandleLoginRequest;
 use App\Http\Requests\Auth\HandleRegisterRequest;
 use App\Http\Requests\Auth\HandleSendMailForgotRequest;
 use App\Models\User;
-use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Mail;
-use Password;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 
 
 class AuthenController extends Controller
@@ -21,7 +21,8 @@ class AuthenController extends Controller
     {
         return view('auth.register');
     }
-    public function handleRegister(Request $request)
+
+    public function handleRegister(HandleRegisterRequest $request)
     {
         $checkStatus = User::where('email', $request->email)->where('status', 0)->first();
 
@@ -58,13 +59,13 @@ class AuthenController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Welcome, you have successfully registered an account.');
     }
     public function showFormLogin()
     {
-        // Hiển thị form đăng nhập
         return view('auth.login');
     }
+
     public function handleLogin(HandleLoginRequest $request)
     {
         $checkStatus = User::where('email', $request->email)->where('status', 0)->first();
@@ -114,12 +115,16 @@ class AuthenController extends Controller
         $token = Password::createToken($user);
 
         // Gửi email đến email tài khoản chứa liên kết đặt lại mật khẩu
-        Mail::send('auth.mail', ['user' => $user, 'token' => $token], function ($message) use ($user) {
-            $message->to($user->email);
-            $message->subject('Liên kết đặt lại mật khẩu của bạn');
-        });
+        try {
+            Mail::send('auth.mail', ['user' => $user, 'token' => $token], function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject('Your password reset link');
+            });
 
-        return redirect()->back()->with('success', 'A password reset link has been sent to your email.');
+            return redirect()->back()->with('success', 'A password reset link has been sent to your email.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'The email could not be sent. Please try again later.');
+        }
     }
     public function clickInEmailForgot($id, $token)
     {
@@ -134,6 +139,7 @@ class AuthenController extends Controller
 
         return view('auth.reset', ['user' => $user, 'token' => $token]);
     }
+
     public function handleForgotPass(HandleForgotPassRequest $request, $id, $token)
     {
         // Tìm người dùng
@@ -141,8 +147,7 @@ class AuthenController extends Controller
 
         // Kiểm tra token có hợp lệ không
         if (!Password::tokenExists($user, $token)) {
-            return redirect()->route('auth.showFormLogin')
-                ->with('error', 'The password reset link is invalid.');
+            return redirect()->route('auth.showFormLogin')->with('error', 'The password reset link is invalid.');
         }
 
         // Cập nhật mật khẩu mới
@@ -152,7 +157,6 @@ class AuthenController extends Controller
 
         // Xóa token sau khi mật khẩu được cập nhật
         Password::deleteToken($user);
-
         return redirect()->route('messageSuccessReset')
             ->with('success', 'Your password has been successfully reset. Please log in again.');
     }

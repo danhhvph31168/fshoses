@@ -5,7 +5,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>404 Error alt | Velzon - Admin & Dashboard Template</title>
+    <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -27,36 +27,18 @@
 
 <body>
 
-    <!-- auth-page wrapper -->
-    <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
-        <div class="bg-overlay"></div>
-        <!-- auth-page content -->
-        <div class="auth-page-content overflow-hidden pt-lg-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-5">
-                        <div class="card overflow-hidden">
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <lord-icon class="avatar-xl" src="https://cdn.lordicon.com/etwtznjn.json"
-                                        trigger="loop" colors="primary:#405189,secondary:#0ab39c"></lord-icon>
-                                    <h4 class="text-uppercase">Your password has been successfully reset.</h4>
-                                    <p class="text-muted mb-4"> Please log in again. </p>
-                                    <a href="{{ route('auth.showFormLogin') }}" class="btn btn-success"><i
-                                            class="mdi mdi-home me-1"></i>Login</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-                    </div>
-                    <!-- end col -->
+    <div class="auth-page-wrapper pt-5">
 
-                </div>
-                <!-- end row -->
-            </div>
-            <!-- end container -->
+
+        @include('auth.layouts.header')
+
+            @include('auth.layouts.header-title')
+            
+            @yield('content')
         </div>
         <!-- end auth page content -->
+
+        @include('auth.layouts.footer')
     </div>
     <!-- end auth-page-wrapper -->
 
@@ -68,6 +50,13 @@
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
 
+    <!-- particles js -->
+    <script src="{{ asset('theme/admin/assets/libs/particles.js/particles.js') }}"></script>
+    <!-- particles app js -->
+    <script src="{{ asset('theme/admin/assets/js/pages/particles.app.js') }}"></script>
+    <!-- password-addon init -->
+    <script src="{{ asset('theme/admin/assets/js/pages/password-addon.init.js') }}"></script>
+    @yield('scripts')
 </body>
 
 </html>

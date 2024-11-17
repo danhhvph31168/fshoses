@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
-
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -18,17 +16,20 @@ class AccountController extends Controller
 {
     public function showFormUpdateProfile()
     {
-        $user = Auth::user();
 
+        if (request()->query()) {
+            // Nếu có tham số, điều hướng về URL chuẩn
+            return redirect()->route('showFormUpdateProfile');
+        }
+        $userId = Auth::user()->id;
+        $user = User::findOrFail($userId);
         return view('profiles.formProfile', compact('user'));
-        // return response()->json([
-        //     'status' => 'Success',
-        //     'account' => $user,
-        // ], 200); 
+
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
     {
+        // dd($request->all());
         $user = Auth::user();
         $linkAvatar = $user->avatar; // Giữ lại ảnh cũ
 
@@ -48,42 +49,33 @@ class AccountController extends Controller
         // Cập nhật dữ liệu người dùng
         $data = [
             'name' => $request->name,
-            'avatar' => $linkAvatar,    
+            'avatar' => $linkAvatar,
             'phone' => $request->phone,
             'address' => $request->address,
-            'district' => $request->district,
-            'province' => $request->province,
+            'district' => $request->district_text,
+            'province' => $request->province_text,
+            'ward' => $request->ward_text,
             'zip_code' => $request->zip_code,
         ];
 
         $user->update($data);
 
         return redirect()->back()->with('success', 'Account information updated successfully.');
-        // return response()->json([
-        //     'status' => 'Thành công',
-        //     'message' => 'Cập nhật người dùng thành công.',
-        //     'account' => $user, // Trả về thông tin người dùng đã cập nhật
-        // ], 200);
     }
 
     public function showFormChangePassword()
     {
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Form thay đổi mật khẩu.',
-        // ], 200);
+
         return view('profiles.showFormChangePassword');
     }
+
     public function handleChangePassword(ChangePasswordRequest $request)
     {
         $user = Auth::user();
 
         // Kiểm tra mật khẩu hiện tại
         if (!Hash::check($request->old_password, $user->password)) {
-            // return response()->json([
-            //     'status' => 'error',
-            //     'message' => 'Mật khẩu hiện tại không đúng.'
-            // ], 422);
+
             throw ValidationException::withMessages([
                 'old_password' => ['The current password is incorrect.'],
             ]);
@@ -93,14 +85,7 @@ class AccountController extends Controller
         $user->update([
             'password' => Hash::make($request->password),
         ]);
-
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Thay đổi mật khẩu thành công.'
-        // ], 200);
         // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->back()->with('success', '
-Password changed successfully.');
+        return redirect()->back()->with('success', 'Password changed successfully.');
     }
-
 }

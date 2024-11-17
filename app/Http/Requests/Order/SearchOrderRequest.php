@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Order;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ChangePasswordRequest extends FormRequest
+class SearchOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +19,13 @@ class ChangePasswordRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'old_password' => 'required|string',
-            'password' => 'required|string|min:8|confirmed', // Cần tối thiểu 8 ký tự và xác nhận mật khẩu
+         
+                'sku_order' => 'required|string|max:255',
+                'user_phone' => 'required|string|max:20',
+
         ];
     }
 }
