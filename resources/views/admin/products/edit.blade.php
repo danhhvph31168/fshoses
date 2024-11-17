@@ -79,6 +79,26 @@
                                     </div>
 
                                     <div class="mt-3">
+                                        <label for="brand_id" class="form-label">Brands:</label>
+                                        <select name="brand_id" id="brand_id" type="text" class="form-select">
+                                            @foreach ($brands as $id => $name)
+                                                <option value="{{ $id }}" @selected($product->brand_id === $id)>
+                                                    {{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <label for="category_id" class="form-label">Categories:</label>
+                                        <select name="category_id" id="category_id" type="text" class="form-select">
+                                            @foreach ($categories as $id => $name)
+                                                <option value="{{ $id }}" @selected($product->category_id === $id)>
+                                                    {{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mt-3">
                                         <label for="sku" class="form-label">SKU:</label>
                                         <input type="text" class="form-control" id="sku" name="sku"
                                             value="{{ $product->sku }}">
@@ -97,20 +117,11 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <label for="category_id" class="form-label">Categories:</label>
-                                        <select name="category_id" id="category_id" type="text" class="form-select">
-                                            @foreach ($categories as $id => $name)
-                                                <option value="{{ $id }}" @selected($product->category_id === $id)>
-                                                    {{ $name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="mt-3">
                                         <label for="img_thumbnail" class="form-label">Img Thumbnail:</label>
                                         <input type="file" class="form-control" id="img_thumbnail" name="img_thumbnail">
                                         @if ($product->img_thumbnail)
-                                            <img src="{{ \Storage::url($product->img_thumbnail) }}" width="100px">
+                                            <img src="{{ \Storage::url($product->img_thumbnail) }}" width="100px"
+                                                class="mt-3">
                                         @endif
                                     </div>
                                 </div>
@@ -129,8 +140,8 @@
                                             <div class="col-md-2">
                                                 <div class="form-check form-switch form-switch-{{ $color }}">
                                                     <input class="form-check-input" type="checkbox" role="switch"
-                                                        name="{{ $key }}" value="1" id="{{ $key }}"
-                                                        @checked($product->$key)>
+                                                        name="{{ $key }}" value="1"
+                                                        id="{{ $key }}" @checked($product->$key)>
                                                     <label class="form-check-label"
                                                         for="{{ $key }}">{{ \Str::convertCase($key, MB_CASE_TITLE) }}</label>
                                                 </div>
@@ -181,11 +192,12 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $variants = [];
-                                            $product->productVariants->map(function ($item) use (&$variants) {
+
+                                            $productVariants = [];
+                                            $product->productVariants->map(function ($item) use (&$productVariants) {
                                                 $key = $item->product_size_id . '-' . $item->product_color_id;
 
-                                                $variants[$key] = [
+                                                $productVariants[$key] = [
                                                     'quantity' => $item->quantity,
                                                     'image' => $item->image,
                                                 ];
@@ -210,19 +222,19 @@
                                                     <td>{{ $colorName }}</td>
                                                     <td>
                                                         <input type="text" class="form-control"
-                                                            value="{{ $variants[$key]['quantity'] }}"
+                                                            value="{{ $productVariants[$key]['quantity'] }}"
                                                             name="product_variants[{{ $key }}][quantity]">
                                                     </td>
                                                     <td>
                                                         <input type="file" class="form-control"
                                                             name="product_variants[{{ $key }}][image]">
                                                         <input type="hidden" class="form-control"
-                                                            value="{{ $variants[$key]['image'] }}"
+                                                            value="{{ $productVariants[$key]['image'] }}"
                                                             name="product_variants[{{ $key }}][current_image]">
                                                     </td>
                                                     <td>
-                                                        @if ($variants[$key]['image'])
-                                                            <img src="{{ \Storage::url($variants[$key]['image']) }}"
+                                                        @if ($productVariants[$key]['image'])
+                                                            <img src="{{ \Storage::url($productVariants[$key]['image']) }}"
                                                                 width="80px" height="80px">
                                                         @endif
                                                     </td>

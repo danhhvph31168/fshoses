@@ -1,24 +1,19 @@
 <?php
 
-use App\Models\Product;
-use App\Models\Category;
+use App\Http\Controllers\Auth\AuthenController;
+use App\Http\Controllers\Client\Product\ProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
 
+Route::get('/', [ProductController::class, 'index'])->name('client.home');
 
-Route::get('/', function () {
+Route::get('/brand/{brd}',  [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
+Route::get('/category/{cate}',  [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
+Route::get('/products',  [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
-    $products = Product::query()->latest('id')->limit(4)->get();
+Route::get('auth/login', [AuthenController::class, 'showFormLogin'])->name('login');
+Route::post('auth/login', [AuthenController::class, 'handleLogin']);
 
-    $categories = Category::query()->with('products')->get();
-    // dd($categories->products);
+Route::get('auth/register', [AuthenController::class, 'showFormRegister'])->name('register');
+Route::post('auth/register', [AuthenController::class, 'handleRegister']);
 
-    return view('home', compact('products', 'categories'));
-})->name('home');
-
-
-Route::get('auth/login', [LoginController::class, 'showFormLogin'])->name('login');
-Route::post('auth/login', [LoginController::class, 'login']);
-
-Route::post('auth/logout', [LoginController::class, 'logout'])->name('logout');
-
+Route::post('auth/logout', [AuthenController::class, 'logout'])->name('logout');

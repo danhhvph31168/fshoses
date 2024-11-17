@@ -5,19 +5,20 @@
         <!-- Dark Logo-->
         <a href="{{ route('admin.') }}" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
+                {{-- <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22"> --}}
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt="" height="17">
+                {{-- <img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt="" height="17"> --}}
             </span>
         </a>
         <!-- Light Logo-->
         <a href="{{ route('admin.') }}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="100"
+                    width="150">
             </span>
-            <span class="logo-lg">
-                <img src="{{ asset('theme/admin/assets/images/logo-light.png') }}" alt="" height="17">
+            <span class="logo-lg fs-1 text-black">
+                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="100">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -83,6 +84,27 @@
                         </div>
                     </li>
 
+                    {{-- Banner --}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarBanner" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarbanner">
+                            <i class="ri-file-list-3-line"></i> <span data-key="t-forms">Banner</span>
+                            {{-- <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span> --}}
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarBanner">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.banners.index') }}" class="nav-link"
+                                        data-key="t-horizontal">List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.banners.create') }}" class="nav-link"
+                                        data-key="t-horizontal">Add</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
                     {{-- Accounts --}}
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button"
@@ -119,6 +141,27 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.roles.create') }}" class="nav-link"
+                                        data-key="t-horizontal">Add new</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    {{-- Brands --}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarBrands" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarBrands">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Brands</span>
+                            {{-- <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span> --}}
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarBrands">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.brands.index') }}" class="nav-link"
+                                        data-key="t-horizontal">List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.brands.create') }}" class="nav-link"
                                         data-key="t-horizontal">Add new</a>
                                 </li>
                             </ul>

@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreUserRequest;
@@ -23,13 +21,18 @@ class UserController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-
-        // dd($user);
-
         $data = User::query()->with('role')->latest('id')->paginate(5);
+        if ($key = request()->key) {
+            $data = User::query()->with('role')->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->orWhere('email', 'like', '%' . $key . '%')
+                ->orWhere('phone', 'like', '%' . $key . '%')
+                ->orWhere('status', 'like', '%' . $key . '%')
+                ->paginate(5);
+        }
 
-        if ($user->role_id == 1) {
+        $user = Auth::user();
+        if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -57,19 +60,16 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = Auth::user();
+        if (Auth::user()->role_id == 1) {
 
-        // dd($request->all());
-        $data = $request->except('avatar');
-
-        if ($user->role_id == 1) {
+            $data = $request->except('avatar');
 
             if ($request->hasFile('avatar')) {
                 $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
             } else {
                 $data['avatar'] = "users/avatar-mac-dinh.jpg";
             }
-            // dd($data);
+
             User::query()->create($data);
 
             return redirect()->route('admin.users.index')->with('success', 'Account created successfully!');
@@ -86,7 +86,8 @@ class UserController extends Controller
         $user = Auth::user();
         $data = User::query()->findOrFail($id);
 
-        if ($user->role_id == 1) {
+        if ($user->role_id === 1) {
+
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
