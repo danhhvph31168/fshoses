@@ -55,20 +55,28 @@
         </div>
     @endif
 
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <div class="card-title mb-0 align-content-center">
-                        <h3>Accounts List</h3>
-                    </div>
                     <div>
-                        <a href="{{ route('admin.users.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a class="btn btn-success" href="{{ route('admin.users.create') }}">
+                            <i class="ri-add-fill"></i> Add User </a>
+                    </div>
+                    <div class="d-flex">
+                        <form action="" method="GET" class="form-inline">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2" name="key" placeholder="Search ...">
+                                <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered nowrap dt-responsive table-striped align-middle"
+                    <table id="myTable" class="table table-bordered nowrap dt-responsive table-striped align-middle"
                         style="width:100%">
                         <thead>
                             <tr class="text-center">
@@ -87,7 +95,7 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr class="align-middle text-center">
-                                    <th style="width: 10px">{{ $item->id }}</th>
+                                    <td style="width: 10px">{{ $item->id }}</td>
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}" alt=""
                                             width="50px">
                                     </td>
@@ -122,15 +130,19 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $data->links() }}
+
+                    {{ $data->appends(request()->all())->links() }}
                 </div>
             </div>
         </div><!--end col-->
     </div><!--end row-->
+
 @endsection
 
 @section('css')
 @endsection
+
+
 
 @section('js')
     {{-- <script>

@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('phone');
             $table->string('address')->nullable();
-            $table->decimal('balance', 15, 0)->comment('Số dư tài khoản')->default(value: '0');
+            $table->decimal('balance', 15, 0)->comment('Số dư tài khoản')->default(0);
+
             $table->string('district')->nullable()->comment('Quận / Huyện');
             $table->string('province')->nullable()->comment('Tỉnh / TP');
             $table->string('zip_code')->nullable()->default(0);

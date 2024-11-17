@@ -2,32 +2,80 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="header__logo">
                     <a href="\"><img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt=""></a>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="/">Home</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
-                        <li><a href="#">Sản phẩm</a>
+                        <li class="active"><a href="/">Trang chủ</a></li>
+
+                        <li><a href="#">Thương hiệu</a>
                             <ul class="dropdown">
-                                @foreach ($categories as $item)
-                                    @if ($item->is_active === 1)
-                                        <li><a href="#">{{ $item->name }}</a></li>
+                                @foreach ($brd as $item)
+                                    @if ($item->status == 1)
+                                        <li><a
+                                                href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
+                                        </li>
                                     @endif
                                 @endforeach
+                            </ul>
+                        </li>
 
-                                {{-- <li><a href="./shop-details.html">Samsung</a></li>
-                                <li><a href="./shopping-cart.html">Oppo</a></li>
-                                <li><a href="./checkout.html">Xiaomi</a></li> --}}
+                        <li><a href="#">Danh mục</a>
+                            <ul class="dropdown">
+                                @foreach ($cate as $item)
+                                    {{-- @dd($item) --}}
+                                    @if ($item->is_active == 1)
+                                        <li><a
+                                                href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contacts</a></li>
-                        <li>
+                        <li><a href="./contact.html">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-md-3">
+                <div class="dropdown ms-sm-3 header__menu topbar-user">
+                    @if (Auth::user())
+                        <button type="button" class="btn" id="page-header-user-dropdown-1"
+                            data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
+                            <a {{-- href="{{ route('cart.list') }}"  --}} class="d-flex align-items-center  text-black">
+                                <i class="bi bi-cart"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Giỏ hàng</span>
+                                </span>
+                            </a>
+                        </button>
+
+                        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="d-flex align-items-center">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span
+                                        class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
+                                </span>
+                            </span>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#"><i
+                                    class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Thông tin tài khoản</span></a>
+                            <a class="dropdown-item" href="#"><i
+                                    class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Lịch sử đặt hàng</span></a>
+                            <a class="dropdown-item" href="#"><i
+                                    class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Đổi mật khẩu</span></a>
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf
                                 <button type="submit" class="border-0 dropdown-item">
@@ -35,45 +83,39 @@
                                     <span class="align-middle" data-key="t-logout">Logout</span>
                                 </button>
                             </form>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                        </div>
+                    @else
+                        <button type="button" class="btn" id="page-header-user-dropdown-1"
+                            data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
+                            <a {{-- href="{{ route('cart.list') }}"  --}} class="d-flex align-items-center  text-black">
+                                <i class="bi bi-cart"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Giỏ hàng</span>
+                                </span>
+                            </a>
+                        </button>
 
-            <div class="col-md-3">
-
-                <div class="dropdown ms-sm-3 header__menu topbar-user">
-                    <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="d-flex align-items-center">
-                            <i class="bi bi-person-circle"></i>
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Tài khoản</span>
+                        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="d-flex align-items-center">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Tài
+                                        khoản</span>
+                                </span>
                             </span>
-                        </span>
-                    </button>
+                        </button>
 
-                    <div class="dropdown-menu dropdown-menu-end">
-                        {{-- <a class="dropdown-item" href="{{ route('login') }}"><i
-                                class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Login</span></a>
-                        <a class="dropdown-item" href="{{ route('register') }}"><i
-                                class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Register</span></a>
-                        <a class="dropdown-item" href="pages-faqs.html"><i
-                                class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Help</span></a> --}}
-                    </div>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{{ route('login') }}"><i
+                                    class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Login</span></a>
+                            <a class="dropdown-item" href="{{ route('register') }}"><i
+                                    class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Register</span></a>
+                        </div>
+                    @endif
 
-                    {{-- <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
-                        aria-haspopup="true" aria-expanded="false">
-                        <a href="{{ route('cart.list') }}" class="d-flex align-items-center  text-black">
-                            <i class="bi bi-cart"></i>
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Giỏ hàng</span>
-                            </span>
-                        </a>
-                    </button> --}}
                 </div>
             </div>
         </div>
