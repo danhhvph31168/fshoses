@@ -1,6 +1,6 @@
 {{-- Bộ lọc --}}
 <div class="row mb-5">
-    {{-- <div class="col-md-12">
+    <div class="col-md-12">
         <table class="table table-nowrap border table-hover">
             <thead>
                 <tr>
@@ -8,10 +8,10 @@
                 </tr>
             </thead>
         </table>
-    </div> --}}
+    </div>
+
     <div class="col-md-12">
 
-        <h3>Khoảng giá</h3>
         <div class="list-group">
             <input type="hidden" id="hidden_minimun_price" name="hidden_minimun_price" value="0">
             <input type="hidden" id="hidden_maximun_price" name="hidden_maximun_price" value="100000000">
@@ -20,38 +20,11 @@
 
             <div id="price_range"></div>
         </div>
-
-
-        <h3>Thương hiệu</th>
-
-            <div class="list-group">
-                @foreach ($brd as $item)
-                    <div class="list-group-item">
-                        <input type="checkbox" class="common_selector brand" value="Nike"> {{ $item->name }}<i
-                            class="ri-arrow-right-line align-middle"></i></a><span
-                            class="float-end badge bg-dark-subtle">{{ $item->products->count() }}</span>
-                    </div>
-                @endforeach
-            </div>
-
-
-            <h3>Danh mục sản phẩm</h3>
-
-            <div class="list-group">
-                @foreach ($cate as $item)
-                    <div class="list-group-item">
-                        <input type="checkbox" class="common_selector category" value="Nike"> {{ $item->name }} <i
-                            class="ri-arrow-right-line align-middle"></i></a><span
-                            class="float-end badge bg-dark-subtle">{{ $item->products->count() }}</span>
-                    </div>
-                @endforeach
-            </div>
-
     </div>
 </div>
 
 {{-- Danh sách thương hiệu --}}
-{{-- <div class="row">
+<div class="row">
     <div class="col-md-12">
         <table class="table table-nowrap border table-hover">
             <thead>
@@ -72,10 +45,10 @@
             </tbody>
         </table>
     </div>
-</div> --}}
+</div>
 
 {{-- Danh mục sản phẩm --}}
-{{-- <div class="row">
+<div class="row">
     <div class="col-md-12">
         <table class="table table-nowrap border table-hover">
             <thead>
@@ -96,4 +69,4 @@
             </tbody>
         </table>
     </div>
-</div> --}}
+</div>

@@ -37,7 +37,7 @@
                                             </div>
                                             <div class="card-body" style="height: 200px">
                                                 <div class="mb-3">
-                                                    <a href="#" class="btn btn-secondary">Mua Hàng</a>
+                                                    <a href="#" class="btn btn-outline-secondary">Mua Hàng</a>
                                                 </div>
                                                 <a href="" class="text-dark card-title fs-6">
                                                     {{ $item->name }}
