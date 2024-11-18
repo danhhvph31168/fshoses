@@ -54,11 +54,11 @@
                                 <label class="form-check-label" for="auth-remember-check">Remember me</label>
                             </div>
 
-                            <div class="mt-4">
+                            <div class="mt-5">
                                 <button class="btn btn-success w-100" type="submit">Sign In</button>
                             </div>
 
-                            <div class="mt-4 text-center">
+                            {{-- <div class="mt-4 text-center">
                                 <div class="signin-other-title">
                                     <h5 class="fs-13 mb-4 title">Sign In with</h5>
                                 </div>
@@ -69,7 +69,7 @@
                                             class="ri-google-fill fs-16"></i></a>
 
                                 </div>
-                            </div>
+                            </div> --}}
                         </form>
                     </div>
                 </div>

@@ -18,7 +18,7 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Name<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    id="username" placeholder="Enter name" name="name">
+                                    id="username" placeholder="Enter name" name="name" autofocus>
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -38,7 +38,7 @@
 
 
                             <div class="mb-3">
-                                <label class="form-label" for="password-input">Password</label>
+                                <label class="form-label" for="password-input">Password<span class="text-danger">*</span></label>
                                 <div class="position-relative auth-pass-inputgroup">
                                     <input type="password"
                                         class="form-control pe-5 password-input @error('password') is-invalid @enderror"
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="password-input">Confirm Password</label>
+                                <label class="form-label" for="password-input">Confirm Password<span class="text-danger">*</span></label>
                                 <div class="position-relative auth-pass-inputgroup">
                                     <input type="password"
                                         class="form-control pe-5 password-input @error('password_confirmation') is-invalid @enderror"
@@ -66,11 +66,11 @@
                                 </div>
                             </div>
 
-                            <div class="mt-4">
+                            <div class="mt-5">
                                 <button class="btn btn-success w-100" type="submit">Sign Up</button>
                             </div>
 
-                            <div class="mt-4 text-center">
+                            {{-- <div class="mt-4 text-center">
                                 <div class="signin-other-title">
                                     <h5 class="fs-13 mb-4 title text-muted">Create account with</h5>
                                 </div>
@@ -82,7 +82,7 @@
                                             class="ri-google-fill fs-16"></i></a>
 
                                 </div>
-                            </div>
+                            </div> --}}
                         </form>
 
                     </div>

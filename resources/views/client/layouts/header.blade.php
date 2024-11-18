@@ -38,7 +38,7 @@
                         </li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="#">Liên hệ</a></li>
-                        <li><a href="./contact.html">Tra cứu đơn hàng</a></li>
+                        <li><a href="{{route('showFormSearchOrder')}}">Tra cứu đơn hàng</a></li>
                     </ul>
                 </nav>
             </div>
