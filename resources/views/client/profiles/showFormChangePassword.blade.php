@@ -26,21 +26,21 @@
 
 </head>
 <style>
-    /* Đặt modal ở giữa màn hình theo chiều ngang, trượt từ trên xuống */
-    .modal.fade .modal-dialog {
-        transform: translateY(-30%);
-        /* Đặt vị trí ban đầu của modal cao hơn màn hình một chút */
-        transition: transform 0.5s ease, opacity 0.5s ease;
-        opacity: 0;
-        /* Ban đầu, modal sẽ trong suốt */
-    }
+/* Đặt modal ở giữa màn hình theo chiều ngang, trượt từ trên xuống */
+.modal.fade .modal-dialog {
+    transform: translateY(-30%);
+    /* Đặt vị trí ban đầu của modal cao hơn màn hình một chút */
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    /* Ban đầu, modal sẽ trong suốt */
+}
 
-    .modal.fade.show .modal-dialog {
-        transform: translateY(0);
-        /* Khi hiện modal, đặt vị trí về giữa màn hình */
-        opacity: 1;
-        /* Hiện modal */
-    }
+.modal.fade.show .modal-dialog {
+    transform: translateY(0);
+    /* Khi hiện modal, đặt vị trí về giữa màn hình */
+    opacity: 1;
+    /* Hiện modal */
+}
 </style>
 
 <body>
@@ -63,9 +63,9 @@
                                         name="old_password" autocomplete="current-password">
 
                                     @error('old_password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -79,9 +79,9 @@
                                         autocomplete="current-password">
 
                                     @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -95,9 +95,9 @@
                                         name="password_confirmation" autocomplete="current-password">
 
                                     @error('password_confirmation')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -147,24 +147,21 @@
     <!-- password-addon init -->
     <script src="{{ asset('theme/admin/assets/js/pages/password-addon.init.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Kiểm tra nếu có session 'success'
-            @if (session('message'))
-                // Hiển thị modal
-                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                successModal.show();
+    document.addEventListener('DOMContentLoaded', function() {
+        // Kiểm tra nếu có session 'success'
+        @if(session('message'))
+        // Hiển thị modal
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
 
-                // Khi nhấn "OK", chuyển về trang chủ
-                document.getElementById('confirmButton').addEventListener('click', function() {
-                    window.location.href = "{{ route('home') }}";
-                });
-            @endif
+        // Khi nhấn "OK", chuyển về trang chủ
+        document.getElementById('confirmButton').addEventListener('click', function() {
+            window.location.href = "{{ route('client.home') }}";
         });
+        @endif
+    });
     </script>
 </body>
 
 </html>
 {{-- @endsection --}}
-
-
-

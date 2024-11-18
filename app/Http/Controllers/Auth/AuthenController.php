@@ -59,7 +59,7 @@ class AuthenController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('home')->with('success', 'Welcome, you have successfully registered an account.');
+        return redirect()->route('client.home')->with('success', 'Welcome, you have successfully registered an account.');
     }
     public function showFormLogin()
     {

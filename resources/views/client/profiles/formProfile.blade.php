@@ -36,16 +36,15 @@
 
                     <div class="card-body">
                         @if (session('message'))
-                            <div class="alert alert-success">
-                                {{ session('message') }}
-                            </div>
+                        <div class="alert alert-success">
+                            {{ session('message') }}
+                        </div>
                         @endif
                         <form method="POST" action="{{ route('handleUpdateProfile') }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">
-                                <label for="name"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="text"
@@ -53,15 +52,14 @@
                                         value="{{ $user->name }}" autocomplete="name" autofocus>
 
                                     @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="text"
@@ -69,9 +67,9 @@
                                         value="{{ $user->email }}" autocomplete="email" autofocus disabled>
 
                                     @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -84,18 +82,18 @@
                                     <input id="email" type="file"
                                         class="form-control mb-4 @error('email') is-invalid @enderror" name="avatar"
                                         autocomplete="email" autofocus>
-                                    <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="" width="100px" height="100px">
+                                    <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="" width="100px"
+                                        height="100px">
                                     {{-- {{dd($user->avatar)}} --}}
                                     @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="phone"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
+                                <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="phone" type="text"
@@ -103,9 +101,9 @@
                                         value="{{ $user->phone }}" autocomplete="phone" autofocus>
 
                                     @error('phone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -119,9 +117,9 @@
                                         value="{{ $user->address }}" autocomplete="address" autofocus>
 
                                     @error('address')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -135,9 +133,9 @@
                                         value="{{ $user->district }}" autocomplete="district" autofocus>
 
                                     @error('district')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -151,9 +149,9 @@
                                         value="{{ $user->balance }}" autocomplete="balance" autofocus disabled>
 
                                     @error('balance')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -167,9 +165,9 @@
                                         value="{{ $user->province }}" autocomplete="province" autofocus>
 
                                     @error('province')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -183,9 +181,9 @@
                                         value="{{ $user->zip_code }}" autocomplete="zip_code" autofocus>
 
                                     @error('zip_code')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
@@ -197,7 +195,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         Update
                                     </button>
-                                    <a href="{{ route('home') }}" class="btn btn-primary">
+                                    <a href="{{ route('client.home') }}" class="btn btn-primary">
                                         {{ __('Back') }}
                                     </a>
                                 </div>
