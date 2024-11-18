@@ -41,6 +41,7 @@ Update account information
                             @enderror
                         </div>
 
+
                         <div class="mb-3">
                             <label class="form-label" for="password-input">Avatar</label>
                             <div class="position-relative auth-pass-inputgroup">
@@ -48,38 +49,40 @@ Update account information
                                     class="form-control pe-5 password-input @error('avatar') is-invalid @enderror">
                                 <div class="card-body p-4 text-center">
                                     <div class="mx-auto avatar-md">
-                                        {{-- <img src="{{ Storage::url($user->avatar_url) }}" alt="" --}}
-                                        <img src="{{ $user->avatar_url }}" alt="" class="img-fluid rounded-circle">
+                                        {{-- <img src="{{ Storage::url($user->avatar_url) }}" alt=""> --}}
+                                        <img src="{{ $user->avatar }}" alt="" class="img-fluid rounded-circle">
                                     </div>
+
                                 </div>
-                                @error('avatar')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Phone</label>
-                            <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone"
-                                value="{{ $user->phone }}" id="phone" placeholder="Enter phone">
-                            @error('phone')
+                            @error('avatar')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Address</label>
-                            <input type="text" class="form-control @error('address') is-invalid @enderror"
-                                name="address" value="{{ $user->address }}" id="address" placeholder="Enter address">
-                            @error('address')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        {{-- <select name="" id="province">
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Phone</label>
+                    <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone"
+                        value="{{ $user->phone }}" id="phone" placeholder="Enter phone">
+                    @error('phone')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Address</label>
+                    <input type="text" class="form-control @error('address') is-invalid @enderror" name="address"
+                        value="{{ $user->address }}" id="address" placeholder="Enter address">
+                    @error('address')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                {{-- <select name="" id="province">
                             </select>
                             <select name="" id="district">
                                 <option value="">chọn quận</option>
@@ -87,94 +90,80 @@ Update account information
                             <select name="" id="ward">
                                 <option value="">chọn phường</option>
                             </select> --}}
-                        <div class="mb-3">
-                            <label for="province" class="form-label">Province</label>
-                            <select id="province" class="form-control @error('province') is-invalid @enderror"
-                                name="province">
-                                <option value="">{{ $user->province }}</option>
+                <div class="mb-3">
+                    <label for="province" class="form-label">Province</label>
+                    <select id="province" class="form-control @error('province') is-invalid @enderror" name="province">
+                        <option value="">{{ $user->province }}</option>
 
-                            </select>
-                            <input type="hidden" name="province_text" id="province_text">
-                            @error('province')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="district" class="form-label">District</label>
-                            <select id="district" class="form-control @error('district') is-invalid @enderror"
-                                name="district">
-                                <option value="">{{ $user->district }}</option>
-
-                            </select>
-                            <input type="hidden" name="district_text" id="district_text">
-                            @error('district')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="ward" class="form-label">Ward</label>
-                            <select id="ward" class="form-control @error('ward') is-invalid @enderror" name="ward">
-                                <option value="" selected>{{ $user->ward }}</option>
-                            </select>
-                            <input type="hidden" name="ward_text" id="ward_text">
-
-                            @error('ward')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Balance</label>
-                            <input type="number" class="form-control @error('balance') is-invalid @enderror"
-                                name="balance" value="{{ $user->balance }}" id="balance" placeholder="Enter balance"
-                                disabled>
-                            @error('balance')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Zip_code</label>
-                            <input type="text" class="form-control @error('zip_code') is-invalid @enderror"
-                                name="zip_code" value="{{ $user->zip_code }}" id="zip_code"
-                                placeholder="Enter zip_code">
-                            @error('zip_code')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-
-                        <div class="mt-4">
-                            <button class="btn btn-success w-100" type="submit" id="submit">Update</button>
-
-                        </div>
-
-                        <div class="mt-4 text-center">
-                            <div class="signin-other-title">
-                                <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium"
-                                    style="color: #212529">
-                                    Back to home
-                                </a>
-                            </div>
-
-                        </div>
-                    </form>
+                    </select>
+                    <input type="hidden" name="province_text" id="province_text">
+                    @error('province')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
+
+                <div class="mb-3">
+                    <label for="district" class="form-label">District</label>
+                    <select id="district" class="form-control @error('district') is-invalid @enderror" name="district">
+                        <option value="">{{ $user->district }}</option>
+
+                    </select>
+                    <input type="hidden" name="district_text" id="district_text">
+                    @error('district')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="ward" class="form-label">Ward</label>
+                    <select id="ward" class="form-control @error('ward') is-invalid @enderror" name="ward">
+                        <option value="" selected>{{ $user->ward }}</option>
+                    </select>
+                    <input type="hidden" name="ward_text" id="ward_text">
+
+                    @error('ward')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Zip_code</label>
+                    <input type="text" class="form-control @error('zip_code') is-invalid @enderror" name="zip_code"
+                        value="{{ $user->zip_code }}" id="zip_code" placeholder="Enter zip_code">
+                    @error('zip_code')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+
+                <div class="mt-4">
+                    <button class="btn btn-success w-100" type="submit" id="submit">Update</button>
+
+                </div>
+
+                <div class="mt-4 text-center">
+                    <div class="signin-other-title">
+                        <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium" style="color: #212529">
+                            Back to home
+                        </a>
+                    </div>
+
+
+                </div>
+
             </div>
-            <!-- end card body -->
         </div>
-        <!-- end card -->
+        <!-- end card body -->
     </div>
+    <!-- end card -->
+</div>
 </div>
 <!-- end row -->
 @endsection

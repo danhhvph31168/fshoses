@@ -80,12 +80,14 @@
                                         @csrf
                                         @method('DELETE')
                                         <button onclick="return confirm('Are you sure?')"
-                                            class="border-0 rounded-circle w-100 p-1"><b>x</b></button>
+                                            class="border-0 rounded-circle w-40 p-1"
+                                            style="width: 30px;"><b>x</b></button>
                                     </form>
                                 </td>
                             </tr>
                             @endforeach
                             @endif
+
 
                         </tbody>
                     </table>
@@ -103,6 +105,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="col-lg-4">
                 <div class="cart__discount">
@@ -124,7 +127,9 @@
                 </div>
             </div>
         </div>
+
     </div>
+
 </section>
 @endsection
 

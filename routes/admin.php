@@ -64,8 +64,4 @@ Route::prefix('admin')->as('admin.')
         Route::resource('brands', BrandController::class);
         Route::resource('banners', BannerController::class);
 
-        // auth
-        Route::get('showFormLogin', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
-        Route::post('login',        [LoginController::class, 'login'])->name('login');
-        Route::post('logout',        [LoginController::class, 'logout'])->name('logout');
     });

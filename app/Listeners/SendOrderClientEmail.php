@@ -4,8 +4,7 @@ namespace App\Listeners;
 
 use App\Events\OrderCreateClient;
 use App\Notifications\AddOrderClient;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+
 
 class SendOrderClientEmail
 {

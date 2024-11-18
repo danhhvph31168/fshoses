@@ -5,6 +5,7 @@ Tra cứu đơn hàng
 @endsection
 
 @section('content')
+
 <section class="breadcrumb-option">
     <div class="container">
         <div class="row">
@@ -15,6 +16,7 @@ Tra cứu đơn hàng
                         <a href="{{ route('client.home') }}">Home</a>
                         <span>Order Tracking</span>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -29,7 +31,7 @@ Tra cứu đơn hàng
     <form class="w-50" action="{{ route('handleSearchOrder') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="username" class="form-label">Order Code</label>
+            <label for="username" class="form-label fw-bold">Order Code</label>
             <input type="text" class="form-control @error('sku_order') is-invalid @enderror" id="sku_order"
                 name="sku_order" placeholder="Enter order code..." autofocus value="{{ old('sku_order') }}">
             @error('sku_order')
@@ -50,5 +52,8 @@ Tra cứu đơn hàng
         </div>
         <button type="submit" class="btn btn-danger mt-2">Search</button>
     </form>
+
 </div>
+</section>
+
 @endsection

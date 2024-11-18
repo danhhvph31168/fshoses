@@ -47,10 +47,12 @@
             <!-- Header Section Begin -->
             @include('client.layouts.header')
             <!-- Header Section End -->
+            <div class="container">
+                <!-- Product Section Begin -->
+                @yield('content')
+                <!-- Product Section End -->
+            </div>
 
-            <!-- Product Section Begin -->
-            @yield('content')
-            <!-- Product Section End -->
 
             <!-- Footer Section Begin -->
             @include('client.layouts.footer')

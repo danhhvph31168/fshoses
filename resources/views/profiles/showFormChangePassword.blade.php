@@ -7,6 +7,7 @@ Change Password
     <div class="col-md-8 col-lg-6 col-xl-5">
         <div class="card mt-4">
 
+
             <div class="card-body p-4">
                 <div class="text-center mt-2">
                     <h5 class="text-primary">Change Password</h5>
@@ -70,11 +71,13 @@ Change Password
                         </div>
                     </form>
                 </div>
+
             </div>
-            <!-- end card body -->
         </div>
-        <!-- end card -->
+        <!-- end card body -->
     </div>
+    <!-- end card -->
+</div>
 </div>
 {{-- <div class="container mt-5">
         <div class="row justify-content-center">
@@ -122,11 +125,10 @@ Change Password
                     class="form-control @error('password_confirmation') is-invalid @enderror"
                     name="password_confirmation" autocomplete="current-password">
 
-                @error('password_confirmation')
-                <span class="invalid-feedback" role="alert">
+                <<<<<<< HEAD @error('password_confirmation') <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
-                </span>
-                @enderror
+                    </span>
+                    @enderror
             </div>
         </div>
         <div class="row mb-0">
@@ -152,10 +154,48 @@ Change Password
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="confirmButton">OK</button>
+                    =======
+                    @error('password_confirmation')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="row mb-0">
+                <div class="col-md-8 offset-md-4">
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Send') }}
+                    </button>
+                    <a class="btn btn-primary" href="{{route('client.home')}}">Back</a>
+                </div>
+            </div>
+            </form>
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <!-- Giúp modal căn giữa theo chiều dọc -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Password changed successfully.
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Password changed successfully.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="confirmButton">OK</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        >>>>>>> 3f6c3f3573d06cfa7164c84d7fdec9a0be81beaf
     </div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

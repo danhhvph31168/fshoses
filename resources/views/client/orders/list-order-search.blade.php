@@ -5,6 +5,7 @@ Danh sách đặt hàng
 @endsection
 
 @section('content')
+
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -17,9 +18,11 @@ Danh sách đặt hàng
                         <a href="./shop.html">Shop</a>
                         <span>Order History</span>
                     </div>
+
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 <!-- Breadcrumb Section End -->

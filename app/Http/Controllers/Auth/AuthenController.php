@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Password ;
+
+
 
 
 class AuthenController extends Controller
@@ -24,38 +26,14 @@ class AuthenController extends Controller
 
     public function handleRegister(HandleRegisterRequest $request)
     {
-        $checkStatus = User::where('email', $request->email)->where('status', 0)->first();
-
-        if ($checkStatus) {
-            $request->validate([
-                'name'      => 'required|string|max:255',
-                'email'     => 'required|email',
-                'password'  => 'required|min:8|confirmed',
-            ]);
-
-            $user = User::query()->where('email', $request->email)->update([
-                'name'      => $request->name,
-                'password'  => bcrypt($request->password),
-                'status'    => 1
-            ]);
-
-            Auth::login($checkStatus);
-        } else {
-            $request->validate([
-                'name'      => 'required|string|max:255',
-                'email'     => 'required|email|unique:users,email',
-                'password'  => 'required|min:8|confirmed',
-            ]);
 
             $user = User::query()->create([
                 'name'      => $request->name,
                 'email'     => $request->email,
-                'password'  => $request->password,
-                'role_id'   => 1,
+                'password'  => $request->password
             ]);
 
             Auth::login($user);
-        }
 
         $request->session()->regenerate();
 

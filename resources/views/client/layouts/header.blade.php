@@ -7,12 +7,13 @@
                     <a href="\"><img src="{{ asset('theme/client/img/logonew.png') }}" alt="" style="width: 60px;"></a>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <nav class="header__menu mobile-menu">
-                    <ul>
-                        <li class="active"><a href="/">Trang chủ</a></li>
+                    <ul style="display: flex; white-space: nowrap;">
+                        <li class="active"><a href="/">Home</a></li>
 
-                        <li><a href="#">Thương hiệu</a>
+
+                        <li><a href="#">Brands</a>
                             <ul class="dropdown">
                                 @foreach ($brd as $item)
                                 @if ($item->status == 1)
@@ -23,7 +24,10 @@
                             </ul>
                         </li>
 
-                        <li><a href="#">Danh mục</a>
+
+                        </li>
+
+                        <li><a href="#">Categories</a>
                             <ul class="dropdown">
                                 @foreach ($cate as $item)
                                 {{-- @dd($item) --}}
@@ -34,21 +38,23 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Liên hệ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="{{ route('showFormSearchOrder') }}">Order Tracking</a></li>
                     </ul>
                 </nav>
             </div>
 
-            <div class="col-md-3">
-                <div class="dropdown ms-sm-3 header__menu topbar-user">
-                    @if (Auth::user())
+
+            <div class="col-md-4" style=" ">
+                <div class="dropdown ms-sm-5 header__menu topbar-user" style="background: #ffffff;">
+                    @if (Auth::check())
                     <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
                         aria-haspopup="true" aria-expanded="false">
                         <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
                             <i class="bi bi-cart"></i>
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Giỏ hàng</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Cart</span>
                             </span>
                         </a>
                     </button>
@@ -56,24 +62,34 @@
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <i class="bi bi-person-circle"></i>
+                            <img src="{{ Auth::user()->avatar }}" alt="" style="border-radius: 50%" width="20px"
+                                height="22px">
+
                             <span class="text-start ms-xl-2">
                                 <span
                                     class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
                             </span>
+
                         </span>
+                        </a>
                     </button>
 
+
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="{{ route('showFormUpdateProfile') }}"><i
+                        @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
+                        <a class="dropdown-item" href="#"><i
                                 class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Thông tin tài khoản</span></a>
+                            <span class="align-middle">Admin Page</span></a>
+                        @endif
+                        <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
+                                class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Profile</span></a>
                         <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
                                 class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Lịch sử đặt hàng</span></a>
+                            <span class="align-middle">Order History</span></a>
                         <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
                                 class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Đổi mật khẩu</span></a>
+                            <span class="align-middle">Change Password</span></a>
                         <form action="{{ route('auth.logout') }}" method="post">
                             @csrf
                             <button type="submit" class="border-0 dropdown-item">
@@ -82,6 +98,7 @@
                             </button>
                         </form>
                     </div>
+
                     @else
                     <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
                         aria-haspopup="true" aria-expanded="false">

@@ -41,6 +41,6 @@ class Payment extends Model
     const STATUS_IN_PROGRESS    = 'in_progress';
 
     public function order(){
-        return $this->hasOne(Order::class);
+        return $this->belongsTo(Order::class);
     }
 }
