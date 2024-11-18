@@ -123,12 +123,13 @@
                                                                 }
                                                             </style>
 
+
                                                             <div>
                                                                 <input type="radio" name="product_color"
-                                                                    value="{{ $id }}"
+                                                                    value = "{{ $id }}"
                                                                     id="color-{{ $id }}"
                                                                     class="color-radio-{{ $id }}">
-                                                                </input>
+
                                                                 <label for="color-{{ $id }}"></label>
                                                             </div>
                                                         @endforeach

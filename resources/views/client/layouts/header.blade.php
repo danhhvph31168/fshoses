@@ -13,15 +13,15 @@
                         <li class="active"><a href="/">Trang chủ</a></li>
 
                         <li><a href="#">Thương hiệu</a></li>
-                            <ul class="dropdown">
-                                @foreach ($brd as $item)
-                                    @if ($item->status == 1)
-                                        <li><a
-                                                href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
-                                        </li>
-                                    @endif
-                                @endforeach
-                            </ul>
+                        <ul class="dropdown">
+                            @foreach ($brd as $item)
+                                @if ($item->status == 1)
+                                    <li><a
+                                            href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
                         </li>
 
                         <li><a href="#">Danh mục</a>
@@ -38,14 +38,14 @@
                         </li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="#">Liên hệ</a></li>
-                        <li><a href="{{route('showFormSearchOrder')}}">Tra cứu đơn hàng</a></li>
+                        <li><a href="{{ route('showFormSearchOrder') }}">Tra cứu đơn hàng</a></li>
                     </ul>
                 </nav>
             </div>
 
             <div class="col-md-4">
-                <div class="dropdown ms-sm-3 header__menu topbar-user">
-                    @if (Auth::user())
+                <div class="dropdown ms-sm-3 header__menu topbar-user" style="background: #ffffff">
+                    @if (Auth::check())
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
                             data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
                             <a {{-- href="{{ route('cart.list') }}"  --}} class="d-flex align-items-center  text-black">
@@ -59,7 +59,9 @@
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
-                                <i class="bi bi-person-circle"></i>
+                                <img src="{{ Auth::user()->avatar }}" alt="" style="border-radius: 50%"
+                                    width="20px" height="22px">
+
                                 <span class="text-start ms-xl-2">
                                     <span
                                         class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
@@ -68,13 +70,18 @@
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#"><i
+                            @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
+                                <a class="dropdown-item" href="#"><i
+                                        class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
+                                    <span class="align-middle">Trang Admin</span></a>
+                            @endif
+                            <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
                                     class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Thông tin tài khoản</span></a>
-                            <a class="dropdown-item" href="#"><i
+                            <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Lịch sử đặt hàng</span></a>
-                            <a class="dropdown-item" href="#"><i
+                            <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Đổi mật khẩu</span></a>
                             <form action="{{ route('auth.logout') }}" method="post">

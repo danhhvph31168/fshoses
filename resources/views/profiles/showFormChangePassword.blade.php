@@ -60,7 +60,7 @@
 
                             <div class="mt-4 text-center">
                                 <div class="signin-other-title">
-                                    <a href="{{ route('home') }}" class="fs-13 mb-4 title fw-medium"
+                                    <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium"
                                         style="color: #212529">
                                         Back to home
                                     </a>
@@ -137,7 +137,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Send') }}
                                     </button>
-                                    <a class="btn btn-primary" href="{{route('home')}}">Back</a>
+                                    <a class="btn btn-primary" href="{{route('client.home')}}">Back</a>
                                 </div>
                             </div>
                         </form>

@@ -156,7 +156,7 @@
 
                 // Khi nhấn "OK", chuyển về trang chủ
                 document.getElementById('confirmButton').addEventListener('click', function() {
-                    window.location.href = "{{ route('home') }}";
+                    window.location.href = "{{ route('client.home') }}";
                 });
             @endif
         });

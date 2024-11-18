@@ -50,7 +50,7 @@
                                     <div class="card-body p-4 text-center">
                                         <div class="mx-auto avatar-md">
                                             {{-- <img src="{{ Storage::url($user->avatar_url) }}" alt="" --}}
-                                            <img src="{{ $user->avatar_url }}" alt=""
+                                            <img src="{{ $user->avatar }}" alt=""
                                                 class="img-fluid rounded-circle">
                                         </div>
                                     </div>
@@ -153,7 +153,7 @@
 
                             <div class="mt-4 text-center">
                                 <div class="signin-other-title">
-                                    <a href="{{ route('home') }}" class="fs-13 mb-4 title fw-medium"
+                                    <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium"
                                         style="color: #212529">
                                         Back to home
                                     </a>

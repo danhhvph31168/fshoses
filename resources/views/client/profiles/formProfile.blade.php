@@ -197,7 +197,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         Update
                                     </button>
-                                    <a href="{{ route('home') }}" class="btn btn-primary">
+                                    <a href="{{ route('client.home') }}" class="btn btn-primary">
                                         {{ __('Back') }}
                                     </a>
                                 </div>

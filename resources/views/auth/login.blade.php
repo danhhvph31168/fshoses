@@ -23,7 +23,8 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Email</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    id="username" name="email" placeholder="Enter username" autofocus value="{{ old('email') }}">
+                                    id="username" name="email" placeholder="Enter username" autofocus
+                                    value="{{ old('email') }}">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -56,6 +57,15 @@
 
                             <div class="mt-5">
                                 <button class="btn btn-success w-100" type="submit">Sign In</button>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <div class="signin-other-title">
+                                    <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium"
+                                        style="color: #212529">
+                                        Back to home
+                                    </a>
+                                </div>
+
                             </div>
 
                             {{-- <div class="mt-4 text-center">

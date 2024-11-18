@@ -13,7 +13,7 @@ class ProductController extends Controller
 
     public function productDetail($slug)
     {
-        $product = Product::query()->with(['variants', 'category', 'galleries'])->where('slug', $slug)->first();
+        $product = Product::query()->with(['productVariants', 'category', 'galleries'])->where('slug', $slug)->first();
 
 
         // Kiểm tra sản phẩm có tồn tại hay không

@@ -36,7 +36,7 @@
                                             <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
                                         </div>
 
-                                        <a href="" class="text-dark card-title fs-6 fw-bold">
+                                        <a href="{{ route('productDetail', $item->slug) }}" class="text-dark card-title fs-6 fw-bold">
                                             {{ $item->name }}
                                         </a>
                                         @if ($item->price_sale > 0)

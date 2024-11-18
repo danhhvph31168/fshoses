@@ -54,7 +54,7 @@
                     <div class="breadcrumb__text">
                         <h4>Order Detail</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Home</a>
+                            <a href="{{ route('client.home') }}">Home</a>
                             <a href="./shop.html">Shop</a>
                             <span>Order Detail</span>
                         </div>
@@ -384,6 +384,7 @@
                                 </p>
                             </div>
                             <div class="flex-grow-1 ms-2">
+                           
                                 <p class="mb-0 fw-bold">{{ $order->payment->payments_method }}</p>
                             </div>
                         </div>
