@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Client\Rating;
 
 use App\Http\Controllers\Controller;
@@ -18,15 +19,19 @@ class RatingController extends Controller
     {
         // Lấy đơn hàng để từ đó lấy sản phẩm
         $order = Order::with('orderItems.productVariant.product')->findOrFail($orderId);
+        $userId = auth()->id();
+        $existingRatings = Rating::where('user_id', $userId)
+            ->where('order_id', $orderId)
+            ->pluck('product_variant_id');
 
-        return view('client.ratings.create', compact('order'));
+        return view('client.ratings.create', compact('order','existingRatings'));
     }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'order_id' => 'required|integer|exists:orders,id',
-            'product_id' => 'required|integer|exists:products,id',
+            'product_variant_id' => 'required|integer|exists:product_variants,id',
             'value' => 'required|numeric|min:1|max:5',
             'comment' => 'nullable|string|max:255',
         ]);
@@ -34,7 +39,7 @@ class RatingController extends Controller
         // Kiểm tra xem đã có đánh giá cho user, order và product đó chưa
         $existingRating = Rating::where('user_id', $validatedData['user_id'])
             ->where('order_id', $validatedData['order_id'])
-            ->where('product_id', $validatedData['product_id'])
+            ->where('product_variant_id', $validatedData['product_variant_id'])
             ->first();
 
         if ($existingRating) {

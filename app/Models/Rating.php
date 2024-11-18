@@ -11,7 +11,7 @@ class Rating extends Model
     protected $fillable = [
         'user_id',
         'order_id',
-        'product_id',
+        'product_variant_id',
         'value',
         'comment',
     ];
@@ -25,8 +25,8 @@ class Rating extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function product()
+    public function productVariant()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProductVariant::class);
     }
 }

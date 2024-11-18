@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('value',20,2);
             $table->integer('quantity')->default(0);
             $table->boolean('is_active')->default(true);
+            $table->decimal('minimum_order_value', 20, 2)->default(0);
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

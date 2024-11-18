@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductVariant;
 
 return new class extends Migration
 {
@@ -16,10 +17,10 @@ return new class extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignIdFor(ProductVariant::class)->constrained();
             $table->integer('value')->default(0);
             $table->string('comment');
             $table->timestamps();

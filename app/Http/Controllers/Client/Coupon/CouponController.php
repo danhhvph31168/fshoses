@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Cart;
+use App\Models\CouponUsage;
 class CouponController extends Controller
 {
     public function applyCoupon(Request $request)
@@ -34,13 +35,13 @@ class CouponController extends Controller
         }
 
         // Kiểm tra người dùng
-        // $userId = auth()->id();
-        // $hasUsedCoupon = CouponUsage::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
+        $userId = auth()->id();
+        $hasUsedCoupon = CouponUsage::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
 
-        // if ($hasUsedCoupon) {
-        //     $messages[] = 'Bạn đã sử dụng coupon này rồi!';
-        //     return redirect()->route('cart.view')->withErrors($messages);
-        // }
+        if ($hasUsedCoupon) {
+            $messages[] = 'Bạn đã sử dụng coupon này rồi!';
+            return redirect()->route('cart.view')->withErrors($messages);
+        }
 
         $finalPrice = $cart->getFinalPrice($coupon);
 
