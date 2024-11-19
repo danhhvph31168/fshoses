@@ -27,9 +27,10 @@ Trang chủ
                     <div class="col-md-3 mb-3">
                         <div class="card">
                             <div class="border-bottom" style="width: 100%">
-                                <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top" alt="..."
+                                <img src="{{ asset('theme/client/img/fakegiay.png') }}" class="card-img-top" alt="..."
                                     height="200px">
                             </div>
+                            <!-- img sp: {{ Storage::url($item->img_thumbnail) }} -->
                             <div class="card-body" style="height: 180px">
 
                                 <div class="mb-3">

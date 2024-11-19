@@ -19,10 +19,12 @@ Route::prefix('admin')->as('admin.')
     ->middleware(['auth', 'auth.admin'])
     ->group(function () {
 
-        // dashboard
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
         Route::get('/',  [DashboardController::class, 'orderStatistical']);
         Route::post('/', [DashboardController::class, 'orderStatistical'])->name('dashboard.year');
-
+        
 
 
         // order
