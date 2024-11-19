@@ -15,6 +15,10 @@ Chi tiết đơn hàng
 <!-- custom Css-->
 <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
+.container {
+    max-width: 1320px;
+}
+
 .footer {
     background-color: black !important;
     margin-top: 80px;

@@ -1,8 +1,8 @@
 <section class="hero">
     @foreach ($banners as $item)
     <div class="hero__slider owl-carousel">
-        <div class="hero__items set-bg" data-setbg="{{ asset('theme/client/img/hero/hr1.png') }}">
-            <!-- data-bg: {{ Storage::url($item->image) }} -->
+        <div class="hero__items set-bg" data-setbg="{{ Storage::url($item->image) }}">
+
             <div class="container">
                 <div class="row">
                     <div class="col-xl-5 col-lg-7 col-md-8">

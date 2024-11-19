@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="header__logo">
-                    <a href="\"><img src="{{ asset('theme/client/img/logonew.png') }}" alt="" style="width: 60px;"></a>
+                    <a href="\">Fshoes</a>
                 </div>
             </div>
             <div class="col-md-6">

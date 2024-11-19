@@ -243,6 +243,10 @@ Chi tiết sản phẩm
 
 
 <style>
+.container {
+    max-width: 1320px;
+}
+
 body {
 
     background-color: #F5F5F5;

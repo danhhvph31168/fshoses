@@ -22,7 +22,7 @@ Trang chủ
                 <div class="card shadow-sm h-100">
 
                     <div class="border-bottom" style="position: relative; overflow: hidden;">
-                        <img src="{{ asset('theme/client/img/fakegiay.png') }}" class="card-img-top" alt="..."
+                        <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top" alt="..."
                             style="height: 200px; object-fit: cover;">
 
                         @if ($item->price_sale > 0)
