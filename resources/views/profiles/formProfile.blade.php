@@ -12,7 +12,7 @@ Update account information
                 <div class="product__details__breadcrumb">
                     <a href="./index.html">Home</a>
                     <a href="./shop.html">Profile</a>
-                    <span>{{ $user->name }}</span>
+                    <span style="color:black">{{ $user->name }}</span>
                 </div>
             </div>
         </div>
@@ -160,7 +160,7 @@ Update account information
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">
                                                     Email Address
@@ -192,7 +192,7 @@ Update account information
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-4">
                                             {{-- <select name="" id="province">
                                             </select>
                                             <select name="" id="district">
@@ -216,7 +216,8 @@ Update account information
                                                 </span>
                                                 @enderror
                                             </div>
-
+                                        </div>
+                                        <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="district" class="form-label">District</label>
                                                 <select id="district"
@@ -232,7 +233,8 @@ Update account information
                                                 </span>
                                                 @enderror
                                             </div>
-
+                                        </div>
+                                        <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="ward" class="form-label">Ward</label>
                                                 <select id="ward"
@@ -249,7 +251,6 @@ Update account information
                                                 @enderror
                                             </div>
                                         </div>
-
 
 
                                         <div class="col-lg-12">
@@ -352,6 +353,11 @@ Update account information
 <link href="{{ asset('theme/client/cssfix/profile/custom.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/client/cssfix/profile/icons.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
+body {
+
+    background-color: #F5F5F5;
+}
+
 footer {
     width: 100%;
 }

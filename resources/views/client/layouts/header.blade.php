@@ -1,4 +1,4 @@
-<header class="header" style="position: sticky; top: 0; z-index: 1000; ">
+<header class="header" style="position: sticky; top: 0; z-index: 1000; font-size: 18px; font-family: sans-serif; ">
 
     <div class="container">
         <div class="row">
@@ -42,11 +42,12 @@
                         <li><a href="#">Contact</a></li>
                         <li><a href="{{ route('showFormSearchOrder') }}">Order Tracking</a></li>
                     </ul>
+
                 </nav>
             </div>
 
 
-            <div class="col-md-4" style=" ">
+            <div class="col-md-4">
                 <div class="dropdown ms-sm-5 header__menu topbar-user" style="background: #ffffff;">
                     @if (Auth::check())
                     <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
@@ -54,7 +55,9 @@
                         <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
                             <i class="bi bi-cart"></i>
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Cart</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                    style="font-size: 18px; font-family: sans-serif; ">
+                                    <strong>Cart</strong></span>
                             </span>
                         </a>
                     </button>
@@ -66,8 +69,8 @@
                                 height="22px">
 
                             <span class="text-start ms-xl-2">
-                                <span
-                                    class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                    style="font-size: 18px; font-family: sans-serif; "><strong>{{ Auth::user()->name }}</strong></span>
                             </span>
 
                         </span>
@@ -105,7 +108,8 @@
                         <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
                             <i class="bi bi-cart"></i>
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Giỏ hàng</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                    style="font-size: 18px; font-family: sans-serif;"><strong>Cart</strong></span>
                             </span>
                         </a>
                     </button>
@@ -115,8 +119,8 @@
                         <span class="d-flex align-items-center">
                             <i class="bi bi-person-circle"></i>
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Tài
-                                    khoản</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                    style="font-size: 18px; font-family: sans-serif;"><strong>Account</strong></span>
                             </span>
                         </span>
                     </button>
