@@ -14,10 +14,11 @@
 
 
                         <li><a href="#">Brands</a>
-                            <ul class="dropdown">
+                            <ul class="dropdown" style="background-color: white;  border: 1px solid black;">
                                 @foreach ($brd as $item)
                                 @if ($item->status == 1)
-                                <li><a href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
+                                <li><a style="color: black;"
+                                        href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
                                 </li>
                                 @endif
                                 @endforeach
@@ -28,11 +29,12 @@
                         </li>
 
                         <li><a href="#">Categories</a>
-                            <ul class="dropdown">
+                            <ul class="dropdown" style="background-color: white;  border: 1px solid black;">
                                 @foreach ($cate as $item)
                                 {{-- @dd($item) --}}
                                 @if ($item->is_active == 1)
-                                <li><a href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
+                                <li><a style="color: black;"
+                                        href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
                                 </li>
                                 @endif
                                 @endforeach
@@ -191,6 +193,13 @@
 
 #search-results .dropdown-item:hover {
     background-color: #f8f9fa;
+}
+
+
+.dropdown li:hover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

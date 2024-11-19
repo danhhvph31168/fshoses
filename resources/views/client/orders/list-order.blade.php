@@ -5,30 +5,7 @@ Danh sách đặt hàng
 @endsection
 
 @section('content')
-<form class="navbar-form navbar-left form-search">
-    <div class="form-group" style="width: 250px;
-                                        position: relative;">
-        <input type="text" class="form-control input-search-ajax" placeholder="Search">
-        <div class=" search-ajax-result1" style="position: absolute;
-                                                                background-color: black;
-                                                                padding: 10px; width: 100%;">
-            <div class="media">
-                <a href="pull-left" href="#">
-                    <img class="media-object1"
-                        src="https://extrim-prod.s3.ap-southeast-1.amazonaws.com/Huong_dan_cach_chup_anh_giay_dep_chuan_studio_cho_shop_giay_3_cd0b2738b6.jpg"
-                        alt="Image" width="50px">
 
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading"><a href="" style="font-size: 14px; ">Media
-                            heading</a>
-                    </h4>
-                    <p style="margin: 0; font-size: 11px; font-style: italic;">mota</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -49,67 +26,122 @@ Danh sách đặt hàng
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-<!-- Shopping Cart Section Begin -->
-<section class="shopping-cart spad">
+<!-- Order History Section Begin -->
+<section class="shopping-cart spad" style="padding: 0; padding-top: 20px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="shopping__cart__table">
-                    <table class="mb-4">
-                        <thead>
+                <div class="shopping__cart__table rounded shadow-sm bg-white">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-gradient text-white"
+                            style="background: linear-gradient(90deg, #ff7eb3, #ff758c);">
                             <tr class="text-center">
-                                <th>STT</th>
+                                <th>#</th>
                                 <th>Order Code</th>
                                 <th>Order Date</th>
                                 <th>Status Order</th>
                                 <th>Status Payment</th>
                                 <th>Total Amount</th>
                                 <th>Action</th>
-
                             </tr>
                         </thead>
-                        <tbody class="text-center">
+                        <tbody>
                             @if ($orders->isEmpty())
-                            <tr class="text-center fw-bold">
-                                <td colspan="7">
-                                    <div class="text-danger">
-                                        No orders have been placed yet!
-                                    </div>
+                            <tr>
+                                <td colspan="7" class="text-danger fw-bold text-center">No orders have been placed yet!
                                 </td>
                             </tr>
                             @else
                             @foreach ($orders as $item)
-                            <tr class=" text-center fw-bold">
-                                <td>
-                                    {{ $loop->iteration }}
-                                </td>
+                            <tr class="text-center">
+                                <td>{{ $loop->iteration }}</td>
                                 <td>
                                     <a href="{{ route('getDetailOrderItem', $item->sku_order) }}"
-                                        style="color: #e53637">
-                                        {{ $item->sku_order }}</a>
+                                        class="text-danger fw-bold">
+                                        {{ $item->sku_order }}
+                                    </a>
+                                </td>
+                                <td>{{ $item->created_at->toDateString() }}</td>
+                                <td>
+                                    <span
+                                        class="badge rounded-pill {{ $item->status_order === 'pending' ? 'bg-warning text-dark' : 'bg-success' }}">
+                                        {{ ucfirst($item->status_order) }}
+                                    </span>
                                 </td>
                                 <td>
-                                    <h6>{{ $item->created_at->toDateString() }}</h6>
+                                    <span
+                                        class="badge rounded-pill {{ $item->status_payment === 'unpaid' ? 'bg-secondary' : 'bg-success' }}">
+                                        {{ ucfirst($item->status_payment) }}
+                                    </span>
                                 </td>
+                                <td>{{ number_format($item->total_amount, 0, ',', '.') }} VNĐ</td>
                                 <td>
-                                    <h6>{{ $item->status_order }}</h6>
+                                    <a href="#" class="btn btn-sm btn-danger text-white fw-bold rounded-pill"
+                                        onclick="return confirm('Are you sure you want to cancel this order?')">
+                                        <i class="ri-close-line"></i> Cancel
+                                    </a>
                                 </td>
-                                <td>
-                                    <h6>{{ $item->status_payment }}</h6>
-                                </td>
-                                <td>{{ $item->total_amount }}</td>
-                                <td><a href="" class="badge badge-danger">Cancel order</a></td>
                             </tr>
                             @endforeach
                             @endif
                         </tbody>
                     </table>
-                    {{ $orders->links() }}
+                    <div class="d-flex justify-content-center mt-4">
+                        {{ $orders->links() }}
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
 </section>
 <!-- Shopping Cart Section End -->
 @endsection
+<style>
+.breadcrumb__text h4 {
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.breadcrumb__links a {
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.breadcrumb__links a:hover {
+    color: #ffd3e6;
+    text-decoration: underline;
+}
+
+/* Table Styling */
+.table thead {
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #ffe6f0;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Buttons */
+.btn-danger {
+    background-color: #ff7eb3;
+    border-color: #ff758c;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #ff5173;
+    transform: scale(1.05);
+}
+</style>
