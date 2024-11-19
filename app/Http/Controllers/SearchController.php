@@ -12,7 +12,7 @@ class SearchController extends Controller
         $query = $request->get('query');
 
         // Tìm kiếm trong bảng Product
-        $results = Product::where('name', 'LIKE', "%{$query}%") ->take(5) ->get(['name', 'slug' , 'price_regular', 'img_thumbnail']);
+        $results = Product::where('name', 'LIKE', "{$query}%") ->take(5) ->get(['name', 'slug' , 'price_regular', 'img_thumbnail']);
 
         return response()->json($results);
     }
