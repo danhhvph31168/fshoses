@@ -5,7 +5,30 @@ Danh sách đặt hàng
 @endsection
 
 @section('content')
+<form class="navbar-form navbar-left form-search">
+    <div class="form-group" style="width: 250px;
+                                        position: relative;">
+        <input type="text" class="form-control input-search-ajax" placeholder="Search">
+        <div class=" search-ajax-result1" style="position: absolute;
+                                                                background-color: black;
+                                                                padding: 10px; width: 100%;">
+            <div class="media">
+                <a href="pull-left" href="#">
+                    <img class="media-object1"
+                        src="https://extrim-prod.s3.ap-southeast-1.amazonaws.com/Huong_dan_cach_chup_anh_giay_dep_chuan_studio_cho_shop_giay_3_cd0b2738b6.jpg"
+                        alt="Image" width="50px">
 
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading"><a href="" style="font-size: 14px; ">Media
+                            heading</a>
+                    </h4>
+                    <p style="margin: 0; font-size: 11px; font-style: italic;">mota</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">

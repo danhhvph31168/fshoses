@@ -135,9 +135,108 @@
                     </div>
                     @endif
 
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search products..." autocomplete="off">
+                        <div id="search-results" class="dropdown-menu"></div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
+<style>
+.search-container {
+    position: relative;
+}
+
+#search-input {
+    width: 300px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+#search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#search-results .dropdown-item {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#search-results .dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#search-input').on('keyup', function() {
+        let query = $(this).val();
+
+        if (query.length >= 1) {
+            $.ajax({
+                url: "{{ route('search') }}",
+                type: 'GET',
+                data: {
+                    query: query
+                },
+                success: function(data) {
+                    console.log(data)
+                    let results = '';
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            results += `
+                                        <a href="/product-detail/${item.slug}"  >
+                                            <div class="dropdown-item">
+                                                <img src="${item.img_thumbnail}" alt="${item.name}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                                                <span>${item.name}</span>
+                                                <span style="float: right; color: #007bff;">${item.price_regular}</span>
+                                            </div>
+                                        </a>
+                                        
+                                    `;
+                        });
+                    } else {
+                        results = '<div class="dropdown-item">No results found</div>';
+                    }
+                    $('#search-results').html(results).fadeIn();
+                }
+            });
+        } else {
+            $('#search-results').fadeOut();
+        }
+    });
+
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.search-container').length) {
+            $('#search-results').fadeOut();
+        }
+    });
+});
+</script>

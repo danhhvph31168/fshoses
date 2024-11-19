@@ -12,6 +12,13 @@ use App\Http\Controllers\Client\Product\ProductController as HomeProductControll
 use App\Http\Controllers\Client\ReviewController;
 use App\Http\Controllers\Account\OrderSearchController;
 
+use App\Http\Controllers\SearchController;
+
+//search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+
+
 // product
 Route::get('/',                 [HomeProductController::class, 'index'])->name('client.home');
 Route::get('/brand/{brd}',      [HomeProductController::class, 'listProductByBrand'])->name('client.productByBrand');

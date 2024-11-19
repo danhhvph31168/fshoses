@@ -12,7 +12,7 @@ Trang chủ
     <div class="container my-5">
         <div class="row mb-4">
             <div class="col-md-12">
-                <h3 class="text-center text-uppercase text-secondary border-bottom pb-3">Giày Mới Nhất</h3>
+                <h3 class="text-center text-uppercase text-secondary border-bottom pb-3">New Shoes</h3>
             </div>
         </div>
 
@@ -233,6 +233,24 @@ h3 {
 .btn-outline-secondary:focus {
     outline: none;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.card-img-top {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card:hover .card-img-top {
+    /* zoom ảnh */
+    /* transform: rotate(360deg); */
+
+    /* xoay ảnh */
+    transform: scale(1.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card {
+    overflow: hidden;
+    border-radius: 10px;
 }
 </style>
 
