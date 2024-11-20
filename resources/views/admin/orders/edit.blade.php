@@ -43,7 +43,7 @@
                         @if ($order->total_amount >= 500000)
                             <span class="badge text-bg-success p-3">Free Ship</span>
                         @endif
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
@@ -98,7 +98,7 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Order Item</h4>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body" id="card-body">
 
                         @foreach ($dataProductVariant as $item)
@@ -143,7 +143,7 @@
                 <div class="card col-md-6">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Customer</h4>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
@@ -203,7 +203,7 @@
                 <div class="card col-md-6">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Recipient Address</h4>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
@@ -248,7 +248,7 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Payment method</h4>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
@@ -274,7 +274,6 @@
                     </div>
                 </div>
             </div>
-            <!--end col-->
         </div>
 
         <div class="row">
@@ -282,10 +281,9 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <button class="btn btn-primary" type="submit">Save</button>
-                    </div><!-- end card header -->
+                    </div>
                 </div>
             </div>
-            <!--end col-->
         </div>
 
     </form>

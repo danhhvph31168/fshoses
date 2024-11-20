@@ -78,13 +78,10 @@ class ProductController extends Controller
 
                 $product = Product::query()->create($dataProduct);
 
-                // dd($product);
-
                 foreach ($dataProductVariants as $item) {
                     $item += ['product_id' => $product->id];
                     ProductVariant::query()->create($item);
                 }
-
 
                 foreach ($dataProductGalleries as $item) {
                     $item += ['product_id' => $product->id];
@@ -92,7 +89,6 @@ class ProductController extends Controller
                 }
 
                 DB::commit();
-
 
                 return redirect()->route('admin.products.index')
                     ->with('success', 'Product created Successfully!');

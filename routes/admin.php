@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\admin\BannerController;
-use App\Http\Controllers\Admin\RefundController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -23,8 +22,6 @@ Route::prefix('admin')->as('admin.')
         Route::get('/',  [DashboardController::class, 'orderStatistical']);
         Route::post('/', [DashboardController::class, 'orderStatistical'])->name('dashboard.year');
 
-
-
         // order
         Route::get('orders',            [OrderController::class, 'index'])->name('orders.index');
         Route::get('orders/create',     [OrderController::class, 'create'])->name('orders.create');
@@ -32,20 +29,10 @@ Route::prefix('admin')->as('admin.')
         Route::get('orders/{id}/edit',  [OrderController::class, 'edit'])->name('orders.edit');
         Route::put('orders/{id}/update',[OrderController::class, 'update'])->name('orders.update');
 
-        // refund
-        Route::get('refunds',               [RefundController::class, 'index'])->name('refunds.index');
-        Route::post('refunds/store',        [RefundController::class, 'store'])->name('refunds.store');
-        Route::put('refunds/{id}/update',   [RefundController::class, 'update'])->name('refunds.update');
-
         //review
         Route::get('reviews',               [ReviewController::class, 'index'])->name('reviews.index');
         Route::get('reviews/{id}/show',     [ReviewController::class, 'show'])->name('reviews.show');
         Route::put('reviews/{id}/update',   [ReviewController::class, 'update'])->name('reviews.update');
-
-        // Route::get('/', function () {
-        //     return view('admin.dashboard');
-        // })->name('dashboard');
-
 
         Route::prefix('categories')
             ->as('categories.')
@@ -59,9 +46,13 @@ Route::prefix('admin')->as('admin.')
             });
 
         Route::resource('products', ProductController::class);
+
         Route::resource('users', UserController::class);
+
         Route::resource('roles', RoleController::class);
+
         Route::resource('brands', BrandController::class);
+        
         Route::resource('banners', BannerController::class);
 
         // auth
