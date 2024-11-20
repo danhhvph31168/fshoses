@@ -17,7 +17,8 @@ use App\Http\Controllers\SearchController;
 //search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
-
+//search categories
+Route::get('/search-products', [SearchController::class, 'searchProducts'])->name('search.products');
 
 // product
 Route::get('/',                 [HomeProductController::class, 'index'])->name('client.home');

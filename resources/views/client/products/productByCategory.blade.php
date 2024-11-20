@@ -31,10 +31,12 @@
                 <div class="row">
                     <div class="col-md-12 mb-4">
                         <h5 class="text-dark text-uppercase fw-bold border-bottom pb-2" style="font-size: 25px;">
-                            {{ $cate->name }}</h5>
+                        </h5>
                     </div>
                     <div class="col-md-12">
-                        <div class="row">
+
+                        <div class="row" id="product-list">
+                            @include('client.partials.products', ['products' => $prds])
                             @foreach ($prds as $item)
                             <div class="col-md-4 mb-3">
                                 <div class="card">
