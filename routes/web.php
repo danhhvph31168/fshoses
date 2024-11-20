@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\Product\ProductController;
 use App\Http\Controllers\Client\ReviewController;
 use App\Http\Controllers\Account\OrderSearchController;
+use App\Http\Controllers\SearchController;
 
 // product
 Route::get('/',                 [ProductController::class, 'index'])->name('client.home');
@@ -96,3 +97,10 @@ Route::post('handle-send-mail-forgot',      [AuthenController::class, 'handleSen
 Route::get('click-in-email-forgot/{id}/{token}',    [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handle-forgot-pass/{id}/{token}',      [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 Route::get('handle-forgot-pass',                    [MessageSuccessResetController::class, 'messageSuccessReset'])->name('messageSuccessReset');
+
+
+//search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+//search categories
+Route::get('/search-products', [SearchController::class, 'searchProducts'])->name('search.products');
