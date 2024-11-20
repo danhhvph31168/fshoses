@@ -85,12 +85,14 @@ Chi tiết đơn hàng
                                     <th scope="col">Product Details</th>
                                     <th scope="col">Item Price</th>
                                     <th scope="col">Quantity</th>
-                                    <th scope="col" class="text-end">Total Amount</th>
+                                    <th scope="col" class="text-end">Ratings</th>
+                                    <th scope="col">Evaluate</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($order->orderItems as $item)
                                 <tr>
-                                    @foreach ($order->orderItems as $item)
+
                                     <td>
                                         <div class="d-flex">
                                             <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
@@ -115,44 +117,48 @@ Chi tiết đơn hàng
                                     <td class="fw-medium text-end">
                                         ${{ number_format($item->quantity * $item->price, 0, '.', ',') }}
                                     </td>
-                                    @endforeach
-                                </tr>
-
-                                <tr class="border-top border-top-dashed">
-                                    <td colspan="3"></td>
-                                    <td colspan="2" class="fw-medium p-0">
-                                        <table class="table table-borderless mb-0">
-
-                                            <tbody>
-                                                <tr>
-                                                    <td>Sub Total :</td>
-                                                    <td class="text-end">
-                                                        ${{ number_format($item->quantity * $item->price, 0, '.', ',') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Discount <span class="text-muted">(VELZON15)</span>
-                                                        : :</td>
-                                                    <td class="text-end">-$53.99</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Shipping Charge :</td>
-                                                    <td class="text-end">$65.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Estimated Tax :</td>
-                                                    <td class="text-end">$44.99</td>
-                                                </tr>
-                                                <tr class="border-top border-top-dashed">
-                                                    <th scope="row">Total (USD) :</th>
-                                                    <th class="text-end">$415.96</th>
-                                                </tr>
-                                            </tbody>
-
-                                        </table>
+                                    <td>
+                                        <button class="btn btn-primary">Review</button>
                                     </td>
+
                                 </tr>
+                                @endforeach
                             </tbody>
+                            <tr class="border-top border-top-dashed">
+                                <td colspan="3"></td>
+                                <td colspan="2" class="fw-medium p-0">
+                                    <table class="table table-borderless mb-0">
+
+                                        <tbody>
+                                            <tr>
+                                                <td>Sub Total :</td>
+                                                <td class="text-end">
+                                                    ${{ number_format($item->quantity * $item->price, 0, '.', ',') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Discount <span class="text-muted">(VELZON15)</span>
+                                                    : :</td>
+                                                <td class="text-end">-$53.99</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Shipping Charge :</td>
+                                                <td class="text-end">$65.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Estimated Tax :</td>
+                                                <td class="text-end">$44.99</td>
+                                            </tr>
+                                            <tr class="border-top border-top-dashed">
+                                                <th scope="row">Total (USD) :</th>
+                                                <th class="text-end">$415.96</th>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </td>
+                            </tr>
+
                         </table>
                     </div>
                 </div>
