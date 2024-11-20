@@ -88,61 +88,25 @@
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
-
-            filter_data();
-
-            function filter_data() {
-                var action = 'get_data';
-                var minimum_price = $('#hidden_minimum_price').val();
-                var maximum_price = $('#hidden_maximum_price').val();
-
-                var brand = get_filter('brand');
-                var category = get_filter('category');
-
-                $.ajax({
-                    url: "",
-                    method: "POST",
-                    data: {
-                        action: action,
-                        minimum_price: minimum_price,
-                        maximum_price: maximum_price,
-                        brand: brand,
-                        category: category
-                    },
-                    success: function(data) {
-                        $('.filter_data').html(data);
-                    }
-                });
-            }
-
-            function get_filter(class_name) {
-                var filter = [];
-                $('.' + class_name + ':checked').each(function() {
-                    filter.push($(this).val());
-                })
-            }
-
-            $('.common_selector').click(function({
-                filter_data();
-            }));
-
-            $("#price_range").slider({
+            $("#slider-range").slider({
+                orientation: "horizonal",
                 range: true,
-                min: 0,
-                max: 100000000,
-                values: [0, 100000000],
-                step: 50000,
-                stop: function(event, ui) {
-                    $('#price_show').html('Từ: ' + ui.values[0] + ' - ' + ui.values[1]);
-                    $('#hidden_minimum_price').val(ui.values[0]);
-                    $('#hidden_maximum_price').val(ui.values[1]);
-                    filter_data()
+                min: {{ $minimum_price }},
+                max: {{ $maximum_price }},
+                step: 100000,
+                values: [{{ $minimum_price }}, {{ $maximum_price }}],
+                slide: function(event, ui) {
+                    $("#amount").val(ui.values[0] + " vnđ " + " - " + ui.values[1] + " vnđ ");
+                    $("#minimun_price").val(ui.values[0] + " vnđ ");
+                    $("#maximun_price").val(ui.values[1] + " vnđ ");
                 }
             });
+            $("#amount").val($("#slider-range").slider("values", 0) + " vnđ " +
+                " - " + $("#slider-range").slider("values", 1) + " vnđ ");
         });
-    </script>
+    </script> --}}
 
 </body>
 

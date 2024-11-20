@@ -4,7 +4,19 @@
     <section class="product spad mt-5">
         <div class="container">
             <div class="row">
-
+                <div class="col-md-12">
+                    <div class="float-end">
+                        <form action="" method="GET" class="form-inline">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2" name="key" placeholder="Search ...">
+                                <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-3">
                     {{-- Menu navbar --}}
                     @include('client.layouts.sidebar')
@@ -26,7 +38,7 @@
                         <div class="col-md-12">
                             <div class="row">
                                 @foreach ($prds as $item)
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <div class="card">
                                             <div class="border-bottom" style="width: 100%">
                                                 <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
@@ -35,7 +47,8 @@
                                             <div class="card-body" style="height: 180px">
 
                                                 <div class="mb-3">
-                                                    <a href="#" class="btn btn-outline-secondary">Thêm vào giỏ hàng</a>
+                                                    <a href="#" class="btn btn-outline-secondary">Thêm vào giỏ
+                                                        hàng</a>
                                                 </div>
 
                                                 <div class="card-title fs-6 fw-bold">
@@ -64,7 +77,6 @@
                         </div>
                         {{ $prds->links() }}
                     </div>
-
                 </div>
             </div>
         </div>
