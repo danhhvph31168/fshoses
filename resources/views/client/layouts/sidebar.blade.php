@@ -1,27 +1,4 @@
-{{-- Bộ lọc --}}
-<div class="row mb-5">
-    <div class="col-md-12">
-        <table class="table table-nowrap border table-hover">
-            <thead>
-                <tr>
-                    <th scope="col" class=" text-uppercase">Lọc theo giá</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
 
-    <div class="col-md-12">
-
-        <div class="list-group">
-            <input type="hidden" id="hidden_minimun_price" name="hidden_minimun_price" value="0">
-            <input type="hidden" id="hidden_maximun_price" name="hidden_maximun_price" value="100000000">
-
-            <p id="price_show">Từ: 0 VNĐ - 100 Triệu VNĐ</p>
-
-            <div id="price_range"></div>
-        </div>
-    </div>
-</div>
 
 {{-- Danh sách thương hiệu --}}
 <div class="row">
@@ -29,7 +6,7 @@
         <table class="table table-nowrap border table-hover">
             <thead>
                 <tr>
-                    <th scope="col" class="text-bg-dark text-uppercase">Thương hiệu</th>
+                    <th scope="col" class="text-bg-secondary text-uppercase">Thương hiệu</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +30,7 @@
         <table class="table table-nowrap border table-hover">
             <thead>
                 <tr>
-                    <th scope="col" class="text-bg-dark text-uppercase">Danh mục sản phẩm</th>
+                    <th scope="col" class="text-bg-secondary text-uppercase">Danh mục sản phẩm</th>
                 </tr>
             </thead>
             <tbody>

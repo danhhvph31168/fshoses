@@ -36,59 +36,92 @@ class ProductController extends Controller
 
     public function getAllProducts()
     {
-        $getAllProducts = Product::query()->latest('id')->paginate(9);
+        $data = Product::query()->latest('id')->paginate(9);
 
-        return view('client.products.product-list', compact('getAllProducts'));
+        $from = request()->from;
+        $to = request()->to;
+        $key = request()->key;
+
+        if ($key && $from && $to) {
+            $data = Product::query()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->whereBetween('price_regular', [$from, $to])
+                ->paginate(9);
+        } elseif ($key && $from) {
+            $data = Product::query()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->WhereBetween('price_regular', [$from, Product::max('price_regular')])
+                ->paginate(9);
+        } elseif ($key && $to) {
+            $data = Product::query()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->WhereBetween('price_regular', [Product::min('price_regular'), $to])
+                ->paginate(9);
+        } elseif ($to && $from) {
+            $data = Product::query()->latest('id')
+                // ->where('name', 'like', '%' . $key . '%')
+                ->WhereBetween('price_regular', [$from, $to])
+                ->paginate(9);
+        } elseif ($key) {
+            $data = Product::query()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->paginate(9);
+        } elseif ($from) {
+            $data = Product::query()->latest('id')
+                ->WhereBetween('price_regular', [$from, Product::max('price_regular')])
+                ->paginate(9);
+        } elseif ($to) {
+            $data = Product::query()->latest('id')
+                ->WhereBetween('price_regular', [Product::min('price_regular'), $to])
+                ->paginate(9);
+        }
+
+        return view('client.products.product-list', compact('data', 'from', 'to'));
     }
-
-    // public function getCategory($category_id)
-    // {
-
-    //     $category = Category::find($category_id);
-
-
-    //     $products = $category->products()->take(4)->get();
-
-    //     dd($products);
-
-    //     return view('client.home', compact('category', 'products'));
-    // }
 
     public function listProductByBrand(Brand $brd)
     {
-        $prds = $brd->products()->paginate(3);
+        $prds = $brd->products()->paginate(4);
 
-        return view('client.products.productByBrand', compact('brd', 'prds'));
+        $from = request()->from;
+        $to = request()->to;
+        $key = request()->key;
+
+        if ($key) {
+            $prds = $brd->products()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->paginate(4);
+        } elseif ($to) {
+            $prds = $brd->products()->latest('id')
+                ->WhereBetween('price_regular', [$from = 0, $to])
+                ->paginate(4);
+        } elseif ($from) {
+            $prds = $brd->products()->latest('id')
+                ->WhereBetween('price_regular', [$from, Product::max('price_regular')])
+                ->paginate(4);
+        } elseif ($key && $from && $to) {
+            $prds = $brd->products()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')->whereBetween('price_regular', [$from, $to])
+                ->paginate(4);
+        } elseif ($from && $key) {
+            $prds = $brd->products()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')->WhereBetween('price_regular', [$from, Product::max('price_regular')])
+                ->paginate(4);
+        }
+
+        // dd($prds);
+        return view('client.products.productByBrand', compact('brd', 'prds', 'from', 'to'));
     }
 
     public function listProductByCategory(Category $cate)
     {
-        $prds = $cate->products()->paginate(3);
+        $prds = $cate->products()->paginate(4);
 
+        if ($key = request()->key) {
+            $prds = $cate->products()->latest('id')
+                ->where('name', 'like', '%' . $key . '%')
+                ->paginate(3);
+        }
         return view('client.products.productByCategory', compact('cate', 'prds'));
     }
-
-    // public function search(Request $request)
-    // {
-    //     $query = Product::query();
-
-    //     // Tìm kiếm theo tên sản phẩm (có thể sử dụng LIKE cho tìm kiếm gần đúng)
-    //     if ($request->has('name') && $request->name != '') {
-    //         $query->where('name', 'like', '%' . $request->name . '%');
-    //     }
-
-    //     // Tìm kiếm theo giá (có thể thêm điều kiện giá lớn hơn hoặc nhỏ hơn tùy vào yêu cầu)
-    //     if ($request->has('min_price') && $request->min_price != '') {
-    //         $query->where('price', '>=', $request->min_price);
-    //     }
-
-    //     if ($request->has('max_price') && $request->max_price != '') {
-    //         $query->where('price', '<=', $request->max_price);
-    //     }
-
-    //     // Thực hiện truy vấn và trả về kết quả
-    //     $prod = $query->get();
-
-    //     return view('client.home', compact('prod'));
-    // }
 }
