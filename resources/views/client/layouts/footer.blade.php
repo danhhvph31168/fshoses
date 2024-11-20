@@ -4,8 +4,8 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="{{ asset('theme/client/img/logonew.png') }}" alt=""
-                                style="width: 200px;"></a>
+                        <a href="#"><img src="{{ asset('theme/client/img/logo/newlogowhite1.png') }}" alt=""
+                                style="width: 300px;"></a>
                     </div>
                     <p>The customer is at the heart of our unique business model, which includes design.</p>
                     <a href="#"><img src="{{ asset('theme/client/img/payment.png') }}" alt=""></a>

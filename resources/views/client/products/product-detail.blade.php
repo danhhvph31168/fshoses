@@ -247,6 +247,14 @@ Chi tiết sản phẩm
     max-width: 1320px;
 }
 
+
+
+.mobile-menu ul {
+    margin: 0;
+    padding: 0;
+    padding-left: 3px;
+}
+
 body {
 
     background-color: #F5F5F5;

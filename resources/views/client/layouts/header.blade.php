@@ -2,18 +2,25 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
-                <div class="header__logo">
-                    <a href="\">Fshoes</a>
+            <div class="" style="width: 160px;">
+                <div class="header__logo" style="width: 100px;">
+                    <a href="\"><img src="{{ asset('theme/client/img/logo/newlogoblack1.png') }}" alt=""
+                            style="width: 100px;"></a>
                 </div>
             </div>
             <div class="col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul style="display: flex; white-space: nowrap;">
+
+                        <div class="search-container">
+                            <input type="text" id="search-input" placeholder="Search products..." autocomplete="off">
+                            <div id="search-results" class="dropdown-menu"></div>
+                        </div>
+
                         <li class="active"><a href="/">Home</a></li>
 
 
-                        <li><a href="#">Brands</a>
+                        <!-- <li><a href="#">Brands</a>
                             <ul class="dropdown" style="background-color: white;  border: 1px solid black;">
                                 @foreach ($brd as $item)
                                 @if ($item->status == 1)
@@ -23,7 +30,7 @@
                                 @endif
                                 @endforeach
                             </ul>
-                        </li>
+                        </li> -->
 
 
                         </li>
@@ -40,9 +47,8 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Contact</a></li>
                         <li><a href="{{ route('showFormSearchOrder') }}">Order Tracking</a></li>
+
                     </ul>
 
                 </nav>
@@ -137,10 +143,7 @@
                     </div>
                     @endif
 
-                    <div class="search-container">
-                        <input type="text" id="search-input" placeholder="Search products..." autocomplete="off">
-                        <div id="search-results" class="dropdown-menu"></div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -150,6 +153,7 @@
 <style>
 .search-container {
     position: relative;
+    margin-right: 40px;
 }
 
 #search-input {
