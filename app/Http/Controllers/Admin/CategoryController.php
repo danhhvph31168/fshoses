@@ -33,7 +33,7 @@ class CategoryController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $parentCategories = Category::query()->with('children')->whereNull('parent_id')->get();
+        $parentCategories = Category::query()->get();
 
         // dd($parentCategories);
         if ($user->role_id === 1) {
@@ -79,7 +79,7 @@ class CategoryController extends Controller
         $user = Auth::user();
         $model = Category::query()->findOrFail($id);
 
-        $parentCategories = Category::query()->with('children')->whereNull('parent_id')->get();
+        $parentCategories = Category::query()->get();
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('model', 'parentCategories'));
         } else {

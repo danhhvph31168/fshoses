@@ -8,16 +8,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MessageSuccessResetController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
-use App\Http\Controllers\Client\ProductController;
-use App\Http\Controllers\Client\Product\ProductController as HomeProductController;
+use App\Http\Controllers\Client\Product\ProductController;
 use App\Http\Controllers\Client\ReviewController;
 use App\Http\Controllers\Account\OrderSearchController;
 
 // product
-Route::get('/',                 [HomeProductController::class, 'index'])->name('client.home');
-Route::get('/brand/{brd}',      [HomeProductController::class, 'listProductByBrand'])->name('client.productByBrand');
-Route::get('/category/{cate}',  [HomeProductController::class, 'listProductByCategory'])->name('client.productByCategory');
-Route::get('/products',         [HomeProductController::class, 'getAllProducts'])->name('client.product-list');
+Route::get('/',                 [ProductController::class, 'index'])->name('client.home');
+Route::get('/brand/{brd}',      [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
+Route::get('/category/{cate}',  [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
+Route::get('/products',         [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
 Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 Route::get('search-order',  [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
@@ -45,6 +44,7 @@ Route::get('click-in-email-forgot/{id}/{token}',    [AuthenController::class, 'c
 Route::post('handle-forgot-pass/{id}/{token}',      [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 Route::get('handle-forgot-pass', [MessageSuccessResetController::class, 'messageSuccessReset'])->name('messageSuccessReset');
 
+// profile
 Route::middleware(['auth'])->group(function () {
     Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
@@ -52,13 +52,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('change-password',   [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
     Route::post('change-password',  [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 
-    Route::post('add-comment/{product_id}',         [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
-    Route::delete('destroy-comment/{product_id}',   [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
+    Route::post('add-comment',                      [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
+    Route::delete('destroy-comment/{comment_id}',   [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
 
     Route::get('order-history',     [OrderHistoryController::class, 'getListOrderHistory'])->name('getListOrderHistory');
     Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 });
-
 
 Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 
@@ -97,16 +96,3 @@ Route::post('handle-send-mail-forgot',      [AuthenController::class, 'handleSen
 Route::get('click-in-email-forgot/{id}/{token}',    [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handle-forgot-pass/{id}/{token}',      [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 Route::get('handle-forgot-pass',                    [MessageSuccessResetController::class, 'messageSuccessReset'])->name('messageSuccessReset');
-
-// profile
-Route::middleware(['profile', 'auth:sanctum'])->group(function () {
-
-    Route::get('profile/{id}',  [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
-    Route::put('profile',       [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
-
-    Route::get('change-password',   [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
-    Route::post('change-password',  [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
-
-    Route::post('add-comment',                      [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
-    Route::delete('destroy-comment/{comment_id}',   [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
-});

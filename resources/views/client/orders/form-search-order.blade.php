@@ -12,7 +12,7 @@
                     <div class="breadcrumb__text">
                         <h4>Order Tracking</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Home</a>
+                            <a href="{{ route('client.home') }}">Home</a>
                             <span>Order Tracking</span>
                         </div>
                     </div>
