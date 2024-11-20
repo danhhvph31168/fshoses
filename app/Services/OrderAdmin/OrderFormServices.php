@@ -30,7 +30,6 @@ class OrderFormServices
             'statusOrder'   => Order::STATUS_ORDER,
             'statusPayment' => Order::STATUS_PAYMENT,
             'paymentStatus' => Payment::STATUS,
-            'refundStatus'  => Refund::STATUS,
         ];
     }
 }

@@ -14,45 +14,16 @@ class OrderController extends Controller
     const PATH_VIEW = 'admin.orders.';
 
     public function __construct(public OrderServices $orderServices, public OrderFormServices $orderFormServices) {}
-    
+
     public function index()
     {
         $data = Order::query()->with(['user', 'role'])->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    public function create()
-    {
-        $data = $this->orderFormServices->handleFormCreate();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            DB::transaction(function () {
-
-                [$totalAmout, $productVariantID]  = $this->orderServices->handleProductVariant();
-
-                $order = $this->orderServices->createOrder($totalAmout);
-
-                $this->orderServices->createOrderItem($productVariantID, $order);
-
-                $this->orderServices->createPayment($order);
-            });
-
-            return back()->with('success', 'Đặt hàng thành công');
-        } catch (\Exception $th) {
-
-            dd($th->getMessage());
-
-            return back()->with('error', 'Lỗi đặt hàng: ' . $th->getMessage());
-        }
-    }
-
     public function edit($id)
     {
-        $order = Order::query()->with(['user', 'role', 'orderItems', 'payment', 'refund'])->findOrFail($id);
+        $order = Order::query()->with(['user', 'role', 'orderItems', 'payment'])->findOrFail($id);
 
         $dataOrderItem = [];
         foreach ($order->orderItems as $orderItems) {
@@ -80,6 +51,7 @@ class OrderController extends Controller
             DB::beginTransaction();
 
             $order = Order::query()->findOrFail($id);
+
             if (!($order->status_order == Order::STATUS_ORDER_CANCELED || $order->status_order == Order::STATUS_ORDER_DELIVERED)) {
                 $order->update([
                     'status_order'   => request('status_order'),
@@ -95,7 +67,7 @@ class OrderController extends Controller
             DB::commit();
 
             return back()->with('success', 'Đặt hàng thành công');
-        } catch (\Exception $th) {
+        } catch (\Throwable $th) {
 
             dd($th->getMessage());
 

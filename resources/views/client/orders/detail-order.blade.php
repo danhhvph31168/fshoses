@@ -176,7 +176,7 @@
                                                 </div>
                                                 <div class="flex-grow-1 ms-3">
                                                     <h6 class="fs-15 mb-0 fw-semibold">Order Placed - <span
-                                                            class="fw-normal">{{ $order->created_at->format('D, d M Y') }}</span></h6>
+                                                            class="fw-normal">Wed, 15 Dec 2021</span></h6>
                                                 </div>
                                             </div>
                                         </a>
@@ -185,10 +185,10 @@
                                         aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body ms-2 ps-5 pt-0">
                                             <h6 class="mb-1">An order has been placed.</h6>
-                                            <p class="text-muted">{{ $order->created_at->format('D, d M Y - h:iA') }}</p>
+                                            <p class="text-muted">Wed, 15 Dec 2021 - 05:34PM</p>
 
                                             <h6 class="mb-1">Seller has processed your order.</h6>
-                                            <p class="text-muted mb-0">{{ $order->updated_at->format('D, d M Y - h:iA') }}</p>
+                                            <p class="text-muted mb-0">Thu, 16 Dec 2021 - 5:48AM</p>
                                         </div>
                                     </div>
                                 </div>
@@ -384,7 +384,6 @@
                                 </p>
                             </div>
                             <div class="flex-grow-1 ms-2">
-                           
                                 <p class="mb-0 fw-bold">{{ $order->payment->payments_method }}</p>
                             </div>
                         </div>

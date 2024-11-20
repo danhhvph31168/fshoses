@@ -80,7 +80,7 @@
                         </table>
                         {{ $orders->links() }}
                     </div>
-                    
+
                 </div>
             </div>
         </div>

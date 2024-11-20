@@ -35,6 +35,11 @@ class User extends Authenticatable
         'ward',
         'zip_code',
     ];
+      // Accessor để lấy đường dẫn đầy đủ của avatar
+      public function getAvatarUrlAttribute()
+      {
+          return asset($this->avatar ?: 'image-default/avatar.jpg');
+      }
 
     /**
      * The attributes that should be hidden for serialization.

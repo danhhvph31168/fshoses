@@ -64,7 +64,7 @@
 
                                     </div>
 
-                                    <form action="{{ route('cart.add') }}" method="post">
+                                    <form action="{{ route('cart.add') }}" method="POST">
                                         @csrf
 
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -118,18 +118,16 @@
                                                                 input[type="radio"].color-radio-{{ $id }}:checked+label {
                                                                     border-color: rgb(0, 110, 255);
                                                                     background-color: {{ $color }};
-                                                                    width: 40px;
-                                                                    height: 40px;
+                                                                   
                                                                 }
                                                             </style>
 
-
                                                             <div>
                                                                 <input type="radio" name="product_color"
-                                                                    value = "{{ $id }}"
+                                                                    value="{{ $id }}"
                                                                     id="color-{{ $id }}"
                                                                     class="color-radio-{{ $id }}">
-
+                                                                </input>
                                                                 <label for="color-{{ $id }}"></label>
                                                             </div>
                                                         @endforeach

@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
     @include('client.layouts.banner')
 
     <section class="product spad mt-5">
@@ -35,8 +36,7 @@
                                             <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
                                         </div>
 
-                                        <a href=""
-                                            class="text-dark card-title fs-6 fw-bold">
+                                        <a href="" class="text-dark card-title fs-6 fw-bold">
                                             {{ $item->name }}
                                         </a>
                                         @if ($item->price_sale > 0)
