@@ -52,6 +52,7 @@
 </head>
 
 <body>
+
     <div class="container-fluid">
         <div class="row">
 
@@ -85,6 +86,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+
     <!-- Js Plugins -->
     <script src="{{ asset('theme/client/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/bootstrap.min.js') }}"></script>
@@ -96,6 +98,7 @@
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/main.js') }}"></script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
