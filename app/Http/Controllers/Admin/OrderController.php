@@ -17,8 +17,8 @@ class OrderController extends Controller
 
     public function index()
     {
-        $data = Order::query()->with(['user', 'role'])->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $order = Order::query()->with(['user', 'role', 'orderItems', 'payment'])->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('order'));
     }
 
     public function edit($id)

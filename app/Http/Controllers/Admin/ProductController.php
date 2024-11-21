@@ -28,9 +28,11 @@ class ProductController extends Controller
 
         if (Auth::user()->role_id == 1) {
 
-            $data = Product::query()->with(['category', 'brand'])->latest('id')->paginate(5);
+            $data = Product::query()->with(['category', 'brand'])->latest('id')->get();
+            $brands = Brand::all();
+            $categories = Category::all();
 
-            return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+            return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'brands', 'categories'));
         } else {
 
             return back()->with('error', 'Access denied!');
@@ -78,10 +80,13 @@ class ProductController extends Controller
 
                 $product = Product::query()->create($dataProduct);
 
+                // dd($product);
+
                 foreach ($dataProductVariants as $item) {
                     $item += ['product_id' => $product->id];
                     ProductVariant::query()->create($item);
                 }
+
 
                 foreach ($dataProductGalleries as $item) {
                     $item += ['product_id' => $product->id];
@@ -89,6 +94,7 @@ class ProductController extends Controller
                 }
 
                 DB::commit();
+
 
                 return redirect()->route('admin.products.index')
                     ->with('success', 'Product created Successfully!');
