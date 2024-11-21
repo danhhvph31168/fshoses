@@ -81,8 +81,7 @@ class CheckoutController extends Controller
                 $payment = $payment->id;
                 $this->vnpayServices->vnpay($request, $order, $payment);
             }
-
-            return redirect()->route('orderSuccess')->with('success', 'Order successful');
+            return redirect()->route('orderSuccess',['sku' => $order->sku_order])->with('success', 'Order successful');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             DB::rollBack();
@@ -90,9 +89,11 @@ class CheckoutController extends Controller
         }
     }
 
-    public function orderSuccess()
+    public function orderSuccess($sku)
+
     {
-        return view('client.order-success');
+        $order = Order::where('sku_order', $sku)->firstOrFail();
+        return view('client.order-success',compact('order'));
     }
 
     public function vnpayReturn(Request $request, $order, $payment)

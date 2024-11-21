@@ -61,14 +61,15 @@ class AccountController extends Controller
         return redirect()->back()->with('success', 'Account information updated successfully.');
     }
 
-    public function showFormChangePassword()
-    {
+    // public function showFormChangePassword()
+    // {
 
-        return view('client.profiles.showFormChangePassword');
-    }
+    //     return view('client.profiles.formProfile');
+    // }
 
     public function handleChangePassword(ChangePasswordRequest $request)
     {
+   
         $user = Auth::user();
 
         if (!Hash::check($request->old_password, $user->password)) {

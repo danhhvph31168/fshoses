@@ -5,7 +5,7 @@
             <div class="" style="width: 160px;">
                 <div class="header__logo" style="width: 100px;">
                     <a href="\"><img src="{{ asset('theme/client/img/logo/newlogoblack1.png') }}" alt=""
-                            style="width: 100px;"></a>
+                        style="width: 100px;"></a>
                 </div>
             </div>
             <div class="col-md-6">
@@ -23,12 +23,12 @@
                         <!-- <li><a href="#">Brands</a>
                             <ul class="dropdown" style="background-color: white;  border: 1px solid black;">
                                 @foreach ($brd as $item)
-                                @if ($item->status == 1)
-                                <li><a style="color: black;"
+@if ($item->status == 1)
+<li><a style="color: black;"
                                         href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
                                 </li>
-                                @endif
-                                @endforeach
+@endif
+@endforeach
                             </ul>
                         </li> -->
 
@@ -38,12 +38,12 @@
                         <li><a href="#">Categories</a>
                             <ul class="dropdown" style="background-color: white;  border: 1px solid black;">
                                 @foreach ($cate as $item)
-                                {{-- @dd($item) --}}
-                                @if ($item->is_active == 1)
-                                <li><a style="color: black;"
-                                        href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
-                                </li>
-                                @endif
+                                    {{-- @dd($item) --}}
+                                    @if ($item->is_active == 1)
+                                        <li><a style="color: black;"
+                                                href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
+                                        </li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </li>
@@ -58,89 +58,85 @@
             <div class="col-md-4">
                 <div class="dropdown ms-sm-5 header__menu topbar-user" style="background: #ffffff;">
                     @if (Auth::check())
-                    <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
-                        aria-haspopup="true" aria-expanded="false">
-                        <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
-                            <i class="bi bi-cart"></i>
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                    style="font-size: 18px; font-family: sans-serif; ">
-                                    <strong>Cart</strong></span>
+                        <button type="button" class="btn" id="page-header-user-dropdown-1"
+                            data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
+                            <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
+                                <i class="bi bi-cart"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif; ">
+                                        <strong>Cart</strong></span>
+                                </span>
+                            </a>
+                        </button>
+
+                        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="d-flex align-items-center">
+                                <img src="{{ Auth::user()->avatar }}" alt="" style="border-radius: 50%"
+                                    width="20px" height="22px">
+
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif; "><strong>{{ Auth::user()->name }}</strong></span>
+                                </span>
+
                             </span>
-                        </a>
-                    </button>
-
-                    <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="d-flex align-items-center">
-                            <img src="{{ Auth::user()->avatar }}" alt="" style="border-radius: 50%" width="20px"
-                                height="22px">
-
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                    style="font-size: 18px; font-family: sans-serif; "><strong>{{ Auth::user()->name }}</strong></span>
-                            </span>
-
-                        </span>
-                        </a>
-                    </button>
+                            </a>
+                        </button>
 
 
-                    <div class="dropdown-menu dropdown-menu-end">
-                        @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
-                        <a class="dropdown-item" href="#"><i
-                                class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Admin Page</span></a>
-                        @endif
-                        <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
-                                class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Profile</span></a>
-                        <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
-                                class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Order History</span></a>
-                        <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
-                                class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Change Password</span></a>
-                        <form action="{{ route('auth.logout') }}" method="post">
-                            @csrf
-                            <button type="submit" class="border-0 dropdown-item">
-                                <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                                <span class="align-middle" data-key="t-logout">Logout</span>
-                            </button>
-                        </form>
-                    </div>
-
+                        <div class="dropdown-menu dropdown-menu-end">
+                            @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
+                                <a class="dropdown-item" href="#"><i
+                                        class="mdi mdi-view-dashboard-outline text-muted fs-16 align-middle me-1"></i>
+                                    <span class="align-middle">Admin Page</span></a>
+                            @endif
+                            <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
+                                    class="mdi mdi-account-circle-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Profile</span></a>
+                            <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
+                                    class="mdi mdi-history text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Order History</span></a>
+                            <form action="{{ route('auth.logout') }}" method="post">
+                                @csrf
+                                <button type="submit" class="border-0 dropdown-item">
+                                    <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                                    <span class="align-middle" data-key="t-logout">Logout</span>
+                                </button>
+                            </form>
+                        </div>
                     @else
-                    <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
-                        aria-haspopup="true" aria-expanded="false">
-                        <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
-                            <i class="bi bi-cart"></i>
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                    style="font-size: 18px; font-family: sans-serif;"><strong>Cart</strong></span>
-                            </span>
-                        </a>
-                    </button>
+                        <button type="button" class="btn" id="page-header-user-dropdown-1"
+                            data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
+                            <a class="d-flex align-items-center text-black">
+                                <i class="mdi mdi-cart-outline text-muted fs-16"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif;"><strong>Cart</strong></span>
+                                </span>
+                            </a>
+                        </button>
 
-                    <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="d-flex align-items-center">
-                            <i class="bi bi-person-circle"></i>
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                    style="font-size: 18px; font-family: sans-serif;"><strong>Account</strong></span>
+                        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="d-flex align-items-center">
+                                <i class="mdi mdi-account-outline text-muted fs-16"></i>
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif;"><strong>Account</strong></span>
+                                </span>
                             </span>
-                        </span>
-                    </button>
+                        </button>
 
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="{{ route('auth.showFormLogin') }}"><i
-                                class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Login</span></a>
-                        <a class="dropdown-item" href="{{ route('auth.showFormRegister') }}"><i
-                                class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Register</span></a>
-                    </div>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{{ route('auth.showFormLogin') }}"><i
+                                    class="mdi mdi-login text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Login</span></a>
+                            <a class="dropdown-item" href="{{ route('auth.showFormRegister') }}"><i
+                                    class="mdi mdi-account-plus-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Register</span></a>
+                        </div>
                     @endif
 
 
@@ -151,80 +147,80 @@
     </div>
 </header>
 <style>
-.search-container {
-    position: relative;
-    margin-right: 40px;
-}
+    .search-container {
+        position: relative;
+        margin-right: 40px;
+    }
 
-#search-input {
-    width: 300px;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
+    #search-input {
+        width: 300px;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
 
-#search-input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
+    #search-input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
 
-#search-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: none;
-    max-height: 200px;
-    overflow-y: auto;
-}
+    #search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: none;
+        max-height: 200px;
+        overflow-y: auto;
+    }
 
-#search-results .dropdown-item {
-    padding: 10px;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
+    #search-results .dropdown-item {
+        padding: 10px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
 
-#search-results .dropdown-item:hover {
-    background-color: #f8f9fa;
-}
+    #search-results .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
 
 
-.dropdown li:hover {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
+    .dropdown li:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('#search-input').on('keyup', function() {
-        let query = $(this).val();
+    $(document).ready(function() {
+        $('#search-input').on('keyup', function() {
+            let query = $(this).val();
 
-        if (query.length >= 1) {
-            $.ajax({
-                url: "{{ route('search') }}",
-                type: 'GET',
-                data: {
-                    query: query
-                },
-                success: function(data) {
-                    console.log(data)
-                    let results = '';
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            results += `
+            if (query.length >= 1) {
+                $.ajax({
+                    url: "{{ route('search') }}",
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    success: function(data) {
+                        console.log(data)
+                        let results = '';
+                        if (data.length > 0) {
+                            data.forEach(item => {
+                                results += `
                                         <a href="/product-detail/${item.slug}"  >
                                             <div class="dropdown-item">
                                                 <img src="${item.img_thumbnail}" alt="${item.name}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
@@ -234,22 +230,22 @@ $(document).ready(function() {
                                         </a>
                                         
                                     `;
-                        });
-                    } else {
-                        results = '<div class="dropdown-item">No results found</div>';
+                            });
+                        } else {
+                            results = '<div class="dropdown-item">No results found</div>';
+                        }
+                        $('#search-results').html(results).fadeIn();
                     }
-                    $('#search-results').html(results).fadeIn();
-                }
-            });
-        } else {
-            $('#search-results').fadeOut();
-        }
-    });
+                });
+            } else {
+                $('#search-results').fadeOut();
+            }
+        });
 
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.search-container').length) {
-            $('#search-results').fadeOut();
-        }
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.search-container').length) {
+                $('#search-results').fadeOut();
+            }
+        });
     });
-});
 </script>

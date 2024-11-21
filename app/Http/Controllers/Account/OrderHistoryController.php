@@ -19,6 +19,7 @@ class OrderHistoryController extends Controller
             "orderItems.productVariant.product",
             "orderItems.productVariant.color",
             "orderItems.productVariant.size",
+            'coupon',
         ])->first();
         if (!$order) {
             return view("page-error.404");
