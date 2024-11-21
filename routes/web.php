@@ -73,7 +73,7 @@ Route::delete('cart/deleteItem/{id}', [CartController::class, 'deleteItem'])->na
 // checkout
 Route::get('check-out',     [CheckoutController::class, 'checkOut'])->name('check-out');
 Route::post('addOrder',     [CheckoutController::class, 'addOrder'])->name('addOrder');
-Route::get('order-success', [CheckoutController::class, 'orderSuccess'])->name('orderSuccess');
+Route::get('order-success/{sku}', [CheckoutController::class, 'orderSuccess'])->name('orderSuccess');
 Route::get('vnpayReturn/{order}/{payment}',   [CheckoutController::class, 'vnpayReturn'])->name('vnpayReturn');
 
 // auth

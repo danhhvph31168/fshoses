@@ -108,7 +108,7 @@
                                             <td class="text-center">${{ $item->price }}</td>
                                             <td class="text-center">{{ $item->quantity }}</td>
                                             <td class="fw-medium text-end">
-                                                ${{ number_format($item->quantity * $item->price, 0, '.', ',') }}
+                                                {{ number_format($item->quantity * $item->price, 0, '.', ',') }}
                                             </td>
                                         @endforeach
                                     </tr>
@@ -119,25 +119,33 @@
                                             <table class="table table-borderless mb-0">
 
                                                 <tbody>
+                                                    @php
+                                                        $subTotal = $item->quantity * $item->price;
+                                                        $discount = $order->coupon->value;
+                                                        $shippingCharge = $subTotal < 1000000 ? 50000 : 0;
+                                                        $total = $subTotal - $discount + $shippingCharge;
+                                                    @endphp
                                                     <tr>
                                                         <td>Sub Total :</td>
-                                                        <td class="text-end"> ${{ number_format($item->quantity * $item->price, 0, '.', ',') }}</td>
+                                                        <td class="text-end">
+                                                            {{ number_format($subTotal, 0, '.', ',') }}
+                                                        </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Discount <span class="text-muted">(VELZON15)</span> : :</td>
-                                                        <td class="text-end">-$53.99</td>
+                                                        <td>Discount <span
+                                                                class="text-muted">({{ $order->coupon->name }})</span> : :
+                                                        </td>
+                                                        <td class="text-end">-{{ $discount }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Shipping Charge :</td>
-                                                        <td class="text-end">$65.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Estimated Tax :</td>
-                                                        <td class="text-end">$44.99</td>
+
+                                                        <td class="text-end">{{ $shippingCharge }}</td>
+
                                                     </tr>
                                                     <tr class="border-top border-top-dashed">
-                                                        <th scope="row">Total (USD) :</th>
-                                                        <th class="text-end">$415.96</th>
+                                                        <th scope="row">Total:</th>
+                                                        <th class="text-end"> {{ number_format($total, 0, '.', ',') }}</th>
                                                     </tr>
                                                 </tbody>
 
