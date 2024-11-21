@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\Product\ProductController;
 use App\Http\Controllers\Client\ReviewController;
 use App\Http\Controllers\Account\OrderSearchController;
+use App\Http\Controllers\SearchController;
 
 // product
 Route::get('/',                 [ProductController::class, 'index'])->name('client.home');
@@ -18,7 +19,7 @@ Route::get('/brand/{brd}',      [ProductController::class, 'listProductByBrand']
 Route::get('/category/{cate}',  [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
 Route::get('/products',         [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
-// Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
+Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 Route::get('search-order',  [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
 Route::post('search-order', [OrderSearchController::class, 'handleSearchOrder'])->name('handleSearchOrder');
 
@@ -73,7 +74,7 @@ Route::delete('cart/deleteItem/{id}', [CartController::class, 'deleteItem'])->na
 // checkout
 Route::get('check-out',     [CheckoutController::class, 'checkOut'])->name('check-out');
 Route::post('addOrder',     [CheckoutController::class, 'addOrder'])->name('addOrder');
-Route::get('order-success/{sku}', [CheckoutController::class, 'orderSuccess'])->name('orderSuccess');
+Route::get('order-success', [CheckoutController::class, 'orderSuccess'])->name('orderSuccess');
 Route::get('vnpayReturn/{order}/{payment}',   [CheckoutController::class, 'vnpayReturn'])->name('vnpayReturn');
 
 // auth
@@ -96,3 +97,10 @@ Route::post('handle-send-mail-forgot',      [AuthenController::class, 'handleSen
 Route::get('click-in-email-forgot/{id}/{token}',    [AuthenController::class, 'clickInEmailForgot'])->name('clickInEmailForgot');
 Route::post('handle-forgot-pass/{id}/{token}',      [AuthenController::class, 'handleForgotPass'])->name('handleForgotPass');
 Route::get('handle-forgot-pass',                    [MessageSuccessResetController::class, 'messageSuccessReset'])->name('messageSuccessReset');
+
+
+//search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+//search categories
+Route::get('/search-products', [SearchController::class, 'searchProducts'])->name('search.products');

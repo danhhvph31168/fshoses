@@ -79,8 +79,4 @@ class Order extends Model
     {
         return $this->hasOne(Refund::class);
     }
-    public function coupon()
-    {
-        return $this->belongsTo(Coupon::class);
-    }
 }

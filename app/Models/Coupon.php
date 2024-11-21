@@ -12,7 +12,4 @@ class Coupon extends Model
         'name',
         'value',
     ];
-    public function orders(){
-        return $this->hasMany(Order::class);
-    }
 }

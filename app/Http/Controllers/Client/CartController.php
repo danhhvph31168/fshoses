@@ -26,7 +26,6 @@ class CartController extends Controller
     }
     public function add(Request $request)
     {
-    
         $product = Product::query()->findOrFail(\request('product_id'));
 
         $productVariant = ProductVariant::query()
@@ -37,8 +36,7 @@ class CartController extends Controller
                 'product_color_id' => \request('product_color'),
             ])
             ->firstOrFail();
-                
-       
+
         if (!isset(session('cart')[$productVariant->id])) {
 
             $data = $product->toArray() + $productVariant->toArray();

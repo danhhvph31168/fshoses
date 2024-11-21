@@ -8,18 +8,14 @@
                 <h2 class="card-title">Order successful!</h2>
                 <p class="card-text fs-5">
                     Thank you for placing an order with us. Your order number is:
-                 
-                    <a href="{{ route('getDetailOrderItem', $order->sku_order) }}"
-                        style="color: #e53637" class="fw-bold">{{ $order->sku_order }}</a>
-                    
+                    <strong></strong>.
                 </p>
                 <p class="card-text fs-6">
                     We will contact you as soon as possible to confirm your order and delivery time.
                 </p>
                 <div class="d-flex justify-content-center gap-3">
                     <a href="" class="btn btn-primary btn-lg">Continue Shopping</a>
-                    <a href="{{ route('getDetailOrderItem', $order->sku_order) }}"
-                        class="btn btn-outline-primary btn-lg">View My Order</a>
+                    <a href="" class="btn btn-outline-primary btn-lg">View My Order</a>
                 </div>
             </div>
         </div>

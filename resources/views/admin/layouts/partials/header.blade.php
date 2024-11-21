@@ -15,8 +15,7 @@
 
                     <a href="index.html" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt=""
-                                height="22">
+                            <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
                         </span>
                         <span class="logo-lg">
                             <img src="assets/images/logo-light.png" alt="" height="17">
@@ -92,12 +91,12 @@
                                 <span
                                     class="d-none d-xl-inline-block ms-1 fw-medium user-name-text fw-bold text-danger">
                                     @if (Auth::user())
-                                        {{ Auth::user()->name }}
+                                    {{ Auth::user()->name }}
                                     @endif
                                 </span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">
                                     @if (Auth::user())
-                                        {{ Auth::user()->role->name }}
+                                    {{ Auth::user()->role->name }}
                                     @endif
                                 </span>
                             </span>
