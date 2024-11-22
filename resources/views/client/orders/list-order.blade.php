@@ -64,27 +64,53 @@
                                             </td>
                                             <td>{{ $item->created_at->toDateString() }}</td>
                                             <td>
+
                                                 <span
-                                                    class="badge rounded-pill {{ $item->status_order === 'pending' ? 'bg-warning text-dark' : 'bg-danger' }}">
+                                                    class="badge rounded-pill 
+                                                {{ $item->status_order === 'pending'
+                                                    ? 'bg-warning text-dark'
+                                                    : ($item->status_order === 'confirmed'
+                                                        ? 'bg-success'
+                                                        : ($item->status_order === 'processing'
+                                                            ? 'bg-primary'
+                                                            : ($item->status_order === 'shipping'
+                                                                ? 'bg-info text-dark'
+                                                                : ($item->status_order === 'delivered'
+                                                                    ? 'bg-success text-light'
+                                                                    : ($item->status_order === 'canceled'
+                                                                        ? 'bg-secondary'
+                                                                        : ($item->status_order === 'refunded'
+                                                                            ? 'bg-light text-muted'
+                                                                            : 'bg-danger')))))) }}">
+
                                                     {{ $item->status_order }}
                                                 </span>
                                             </td>
                                             <td>
                                                 <span
-                                                    class="badge rounded-pill {{ $item->status_payment === 'unpaid' ? 'bg-secondary' : 'bg-success' }}">
+                                                    class="badge rounded-pill 
+        {{ $item->status_payment === 'unpaid'
+            ? 'bg-secondary'
+            : ($item->status_payment === 'pending'
+                ? 'bg-warning text-dark'
+                : ($item->status_payment === 'paid'
+                    ? 'bg-success'
+                    : ($item->status_payment === 'refunded'
+                        ? 'bg-info text-dark'
+                        : 'bg-danger'))) }}">
                                                     {{ $item->status_payment }}
                                                 </span>
                                             </td>
                                             <td>{{ number_format($item->total_amount, 0, ',', '.') }} VNĐ</td>
                                             <td>
-                                                @if ($item->status_order === 'pending' && $item->created_at->diffInHours(now()) <= 24)
-                                                    
+                                                @if ($item->status_order === 'pending' || $item->status_order === 'confirmed' || $item->status_order === 'processing')
                                                     <button type="button" class="btn btn-danger btn-sm"
                                                         data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
                                                         Hủy đơn
+
                                                     </button>
 
-                                                
+
                                                     <div class="modal fade" id="cancelOrderModal" tabindex="-1"
                                                         aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
@@ -100,7 +126,6 @@
                                                                         action="{{ route('orders.cancel', $item->sku_order) }}"
                                                                         method="POST">
                                                                         @csrf
-
                                                                         <div class="row mb-4">
                                                                             <div class="col">
                                                                                 <span>Chọn lý do hủy
@@ -109,9 +134,10 @@
                                                                             <div class="col">
                                                                                 <select
                                                                                     class="pb-0 @error('cancel_reason') is-invalid @enderror"
-                                                                                    id="cancelReason" name="cancel_reason" required>
+                                                                                    id="cancelReason" name="cancel_reason">
                                                                                     <option value="">-- Chọn lý do --
                                                                                     </option>
+
                                                                                     <option
                                                                                         value="Thay đổi phương thức thanh toán">
                                                                                         Thay
@@ -125,12 +151,15 @@
                                                                                         Thời gian giao hàng lâu</option>
                                                                                     <option value="Khác">Khác</option>
                                                                                 </select>
+
+                                                                                @error('cancel_reason')
+                                                                                    <span class="invalid-feedback">
+                                                                                        {{ $message }}
+                                                                                    </span>
+                                                                                @enderror
+
                                                                             </div>
-                                                                            @error('cancel_reason')
-                                                                                <div class="invalid-feedback">
-                                                                                    {{ $message }}
-                                                                                </div>
-                                                                            @enderror
+
                                                                         </div>
                                                                         <div class="row">
                                                                             <div class="col">
@@ -141,9 +170,8 @@
                                                                             <div class="col">
                                                                                 <div class="mb-3">
 
-                                                                                    <textarea class="form-control" id="otherReason" name="other_reason"
-                                                                                        rows="3"></textarea>
-                                                                            
+                                                                                    <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
+
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -180,6 +208,15 @@
         </div>
     </section>
     <!-- Shopping Cart Section End -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+                formModal.show();
+            @endif
+        });
+    </script>
 @endsection
 <style>
     .breadcrumb__text h4 {
@@ -228,5 +265,12 @@
     .btn-danger:hover {
         background-color: #ff5173;
         transform: scale(1.05);
+    }
+
+    .invalid-feedback {
+        font-size: 0.875rem;
+        /* Kích thước nhỏ hơn */
+        color: #dc3545;
+        /* Màu đỏ Bootstrap */
     }
 </style>

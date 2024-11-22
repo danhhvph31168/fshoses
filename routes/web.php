@@ -22,6 +22,7 @@ Route::get('/products',         [ProductController::class, 'getAllProducts'])->n
 // Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 Route::get('search-order',  [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
 Route::post('search-order', [OrderSearchController::class, 'handleSearchOrder'])->name('handleSearchOrder');
+Route::get('view-search-order', [OrderSearchController::class, 'viewOrderSearch'])->name('viewOrderSearch');
 
 Route::prefix('auth')
     ->name('auth.')

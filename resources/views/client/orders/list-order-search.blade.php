@@ -52,19 +52,44 @@
                                     <td>{{ $order->created_at->toDateString() }}</td>
                                     <td>
                                         <span
-                                            class="badge rounded-pill {{ $order->status_order === 'pending' ? 'bg-warning text-dark' : 'bg-success' }}">
-                                            {{ ucfirst($order->status_order) }}
+                                            class="badge rounded-pill 
+                                                {{ $order->status_order === 'pending'
+                                                    ? 'bg-warning text-dark'
+                                                    : ($order->status_order === 'confirmed'
+                                                        ? 'bg-success'
+                                                        : ($order->status_order === 'processing'
+                                                            ? 'bg-primary'
+                                                            : ($order->status_order === 'shipping'
+                                                                ? 'bg-info text-dark'
+                                                                : ($order->status_order === 'delivered'
+                                                                    ? 'bg-success text-light'
+                                                                    : ($order->status_order === 'canceled'
+                                                                        ? 'bg-secondary'
+                                                                        : ($order->status_order === 'refunded'
+                                                                            ? 'bg-light text-muted'
+                                                                            : 'bg-danger')))))) }}">
+
+                                            {{ $order->status_order }}
                                         </span>
                                     </td>
                                     <td>
                                         <span
-                                            class="badge rounded-pill {{ $order->status_payment === 'unpaid' ? 'bg-secondary' : 'bg-success' }}">
-                                            {{ ucfirst($order->status_payment) }}
+                                            class="badge rounded-pill 
+        {{ $order->status_payment === 'unpaid'
+            ? 'bg-secondary'
+            : ($order->status_payment === 'pending'
+                ? 'bg-warning text-dark'
+                : ($order->status_payment === 'paid'
+                    ? 'bg-success'
+                    : ($order->status_payment === 'refunded'
+                        ? 'bg-info text-dark'
+                        : 'bg-danger'))) }}">
+                                            {{ $order->status_payment }}
                                         </span>
                                     </td>
                                     <td>{{ number_format($order->total_amount, 0, ',', '.') }} VNĐ</td>
                                     <td>
-                                        @if ($order->status_order === 'pending' && $order->created_at->diffInHours(now()) <= 24)
+                                        @if ($order->status_order === 'pending' || $order->status_order === 'confirmed' || $order->status_order === 'processing')
                                             <!-- Nút "Hủy đơn" mở modal -->
                                             <!-- Nút kích hoạt modal -->
                                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
@@ -87,7 +112,6 @@
                                                             <form action="{{ route('orders.cancel', $order->sku_order) }}"
                                                                 method="POST">
                                                                 @csrf
-
                                                                 <div class="row mb-4">
                                                                     <div class="col">
                                                                         <span>Chọn lý do hủy
@@ -96,9 +120,10 @@
                                                                     <div class="col">
                                                                         <select
                                                                             class="pb-0 @error('cancel_reason') is-invalid @enderror"
-                                                                            id="cancelReason" name="cancel_reason" required>
+                                                                            id="cancelReason" name="cancel_reason">
                                                                             <option value="">-- Chọn lý do --
                                                                             </option>
+
                                                                             <option value="Thay đổi phương thức thanh toán">
                                                                                 Thay
                                                                                 đổi phương thức thanh toán</option>
@@ -110,19 +135,17 @@
                                                                                 Thời gian giao hàng lâu</option>
                                                                             <option value="Khác">Khác</option>
                                                                         </select>
+
+                                                                        {{-- @dd($errors->any()) --}}
+                                                                        @error('cancel_reason')
+                                                                            <span class="invalid-feedback">
+                                                                                {{ $message }}
+                                                                            </span>
+                                                                        @enderror
+
                                                                     </div>
-                                                                    @error('cancel_reason')
-                                                                        <div class="invalid-feedback">
-                                                                            {{ $message }}
-                                                                        </div>
-                                                                    @enderror
+
                                                                 </div>
-
-
-
-
-
-
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <label for="otherReason" class="form-label">Lý
@@ -131,13 +154,8 @@
                                                                     <div class="col">
                                                                         <div class="mb-3">
 
-                                                                            <textarea class="form-control @error('other_reason') is-invalid @enderror" id="otherReason" name="other_reason"
-                                                                                rows="3"></textarea>
-                                                                            @error('other_reason')
-                                                                                <div class="invalid-feedback">
-                                                                                    {{ $message }}
-                                                                                </div>
-                                                                            @enderror
+                                                                            <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -170,6 +188,14 @@
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+                formModal.show();
+            @endif
+        });
+    </script>
     <!-- Shopping Cart Section End -->
 @endsection
 <style>

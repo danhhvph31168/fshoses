@@ -57,7 +57,7 @@
 
             <div class="col-md-4">
                 <div class="dropdown ms-sm-5 header__menu topbar-user" style="background: #ffffff;">
-                    @if (Auth::check())
+                  
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
                             data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
                             <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
@@ -69,7 +69,7 @@
                                 </span>
                             </a>
                         </button>
-
+                        @if (Auth::check())
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
@@ -78,7 +78,7 @@
 
                                 <span class="text-start ms-xl-2">
                                     <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                        style="font-size: 18px; font-family: sans-serif; "><strong>{{ Auth::user()->name }}</strong></span>
+                                        style="font-size: 18px; font-family: sans-serif; "><strong> {{ implode(' ', array_slice(explode(' ', Auth::user()->name), -2)) }}</strong></span>
                                 </span>
 
                             </span>
@@ -97,7 +97,7 @@
                                 <span class="align-middle">Profile</span></a>
                             <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
                                     class="mdi mdi-lock-outline text-muted fs-16 align-middle me-1"></i>
-                                 
+
                                 <span class="align-middle">Change Password</span></a>
                             <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
                                     class="mdi mdi-history text-muted fs-16 align-middle me-1"></i>

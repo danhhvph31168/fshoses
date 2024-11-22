@@ -32,18 +32,14 @@ class OrderHistoryController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'cancel_reason' => 'required'
+            'cancel_reason' => 'required',
         ], [
             'cancel_reason.required' => 'Please select reason for canceling order.', // Thông báo lỗi tùy chỉnh
         ]);
-        if (auth()->check()) {
-            $order = Order::where('sku_order', $slug)
-                ->where('user_id', auth()->id())
-                ->first();
-        } else {
+        dd(1);
 
-            $order = Order::where('sku_order', $slug)->first();
-        }
+        $order = Order::where('sku_order', $slug)->first();
+
         // dd($order);
         if (!$order) {
             return view('page-error.404');
@@ -55,6 +51,13 @@ class OrderHistoryController extends Controller
         ];
         $order->update($data);
         // dd($order);
-        return redirect()->back()->with('success', 'Order was successfully canceled.');
+
+        if (!empty(session('searchOrder'))) {
+            dd(1);
+            return redirect()->route('viewOrderSearch')->with('info', 'Order was canceled successfully.');
+        } else {
+            dd(1);
+            return redirect()->back()->with('info', 'Order was canceled successfully.');
+        }
     }
 }

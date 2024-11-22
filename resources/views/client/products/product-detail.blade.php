@@ -162,12 +162,13 @@ Chi tiết sản phẩm
                                                             <div class="d-flex align-items-center">
                                                                 <div class="flex-grow-1">
                                                                     <div class="fs-16 align-middle text-warning">
-                                                                        <i class="ri-star-fill"></i>
-                                                                        <i class="ri-star-fill"></i>
-                                                                        <i class="ri-star-fill"></i>
-                                                                        <i class="ri-star-fill"></i>
-                                                                        <i class="ri-star-half-fill"></i>
+                                                                        <i class="bi bi-star-fill"></i> 
+                                                                        <i class="bi bi-star-fill"></i> 
+                                                                        <i class="bi bi-star-fill"></i> 
+                                                                        <i class="bi bi-star-fill"></i> 
+                                                                        <i class="bi bi-star-half"></i> 
                                                                     </div>
+                                                                    
                                                                 </div>
                                                                 <div class="flex-shrink-0">
                                                                     <h6 class="mb-0">4.5 out of 5</h6>
