@@ -9,8 +9,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="product__details__breadcrumb">
-                        <a href="./index.html">Home</a>
-                        <a href="./shop.html">Profile</a>
+                        <a href="{{ route('client.home') }}">Home</a>
+                        <span style="color:black">Profile ></span>
                         <span style="color:black">{{ $user->name }}</span>
                     </div>
                 </div>
@@ -25,10 +25,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <form class="col-xxl-3" method="POST" action="{{ route('handleUpdateProfile') }}"
-                    enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+                <div class="col-xxl-3">
                     <div class="card mt-n5">
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -36,62 +33,13 @@
                                     <img src="{{ $user->avatar }}" name="avatar"
                                         class="rounded-circle avatar-xl img-thumbnail user-profile-image"
                                         alt="user-profile-image" />
-                                        
-                            
                                 </div>
-                                <h5 class="fs-16 mb-1">Anna Adame</h5>
-                                <p class="text-muted mb-0">Lead Designer / Developer</p>
+                                <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
+                                <p class="text-muted mb-0">{{$user->email}}</p>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card"></div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-grow-1">
-                                <h5 class="card-title mb-0">Portfolio</h5>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <a href="javascript:void(0);" class="badge bg-light text-primary fs-12">
-                                    <i class="mdi mdi-plus-circle-outline align-bottom me-1"></i> Add
-                                </a>
-                            </div>
-                        </div>
-                        <div class="mb-3 d-flex">
-                            <div class="avatar-xs d-block flex-shrink-0 me-3">
-                                <span class="avatar-title rounded-circle fs-16 bg-body text-body">
-                                    <i class="mdi mdi-github"></i>
-                                </span>
-                            </div>
-                            <input type="email" class="form-control" id="gitUsername" placeholder="Username" value="@daveadame" />
-                        </div>
-                        <div class="mb-3 d-flex">
-                            <div class="avatar-xs d-block flex-shrink-0 me-3">
-                                <span class="avatar-title rounded-circle fs-16 bg-primary">
-                                    <i class="mdi mdi-web"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" id="websiteInput" placeholder="www.example.com" value="www.velzon.com" />
-                        </div>
-                        <div class="mb-3 d-flex">
-                            <div class="avatar-xs d-block flex-shrink-0 me-3">
-                                <span class="avatar-title rounded-circle fs-16 bg-success">
-                                    <i class="mdi mdi-dribbble"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" id="dribbleName" placeholder="Username" value="@dave_adame" />
-                        </div>
-                        <div class="d-flex">
-                            <div class="avatar-xs d-block flex-shrink-0 me-3">
-                                <span class="avatar-title rounded-circle fs-16 bg-danger">
-                                    <i class="mdi mdi-pinterest"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" id="pinterestName" placeholder="Username" value="Advance Dave" />
-                        </div>
-                    </div>
-                    
-                </form>
+                </div>
 
                 <div class="col-xxl-9">
                     <div class="card mt-xxl-n5">
@@ -102,14 +50,9 @@
                                         <i class="mdi mdi-account-details-outline"></i> Personal Details
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#changePassword" role="tab">
-                                        <i class="mdi mdi-lock-outline"></i> Change Password
-                                    </a>
-                                </li>
                             </ul>
                         </div>
-                        
+
                         <div class="card-body p-4">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="personalDetails" role="tabpanel">
@@ -118,16 +61,31 @@
                                         @csrf
                                         @method('PUT')
                                         <div class="row">
-                                            <div class="col-lg-12">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">
                                                         Name
                                                     </label>
                                                     <input type="text"
-                                                        class="form-control @error('email') is-invalid @enderror"
+                                                        class="form-control @error('name') is-invalid @enderror"
                                                         name="name" value="{{ $user->name }}" id="username"
                                                         placeholder="Enter username" />
                                                     @error('name')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label">
+                                                        Avatar
+                                                    </label>
+                                                    <input type="file"
+                                                        class="form-control @error('avatar') is-invalid @enderror"
+                                                        name="avatar" id="avatar" />
+                                                    @error('avatar')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>
@@ -188,7 +146,7 @@
                                                 <div class="mb-3">
                                                     <label for="province" class="form-label">Province</label>
                                                     <select id="province"
-                                                        class="form-control @error('province') is-invalid @enderror"
+                                                        class="form-control pb-1 @error('province') is-invalid @enderror"
                                                         name="province">
                                                         <option value="">{{ $user->province }}</option>
 
@@ -205,7 +163,7 @@
                                                 <div class="mb-3">
                                                     <label for="district" class="form-label">District</label>
                                                     <select id="district"
-                                                        class="form-control @error('district') is-invalid @enderror"
+                                                        class="form-control pb-1 @error('district') is-invalid @enderror"
                                                         name="district">
                                                         <option value="">{{ $user->district }}</option>
 
@@ -222,7 +180,7 @@
                                                 <div class="mb-3">
                                                     <label for="ward" class="form-label">Ward</label>
                                                     <select id="ward"
-                                                        class="form-control @error('ward') is-invalid @enderror"
+                                                        class="form-control pb-1 @error('ward') is-invalid @enderror"
                                                         name="ward">
                                                         <option value="" selected>{{ $user->ward }}</option>
                                                     </select>
@@ -251,9 +209,6 @@
                                                     @enderror
                                                 </div>
                                             </div>
-
-
-
                                             <div class="col-lg-12">
                                                 <div class="hstack gap-2 justify-content-end">
                                                     <button class="btn btn-primary" type="submit"
@@ -261,82 +216,9 @@
                                                     <div class="btn btn-soft-success">
                                                         <a href="{{ route('client.home') }}"
                                                             class="fs-13 mb-4 title fw-medium" style="color: #212529">
-                                                            Back to home
+                                                            Back
                                                         </a>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <div class="tab-pane" id="changePassword" role="tabpanel">
-                                    @if (session('success'))
-                                        <div class="alert alert-success">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
-                                    <form action="{{ route('handleChangePassword') }}" method="POST">
-                                        @csrf
-                                        <div class="row g-2">
-                                            <div class="col-lg-4">
-                                                <div>
-                                                    <label for="oldpasswordInput" class="form-label">
-                                                        Old Password*
-                                                    </label>
-                                                    <input type="password"
-                                                        class="form-control @error('old_password') is-invalid @enderror"
-                                                        name="old_password" id="oldpasswordInput"
-                                                        placeholder="Enter current password" autofocus />
-                                                    @error('old_password')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4">
-                                                <div>
-                                                    <label for="newpasswordInput" class="form-label">
-                                                        New Password*
-                                                    </label>
-                                                    <input type="password"
-                                                        class="form-control @error('password') is-invalid @enderror"
-                                                        name="password" id="newpasswordInput"
-                                                        placeholder="Enter new password" />
-                                                    @error('password')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4">
-                                                <div>
-                                                    <label for="confirmpasswordInput" class="form-label">
-                                                        Confirm Password*
-                                                    </label>
-                                                    <input type="password"
-                                                        class="form-control @error('password_confirmation') is-invalid @enderror"
-                                                        name="password_confirmation" id="confirmpasswordInput"
-                                                        placeholder="Confirm password" />
-                                                    @error('password_confirmation')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-
-
-                                            <div class="col-lg-12">
-                                                <div class="text-end">
-                                                    <button type="submit" class="btn btn-success">
-                                                        Change Password
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

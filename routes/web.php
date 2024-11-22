@@ -51,18 +51,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
-    // Route::get('change-password',   [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
+    Route::get('change-password',   [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
     Route::post('change-password',  [AccountController::class, 'handleChangePassword'])->name('handleChangePassword');
 
     Route::post('add-comment',                      [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
     Route::delete('destroy-comment/{comment_id}',   [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
 
     Route::get('order-history',     [OrderHistoryController::class, 'getListOrderHistory'])->name('getListOrderHistory');
-    Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 });
 
 Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
-
+Route::post('order/{slug}/cancel', [OrderHistoryController::class, 'cancelOrder'])->name('orders.cancel');
 Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 
 // cart

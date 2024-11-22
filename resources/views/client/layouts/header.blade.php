@@ -95,6 +95,10 @@
                             <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
                                     class="mdi mdi-account-circle-outline text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Profile</span></a>
+                            <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
+                                    class="mdi mdi-lock-outline text-muted fs-16 align-middle me-1"></i>
+                                 
+                                <span class="align-middle">Change Password</span></a>
                             <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
                                     class="mdi mdi-history text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle">Order History</span></a>

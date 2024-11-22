@@ -23,7 +23,7 @@ class AccountController extends Controller
         $userId = Auth::user()->id;
         $user = User::findOrFail($userId);
 
-        return view('client.profiles.formProfile', compact('user'));
+        return view('client.profiles.form-update-profile', compact('user'));
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
@@ -61,11 +61,13 @@ class AccountController extends Controller
         return redirect()->back()->with('success', 'Account information updated successfully.');
     }
 
-    // public function showFormChangePassword()
-    // {
+    public function showFormChangePassword()
+    {
 
-    //     return view('client.profiles.formProfile');
-    // }
+        $userId = Auth::user()->id;
+        $user = User::findOrFail($userId);
+        return view('client.profiles.form-change-password',compact('user'));
+    }
 
     public function handleChangePassword(ChangePasswordRequest $request)
     {

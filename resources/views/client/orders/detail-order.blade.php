@@ -84,8 +84,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($order->orderItems as $item)
                                     <tr>
-                                        @foreach ($order->orderItems as $item)
                                             <td>
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
@@ -105,14 +105,13 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-center">${{ $item->price }}</td>
+                                            <td class="text-center">{{ number_format($item->price, 0, '.', '.') }}</td>
                                             <td class="text-center">{{ $item->quantity }}</td>
                                             <td class="fw-medium text-end">
-                                                {{ number_format($item->quantity * $item->price, 0, '.', ',') }}
+                                                {{ number_format($item->quantity * $item->price, 0, '.', '.') }}
                                             </td>
-                                        @endforeach
                                     </tr>
-
+                                    @endforeach
                                     <tr class="border-top border-top-dashed">
                                         <td colspan="3"></td>
                                         <td colspan="2" class="fw-medium p-0">
@@ -128,14 +127,14 @@
                                                     <tr>
                                                         <td>Sub Total :</td>
                                                         <td class="text-end">
-                                                            {{ number_format($subTotal, 0, '.', ',') }}
+                                                            {{ number_format($subTotal, 0, '.', '.') }}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Discount <span
                                                                 class="text-muted">({{ $order->coupon->name }})</span> : :
                                                         </td>
-                                                        <td class="text-end">-{{ $discount }}</td>
+                                                        <td class="text-end">-{{ number_format($discount, 0, '.', '.') }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Shipping Charge :</td>
@@ -145,7 +144,7 @@
                                                     </tr>
                                                     <tr class="border-top border-top-dashed">
                                                         <th scope="row">Total:</th>
-                                                        <th class="text-end"> {{ number_format($total, 0, '.', ',') }}</th>
+                                                        <th class="text-end"> {{ number_format($total, 0, '.', '.') }}</th>
                                                     </tr>
                                                 </tbody>
 

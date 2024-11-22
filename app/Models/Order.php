@@ -23,6 +23,7 @@ class Order extends Model
         'status_order',
         'status_payment',
         'total_amount',
+        'cancel_reason',
     ];
 
     const STATUS_ORDER = [

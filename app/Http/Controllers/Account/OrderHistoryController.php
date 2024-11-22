@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderHistoryController extends Controller
@@ -27,5 +28,33 @@ class OrderHistoryController extends Controller
         // dd  ($order);
         return view("client.orders.detail-order", compact("order"));
     }
+    public function cancelOrder(Request $request, $slug)
+    {
+        // dd($request->all());
+        $request->validate([
+            'cancel_reason' => 'required'
+        ], [
+            'cancel_reason.required' => 'Please select reason for canceling order.', // Thông báo lỗi tùy chỉnh
+        ]);
+        if (auth()->check()) {
+            $order = Order::where('sku_order', $slug)
+                ->where('user_id', auth()->id())
+                ->first();
+        } else {
 
+            $order = Order::where('sku_order', $slug)->first();
+        }
+        // dd($order);
+        if (!$order) {
+            return view('page-error.404');
+        }
+
+        $data = [
+            'status_order' => 'canceled',
+            'cancel_reason' => $request->cancel_reason,
+        ];
+        $order->update($data);
+        // dd($order);
+        return redirect()->back()->with('success', 'Order was successfully canceled.');
+    }
 }

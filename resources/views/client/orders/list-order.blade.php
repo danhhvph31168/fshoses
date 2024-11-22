@@ -1,147 +1,232 @@
 @extends('client.layouts.master')
 
 @section('title')
-Danh sách đặt hàng
+    Danh sách đặt hàng
 @endsection
 
 @section('content')
 
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-option">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb__text">
-                    <h4>Order History</h4>
-                    <div class="breadcrumb__links">
-                        <a href="{{ route('client.home') }}">Home</a>
-                        <a href="./shop.html">Shop</a>
-                        <span>Order History</span>
-                    </div>
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Order History</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{{ route('client.home') }}">Home</a>
+                            <a href="./shop.html">Shop</a>
+                            <span>Order History</span>
+                        </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
-<!-- Order History Section Begin -->
-<section class="shopping-cart spad" style="padding: 0; padding-top: 20px;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="shopping__cart__table rounded shadow-sm bg-white">
-                    <table class="table table-hover align-middle">
-                        <thead class="bg-gradient text-white"
-                            style="background: linear-gradient(90deg, #ff7eb3, #ff758c);">
-                            <tr class="text-center">
-                                <th>#</th>
-                                <th>Order Code</th>
-                                <th>Order Date</th>
-                                <th>Status Order</th>
-                                <th>Status Payment</th>
-                                <th>Total Amount</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($orders->isEmpty())
-                            <tr>
-                                <td colspan="7" class="text-danger fw-bold text-center">No orders have been placed yet!
-                                </td>
-                            </tr>
-                            @else
-                            @foreach ($orders as $item)
-                            <tr class="text-center">
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    <a href="{{ route('getDetailOrderItem', $item->sku_order) }}"
-                                        class="text-danger fw-bold">
-                                        {{ $item->sku_order }}
-                                    </a>
-                                </td>
-                                <td>{{ $item->created_at->toDateString() }}</td>
-                                <td>
-                                    <span
-                                        class="badge rounded-pill {{ $item->status_order === 'pending' ? 'bg-warning text-dark' : 'bg-success' }}">
-                                        {{ ucfirst($item->status_order) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span
-                                        class="badge rounded-pill {{ $item->status_payment === 'unpaid' ? 'bg-secondary' : 'bg-success' }}">
-                                        {{ ucfirst($item->status_payment) }}
-                                    </span>
-                                </td>
-                                <td>{{ number_format($item->total_amount, 0, ',', '.') }} VNĐ</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-danger text-white fw-bold rounded-pill"
-                                        onclick="return confirm('Are you sure you want to cancel this order?')">
-                                        <i class="ri-close-line"></i> Cancel
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                    <div class=" mt-2 pb-3 mb-3 ">
-                        {{ $orders->links() }}
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- Shopping Cart Section End -->
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <!-- Order History Section Begin -->
+    <section class="shopping-cart spad" style="padding: 0; padding-top: 20px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shopping__cart__table rounded shadow-sm bg-white">
+                        <table class="table table-hover align-middle">
+                            <thead class="bg-gradient text-white"
+                                style="background: linear-gradient(90deg, #ff7eb3, #ff758c);">
+                                <tr class="text-center">
+                                    <th>STT</th>
+                                    <th>Order Code</th>
+                                    <th>Order Date</th>
+                                    <th>Status Order</th>
+                                    <th>Status Payment</th>
+                                    <th>Total Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($orders->isEmpty())
+                                    <tr>
+                                        <td colspan="7" class="text-danger fw-bold text-center">No orders have been
+                                            placed yet!
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($orders as $item)
+                                        <tr class="text-center">
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>
+                                                <a href="{{ route('getDetailOrderItem', $item->sku_order) }}"
+                                                    class="text-danger fw-bold">
+                                                    {{ $item->sku_order }}
+                                                </a>
+                                            </td>
+                                            <td>{{ $item->created_at->toDateString() }}</td>
+                                            <td>
+                                                <span
+                                                    class="badge rounded-pill {{ $item->status_order === 'pending' ? 'bg-warning text-dark' : 'bg-danger' }}">
+                                                    {{ $item->status_order }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="badge rounded-pill {{ $item->status_payment === 'unpaid' ? 'bg-secondary' : 'bg-success' }}">
+                                                    {{ $item->status_payment }}
+                                                </span>
+                                            </td>
+                                            <td>{{ number_format($item->total_amount, 0, ',', '.') }} VNĐ</td>
+                                            <td>
+                                                @if ($item->status_order === 'pending' && $item->created_at->diffInHours(now()) <= 24)
+                                                    
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
+                                                        Hủy đơn
+                                                    </button>
+
+                                                
+                                                    <div class="modal fade" id="cancelOrderModal" tabindex="-1"
+                                                        aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="cancelOrderModalLabel">Hủy
+                                                                        đơn hàng #{{ $item->sku_order }}</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form
+                                                                        action="{{ route('orders.cancel', $item->sku_order) }}"
+                                                                        method="POST">
+                                                                        @csrf
+
+                                                                        <div class="row mb-4">
+                                                                            <div class="col">
+                                                                                <span>Chọn lý do hủy
+                                                                                    đơn:</span>
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                <select
+                                                                                    class="pb-0 @error('cancel_reason') is-invalid @enderror"
+                                                                                    id="cancelReason" name="cancel_reason" required>
+                                                                                    <option value="">-- Chọn lý do --
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="Thay đổi phương thức thanh toán">
+                                                                                        Thay
+                                                                                        đổi phương thức thanh toán</option>
+                                                                                    <option value="Giá không hợp lý">Giá
+                                                                                        không hợp lý</option>
+                                                                                    <option
+                                                                                        value="Thay đổi địa chỉ nhận hàng">
+                                                                                        Thay đổi địa chỉ nhận hàng</option>
+                                                                                    <option value="Thời gian giao hàng lâu">
+                                                                                        Thời gian giao hàng lâu</option>
+                                                                                    <option value="Khác">Khác</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            @error('cancel_reason')
+                                                                                <div class="invalid-feedback">
+                                                                                    {{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <label for="otherReason"
+                                                                                    class="form-label">Lý
+                                                                                    do khác (nếu có):</label>
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                <div class="mb-3">
+
+                                                                                    <textarea class="form-control" id="otherReason" name="other_reason"
+                                                                                        rows="3"></textarea>
+                                                                            
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Đóng</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger">Xác nhận hủy</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <button type="button" disabled class="btn btn-outline-danger btn-sm"
+                                                        data-bs-toggle="modal">
+                                                        Hủy đơn
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        <div class="p-3">
+                            {{ $orders->links() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
 @endsection
 <style>
-.breadcrumb__text h4 {
-    font-size: 28px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+    .breadcrumb__text h4 {
+        font-size: 28px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-.breadcrumb__links a {
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.3s;
-}
+    .breadcrumb__links a {
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
 
-.breadcrumb__links a:hover {
-    color: #ffd3e6;
-    text-decoration: underline;
-}
+    .breadcrumb__links a:hover {
+        color: #ffd3e6;
+        text-decoration: underline;
+    }
 
-/* Table Styling */
-.table thead {
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+    /* Table Styling */
+    .table thead {
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-.table-hover tbody tr:hover {
-    background-color: #ffe6f0;
-}
+    .table-hover tbody tr:hover {
+        background-color: #ffe6f0;
+    }
 
-.badge {
-    padding: 0.5em 0.8em;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: capitalize;
-}
+    .badge {
+        padding: 0.5em 0.8em;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
 
-/* Buttons */
-.btn-danger {
-    background-color: #ff7eb3;
-    border-color: #ff758c;
-    transition: background-color 0.3s, transform 0.2s;
-}
+    /* Buttons */
+    .btn-danger {
+        background-color: #ff7eb3;
+        border-color: #ff758c;
+        transition: background-color 0.3s, transform 0.2s;
+    }
 
-.btn-danger:hover {
-    background-color: #ff5173;
-    transform: scale(1.05);
-}
+    .btn-danger:hover {
+        background-color: #ff5173;
+        transform: scale(1.05);
+    }
 </style>

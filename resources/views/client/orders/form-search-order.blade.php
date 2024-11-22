@@ -29,7 +29,7 @@ Tra cứu đơn hàng
     <form class="w-50" action="{{ route('handleSearchOrder') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="username" class="form-label">Order Code</label>
+            <label for="username" class="form-label fw-bold">Order Code</label>
             <input type="text" class="form-control @error('sku_order') is-invalid @enderror" id="sku_order"
                 name="sku_order" placeholder="Enter order code..." autofocus value="{{ old('sku_order') }}">
             @error('sku_order')
