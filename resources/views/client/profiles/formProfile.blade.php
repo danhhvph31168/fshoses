@@ -49,7 +49,6 @@
                                         class="form-control pe-5 password-input @error('avatar') is-invalid @enderror">
                                     <div class="card-body p-4 text-center">
                                         <div class="mx-auto avatar-md">
-                                            {{-- <img src="{{ Storage::url($user->avatar_url) }}" alt="" --}}
                                             <img src="{{ $user->avatar }}" alt="" class="img-fluid rounded-circle">
                                         </div>
                                     </div>
@@ -80,14 +79,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            {{-- <select name="" id="province">
-                            </select>
-                            <select name="" id="district">
-                                <option value="">chọn quận</option>
-                            </select>
-                            <select name="" id="ward">
-                                <option value="">chọn phường</option>
-                            </select> --}}
+
                             <div class="mb-3">
                                 <label for="province" class="form-label">Province</label>
                                 <select id="province" class="form-control @error('province') is-invalid @enderror"
@@ -162,12 +154,9 @@
                         </form>
                     </div>
                 </div>
-                <!-- end card body -->
             </div>
-            <!-- end card -->
         </div>
     </div>
-    <!-- end row -->
 @endsection
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -182,9 +171,6 @@
             let row = `<option value="">{{ $user->province ? $user->province : 'Chọn' }}</option>`;
             return axios.get(api)
                 .then((response) => {
-                    // const a = $user->province
-                    // const data = response.data.filter(item => item !== a);
-                    // console.log(response.data)
                     renderData(response.data, "province", row);
                 });
         }
