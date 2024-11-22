@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-
     @include('client.layouts.banner')
 
     <section class="product spad mt-5">
@@ -27,8 +26,13 @@
                             <div class="col-md-3 mb-3">
                                 <div class="card">
                                     <div class="border-bottom" style="width: 100%">
-                                        <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
-                                            alt="..." height="200px">
+                                        @if (\Str::contains($item->img_thumbnail, 'http'))
+                                            <img src="{{ $item->img_thumbnail }}" class="card-img-top"
+                                                alt="..." height="200px">
+                                        @else
+                                            <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                alt="..." height="200px">
+                                        @endif
                                     </div>
                                     <div class="card-body" style="height: 180px">
 

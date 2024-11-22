@@ -7,11 +7,11 @@
 
         <a href="{{ route('admin.') }}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="100"
-                    width="150">
+                <img src="https://res.cloudinary.com/dpuqbsu8w/image/upload/v1732178543/lgo-removebg-preview_stekf4.png" alt="" height="100"
+                    width="50">
             </span>
             <span class="logo-lg fs-1 text-black">
-                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="100">
+                <img src="https://res.cloudinary.com/dpuqbsu8w/image/upload/v1732178543/lgo-removebg-preview_stekf4.png" alt="" height="100" width="150">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"

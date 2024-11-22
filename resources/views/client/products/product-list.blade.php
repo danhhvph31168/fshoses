@@ -32,8 +32,13 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="card">
                                             <div class="border-bottom" style="width: 100%">
-                                                <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
-                                                    alt="..." height="200px">
+                                                @if (\Str::contains($item->img_thumbnail, 'http'))
+                                                    <img src="{{ $item->img_thumbnail }}" class="card-img-top"
+                                                        alt="..." height="200px">
+                                                @else
+                                                    <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                        alt="..." height="200px">
+                                                @endif
                                             </div>
                                             <div class="card-body" style="height: 200px">
                                                 <div class="mb-3">
