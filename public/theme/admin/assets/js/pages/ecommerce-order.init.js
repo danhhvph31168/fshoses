@@ -6,26 +6,6 @@ Contact: Themesbrand@gmail.com
 File: Ecommerce-order Init Js File
 */
 
-var str_dt = function formatDate(date) {
-    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var d = new Date(date),
-        time_s = (d.getHours() + ':' + d.getMinutes());
-    var t = time_s.split(":");
-    var hours = t[0];
-    var minutes = t[1];
-    var newformat = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    month = '' + monthNames[(d.getMonth())],
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
-    return [day + " " + month+","+ year +" <small class='text-muted'>"+ hours + ':' + minutes + ' ' + newformat +"</small>"];
-};
 
 var isChoiceEl = document.getElementById("idStatus");
 var choices = new Choices(isChoiceEl, {
