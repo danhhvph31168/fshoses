@@ -31,66 +31,16 @@ Edit new
 </div>
 @endif
 
-<div class="tab-content">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">Order Item</h4>
-            </div>
-            <div class="card-body" id="card-body">
 
-                <div class="live-preview mb-3">
-                    <div class="row gy-4">
-                        <div class="col-md-12">
-                            <table class="table table-bordered border-0 text-center">
-                                <tr>
-                                    <th>Product Image</th>
-                                    <th>Product Name</th>
-                                    <th>Product Price</th>
-                                    <th>Product Size</th>
-                                    <th>Product Color</th>
-                                    <th>Product Quantity</th>
-                                </tr>
-                                @foreach ($dataProductVariant as $item)
-                                    <tr>
-
-                                        <td><img src="{{ $item['product']->img_thumbnail }}" width="50px" height="50px">
-                                        </td>
-                                        <td>{{ $item['product']->name }}</td>
-                                        <td>
-                                            {{ empty($item['product']->price_sale) ? $item['product']->price_regular : $item['product']->price_sale }}
-                                        </td>
-                                        <td>{{ $item['size']->name }}</td>
-                                        <td>
-                                            <div
-                                                class="rounded-circle fs-20" style="color: {{$item['color']->name}};">
-                                                <i class="ri-checkbox-blank-circle-fill"></i>
-                                            </div>
-                                        </td>
-                                        <td>{{ $item['quantity'] }}</td>
-                                    </tr>
-                                @endforeach
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!--end col-->
-</div>
 
 <form action="{{ route('admin.orders.update', $order) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-    <div>div>
+    <div class="row">
     <div class="col-xl-8">
         <div class="card ribbon-box ribbon-fill shadow-none right">
             <div class="tab-content">
-        <div class="tab-pane fade show active" id="pills-bill-info" role="tabpanel"
-             aria-labelledby="pills-bill-info-tab">
+                <div>
             @if ($order->total_amount >= 500000)
                 <div class="ribbon-two ribbon-two-danger"><span>Free Ship</span></div>
             @endif
@@ -164,47 +114,143 @@ Edit new
                 </div>
             </div>
         </div>
-    </div>
+            </div>
         </div>
 
         <div class="card">
-            <div class="card-header align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">Recipient Address</h4>
-            </div>
-            <div class="card-body">
-                <div class="live-preview">
-                    <div class="row gy-4">
+            <div class="card-body checkout-tab">
+                <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
 
-                        <div class="col-md-4 mt-3">
-                            <label for="sku" class="form-label">User Name</label>
-                            <input type="text" class="form-control" value="{{ $order->user_name }}">
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label for="sku" class="form-label">User Email</label>
-                            <input type="email" class="form-control" value="{{ $order->user_email }}">
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label for="sku" class="form-label">User Phone</label>
-                            <input type="text" class="form-control" value="{{ $order->user_phone }}">
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label for="sku" class="form-label">User Address</label>
-                            <input type="text" class="form-control" value="{{ $order->user_address }}">
-                        </div>
-
-                        <div class="col-md-8 mt-3">
-                            <label for="sku" class="form-label" style="margin-top: 5px;">Note</label>
-                            <textarea class="form-control" cols="30" rows="5"
-                                      style="height: 40px;">{{ $order->user_note }}</textarea>
-                        </div>
-
-                    </div>
+                    <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fs-15 p-3 active" id="pills-bill-info-tab"
+                                    data-bs-toggle="pill" data-bs-target="#pills-bill-info"
+                                    type="button" role="tab" aria-controls="pills-bill-info"
+                                    aria-selected="true"><i
+                                    class="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                                Customer Info</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fs-15 p-3" id="pills-bill-address-tab"
+                                    data-bs-toggle="pill" data-bs-target="#pills-bill-address"
+                                    type="button" role="tab" aria-controls="pills-bill-address"
+                                    aria-selected="false"><i
+                                    class="ri-truck-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                                Shipping Info</button>
+                        </li>
+                    </ul>
                 </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="pills-bill-info" role="tabpanel"
+                         aria-labelledby="pills-bill-info-tab">
 
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="billinginfo-firstName"
+                                               class="form-label">Name</label>
+                                        <input type="text" class="form-control"
+                                               id="billinginfo-Name" value="{{ $order->user->name }}" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="billinginfo-lastName"
+                                               class="form-label">Balance</label>
+                                        <input type="text" class="form-control"
+                                               id="billinginfo-Balance" value="{{ $order->user->balance }}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="billinginfo-email" class="form-label">Email
+                                            <span class="text-muted">Zip Code</span></label>
+                                        <input type="email" class="form-control"
+                                               id="billinginfo-zip_code" value="{{ $order->user->zip_code }}" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="billinginfo-phone"
+                                               class="form-label">Phone</label>
+                                        <input type="text" class="form-control"
+                                               id="billinginfo-phone"
+                                               value="{{ $order->user->phone }}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="billinginfo-address"
+                                       class="form-label">Address</label>
+                                <textarea class="form-control" id="billinginfo-address"
+                                          disabled rows="3">{{ $order->user->district }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end tab pane -->
+                    <div class="tab-pane fade" id="pills-bill-address" role="tabpanel"
+                         aria-labelledby="pills-bill-address-tab">
+                        <div class="col">
+                            <div>
+                                <h5 class="mb-1">Recipient Address</h5>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="flex-grow-1">
+                                        <h5 class="fs-14 mb-0">Saved Address</h5>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-sm btn-success mb-3"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addAddressModal">
+                                            Add Address
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row gy-3">
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="form-check card-radio">
+                                            <input id="shippingAddress01" name="shippingAddress"
+                                                   type="radio" class="form-check-input" checked>
+                                            <label class="form-check-label" for="shippingAddress01">
+                                                    <span
+                                                        class="mb-4 fw-semibold d-block text-muted text-uppercase">Home
+                                                        Address</span>
+
+                                                <span class="fs-14 mb-2 d-block">{{ $order->user_name }}</span>
+                                                <span class="text-muted fw-normal text-wrap mb-1 d-block">{{ $order->user_address }}</span>
+                                                <span class="text-muted fw-normal text-wrap mb-1 d-block">{{ $order->user_email }}</span>
+                                                <span class="text-muted fw-normal d-block">{{ $order->user_phone }}</span>
+                                            </label>
+                                        </div>
+                                        <div
+                                            class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1">
+                                            <div>
+                                                <a href="#" class="d-block text-body p-1 px-2"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#addAddressModal"><i
+                                                        class="ri-pencil-fill text-muted align-bottom me-1"></i>
+                                                    Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end tab pane -->
+                </div>
             </div>
+
         </div>
     </div>
     <div class="col-xl-4">
@@ -212,7 +258,7 @@ Edit new
             <div class="card-header">
                 <div class="d-flex">
                     <div class="flex-grow-1">
-                        <h5 class="card-title mb-0">Order Summary</h5>
+                        <h5 class="card-title mb-0">Order Item</h5>
                     </div>
                 </div>
             </div>
@@ -227,75 +273,34 @@ Edit new
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>
-                                <div class="avatar-md bg-light rounded p-1">
-                                    <img src="{{ URL::asset('build/images/products/img-8.png') }}" alt=""
-                                         class="img-fluid d-block">
-                                </div>
-                            </td>
-                            <td>
-                                <h5 class="fs-14"><a href="apps-ecommerce-product-details"
-                                                     class="text-body">Sweatshirt for Men (Pink)</a>
-                                </h5>
-                                <p class="text-muted mb-0">$ 119.99 x 2</p>
-                            </td>
-                            <td class="text-end">$ 239.98</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="avatar-md bg-light rounded p-1">
-                                    <img src="{{ URL::asset('build/images/products/img-7.png') }}" alt=""
-                                         class="img-fluid d-block">
-                                </div>
-                            </td>
-                            <td>
-                                <h5 class="fs-14"><a href="apps-ecommerce-product-details"
-                                                     class="text-body">Noise Evolve Smartwatch</a></h5>
-                                <p class="text-muted mb-0">$ 94.99 x 1</p>
-                            </td>
-                            <td class="text-end">$ 94.99</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="avatar-md bg-light rounded p-1">
-                                    <img src="{{ URL::asset('build/images/products/img-3.png') }}" alt=""
-                                         class="img-fluid d-block">
-                                </div>
-                            </td>
-                            <td>
-                                <h5 class="fs-14"><a href="apps-ecommerce-product-details"
-                                                     class="text-body">350 ml Glass Grocery Container</a>
-                                </h5>
-                                <p class="text-muted mb-0">$ 24.99 x 1</p>
-                            </td>
-                            <td class="text-end">$ 24.99</td>
-                        </tr>
+                        @foreach ($dataProductVariant as $item)
+                            <tr>
+                                <td>
+                                    <div class="avatar-md bg-light rounded p-1">
+                                        <img src="{{ $item['product']->img_thumbnail }}" alt=""
+                                             class="img-fluid d-block">
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5 class="fs-14"><a href="apps-ecommerce-product-details"
+                                                         class="text-body">{{ $item['product']->name }}</a>
+                                    </h5>
+                                    <p class="rounded-circle text-muted mb-0">Color: <i class="ri-checkbox-blank-circle-fill" style="color: {{$item['color']->name}};"></i> Size: {{ $item['size']->name }}</p>
+                                    <p class="text-muted mb-0">{{ empty($item['product']->price_sale) ? $item['product']->price_regular : $item['product']->price_sale }} x {{ $item['quantity'] }}</p>
+                                </td>
+                                <td class="text-end">{{ empty($item['product']->price_sale) ? $item['product']->price_regular : $item['product']->price_sale * $item['quantity']}} VND</td>
+                            </tr>
+                        @endforeach
                         <tr>
                             <td class="fw-semibold" colspan="2">Sub Total :</td>
-                            <td class="fw-semibold text-end">$ 359.96</td>
+                            <td class="fw-semibold text-end">{{ $order->total_amount }} VND</td>
                         </tr>
+
                         <tr>
-                            <td colspan="2">Discount <span class="text-muted">(VELZON15)</span>
-                                : </td>
-                            <td class="text-end">- $ 50.00</td>
+                            <td class="fw-semibold" colspan="2">Payment Method :</td>
+                            <td class="fw-semibold text-end">{{ $order->payment->payments_method }}</td>
                         </tr>
-                        <tr>
-                            <td colspan="2">Shipping Charge :</td>
-                            <td class="text-end">$ 24.99</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Estimated Tax (12%): </td>
-                            <td class="text-end">$ 18.20</td>
-                        </tr>
-                        <tr class="table-active">
-                            <th colspan="2">Total (USD) :</th>
-                            <td class="text-end">
-                                        <span class="fw-semibold">
-                                            $353.15
-                                        </span>
-                            </td>
-                        </tr>
+
                         </tbody>
                     </table>
 
@@ -303,100 +308,7 @@ Edit new
             </div>
             <!-- end card body -->
         </div>
-        <!-- end card -->
     </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 d-flex">
-
-            <div class="card col-md-6">
-                <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Customer</h4>
-                </div>
-                <div class="card-body">
-                    <div class="live-preview">
-                        <div class="row gy-4">
-
-                            <div class="col-md-4 mt-3">
-                                <label for="sku" class="form-label">Customer Name</label>
-                                <input type="text" class="form-control" value="{{ $order->user->name }}" disabled>
-                            </div>
-
-                            <div class="col-md-4 mt-3">
-                                <label for="sku" class="form-label">Customer Balance</label>
-                                <input type="text" class="form-control" value="{{ $order->user->balance }}" disabled>
-                            </div>
-
-                            <div class="col-md-4 mt-3">
-                                <label for="sku" class="form-label">Zip Code</label>
-                                <input type="text" class="form-control" value="{{ $order->user->zip_code }}" disabled>
-                            </div>
-
-                            <div class="col-md-6 mt-3">
-                                <label for="sku" class="form-label">Customer Email</label>
-                                <input type="text" class="form-control" value="{{ $order->user->email }}" disabled>
-                            </div>
-
-                            <div class="col-md-6 mt-3">
-                                <label for="sku" class="form-label">Customer Address</label>
-                                <input type="text" class="form-control" value="{{ $order->user->address }}" disabled>
-                            </div>
-
-                            <div class="col-md-4 mt-3">
-                                <label for="sku" class="form-label">Customer Phone</label>
-                                <input type="text" class="form-control" value="{{ $order->user->phone }}" disabled>
-                            </div>
-
-                            <div class="col-md-4 mt-3">
-                                <label for="sku" class="form-label">Customer District</label>
-                                <input type="text" class="form-control" value="{{ $order->user->district }}" disabled>
-                            </div>
-
-                            <div class="col-md-4 mt-3">
-                                <label for="sku" class="form-label">Customer Province</label>
-                                <input type="text" class="form-control" value="{{ $order->user->province }}" disabled>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-        <!--end col-->
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Payment method</h4>
-                </div>
-                <div class="card-body">
-                    <div class="live-preview">
-                        <div class="row gy-4">
-
-                            <div class="col-md-6">
-                                <input type="radio" class="btn-check" id="success-outlined" autocomplete="on" checked>
-                                <label style="width: 100%" class="btn btn-outline-primary"
-                                    for="success-outlined">{{ $order->payment->payments_method }} payment</label>
-                            </div>
-
-                            <div class="col-md-6">
-                                <select name="payment_status" class="form-control">
-                                    @foreach ($data['paymentStatus'] as $id => $vi)
-                                    <option @selected($order->payment->payments_method == $id) value="{{ $id }}">
-                                        {{ $id }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="row">
@@ -410,6 +322,51 @@ Edit new
     </div>
 
 </form>
+
+
+<div id="addAddressModal" class="modal fade zoomIn" tabindex="-1" aria-labelledby="addAddressModalLabel"
+     aria-hidden="true">
+    <form action="{{ route('admin.orders.update', $order) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAddressModalLabel">Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="mb-3">
+                        <label for="addaddress-Name" class="form-label">User Name</label>
+                        <input type="text" class="form-control" id="addaddress-Name" placeholder="Enter name" value="{{ $order->user_name }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addaddress-textarea" class="form-label">User Address</label>
+                        <textarea class="form-control" id="addaddress-textarea" placeholder="Enter address"
+                                  rows="2">{{ $order->user_address }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addaddress-Name" class="form-label">User Phone</label>
+                        <input type="text" class="form-control" id="addaddress-Name" placeholder="Enter phone no." value="{{ $order->user_phone }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email-Name" class="form-label">User Email</label>
+                        <input type="text" class="form-control" id="email-Name" placeholder="Enter email" value="{{ $order->user_email }}">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+    </form>
+</div>
 @endsection
 <style>
 .card {
@@ -645,11 +602,15 @@ label {
 @endsection
 
 @section('scripts')
+    <script src="{{ URL::asset('theme/admin/assets/libs/prismjs/prism.js') }}"></script>
+    <script src="{{ URL::asset('theme/admin/assets/js/pages/modal.init.js') }}"></script>
+    <script src="https://cdn.lordicon.com/libs/mssddfmo/lord-icon-2.1.0.js"></script>
 @endsection
 
 @section('style-libs')
 <!-- multi.js css -->
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/admin/assets/libs/multi.js/multi.min.css') }}" />
+
 @endsection
 
 <script>
