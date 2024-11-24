@@ -347,6 +347,8 @@ List Order
                         <th>Consignee address</th>
                         <th>Consignee email</th>
                         <th>Consignee phone number</th>
+                        <th>Product Item</th>
+
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -379,6 +381,37 @@ List Order
                             <td>{{$item->user_address}}</td>
                             <td>{{$item->user_email}}</td>
                             <td>{{$item->user_phone}}</td>
+{{--                            @foreach($item->orderItems as $orderItem)--}}
+{{--                                @dd($orderItem->productVariant->product->name)--}}
+{{--                                <td>{{$orderItem->productVariant->product->name}}</td>--}}
+{{--                            @endforeach--}}
+
+
+                            <td>
+                                @foreach($item->orderItems as $orderItem)
+                                <div class="d-flex align-items-center mt-1">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar-sm bg-light rounded p-1">
+                                            <img src="row.product.img" alt="" class="img-fluid d-block" />
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-grow-1">
+                                        <h5 class="fs-14 mb-1">
+                                            <a href="{{$orderItem->productVariant->image}}" class="text-body">
+                                                {{$orderItem->productVariant->product->name}}
+                                            </a>
+                                        </h5>
+
+                                        <p class="rounded-circle text-muted mb-0">
+                                            Color: <i class="ri-checkbox-blank-circle-fill" style="color: {{$orderItem->productVariant['color']->name}};"></i>
+                                            Size: {{ $orderItem->productVariant['size']->name }}
+                                            Price: {{ !$orderItem->productVariant->product->price_sale ? $orderItem->productVariant->product->price_regular : $orderItem->productVariant->product->price_sale }} x {{ $orderItem->quantity }}
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </td>
                             <td>
                                 <ul class="list-inline hstack gap-2 mb-0">
                                     <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="View">
@@ -423,6 +456,7 @@ List Order
 @section('script-libs')
     <script>
         const order = @json($order);
+        {{--const dataProductVariant = @json($dataProductVariant);--}}
         console.log(order)
     </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
