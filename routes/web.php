@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\MessageSuccessResetController;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\RatingController;
+use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\Product\ProductController;
 use App\Http\Controllers\Client\ReviewController;
@@ -104,3 +106,9 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 //search categories
 Route::get('/search-products', [SearchController::class, 'searchProducts'])->name('search.products');
+//ratings
+Route::get('ratings/create/{orderId}/{productId}/{productVariantId}', [RatingController::class, 'create'])->name('ratings.create');
+Route::post('ratings/store', [RatingController::class, 'store'])->name('ratings.store');
+
+//coupon
+Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('cart.applyCoupon');

@@ -116,14 +116,45 @@
                     </form>
                 </div>
                 <div class="cart__total">
-                    <h6>Cart total</h6>
-                    <ul>
-                        <li>Subtotal : <span class="cart-price total">{{ number_format($totalAmount) }}
-                                VNĐ</span></li>
-                        <li>Total : <span class="cart-price total">{{ number_format($totalAmount) }}
-                                VNĐ</span></li>
-                    </ul>
-                    <a href="{{ route('check-out') }}" class="primary-btn">Purchase</a>
+
+
+                    <h6>Giỏ hàng tổng cộng</h6>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    {{-- Thông báo thành công nếu có --}}
+                    @if (session('message'))
+                        <div class="alert alert-success">
+                            {{ session('message') }}
+                        </div>
+                    @endif
+                    @if (session('discount'))
+                        <ul>
+                            @if (session('coupon.type') === 'fixed')
+                                <li>Bạn đã giảm: <span
+                                        class="cart-price total">{{ number_format(session('coupon.value') * 1000) }}
+                                        $</span></li>
+                            @else
+                                <li>Bạn đã giảm: <span class="cart-price total">{{ session('coupon.value') }} %</span>
+                                </li>
+                            @endif
+                            <li>Tổng cộng: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
+                            </li>
+                        </ul>
+                    @else
+                        <ul>
+                            <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
+                            </li>
+                            <li>Tổng cộng: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
+                            </li>
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>

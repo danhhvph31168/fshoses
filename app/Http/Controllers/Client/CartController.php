@@ -14,6 +14,8 @@ class CartController extends Controller
         $cart = session('cart');
 
         $totalAmount = 0;
+        $discount = session('discount',0);
+
         if (session()->has('cart')) {
             foreach ($cart as $item) {
                 $totalAmount += $item['quatity'] * ($item['price_sale'] ?: $item['price_regular']);
@@ -21,8 +23,9 @@ class CartController extends Controller
         } else {
             $cart = [];
         }
-
-        return view('client.cart-list', compact('totalAmount', 'cart'));
+        $totalAmount = $totalAmount - $discount;
+        
+        return view('client.cart-list', compact('totalAmount', 'cart',  'discount'));
     }
     public function add(Request $request)
     {

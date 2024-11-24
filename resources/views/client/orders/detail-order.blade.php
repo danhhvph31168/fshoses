@@ -118,7 +118,10 @@ Chi tiết đơn hàng
                                         ${{ number_format($item->quantity * $item->price, 0, '.', ',') }}
                                     </td>
                                     <td>
-                                        <button class="btn btn-primary">Review</button>
+                                        <a href="{{ route('ratings.create', ['orderId' => $order->id,
+                                        'productId' => $item->productVariant->product->id,
+                                        'productVariantId' => $item->productVariant->id]) }}"
+                                         class="btn btn-primary">Review</a>
                                     </td>
 
                                 </tr>
