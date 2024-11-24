@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Chi tiết sản phẩm
+    Product detail
 @endsection
 
 @section('content')
@@ -17,13 +17,27 @@
                                         <div class="swiper-wrapper">
                                             @foreach ($productGalleries as $item)
                                                 <div class="swiper-slide">
-                                                    <img src="{{ $item->image }}" alt=""
-                                                        class="img-fluid d-block" />
+                                                    @if (\Str::contains($item->image, 'http'))
+                                                        <img src="{{ $item->image }}" class="card-img-top" alt="..."
+                                                            style="object-fit: cover; height:240px">
+                                                    @else
+                                                        <img src="{{ Storage::url($item->image) }}" class="card-img-top"
+                                                            alt="..." style="object-fit: cover; height:240px">
+                                                    @endif
+
+                                                    @if ($item->price_sale > 0)
+                                                        <div
+                                                            class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
+                                                            Sale
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             @endforeach
                                         </div>
+
                                         <div class="swiper-button-next"></div>
                                         <div class="swiper-button-prev"></div>
+
                                     </div>
 
                                     <div class="swiper product-nav-slider mt-2">
@@ -31,8 +45,20 @@
                                             @foreach ($productGalleries as $item)
                                                 <div class="swiper-slide">
                                                     <div class="nav-slide-item">
-                                                        <img src="{{ $item->image }}" alt=""
-                                                            class="img-fluid d-block" />
+                                                        @if (\Str::contains($item->image, 'http'))
+                                                            <img src="{{ $item->image }}" class="card-img-top"
+                                                                alt="..." style="object-fit: cover;">
+                                                        @else
+                                                            <img src="{{ Storage::url($item->image) }}" class="card-img-top"
+                                                                alt="..." style="object-fit: cover;">
+                                                        @endif
+
+                                                        @if ($item->price_sale > 0)
+                                                            <div
+                                                                class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
+                                                                Sale
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             @endforeach

@@ -32,21 +32,20 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="card">
                                             <div class="border-bottom" style="width: 100%">
-                                                @if (\Str::contains($item->img_thumbnail, 'http'))
-                                                    <img src="{{ $item->img_thumbnail }}" class="card-img-top"
-                                                        alt="..." height="200px">
-                                                @else
-                                                    <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
-                                                        alt="..." height="200px">
-                                                @endif
+                                                <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                    alt="..." height="200px">
                                             </div>
+                                            
                                             <div class="card-body" style="height: 200px">
                                                 <div class="mb-3">
                                                     <a href="#" class="btn btn-secondary">Mua Hàng</a>
                                                 </div>
-                                                <a href="" class="text-dark card-title fs-6">
+
+                                                <a href="{{ route('productDetail', $item->slug) }}"
+                                                    class="text-dark card-title fs-6">
                                                     {{ $item->name }}
                                                 </a>
+
                                                 @if ($item->price_sale > 0)
                                                     <p class="card-text text-danger">
                                                         {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
