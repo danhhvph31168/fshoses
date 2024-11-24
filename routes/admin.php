@@ -1,17 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\admin\BannerController;
-use App\Http\Controllers\Admin\ReviewController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\{
+    RoleController,
+    UserController,
+    BrandController,
+    OrderController,
+    BannerController,
+    ReviewController,
+    ProductController,
+    CategoryController,
+    DashboardController
+};
 
 Route::prefix('admin')->as('admin.')
     ->as('admin.')
@@ -34,6 +35,7 @@ Route::prefix('admin')->as('admin.')
         Route::get('reviews/{id}/show',     [ReviewController::class, 'show'])->name('reviews.show');
         Route::put('reviews/{id}/update',   [ReviewController::class, 'update'])->name('reviews.update');
 
+        //categories
         Route::prefix('categories')
             ->as('categories.')
             ->group(function () {
@@ -42,7 +44,7 @@ Route::prefix('admin')->as('admin.')
                 Route::post('store',        [CategoryController::class, 'store'])->name('store');
                 Route::get('{id}/edit',     [CategoryController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',   [CategoryController::class, 'update'])->name('update');
-                Route::delete('{id}/destroy',  [CategoryController::class, 'destroy'])->name('destroy');
+                Route::delete('{id}/destroy',[CategoryController::class, 'destroy'])->name('destroy');
             });
 
         Route::resource('products', ProductController::class);
@@ -52,11 +54,11 @@ Route::prefix('admin')->as('admin.')
         Route::resource('roles', RoleController::class);
 
         Route::resource('brands', BrandController::class);
-        
+
         Route::resource('banners', BannerController::class);
 
         // auth
         Route::get('showFormLogin', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
         Route::post('login',        [LoginController::class, 'login'])->name('login');
-        Route::post('logout',        [LoginController::class, 'logout'])->name('logout');
+        Route::post('logout',       [LoginController::class, 'logout'])->name('logout');
     });

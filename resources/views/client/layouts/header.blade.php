@@ -1,57 +1,55 @@
-<header class="header">
+<header class="header" style="position: sticky; top: 0; z-index: 1000; font-size: 18px; font-family: sans-serif; ">
 
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
-                <div class="header__logo">
-                    <a href="\"><img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt=""></a>
+            <div class="" style="width: 160px;">
+                <div class="header__logo" style="width: 100px;">
+                    <a href="\"><img src="{{ asset('theme/client/img/logo.jpg') }}" alt=""
+                        style="width: 100px;"></a>
                 </div>
             </div>
             <div class="col-md-6">
                 <nav class="header__menu mobile-menu">
-                    <ul>
-                        <li class="active"><a href="/">Trang chủ</a></li>
+                    <ul style="display: flex; white-space: nowrap;">
 
-                        <li><a href="#">Thương hiệu</a></li>
-                        <ul class="dropdown">
-                            @foreach ($brd as $item)
-                                @if ($item->status == 1)
-                                    <li><a
-                                            href="{{ route('client.productByBrand', $item->id) }}">{{ $item->name }}</a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
-                        </li>
+                        <div class="search-container">
+                            <input type="text" id="search-input" placeholder="Search products..." autocomplete="off">
+                            <div id="search-results" class="dropdown-menu"></div>
+                        </div>
 
-                        <li><a href="#">Danh mục</a>
-                            <ul class="dropdown">
+                        <li class="active"><a href="/">Home</a></li>
+
+                        <li><a href="#">Categories</a>
+                            <ul class="dropdown" style="background-color: white;  border: 1px solid black;">
                                 @foreach ($cate as $item)
-                                    {{-- @dd($item) --}}
                                     @if ($item->is_active == 1)
-                                        <li><a
+                                        <li><a style="color: black;"
                                                 href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
                                         </li>
                                     @endif
                                 @endforeach
                             </ul>
                         </li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                        <li><a href="{{ route('showFormSearchOrder') }}">Tra cứu đơn hàng</a></li>
+
+                        <li><a href="{{ route('showFormSearchOrder') }}">Order Tracking</a></li>
+
                     </ul>
+
                 </nav>
             </div>
 
+
             <div class="col-md-4">
-                <div class="dropdown ms-sm-3 header__menu topbar-user" style="background: #ffffff">
+                <div class="dropdown ms-sm-5 header__menu topbar-user" style="background: #ffffff;">
                     @if (Auth::check())
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
                             data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
-                            <a {{-- href="{{ route('cart.list') }}"  --}} class="d-flex align-items-center  text-black">
+                            <a href="{{ route('cart.list') }}" class="d-flex align-items-center  text-black">
                                 <i class="bi bi-cart"></i>
                                 <span class="text-start ms-xl-2">
-                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Giỏ hàng</span>
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif; ">
+                                        <strong>Cart</strong></span>
                                 </span>
                             </a>
                         </button>
@@ -63,27 +61,30 @@
                                     width="20px" height="22px">
 
                                 <span class="text-start ms-xl-2">
-                                    <span
-                                        class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif; "><strong>{{ Auth::user()->name }}</strong></span>
                                 </span>
+
                             </span>
+                            </a>
                         </button>
+
 
                         <div class="dropdown-menu dropdown-menu-end">
                             @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
                                 <a class="dropdown-item" href="#"><i
                                         class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                                    <span class="align-middle">Trang Admin</span></a>
+                                    <span class="align-middle">Admin Page</span></a>
                             @endif
                             <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
                                     class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-                                <span class="align-middle">Thông tin tài khoản</span></a>
+                                <span class="align-middle">Profile</span></a>
                             <a class="dropdown-item" href="{{ route('getListOrderHistory') }}"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                                <span class="align-middle">Lịch sử đặt hàng</span></a>
+                                <span class="align-middle">Order History</span></a>
                             <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                                <span class="align-middle">Đổi mật khẩu</span></a>
+                                <span class="align-middle">Change Password</span></a>
                             <form action="{{ route('auth.logout') }}" method="post">
                                 @csrf
                                 <button type="submit" class="border-0 dropdown-item">
@@ -95,10 +96,11 @@
                     @else
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
                             data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
-                            <a {{-- href="{{ route('cart.list') }}"  --}} class="d-flex align-items-center  text-black">
+                            <a href="{{ route('cart.list') }}" class="d-flex align-items-center  text-black">
                                 <i class="bi bi-cart"></i>
                                 <span class="text-start ms-xl-2">
-                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Giỏ hàng</span>
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif;"><strong>Cart</strong></span>
                                 </span>
                             </a>
                         </button>
@@ -108,8 +110,8 @@
                             <span class="d-flex align-items-center">
                                 <i class="bi bi-person-circle"></i>
                                 <span class="text-start ms-xl-2">
-                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Tài
-                                        khoản</span>
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                        style="font-size: 18px; font-family: sans-serif;"><strong>Account</strong></span>
                                 </span>
                             </span>
                         </button>
@@ -124,9 +126,116 @@
                         </div>
                     @endif
 
+
                 </div>
             </div>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
+<style>
+    .search-container {
+        position: relative;
+        margin-right: 40px;
+    }
+
+    #search-input {
+        width: 300px;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    #search-input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    #search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: none;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    #search-results .dropdown-item {
+        padding: 10px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    #search-results .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+
+    .dropdown li:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search-input').on('keyup', function() {
+            let query = $(this).val();
+
+            if (query.length >= 1) {
+                $.ajax({
+                    url: "{{ route('search') }}",
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    success: function(data) {
+                        console.log(data)
+                        let results = '';
+
+                        if (data.length > 0) {
+                            data.forEach(item => {
+                                results += `
+                                        <a href="/product-detail/${item.slug}"  >
+                                            <div class="dropdown-item">
+                                                <img src="http://fshoes.test/storage/${item.img_thumbnail}" alt="${item.name}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+
+                                                <span>${item.name}</span>
+                                                <span style="float: right; color: #007bff;">${item.price_regular}</span>
+                                            </div>
+                                        </a>
+
+                                    `;
+                            });
+                        } else {
+                            results = '<div class="dropdown-item">No results found</div>';
+                        }
+
+                        $('#search-results').html(results).fadeIn();
+                    }
+                });
+            } else {
+                $('#search-results').fadeOut();
+            }
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.search-container').length) {
+                $('#search-results').fadeOut();
+            }
+        });
+    });
+</script>

@@ -97,6 +97,9 @@ class CheckoutController extends Controller
 
     public function vnpayReturn(Request $request, $order, $payment)
     {
+        $orderFull = Order::query()->where('id', $order)->first();
+        OrderCreateClient::dispatch($orderFull);
+
         $this->addVnpayServices->addVnPay($request, $order, $payment);
 
         return redirect()->route('orderSuccess')->with('success', 'Order successful');
