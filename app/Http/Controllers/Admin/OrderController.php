@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Order};
+use App\Models\{Order, ProductVariant};
 use App\Services\OrderAdmin\OrderFormServices;
 use App\Services\OrderAdmin\OrderServices;
 use Illuminate\Http\Request;
@@ -18,7 +18,8 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order::query()->with(['user', 'role', 'orderItems', 'payment'])->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('order'));
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('order', ));
     }
 
     public function edit($id)
