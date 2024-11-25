@@ -34,9 +34,8 @@ class OrderHistoryController extends Controller
         $request->validate([
             'cancel_reason' => 'required',
         ], [
-            'cancel_reason.required' => 'Please select reason for canceling order.', // Thông báo lỗi tùy chỉnh
+            'cancel_reason.required' => 'Please select reason for canceling order!', 
         ]);
-        dd(1);
 
         $order = Order::where('sku_order', $slug)->first();
 
@@ -51,13 +50,6 @@ class OrderHistoryController extends Controller
         ];
         $order->update($data);
         // dd($order);
-
-        if (!empty(session('searchOrder'))) {
-            dd(1);
-            return redirect()->route('viewOrderSearch')->with('info', 'Order was canceled successfully.');
-        } else {
-            dd(1);
             return redirect()->back()->with('info', 'Order was canceled successfully.');
-        }
     }
 }

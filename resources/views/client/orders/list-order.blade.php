@@ -126,15 +126,14 @@
                                                                         action="{{ route('orders.cancel', $item->sku_order) }}"
                                                                         method="POST">
                                                                         @csrf
-                                                                        <div class="row mb-4">
-                                                                            <div class="col">
+                                                                        <div class="row mb-5">
+                                                                            <div class="col-sm-5">
                                                                                 <span>Chọn lý do hủy
                                                                                     đơn:</span>
                                                                             </div>
-                                                                            <div class="col">
-                                                                                <select
-                                                                                    class="pb-0 @error('cancel_reason') is-invalid @enderror"
-                                                                                    id="cancelReason" name="cancel_reason">
+                                                                            <div class="col-sm-7">
+                                                                                <select class="pb-0" id="cancelReason"
+                                                                                    name="cancel_reason">
                                                                                     <option value="">-- Chọn lý do --
                                                                                     </option>
 
@@ -153,124 +152,72 @@
                                                                                 </select>
 
                                                                                 @error('cancel_reason')
-                                                                                    <span class="invalid-feedback">
+                                                                                    <span class="invalid-feedback fw-bold"
+                                                                                        style="display: flex;padding-top: 7px">
                                                                                         {{ $message }}
                                                                                     </span>
                                                                                 @enderror
-
                                                                             </div>
 
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <label for="otherReason"
-                                                                                    class="form-label">Lý
-                                                                                    do khác (nếu có):</label>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                <div class="mb-3">
 
-                                                                                    <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
-
-                                                                                </div>
-                                                                            </div>
                                                                         </div>
 
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary"
-                                                                                data-bs-dismiss="modal">Đóng</button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger">Xác nhận hủy</button>
-                                                                        </div>
-                                                                    </form>
                                                                 </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-5">
+                                                                        <label for="otherReason" class="form-label">Lý
+                                                                            do khác (nếu có):</label>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="mb-3">
+
+                                                                            <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Đóng</button>
+                                                                    <button type="submit" class="btn btn-danger">Xác nhận
+                                                                        hủy</button>
+                                                                </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @else
-                                                    <button type="button" disabled class="btn btn-outline-danger btn-sm"
-                                                        data-bs-toggle="modal">
-                                                        Hủy đơn
-                                                    </button>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                        <div class="p-3">
-                            {{ $orders->links() }}
-                        </div>
+                    </div>
+                @else
+                    <button type="button" disabled class="btn btn-outline-danger btn-sm" data-bs-toggle="modal">
+                        Hủy đơn
+                    </button>
+                    @endif
+                    </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                    </tbody>
+                    </table>
+                    <div class="p-3">
+                        {{ $orders->links() }}
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
     <!-- Shopping Cart Section End -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
             @if ($errors->any())
                 var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
                 formModal.show();
             @endif
         });
     </script>
+
+
 @endsection
-<style>
-    .breadcrumb__text h4 {
-        font-size: 28px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .breadcrumb__links a {
-        font-size: 14px;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
-
-    .breadcrumb__links a:hover {
-        color: #ffd3e6;
-        text-decoration: underline;
-    }
-
-    /* Table Styling */
-    .table thead {
-        color: white;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #ffe6f0;
-    }
-
-    .badge {
-        padding: 0.5em 0.8em;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-transform: capitalize;
-    }
-
-    /* Buttons */
-    .btn-danger {
-        background-color: #ff7eb3;
-        border-color: #ff758c;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-
-    .btn-danger:hover {
-        background-color: #ff5173;
-        transform: scale(1.05);
-    }
-
-    .invalid-feedback {
-        font-size: 0.875rem;
-        /* Kích thước nhỏ hơn */
-        color: #dc3545;
-        /* Màu đỏ Bootstrap */
-    }
-</style>

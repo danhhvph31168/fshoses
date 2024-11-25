@@ -5,6 +5,9 @@ Tra cứu đơn hàng
 @endsection
 
 @section('content')
+
+{{-- @dd($errors->all()) --}}
+
 <section class="breadcrumb-option">
     <div class="container">
         <div class="row">

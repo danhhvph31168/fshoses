@@ -57,19 +57,18 @@
 
             <div class="col-md-4">
                 <div class="dropdown ms-sm-5 header__menu topbar-user" style="background: #ffffff;">
-                  
-                        <button type="button" class="btn" id="page-header-user-dropdown-1"
-                            data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
-                            <a {{-- href="{{ route('cart.list') }}" --}} class="d-flex align-items-center  text-black">
-                                <i class="bi bi-cart"></i>
-                                <span class="text-start ms-xl-2">
-                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                        style="font-size: 18px; font-family: sans-serif; ">
-                                        <strong>Cart</strong></span>
-                                </span>
-                            </a>
-                        </button>
-                        @if (Auth::check())
+                    <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
+                        aria-haspopup="true" aria-expanded="false">
+                        <a class="d-flex align-items-center text-black">
+                            <i class="mdi mdi-cart-outline text-muted fs-16"></i>
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                    style="font-size: 18px; font-family: sans-serif;"><strong>Cart</strong></span>
+                            </span>
+                        </a>
+                    </button>
+
+                    @if (Auth::check())
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">
@@ -78,7 +77,8 @@
 
                                 <span class="text-start ms-xl-2">
                                     <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                        style="font-size: 18px; font-family: sans-serif; "><strong> {{ implode(' ', array_slice(explode(' ', Auth::user()->name), -2)) }}</strong></span>
+                                        style="font-size: 18px; font-family: sans-serif; "><strong>
+                                            {{ implode(' ', array_slice(explode(' ', Auth::user()->name), -2)) }}</strong></span>
                                 </span>
 
                             </span>
@@ -111,17 +111,6 @@
                             </form>
                         </div>
                     @else
-                        <button type="button" class="btn" id="page-header-user-dropdown-1"
-                            data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
-                            <a class="d-flex align-items-center text-black">
-                                <i class="mdi mdi-cart-outline text-muted fs-16"></i>
-                                <span class="text-start ms-xl-2">
-                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                        style="font-size: 18px; font-family: sans-serif;"><strong>Cart</strong></span>
-                                </span>
-                            </a>
-                        </button>
-
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="d-flex align-items-center">

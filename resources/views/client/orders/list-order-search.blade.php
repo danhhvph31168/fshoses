@@ -93,35 +93,37 @@
                                             <!-- Nút "Hủy đơn" mở modal -->
                                             <!-- Nút kích hoạt modal -->
                                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#cancelOrderModal">
+                                                data-bs-target="#cancelOrderModalSearch">
                                                 Hủy đơn
                                             </button>
 
                                             <!-- Modal -->
-                                            <div class="modal fade" id="cancelOrderModal" tabindex="-1"
-                                                aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="cancelOrderModalSearch" tabindex="-1"
+                                                aria-labelledby="cancelOrderModalSearchLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="cancelOrderModalLabel">Hủy
+                                                            <h5 class="modal-title" id="cancelOrderModalSearchLabel">Hủy
                                                                 đơn hàng #{{ $order->sku_order }}</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{ route('orders.cancel', $order->sku_order) }}"
+                                                            <form
+                                                                action="{{ route('orders.search.cancel', $order->sku_order) }}"
                                                                 method="POST">
                                                                 @csrf
-                                                                <div class="row mb-4">
-                                                                    <div class="col">
+                                                                @method('PUT')
+                                                                <div class="row mb-5">
+                                                                    <div class="col-sm-5">
                                                                         <span>Chọn lý do hủy
                                                                             đơn:</span>
                                                                     </div>
-                                                                    <div class="col">
-                                                                        <select
-                                                                            class="pb-0 @error('cancel_reason') is-invalid @enderror"
-                                                                            id="cancelReason" name="cancel_reason">
-                                                                            <option value="">-- Chọn lý do --
+                                                                    <div class="col-sm-7">
+                                                                        <select class="pb-0"
+                                                                            name="reason_sea">
+                                                                            
+                                                                            <option selected value="">Chọn lý do
                                                                             </option>
 
                                                                             <option value="Thay đổi phương thức thanh toán">
@@ -136,22 +138,22 @@
                                                                             <option value="Khác">Khác</option>
                                                                         </select>
 
-                                                                        {{-- @dd($errors->any()) --}}
-                                                                        @error('cancel_reason')
-                                                                            <span class="invalid-feedback">
+                                                                        @error('reason_sea')
+                                                                            <span class="invalid-feedback fw-bold"
+                                                                                style="display: flex;padding-top: 7px">
                                                                                 {{ $message }}
                                                                             </span>
                                                                         @enderror
-
                                                                     </div>
+
 
                                                                 </div>
                                                                 <div class="row">
-                                                                    <div class="col">
+                                                                    <div class="col-sm-5">
                                                                         <label for="otherReason" class="form-label">Lý
                                                                             do khác (nếu có):</label>
                                                                     </div>
-                                                                    <div class="col">
+                                                                    <div class="col-sm-6">
                                                                         <div class="mb-3">
 
                                                                             <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
@@ -171,11 +173,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @else
+                                        {{-- @else
                                             <button type="button" disabled class="btn btn-outline-danger btn-sm"
                                                 data-bs-toggle="modal">
                                                 Hủy đơn
-                                            </button>
+                                            </button> --}}
                                         @endif
                                     </td>
                                 </tr>
@@ -189,61 +191,12 @@
         </div>
     </section>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if ($errors->any())
-                var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
-                formModal.show();
-            @endif
-        });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     @if ($errors->any())
+        //         var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModalSearch'));
+        //         formModal.show();
+        //     @endif
+        // });
     </script>
     <!-- Shopping Cart Section End -->
 @endsection
-<style>
-    .breadcrumb__text h4 {
-        font-size: 28px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .breadcrumb__links a {
-        font-size: 14px;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
-
-    .breadcrumb__links a:hover {
-        color: #ffd3e6;
-        text-decoration: underline;
-    }
-
-    /* Table Styling */
-    .table thead {
-        color: white;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #ffe6f0;
-    }
-
-    .badge {
-        padding: 0.5em 0.8em;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-transform: capitalize;
-    }
-
-    /* Buttons */
-    .btn-danger {
-        background-color: #ff7eb3;
-        border-color: #ff758c;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-
-    .btn-danger:hover {
-        background-color: #ff5173;
-        transform: scale(1.05);
-    }
-</style>
