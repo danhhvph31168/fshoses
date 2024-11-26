@@ -42,7 +42,6 @@
                                     <th>Status Order</th>
                                     <th>Status Payment</th>
                                     <th>Total Amount</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,122 +101,22 @@
                                                 </span>
                                             </td>
                                             <td>{{ number_format($item->total_amount, 0, ',', '.') }} VNĐ</td>
-                                            <td>
-                                                @if ($item->status_order === 'pending' || $item->status_order === 'confirmed' || $item->status_order === 'processing')
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
-                                                        Hủy đơn
 
-                                                    </button>
-
-
-                                                    <div class="modal fade" id="cancelOrderModal" tabindex="-1"
-                                                        aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="cancelOrderModalLabel">Hủy
-                                                                        đơn hàng #{{ $item->sku_order }}</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form
-                                                                        action="{{ route('orders.cancel', $item->sku_order) }}"
-                                                                        method="POST">
-                                                                        @csrf
-                                                                        <div class="row mb-5">
-                                                                            <div class="col-sm-5">
-                                                                                <span>Chọn lý do hủy
-                                                                                    đơn:</span>
-                                                                            </div>
-                                                                            <div class="col-sm-7">
-                                                                                <select class="pb-0" id="cancelReason"
-                                                                                    name="cancel_reason">
-                                                                                    <option value="">-- Chọn lý do --
-                                                                                    </option>
-
-                                                                                    <option
-                                                                                        value="Thay đổi phương thức thanh toán">
-                                                                                        Thay
-                                                                                        đổi phương thức thanh toán</option>
-                                                                                    <option value="Giá không hợp lý">Giá
-                                                                                        không hợp lý</option>
-                                                                                    <option
-                                                                                        value="Thay đổi địa chỉ nhận hàng">
-                                                                                        Thay đổi địa chỉ nhận hàng</option>
-                                                                                    <option value="Thời gian giao hàng lâu">
-                                                                                        Thời gian giao hàng lâu</option>
-                                                                                    <option value="Khác">Khác</option>
-                                                                                </select>
-
-                                                                                @error('cancel_reason')
-                                                                                    <span class="invalid-feedback fw-bold"
-                                                                                        style="display: flex;padding-top: 7px">
-                                                                                        {{ $message }}
-                                                                                    </span>
-                                                                                @enderror
-                                                                            </div>
-
-
-                                                                        </div>
-
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-sm-5">
-                                                                        <label for="otherReason" class="form-label">Lý
-                                                                            do khác (nếu có):</label>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="mb-3">
-
-                                                                            <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Đóng</button>
-                                                                    <button type="submit" class="btn btn-danger">Xác nhận
-                                                                        hủy</button>
-                                                                </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                    </div>
-                @else
-                    <button type="button" disabled class="btn btn-outline-danger btn-sm" data-bs-toggle="modal">
-                        Hủy đơn
-                    </button>
-                    @endif
-                    </td>
-                    </tr>
-                    @endforeach
-                    @endif
-                    </tbody>
-                    </table>
-                    <div class="p-3">
-                        {{ $orders->links() }}
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        <div class="p-3">
+                            {{ $orders->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </section>
     <!-- Shopping Cart Section End -->
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            @if ($errors->any())
-                var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
-                formModal.show();
-            @endif
-        });
-    </script>
 
 
 @endsection

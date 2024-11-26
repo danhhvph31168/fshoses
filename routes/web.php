@@ -22,7 +22,6 @@ Route::get('/products',         [ProductController::class, 'getAllProducts'])->n
 // Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 Route::get('search-order',  [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
 Route::post('search-order', [OrderSearchController::class, 'handleSearchOrder'])->name('handleSearchOrder');
-Route::put('order/search/cancel/{slug}', [OrderSearchController::class, 'cancelOrderSearch'])->name('orders.search.cancel');
 
 Route::prefix('auth')
     ->name('auth.')

@@ -38,7 +38,6 @@
                                     <th>Status Order</th>
                                     <th>Status Payment</th>
                                     <th>Total Amount</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody class="">
@@ -73,113 +72,21 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span
-                                            class="badge rounded-pill 
-        {{ $order->status_payment === 'unpaid'
-            ? 'bg-secondary'
-            : ($order->status_payment === 'pending'
-                ? 'bg-warning text-dark'
-                : ($order->status_payment === 'paid'
-                    ? 'bg-success'
-                    : ($order->status_payment === 'refunded'
-                        ? 'bg-info text-dark'
-                        : 'bg-danger'))) }}">
+                                        <span class="badge rounded-pill 
+                                        {{ $order->status_payment === 'unpaid'
+                                             ? 'bg-secondary'
+                                         : ($order->status_payment === 'pending'
+                                              ? 'bg-warning text-dark'
+                                             : ($order->status_payment === 'paid'
+                                                 ? 'bg-success'
+                                                 : ($order->status_payment === 'refunded'
+                                                      ? 'bg-info text-dark'
+                                                        : 'bg-danger'))) }}">
                                             {{ $order->status_payment }}
                                         </span>
                                     </td>
                                     <td>{{ number_format($order->total_amount, 0, ',', '.') }} VNĐ</td>
-                                    <td>
-                                        @if ($order->status_order === 'pending' || $order->status_order === 'confirmed' || $order->status_order === 'processing')
-                                            <!-- Nút "Hủy đơn" mở modal -->
-                                            <!-- Nút kích hoạt modal -->
-                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#cancelOrderModalSearch">
-                                                Hủy đơn
-                                            </button>
 
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="cancelOrderModalSearch" tabindex="-1"
-                                                aria-labelledby="cancelOrderModalSearchLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="cancelOrderModalSearchLabel">Hủy
-                                                                đơn hàng #{{ $order->sku_order }}</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form
-                                                                action="{{ route('orders.search.cancel', $order->sku_order) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <div class="row mb-5">
-                                                                    <div class="col-sm-5">
-                                                                        <span>Chọn lý do hủy
-                                                                            đơn:</span>
-                                                                    </div>
-                                                                    <div class="col-sm-7">
-                                                                        <select class="pb-0"
-                                                                            name="reason_sea">
-                                                                            
-                                                                            <option selected value="">Chọn lý do
-                                                                            </option>
-
-                                                                            <option value="Thay đổi phương thức thanh toán">
-                                                                                Thay
-                                                                                đổi phương thức thanh toán</option>
-                                                                            <option value="Giá không hợp lý">Giá
-                                                                                không hợp lý</option>
-                                                                            <option value="Thay đổi địa chỉ nhận hàng">
-                                                                                Thay đổi địa chỉ nhận hàng</option>
-                                                                            <option value="Thời gian giao hàng lâu">
-                                                                                Thời gian giao hàng lâu</option>
-                                                                            <option value="Khác">Khác</option>
-                                                                        </select>
-
-                                                                        @error('reason_sea')
-                                                                            <span class="invalid-feedback fw-bold"
-                                                                                style="display: flex;padding-top: 7px">
-                                                                                {{ $message }}
-                                                                            </span>
-                                                                        @enderror
-                                                                    </div>
-
-
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-sm-5">
-                                                                        <label for="otherReason" class="form-label">Lý
-                                                                            do khác (nếu có):</label>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="mb-3">
-
-                                                                            <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Đóng</button>
-                                                                    <button type="submit" class="btn btn-danger">Xác nhận
-                                                                        hủy</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {{-- @else
-                                            <button type="button" disabled class="btn btn-outline-danger btn-sm"
-                                                data-bs-toggle="modal">
-                                                Hủy đơn
-                                            </button> --}}
-                                        @endif
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -190,13 +97,5 @@
             </div>
         </div>
     </section>
-    <script>
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     @if ($errors->any())
-        //         var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModalSearch'));
-        //         formModal.show();
-        //     @endif
-        // });
-    </script>
     <!-- Shopping Cart Section End -->
 @endsection

@@ -23,7 +23,7 @@ class OrderHistoryController extends Controller
             'coupon',
         ])->first();
         if (!$order) {
-            return view("page-error.404");
+            return back();
         }
         // dd  ($order);
         return view("client.orders.detail-order", compact("order"));
@@ -41,7 +41,7 @@ class OrderHistoryController extends Controller
 
         // dd($order);
         if (!$order) {
-            return view('page-error.404');
+            return back();
         }
 
         $data = [

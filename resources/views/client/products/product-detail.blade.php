@@ -476,7 +476,7 @@ Chi tiết sản phẩm
                                                 <ul class="list-unstyled mb-0">
                                                     <li class="py-2">
                                                         <div class="border border-dashed rounded p-3">
-                                                            <form action="{{ route('handleAddComment') }}" method="post"
+                                                            <form action="{{ route('handleAddComment') }}" method="POST"
                                                                 class="d-flex mb-4">
                                                                 @csrf
                                                                 <input type="hidden" name="product_id"
