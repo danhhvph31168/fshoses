@@ -222,30 +222,45 @@ h3 {
                                         <div class="modal fade" id="exampleModal" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
-
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <p class="modal-title fs-5" id="exampleModalLabel">Ratings and
-                                                            Reviews
-                                                        </p>
+                                                            Reviews</p>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="card card-rating mb-4">
                                                         <div class="row g-0">
                                                             <!-- Cột chứa hình ảnh -->
-                                                            <div class="col-md-7">
+                                                            <div class="col-md-4">
                                                                 <img src="{{ $item->productVariant->product->img_thumbnail }}"
-                                                                    class="img-fluid rounded-start" alt="Sản phẩm" />
+                                                                    class="img-fluid rounded-start w-100 h-auto"
+                                                                    alt="Sản phẩm" />
                                                             </div>
                                                             <!-- Cột chứa nội dung văn bản -->
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-8">
                                                                 <div
                                                                     class="card-body d-flex flex-column justify-content-center h-100">
-                                                                    <h5 class="card-title">{{ $item->productVariant->product->name }}</h5>
-                                                                    <p class="card-text text-muted">Price: {{ $item->price }}</p>
-                                                                    <p class="card-text text-muted">Color: {{ $item->productVariant->color->name }}</p>
-                                                                    <p class="card-text text-muted">Size: {{ $item->productVariant->size->name }}</p>
+                                                                    <h5 class="card-title text-truncate"
+                                                                        style="max-width: 100%;">
+                                                                        {{ $item->productVariant->product->name }}</h5>
+                                                                    <p class="card-text text-muted mb-1">Price:
+                                                                        {{ $item->price }}</p>
+                                                                    <p class="card-text text-muted mb-1">Size:
+                                                                        {{ $item->productVariant->size->name }}</p>
+                                                                    <div class="d-flex align-items-center mb-1">
+                                                                        <p class="card-text text-muted mb-0 me-2">Color:
+                                                                        </p>
+                                                                        <!-- Ô tròn màu sắc -->
+                                                                        <div style="
+                                                                                width: 20px;
+                                                                                height: 20px;
+                                                                                border-radius: 50%;
+                                                                                background-color: {{ $item->productVariant->color->name }};
+                                                                                border: 1px solid #ddd;">
+                                                                        </div>
+
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -258,6 +273,7 @@ h3 {
                                                             <input type="hidden" name="order_id"
                                                                 value="{{ $order->id }}" />
 
+                                                            <!-- Đánh giá -->
                                                             <div class="mb-4">
                                                                 <label for="rating" class="form-label">Your
                                                                     rating:</label>
@@ -297,14 +313,13 @@ h3 {
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit"
-                                                                class="btn btn-rating btn-primary w-100">
-                                                                Send
-                                                            </button>
+                                                                class="btn btn-rating btn-primary w-100">Send</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </td>
 
                                 </tr>
