@@ -551,7 +551,7 @@ Chi tiết sản phẩm
 @section('css')
 <link href="{{ asset('theme/client/cssfix/detail/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/client/cssfix/detail/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('theme/client/cssfix/detail/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
 <link href="{{ asset('theme/client/cssfix/detail/app.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/client/cssfix/detail/custom.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/client/cssfix/detail/comment.css') }}" rel="stylesheet" type="text/css" />

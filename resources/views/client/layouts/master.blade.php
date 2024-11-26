@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('theme/client/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/style.css') }}" type="text/css">
+    <link href="{{ asset('theme/admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
