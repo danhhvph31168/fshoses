@@ -38,7 +38,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="padding: 0;">
                 <!-- Header Section Begin -->
                 @include('client.layouts.header')
                 <!-- Header Section End -->

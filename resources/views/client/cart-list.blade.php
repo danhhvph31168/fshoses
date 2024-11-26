@@ -120,40 +120,40 @@
 
                     <h6>Giỏ hàng tổng cộng</h6>
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                     {{-- Thông báo thành công nếu có --}}
                     @if (session('message'))
-                        <div class="alert alert-success">
-                            {{ session('message') }}
-                        </div>
+                    <div class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
                     @endif
                     @if (session('discount'))
-                        <ul>
-                            @if (session('coupon.type') === 'fixed')
-                                <li>Bạn đã giảm: <span
-                                        class="cart-price total">{{ number_format(session('coupon.value') * 1000) }}
-                                        $</span></li>
-                            @else
-                                <li>Bạn đã giảm: <span class="cart-price total">{{ session('coupon.value') }} %</span>
-                                </li>
-                            @endif
-                            <li>Tổng cộng: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
-                            </li>
-                        </ul>
+                    <ul>
+                        @if (session('coupon.type') === 'fixed')
+                        <li>Bạn đã giảm: <span
+                                class="cart-price total">{{ number_format(session('coupon.value') * 1000) }}
+                                $</span></li>
+                        @else
+                        <li>Bạn đã giảm: <span class="cart-price total">{{ session('coupon.value') }} %</span>
+                        </li>
+                        @endif
+                        <li>Tổng cộng: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
+                        </li>
+                    </ul>
                     @else
-                        <ul>
-                            <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
-                            </li>
-                            <li>Tổng cộng: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
-                            </li>
-                        </ul>
+                    <ul>
+                        <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
+                        </li>
+                        <li>Tổng cộng: <span class="cart-price total">{{ number_format($totalAmount) }} $</span>
+                        </li>
+                    </ul>
                     @endif
                 </div>
             </div>
@@ -213,54 +213,6 @@ $(document).ready(function() {
     });
 });
 </script>
-
-{{-- <script>
-        $(document).on("click", ".qtybtn", function() {
-            var input = $(this).siblings(".quatity-input");
-            var quatity = parseInt(input.val());
-            var variant_id = parseInt(input.data("id"));
-            var cartUpdateUrl = @json(route('cart.update'));
-            console.log(variant_id, quatity, cartUpdateUrl);
-
-            $.ajax({
-                url: cartUpdateUrl,
-                method: "POST",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    variant_id: variant_id,
-                    quatity: quatity,
-                },
-                success: function(result) {
-                    data = result.data;
-                    console.log(data);
-                    $(`.cart-price-${variant_id}`).html(formatCurrencyVN(data.totalAmount));
-                    $(".cart__total-price").html(formatCurrencyVN(data.totalCart));
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                    console.log("Response Text: ", xhr.responseText);
-                }
-            });
-
-            var proQty = $('.pro-qty-2');
-            proQty.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
-            proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
-            proQty.on('click', '.qtybtn', function() {
-                var $button = $(this);
-                var oldValue = $button.parent().find('input').val();
-                if ($button.hasClass('inc')) {
-                    var newVal = parseFloat(oldValue) + 1;
-                } else {
-                    if (oldValue > 0) {
-                        var newVal = parseFloat(oldValue) - 1;
-                    } else {
-                        newVal = 0;
-                    }
-                }
-                $button.parent().find('input').val(newVal);
-            });
-        });
-    </script> --}}
 @endsection
 
 @section('css')

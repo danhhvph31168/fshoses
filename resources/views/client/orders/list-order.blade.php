@@ -86,7 +86,7 @@ Danh sách đặt hàng
                             @endif
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-center mt-4">
+                    <div class="mt-2 pb-3 mb-3">
                         {{ $orders->links() }}
                     </div>
                 </div>

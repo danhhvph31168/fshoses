@@ -22,8 +22,13 @@ Trang chủ
                 <div class="card shadow-sm h-100">
 
                     <div class="border-bottom" style="position: relative; overflow: hidden;">
+                        @if (\Str::contains($item->img_thumbnail, 'http'))
+                        <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
+                            style="height: 200px; object-fit: cover;">
+                        @else
                         <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top" alt="..."
                             style="height: 200px; object-fit: cover;">
+                        @endif
 
                         @if ($item->price_sale > 0)
                         <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
@@ -97,8 +102,13 @@ Trang chủ
                         <div class="card shadow-sm h-100">
                             <!-- Hình ảnh sản phẩm -->
                             <div class="border-bottom" style="position: relative; overflow: hidden;">
+                                @if (\Str::contains($item->img_thumbnail, 'http'))
+                                <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
+                                    style="height: 200px; object-fit: cover;">
+                                @else
                                 <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top" alt="..."
                                     style="height: 200px; object-fit: cover;">
+                                @endif
                                 @if ($item->price_sale > 0)
                                 <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
                                     Sale

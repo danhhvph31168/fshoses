@@ -615,8 +615,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Làm tối màu cho label của radio được chọn
             const selectedLabel = document.querySelector(`label[for="${this.id}"]`);
-            selectedLabel.style.borderColor = '#000'; // Viền màu đen
-            selectedLabel.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.5)'; // Thêm hiệu ứng tối
+            selectedLabel.style.borderColor = '#00FFFF'; // Viền màu xanh
+            selectedLabel.style.boxShadow = '0 0 5px rgba(0,255,255)'; // Thêm shadow xanh
         });
     });
 });
