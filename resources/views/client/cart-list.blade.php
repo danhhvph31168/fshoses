@@ -110,10 +110,10 @@
             <div class="col-lg-4">
                 <div class="cart__discount">
                     <h6>Discount codes</h6>
-                    <form action="#">
-                        <input type="text" placeholder="Coupon code">
+                    <form action="{{ route('cart.applyCoupon') }}" method="post">
+                        @csrf
+                        <input type="text" placeholder="Coupon code" name="code">
                         <button type="submit">Apply</button>
-                    </form>
                 </div>
                 <div class="cart__total">
 
@@ -155,6 +155,7 @@
                         </li>
                     </ul>
                     @endif
+                    <a href="{{ route('check-out') }}" class="primary-btn">Proceed to checkout</a>
                 </div>
             </div>
         </div>

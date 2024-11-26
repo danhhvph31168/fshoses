@@ -21,11 +21,11 @@ class RatingController extends Controller
     $product = Product::findOrFail($productId);
 
     // Tìm đơn hàng theo ID
-    $order = Order::findOrFail($orderId); // Sử dụng mô hình Order để tìm đơn hàng
+
     $productVariant = ProductVariant::findOrFail($productVariantId);
     // Trả về view để tạo rating
     // Bạn có thể muốn truyền cả cái đơn hàng vào view nếu cần thiết
-    return view('client.ratings.create', compact('product', 'order','productVariant'));
+    return view('client.ratings.create', compact('product','productVariant'));
 }
 
 

@@ -188,7 +188,7 @@
                             @endforeach
 
                             <ul class="checkout__total__all">
-                                <li>Total <span>{{ number_format($totalAmount) }} VNĐ</span></li>
+                                <li>Total <span>{{ number_format($totalAmount) }} $</span></li>
                             </ul>
 
                             <input type="hidden" name="totalAmount" value="{{ $totalAmount }}">

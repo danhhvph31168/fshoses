@@ -235,20 +235,23 @@ h3 {
                                                         <div class="row g-0">
                                                             <!-- Cột chứa hình ảnh -->
                                                             <div class="col-md-7">
-                                                                <img src="https://via.placeholder.com/500x300?text=Sản+Phẩm+Đẹp"
+                                                                <img src="{{ $item->productVariant->product->img_thumbnail }}"
                                                                     class="img-fluid rounded-start" alt="Sản phẩm" />
                                                             </div>
                                                             <!-- Cột chứa nội dung văn bản -->
                                                             <div class="col-md-3">
                                                                 <div
                                                                     class="card-body d-flex flex-column justify-content-center h-100">
-                                                                    <h5 class="card-title">Sản phẩm đẹp</h5>
-                                                                    <p class="card-text text-muted">Giá: 500,000 VND</p>
+                                                                    <h5 class="card-title">{{ $item->productVariant->product->name }}</h5>
+                                                                    <p class="card-text text-muted">Price: {{ $item->price }}</p>
+                                                                    <p class="card-text text-muted">Color: {{ $item->productVariant->color->name }}</p>
+                                                                    <p class="card-text text-muted">Size: {{ $item->productVariant->size->name }}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <form action="" method="POST">
+                                                    <form action="{{ route('ratings.store') }}" method="POST">
+                                                        @csrf
                                                         <div class="modal-body">
                                                             <input type="hidden" name="user_id"
                                                                 value="{{ auth()->id() }}" />

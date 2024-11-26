@@ -24,7 +24,7 @@ class CartController extends Controller
             $cart = [];
         }
         $totalAmount = $totalAmount - $discount;
-        
+        session(['totalAmount' => $totalAmount]);
         return view('client.cart-list', compact('totalAmount', 'cart',  'discount'));
     }
     public function add(Request $request)

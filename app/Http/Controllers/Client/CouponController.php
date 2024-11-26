@@ -25,23 +25,23 @@ class CouponController extends Controller
 
         $messages = [];
         if (!$coupon) {
-            $messages[] = 'Coupon không tồn tại!';
+            $messages[] = 'Coupon does not exist!!';
             return redirect()->route('cart.list')->withErrors($messages);
         }
 
         if (!$coupon->is_active) {
-            $messages[] = 'Coupon không còn hiệu lực!';
+            $messages[] = 'Coupon is no longer valid!';
             return redirect()->route('cart.list')->withErrors($messages);
         }
 
         $currentDate = now();
         if ($currentDate < $coupon->start_date || $currentDate > $coupon->end_date) {
-            $messages[] = 'Coupon không còn hiệu lực!';
+            $messages[] = 'Coupon is no longer valid!';
             return redirect()->route('cart.list')->withErrors($messages);
         }
 
         if ($coupon->quantity <= 0) {
-            $messages[] = 'Coupon đã hết số lượng!';
+            $messages[] = 'Coupon is out of stock!';
             return redirect()->route('cart.list')->withErrors($messages);
         }
         // Tính toán giảm giá
@@ -52,10 +52,11 @@ class CouponController extends Controller
 
         // Lưu coupon vào session
         session(['coupon' => [
+            'code' => $coupon->code,
             'type' => $coupon->type,
             'value' => $coupon->value,
         ]]);
-        session(['discount' => $discount]);
+        
 
         // Chuyển hướng về view cart với thông báo thành công
         return redirect()->route('cart.list')->with(['discount' => $discount]);

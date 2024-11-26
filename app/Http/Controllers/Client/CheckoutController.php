@@ -25,15 +25,7 @@ class CheckoutController extends Controller
     {
         $cart = session('cart');
 
-        $totalAmount = 0;
-        if (session()->has('cart')) {
-
-            foreach ($cart as $item) {
-                $totalAmount += $item['quatity'] * ($item['price_sale'] ?: $item['price_regular']);
-            }
-        } else {
-            $cart = [];
-        }
+        $totalAmount = session('totalAmount');
 
         return view('client.checkout', compact('cart', 'totalAmount'));
     }
