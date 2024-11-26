@@ -1,8 +1,16 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Auth\AuthenController;
+use App\Http\Controllers\Auth\EmployeeController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Client\AccountController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\CheckEmployee;
+use App\Http\Middleware\CheckUser;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,16 +23,5 @@ use App\Http\Controllers\Admin\ProductController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 
-Route::prefix('products')
-    ->as('products.')
-    ->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('index');
-        // Route::post('store', [ProductController::class, 'store'])->name('store');
-        // Route::put('{id}/update', [ProductController::class, 'update'])->name('update');
-        // Route::delete('{id}/destroy', [ProductController::class, 'destroy'])->name('destroy');
-    });

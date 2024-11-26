@@ -29,18 +29,16 @@
     <link rel="stylesheet" href="{{ asset('theme/client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/style.css') }}" type="text/css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css"
-        type="text/css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
+
+    @yield('css')
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="p-0">
                 <!-- Header Section Begin -->
                 @include('client.layouts.header')
                 <!-- Header Section End -->
@@ -83,30 +81,9 @@
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/main.js') }}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    @yield('js')
 
-
-    {{-- <script>
-        $(document).ready(function() {
-            $("#slider-range").slider({
-                orientation: "horizonal",
-                range: true,
-                min: {{ $minimum_price }},
-                max: {{ $maximum_price }},
-                step: 100000,
-                values: [{{ $minimum_price }}, {{ $maximum_price }}],
-                slide: function(event, ui) {
-                    $("#amount").val(ui.values[0] + " vnđ " + " - " + ui.values[1] + " vnđ ");
-                    $("#minimun_price").val(ui.values[0] + " vnđ ");
-                    $("#maximun_price").val(ui.values[1] + " vnđ ");
-                }
-            });
-            $("#amount").val($("#slider-range").slider("values", 0) + " vnđ " +
-                " - " + $("#slider-range").slider("values", 1) + " vnđ ");
-        });
-    </script> --}}
+    @yield('scripts')
 
 </body>
 

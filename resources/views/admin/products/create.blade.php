@@ -126,9 +126,7 @@
                                         @php
                                             $is = [
                                                 'is_active' => 'info',
-                                                'is_hot_deal' => 'secondary',
-                                                // 'is_new' => 'success',
-                                                // 'is_good_deal' => 'warning',
+                                                'is_sale' => 'secondary',
                                                 'is_show_home' => 'danger',
                                             ];
                                         @endphp

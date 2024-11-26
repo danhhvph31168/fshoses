@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
+use App\Models\Coupon;
 
 return new class extends Migration
 {
@@ -11,8 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->boolean('status')->default(true)->after('name');
+        Schema::create('coupon_usages', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(Coupon::class)->constrained();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::dropIfExists('coupon_usages');
     }
 };

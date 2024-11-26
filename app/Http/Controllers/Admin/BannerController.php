@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,11 +23,8 @@ class BannerController extends Controller
 
             $data = Banner::query()->latest('id')->paginate(5);
 
-            // dd($data);
-
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
-
             return back()->with('error', 'Access denied!');
         }
     }

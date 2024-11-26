@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreUserRequest;
@@ -34,6 +32,7 @@ class UserController extends Controller
         }
 
         $user = Auth::user();
+
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
@@ -44,14 +43,13 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(User $user)
     {
-        $user = Auth::user();
+
         $role = Role::query()->pluck('name', 'id')->all();
 
-        // dd($role);
-        if ($user->role_id == 1) {
-            return view(self::PATH_VIEW . __FUNCTION__, compact('role'));
+        if (Auth::user()->role_id == 1) {
+            return view(self::PATH_VIEW . __FUNCTION__, compact('role', 'user'));
         } else {
             return back()->with('error', 'Access denied!');
         };
@@ -62,7 +60,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-
         if (Auth::user()->role_id == 1) {
 
             $data = $request->except('avatar');
@@ -89,6 +86,8 @@ class UserController extends Controller
         $user = Auth::user();
         $data = User::query()->findOrFail($id);
 
+        // dd( $data);
+
         if ($user->role_id === 1) {
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
@@ -102,55 +101,69 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = Auth::user();
+
         $model = User::query()->findOrFail($id);
-        // dd($data);
 
         $role = Role::query()->pluck('name', 'id')->all();
-        if ($user->role_id == 1) {
+
+        if (Auth::user()->role_id == 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('model', 'role'));
         } else {
             return back()->with('error', 'Access denied!');
         };
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateUserRequest $request, string $id)
-    {
-        $user = Auth::user();
+    // public function update(UpdateUserRequest $request, string $id)
+    // {
+    //     $model = User::query()->findOrFail($id);
 
-        $model = User::query()->findOrFail($id);
+    //     // if (Auth::user()->role_id == 1) {
 
-        if ($user->role_id == 1) {
+    //     $data = $request->except('avatar');
 
-            if ($model->email == $request->email) {
+    //     if ($request->hasFile('avatar')) {
+    //         $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
+    //     }
+    //     $currentAvatar = $model->avatar;
 
-                $data['email'] = $model->email;
+    //     $model->update($data);
 
-                $data = $request->except('avatar');
+    //     if ($request->hasFile('cover')  && $currentAvatar && Storage::exists($currentAvatar)) {
+    //         Storage::delete($currentAvatar);
+    //     }
 
-                if ($request->hasFile('avatar')) {
-                    $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
-                }
+    //     // $data['province'] = (empty($model->province)) ? $request->province_text : $model->province;
+    //     // $data['district'] = (empty($model->district)) ? $request->district_text : $model->district;
+    //     // $data['ward'] = (empty($model->ward)) ? $request->ward_text : $model->ward;
+    //     // $data['avatar'] = (empty($request->avatar)) ? $model->avatar : $data['avatar'];
 
-                $currentAvatar = $model->avatar;
+    //     // $data = [
+    //     //     'name'      => $request->name,
+    //     //     'avatar'    => $data['avatar'] ,
+    //     //     'phone'     => $request->phone,
+    //     //     'address'   => $request->address,
+    //     //     'district' => $data['district'],
+    //     //     'province' => $data['province'],
+    //     //     'ward' => $data['ward'],
+    //     //     'zip_code'  => $request->zip_code,
+    //     //     'role_id' => $request->role_id,
+    //     //     'password' => $request->password,
+    //     //     'status' => $request->status
+    //     // ];
 
-                $model->update($data);
+    //     // dd($data);
 
-                if ($request->hasFile('cover') && $currentAvatar && Storage::exists($currentAvatar)) {
-                    Storage::delete($currentAvatar);
-                }
+    //     return redirect()->back()->with('success', 'Account information updated successfully.');
+    //     // } else {
+    //     //     return back()->with('error', 'Access denied!');
+    //     // };
 
-                return redirect()->route('admin.users.index')->with('success', 'Account updated successfully!');
-            } else {
-                return back()->with('error', 'The email has already been taken!');
-            }
-        } else {
-            return back()->with('error', 'Access denied!');
-        };
-    }
+    //     // return response()->json([
+    //     //     'status' => 'Thành công',
+    //     //     'message' => 'Cập nhật người dùng thành công.',
+    //     //     'account' => $user, // Trả về thông tin người dùng đã cập nhật
+    //     // ], 200);
+    // }
 
     /**
      * Remove the specified resource from storage.

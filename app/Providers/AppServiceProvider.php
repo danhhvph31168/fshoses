@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,8 +30,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('brd', 'cate'));
         });
 
-        view()->composer('client.layouts.sidebar', function ($view) {            
-
+        view()->composer('client.layouts.sidebar', function ($view) {
             $brd = Brand::orderBy('name', 'ASC')->where('status', 1)->get();
             $cate = Category::orderBy('name', 'ASC')->where('is_active', 1)->get();
             $view->with(compact('brd', 'cate'));

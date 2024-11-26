@@ -1,4 +1,3 @@
-{{-- <div class="container"> --}}
 <section class="hero">
     @foreach ($banners as $item)
         <div class="hero__slider owl-carousel">
@@ -12,12 +11,6 @@
                                 <p>{{ $item->description }}</p>
                                 <a href="{{ route('client.product-list') }}" class="primary-btn">Shop now <span
                                         class="arrow_right"></span></a>
-                                {{-- <div class="hero__social">
-                                        <a href="#"><i class="fa fa-facebook"></i></a>
-                                        <a href="#"><i class="fa fa-twitter"></i></a>
-                                        <a href="#"><i class="fa fa-pinterest"></i></a>
-                                        <a href="#"><i class="fa fa-instagram"></i></a>
-                                    </div> --}}
                             </div>
                         </div>
                     </div>
@@ -25,8 +18,6 @@
             </div>
     @endforeach
 </section>
-{{-- </div> --}}
-
 
 <style>
     .primary-btn {

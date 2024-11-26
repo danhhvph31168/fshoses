@@ -51,8 +51,6 @@
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismis="alert" aria-label="Close">
-            </button>
         </div>
     @endif
 
@@ -82,44 +80,67 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Address: </label>
-                                    <input type="text" id="address" name="address"
-                                        class="form-control @error('address') is_invalid @enderror"
-                                        value="{{ $model->address }}">
-                                    @error('address')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="province" class="form-label">Province</label>
+                                            <select id="province"
+                                                class="form-control pb-1 @error('province') is-invalid @enderror"
+                                                name="province">
+                                                <option value="">{{ $model->province }}</option>
+                                            </select>
+                                            <input type="hidden" name="province_text" id="province_text">
+                                            @error('province')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="ward" class="form-label">Ward</label>
+                                            <select id="ward"
+                                                class="form-control pb-1 @error('ward') is-invalid @enderror"
+                                                name="ward">
+                                                <option value="" selected>{{ $model->ward }}</option>
+                                            </select>
+                                            <input type="hidden" name="ward_text" id="ward_text">
+                                            @error('ward')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="district" class="form-label">District: </label>
-                                    <input type="text" id="district" name="district"
-                                        class="form-control @error('district') is_invalid @enderror"
-                                        value="{{ $model->district }}">
-                                    @error('district')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="district" class="form-label">District</label>
+                                            <select id="district"
+                                                class="form-control pb-1 @error('district') is-invalid @enderror"
+                                                name="district">
+                                                <option value="">{{ $model->district }}</option>
+                                            </select>
+                                            <input type="hidden" name="district_text" id="district_text">
+                                            @error('district')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
 
-                                <div class="mb-3">
-                                    <label for="province" class="form-label">Province: </label>
-                                    <input type="text" id="province" name="province"
-                                        class="form-control @error('province') is_invalid @enderror"
-                                        value="{{ $model->province }}">
-                                    @error('province')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Address</label>
+                                            <input type="text"
+                                                class="form-control @error('address') is-invalid @enderror" name="address"
+                                                value="{{ $model->address }}" id="address" placeholder="Enter address">
+                                            @error('address')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="balance" class="form-label">Balance: </label>
-                                    <input type="number" id="balance" name="balance" min="0"
-                                        class="form-control @error('balance') is_invalid @enderror"
-                                        value="{{ $model->balance }}">
-                                    @error('balance')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
                                 </div>
 
                                 <div class="mb-3">
@@ -184,7 +205,7 @@
                                     <label for="email" class="form-label">Email: </label>
                                     <input type="text" id="email" name="email"
                                         class="form-control @error('email') is_invalid @enderror"
-                                        value="{{ $model->email }}">
+                                        value="{{ $model->email }}" readonly>
                                     @error('email')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
@@ -211,7 +232,7 @@
                             </div>
 
                             <div class="d-flex ">
-                                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                <button type="submit" class="btn btn-primary me-2" id="submit">Submit</button>
                                 <a href="{{ route('admin.users.index') }}"><i
                                         class="btn btn-success ri-arrow-go-back-fill"></i></a>
                             </div>
@@ -224,11 +245,110 @@
 @endsection
 
 @section('css')
+    <link href="{{ asset('theme/client/cssfix/profile/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/client/cssfix/profile/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/client/cssfix/profile/custom.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/client/cssfix/profile/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .header__menu ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .col-md-6 {
+            padding: 0 15px;
+        }
+
+        .container {
+            max-width: 1320px;
+        }
+
+        body {
+
+            background-color: #F5F5F5;
+        }
+
+        footer {
+            width: 100%;
+        }
+    </style>
 @endsection
 
 @section('js')
-    {{-- <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        const host = "https://provinces.open-api.vn/api/";
+        var callAPI = (api) => {
+            let row = `<option value="">{{ $model->province ? $model->province : 'Chọn' }}</option>`;
+            return axios.get(api)
+                .then((response) => {
+                    // const a = $model->province
+                    // const data = response.data.filter(item => item !== a);
+                    // console.log(response.data)
+                    renderData(response.data, "province", row);
+                });
+        }
+        callAPI('https://provinces.open-api.vn/api/?depth=1');
+        let row = `<option  value="">Chọn</option>`;
+        var callApiDistrict = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district", row);
+                });
+        }
+        var callApiWard = (api) => {
+            let row = `<option  value="">Chọn</option>`;
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward", row);
+                });
+        }
+
+        var renderData = (array, select, row) => {
+            array.forEach(element => {
+                row += `<option value="${element.code}">${element.name}</option>`
+            });
+            document.querySelector("#" + select).innerHTML = row
+        }
+
+        $("#province").change(() => {
+            callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
+            printResult();
+        });
+        $("#district").change(() => {
+            callApiWard(host + "d/" + $("#district").val() + "?depth=2");
+            printResult();
+        });
+        $("#ward").change(() => {
+            printResult();
+        })
+
+        var printResult = () => {
+            if ($("#district").val() != "" && $("#province").val() != "" &&
+                $("#ward").val() != "") {
+                let result = $("#province option:selected").text() +
+                    " | " + $("#district option:selected").text() + " | " +
+                    $("#ward option:selected").text();
+                $("#result").text(result)
+            }
+
+
+            $('#submit').click(function() {
+                $('#provinceText').val($('#province option:selected').text());
+                $('#districtText').val($('#district option:selected').text());
+                $('#wardText').val($('#ward option:selected').text());
+            })
+        }
+    </script>
 @endsection
+
 
 @section('scripts')
     <script>
@@ -254,27 +374,6 @@
         function removeImageGallery(id) {
             if (confirm('Chắc chắn xóa không?')) {
                 $('#' + id).remove();
-            }
-        }
-    </script>
-@endsection
-
-@section('js')
-    <script>
-        function showImage(event) {
-            const img_danh_muc = document.getElementById('img_danh_muc');
-
-            const file = event.target.files[0];
-
-            const reader = new FileReader();
-
-            reader.onload = function() {
-                img_danh_muc.src = reader.result;
-                img_danh_muc.style.display = 'block';
-            }
-
-            if (file) {
-                reader.readAsDataURL(file);
             }
         }
     </script>

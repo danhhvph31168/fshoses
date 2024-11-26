@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
-            $table->boolean('is_show')->default(true)->after('comment');
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('status')->default(true)->after('img_thumbnail');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
-            $table->dropColumn('is_show');
+        Schema::table('products', function (Blueprint $table) {
+            //
         });
     }
 };

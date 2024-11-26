@@ -25,12 +25,5 @@ class ReviewRequest extends FormRequest
             'comment' => 'required|string|max:1000',
         ];
     }
-    public function messages(): array
-    {
-        return [
-            'comment.required' => 'Bình luận không được để trống. Vui lòng nhập nội dung bình luận.',
-            'comment.string' => 'Bình luận phải là chuỗi ký tự.',
-            'comment.max' => 'Bình luận không được vượt quá 1000 ký tự.',
-        ];
-    }
+
 }

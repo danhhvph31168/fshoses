@@ -14,7 +14,7 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    
+
     protected $fillable = [
         'category_id',
         'brand_id',
@@ -28,10 +28,11 @@ class Product extends Model
         'description',
         'content',
         'is_active',
-        'is_hot_deal',
+        'is_sale',
         'is_show_home',
         'is_delete',
     ];
+
 
     protected $casts = [
         'is_active' => 'boolean',
@@ -43,7 +44,6 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
     public function galleries()
     {
         return $this->hasMany(ProductGallery::class);
@@ -53,10 +53,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariant::class);
     }
+
     public function brand()
     {
         return $this->belongsTo(Brand::class);
     }
 
-  
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

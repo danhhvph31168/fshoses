@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tag;
+
 use App\Models\Product;
 use App\Models\ProductSize;
 use Illuminate\Support\Str;
@@ -21,6 +21,9 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+
+        Product::factory()->count(10)->create();
+
         Schema::disableForeignKeyConstraints();
 
         ProductVariant::query()->truncate();

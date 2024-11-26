@@ -2,7 +2,7 @@
 
 namespace App\Services\DashBoard;
 
-use App\Models\{Order, OrderItem, Product, Refund,};
+use App\Models\{Order, OrderItem, Product};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,17 +43,15 @@ class HandleChartServices
             'filterDayOrder' => $filterDate(Order::where('status_order', Order::STATUS_ORDER_DELIVERED), $request->dateStart, $request->dateEnd)->count(),
             'filterDayOrderCancel' => $filterDate(Order::where('status_order', Order::STATUS_ORDER_CANCELED), $request->dateStart, $request->dateEnd)->count(),
             'filterDayEarning' => $filterDate(Order::where('status_order', Order::STATUS_ORDER_DELIVERED), $request->dateStart, $request->dateEnd)->sum('total_amount'),
-            'filterDayRefund' => $filterDate(Refund::query(), $request->dateStart, $request->dateEnd)->count(),
             'filterDayProduct' => $filterDate(OrderItem::whereHas('order', function ($query) {
                 $query->where('status_order', Order::STATUS_ORDER_DELIVERED);
             }), $request->dateStart, $request->dateEnd)->count(),
         ];
-        // dd($dataDate);
 
         return $dataDate;
     }
 
-    public function handleChart(Request $request, $currentYear, $totalAmounts, $orderCounts, $refundCounts, $orderCountsCancel, $productCounts)
+    public function handleChart(Request $request, $currentYear, $totalAmounts, $orderCounts, $orderCountsCancel, $productCounts)
     {
         if (isset($request->filteryear)) {
             for ($month = 1; $month <= 12; $month++) {
@@ -71,11 +69,6 @@ class HandleChartServices
 
                 $orderCountsCancel[] = Order::query()
                     ->where('status_order', Order::STATUS_ORDER_CANCELED)
-                    ->whereYear('created_at', $request->filteryear)
-                    ->whereMonth('created_at', $month)
-                    ->count();
-
-                $refundCounts[] = Refund::query()
                     ->whereYear('created_at', $request->filteryear)
                     ->whereMonth('created_at', $month)
                     ->count();
@@ -106,11 +99,6 @@ class HandleChartServices
                     ->whereMonth('created_at', $month)
                     ->count();
 
-                $refundCounts[] = Refund::query()
-                    ->whereYear('created_at', $currentYear)
-                    ->whereMonth('created_at', $month)
-                    ->count();
-
                 $productCounts[] = OrderItem::query()->whereHas('order', function ($query) {
                     $query->where('status_order', Order::STATUS_ORDER_DELIVERED);
                 })->whereYear('created_at', $currentYear)
@@ -119,7 +107,7 @@ class HandleChartServices
             }
         }
 
-        return [$totalAmounts, $orderCounts, $refundCounts, $orderCountsCancel, $productCounts];
+        return [$totalAmounts, $orderCounts, $orderCountsCancel, $productCounts];
     }
 
     public function handleMap($orderPercentages)
