@@ -225,9 +225,9 @@ h3 {
 
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Ratings and
+                                                        <p class="modal-title fs-5" id="exampleModalLabel">Ratings and
                                                             Reviews
-                                                        </h3>
+                                                        </p>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
@@ -242,7 +242,7 @@ h3 {
                                                             <div class="col-md-3">
                                                                 <div
                                                                     class="card-body d-flex flex-column justify-content-center h-100">
-                                                                    <h5 class="card-title fw-bold">Sản phẩm đẹp</h5>
+                                                                    <h5 class="card-title">Sản phẩm đẹp</h5>
                                                                     <p class="card-text text-muted">Giá: 500,000 VND</p>
                                                                 </div>
                                                             </div>
@@ -256,7 +256,7 @@ h3 {
                                                                 value="{{ $order->id }}" />
 
                                                             <div class="mb-4">
-                                                                <label for="rating" class="form-label fw-bold">Your
+                                                                <label for="rating" class="form-label">Your
                                                                     rating:</label>
                                                                 <div class="rating">
                                                                     <input type="radio" id="star5" name="value"
@@ -284,7 +284,7 @@ h3 {
 
                                                             <!-- Nhận xét -->
                                                             <div class="mb-4">
-                                                                <label for="comment" class="form-label fw-bold">Your
+                                                                <label for="comment" class="form-label">Your
                                                                     review:</label>
                                                                 <textarea class="form-control" id="comment"
                                                                     name="comment" rows="4"
