@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-// use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCategoryRequest;
 
@@ -20,7 +19,7 @@ class CategoryController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $data = Category::query()->with(['parent', 'children'])->latest('id')->paginate(10);
+        $data = Category::query()->latest('id')->paginate(10);
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
@@ -34,7 +33,7 @@ class CategoryController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $parentCategories = Category::query()->with('children')->whereNull('parent_id')->get();
+        $parentCategories = Category::query()->get();
 
         // dd($parentCategories);
         if ($user->role_id === 1) {
@@ -80,7 +79,7 @@ class CategoryController extends Controller
         $user = Auth::user();
         $model = Category::query()->findOrFail($id);
 
-        $parentCategories = Category::query()->with('children')->whereNull('parent_id')->get();
+        $parentCategories = Category::query()->get();
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('model', 'parentCategories'));
         } else {

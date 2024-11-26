@@ -3,58 +3,35 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\StoreRequest;
-use App\Http\Requests\UpdateOrderRequest;
-use App\Models\{Order};
+use App\Models\{Brand, Category, Order};
 use App\Services\OrderAdmin\OrderFormServices;
 use App\Services\OrderAdmin\OrderServices;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
     const PATH_VIEW = 'admin.orders.';
 
     public function __construct(public OrderServices $orderServices, public OrderFormServices $orderFormServices) {}
+
     public function index()
     {
-        $data = Order::query()->with(['user', 'role'])->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
-    }
+        $data = Order::query()->with(['user', 'role'])->latest('id')->paginate(10);
 
-    public function create()
-    {
-        $data = $this->orderFormServices->handleFormCreate();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            DB::transaction(function () {
-
-                [$totalAmout, $productVariantID]  = $this->orderServices->handleProductVariant();
-
-                $order = $this->orderServices->createOrder($totalAmout);
-
-                $this->orderServices->createOrderItem($productVariantID, $order);
-
-                $this->orderServices->createPayment($order);
-            });
-
-            return back()->with('success', 'Đặt hàng thành công');
-        } catch (\Exception $th) {
-
-            dd($th->getMessage());
-
-            return back()->with('error', 'Lỗi đặt hàng: ' . $th->getMessage());
+        if ($key = request()->key) {
+            $data = Order::query()->with(['user', 'role'])->latest('id')
+                ->where('sku_order', 'like', '%' . $key . '%')
+                ->orwhere('user_name', 'like', '%' . $key . '%')
+                ->paginate(5);
         }
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     public function edit($id)
     {
-        $order = Order::query()->with(['user', 'role', 'orderItems', 'payment', 'refund'])->findOrFail($id);
+        $order = Order::query()->with(['user', 'role', 'orderItems', 'payment'])->findOrFail($id);
 
         $dataOrderItem = [];
         foreach ($order->orderItems as $orderItems) {
@@ -82,6 +59,7 @@ class OrderController extends Controller
             DB::beginTransaction();
 
             $order = Order::query()->findOrFail($id);
+
             if (!($order->status_order == Order::STATUS_ORDER_CANCELED || $order->status_order == Order::STATUS_ORDER_DELIVERED)) {
                 $order->update([
                     'status_order'   => request('status_order'),
@@ -90,14 +68,23 @@ class OrderController extends Controller
             }
 
             $payment = $order->payment;
+
             $payment->update([
                 'status' => request('payment_status'),
             ]);
 
+            // Log::info($order);
+
+            // $log = DB::table('telescope_entries')->where('type', 'log')->get()
+            //     ->map(function ($log) {
+            //         $log->decoded_content = json_decode($log->content, true); // Giải mã content
+            //         return $log;
+            //     });;
+
             DB::commit();
 
             return back()->with('success', 'Đặt hàng thành công');
-        } catch (\Exception $th) {
+        } catch (\Throwable $th) {
 
             dd($th->getMessage());
 

@@ -131,7 +131,7 @@
                                         @php
                                             $is = [
                                                 'is_active' => 'info',
-                                                'is_hot_deal' => 'secondary',
+                                                'is_sale' => 'secondary',
                                                 'is_show_home' => 'danger',
                                             ];
                                         @endphp
@@ -192,10 +192,10 @@
                                     </thead>
                                     <tbody>
                                         @php
+
                                             $productVariants = [];
                                             $product->productVariants->map(function ($item) use (&$productVariants) {
                                                 $key = $item->product_size_id . '-' . $item->product_color_id;
-                                                // dd($key);
 
                                                 $productVariants[$key] = [
                                                     'quantity' => $item->quantity,

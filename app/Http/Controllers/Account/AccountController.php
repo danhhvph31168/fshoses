@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
-
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -16,92 +14,124 @@ use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
+    const PATH_UPLOAD = 'users';
     public function showFormUpdateProfile()
     {
-        $user = Auth::user();
+        if (request()->query()) {
+            return redirect()->route('showFormUpdateProfile');
+        }
 
-        return view('profiles.formProfile', compact('user'));
-        // return response()->json([
-        //     'status' => 'Success',
-        //     'account' => $user,
-        // ], 200); 
+        $user = User::findOrFail(Auth::user()->id);
+
+        return view('client.profiles.form-update-profile', compact('user'));
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
     {
-        $user = Auth::user();
-        $linkAvatar = $user->avatar; // Giữ lại ảnh cũ
+        $user = User::query()->findOrFail(Auth::user()->id);
 
-        if ($request->hasFile('avatar')) {  // Kiểm tra xem request có gửi ảnh mới lên không
-            if ($user->avatar) {
-                Storage::delete($user->avatar); // Nếu có avatar cũ thì xóa file cũ trong storage
-            }
+        $data = $request->except('avatar');
 
-            $image = $request->file('avatar'); // Lấy file ảnh mới từ request
-            $newNameImage = time() . '.' . $image->getClientOriginalExtension(); // Tạo tên mới cho ảnh
+        if ($request->hasFile('avatar')) {
+            $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
+        }
+        $currentAvatar = $user->avatar;
 
-            // Lưu ảnh mới vào thư mục storage/app/public/images-profile/
-            $linkAvatar = $image->storeAs('public/images-profile', $newNameImage);
-            $linkAvatar = Storage::url($linkAvatar);  // Tạo đường dẫn công khai để truy cập file
+        if ($request->hasFile('cover')  && $currentAvatar && Storage::exists($currentAvatar)) {
+            Storage::delete($currentAvatar);
         }
 
-        // Cập nhật dữ liệu người dùng
+        $data['province'] = (empty($user->province) || is_numeric($user->province)) ? $request->province_text : $user->province;
+        $data['district'] = (empty($user->district) || is_numeric($user->district)) ? $request->district_text : $user->district;
+        $data['ward'] = (empty($user->ward) || is_numeric($user->ward)) ? $request->ward_text : $user->ward;
+        $data['avatar'] = (empty($request->avatar)) ? $user->avatar : $data['avatar'];
+   
         $data = [
             'name' => $request->name,
-            'email' => $request->email,
-            'avatar' => $linkAvatar,    
+            'avatar' =>  $data['avatar'],
             'phone' => $request->phone,
             'address' => $request->address,
-            'balance' => $request->balance,
-            'district' => $request->district,
-            'province' => $request->province,
+            'district' => $data['district'],
+            'province' => $data['province'],
+            'ward' => $data['ward'],
             'zip_code' => $request->zip_code,
         ];
 
+        // $data = [
+        //             'name'      => $request->name,
+        //             'avatar'    => $data['avatar'],
+        //             'phone'     => $request->phone,
+        //             'address'   => $request->address,
+        //             'district'  => $request->district_text,
+        //             'province'  => $request->province_text,
+        //             'ward'      => $request->ward_text,
+        //             'zip_code'  => $request->zip_code,
+        //         ];
+
+        dd($data);
+
         $user->update($data);
 
-        return redirect()->back()->with('message', 'Cập nhật người dùng thành công.');
-        // return response()->json([
-        //     'status' => 'Thành công',
-        //     'message' => 'Cập nhật người dùng thành công.',
-        //     'account' => $user, // Trả về thông tin người dùng đã cập nhật
-        // ], 200);
+        return redirect()->back()->with('success', 'Account information updated successfully.');
     }
+
+    // public function handleUpdateProfile(UpdateProfileRequest $request)
+    // {
+    //     $user = Auth::user();
+    //     $linkAvatar = $user->avatar; // Giữ lại ảnh cũ
+
+    //     if ($request->hasFile('avatar')) {  // Kiểm tra xem request có gửi ảnh mới lên không
+    //         if ($user->avatar) {
+    //             Storage::delete($user->avatar); // Nếu có avatar cũ thì xóa file cũ trong storage
+    //         }
+
+    //         $image = $request->file('avatar'); // Lấy file ảnh mới từ request
+    //         $newNameImage = time() . '.' . $image->getClientOriginalExtension(); // Tạo tên mới cho ảnh
+
+    //         // Lưu ảnh mới vào thư mục storage/app/public/images-profile/
+    //         $linkAvatar = $image->storeAs('users', $newNameImage);
+    //         $linkAvatar = Storage::url($linkAvatar);  // Tạo đường dẫn công khai để truy cập file
+    //     }
+
+    //     // Cập nhật dữ liệu người dùng
+    //     $data = [
+    //         'name'      => $request->name,
+    //         'avatar'    => $linkAvatar,
+    //         'phone'     => $request->phone,
+    //         'address'   => $request->address,
+    //         'district'  => $request->district_text,
+    //         'province'  => $request->province_text,
+    //         'ward'      => $request->ward_text,
+    //         'zip_code'  => $request->zip_code,
+    //     ];
+
+    //     $user->update($data);
+
+    //     return redirect()->back()->with('success', 'Account information updated successfully.');
+    // }
+
 
     public function showFormChangePassword()
     {
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Form thay đổi mật khẩu.',
-        // ], 200);
-        return view('profiles.showFormChangePassword');
+        $user = User::findOrFail(Auth::user()->id);
+        return view('client.profiles.form-change-password', compact('user'));
     }
+
     public function handleChangePassword(ChangePasswordRequest $request)
     {
+
         $user = Auth::user();
 
-        // Kiểm tra mật khẩu hiện tại
         if (!Hash::check($request->old_password, $user->password)) {
-            // return response()->json([
-            //     'status' => 'error',
-            //     'message' => 'Mật khẩu hiện tại không đúng.'
-            // ], 422);
             throw ValidationException::withMessages([
-                'old_password' => ['Mật khẩu hiện tại không đúng.'],
+                'old_password' => ['The current password is incorrect.'],
             ]);
         }
 
-        // Cập nhật mật khẩu mới
         $user->update([
             'password' => Hash::make($request->password),
         ]);
 
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Thay đổi mật khẩu thành công.'
-        // ], 200);
-        // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->back()->with('message', 'Thay đổi mật khẩu thành công.');
+        return redirect()->back()->with('success', 'Password changed successfully.');
     }
-
 }

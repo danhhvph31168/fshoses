@@ -27,10 +27,12 @@ class ProductController extends Controller
     {
 
         if (Auth::user()->role_id == 1) {
+            $brands = Brand::pluck('name', 'id')->all();
+            $categories = Category::pluck('name', 'id')->all();
 
             $data = Product::query()->with(['category', 'brand'])->latest('id')->paginate(5);
 
-            return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+            return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'brands', 'categories'));
         } else {
 
             return back()->with('error', 'Access denied!');
@@ -56,7 +58,6 @@ class ProductController extends Controller
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'sizes', 'colors', 'brands'));
         } else {
-            
             return back()->with('error', 'Access denied!');
         }
     }
@@ -66,7 +67,6 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-
         if (Auth::user()->role_id == 1) {
 
             list($dataProduct, $dataProductVariants, $dataProductGalleries)
@@ -77,13 +77,10 @@ class ProductController extends Controller
 
                 $product = Product::query()->create($dataProduct);
 
-                // dd($product);
-
                 foreach ($dataProductVariants as $item) {
                     $item += ['product_id' => $product->id];
                     ProductVariant::query()->create($item);
                 }
-
 
                 foreach ($dataProductGalleries as $item) {
                     $item += ['product_id' => $product->id];
@@ -96,6 +93,7 @@ class ProductController extends Controller
                     ->with('success', 'Product created Successfully!');
             } catch (\Throwable $th) {
                 DB::rollBack();
+                dd($th->getMessage());
 
                 if (!empty($dataProduct['img_thumbnail']) && Storage::exists($dataProduct['img_thumbnail'])) {
                     Storage::delete($dataProduct['img_thumbnail']);
@@ -111,13 +109,13 @@ class ProductController extends Controller
                     Storage::delete($dataProductGalleries['image']);
                 }
 
-                // dd($th->getMessage());
                 return back()->with('error', $th->getMessage());
             }
         } else {
             return back()->with('error', 'Access denied!');
         }
     }
+
 
     public function show(Product $product)
     {
@@ -143,7 +141,7 @@ class ProductController extends Controller
             return view(self::PATH_VIEW . __FUNCTION__, compact('product', 'categories', 'colors', 'sizes', 'brands'));
         } else {
             return back()->with('error', 'Access denied!');
-        };
+        }
     }
 
 

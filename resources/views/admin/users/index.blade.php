@@ -142,12 +142,5 @@
 @section('css')
 @endsection
 
-
-
 @section('js')
-    {{-- <script>
-        new DataTable("#example", {
-            order: [0, 'asc']
-        });
-    </script> --}}
 @endsection

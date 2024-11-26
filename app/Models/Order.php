@@ -16,10 +16,14 @@ class Order extends Model
         'user_email',
         'user_phone',
         'user_address',
+        'user_province',
+        'user_district',
+        'user_ward',
         'user_note',
         'status_order',
         'status_payment',
         'total_amount',
+        'cancel_reason',
     ];
 
     const STATUS_ORDER = [
@@ -72,8 +76,9 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class);
     }
-    public function refund()
+    
+    public function coupon()
     {
-        return $this->hasOne(Refund::class);
+        return $this->belongsTo(Coupon::class);
     }
 }

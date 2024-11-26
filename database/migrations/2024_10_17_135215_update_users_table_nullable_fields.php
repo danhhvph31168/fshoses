@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone')->nullable()->change();
             $table->string('address')->nullable()->change();
-            $table->decimal('balance', 15, 2)->nullable()->change();
             $table->string('district')->nullable()->change();
             $table->string('province')->nullable()->change();
             $table->string('zip_code')->nullable()->change();
@@ -29,7 +28,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone')->nullable(false)->change();
             $table->string('address')->nullable(false)->change();
-            $table->decimal('balance', 15, 2)->nullable(false)->change();
             $table->string('district')->nullable(false)->change();
             $table->string('province')->nullable(false)->change();
             $table->string('zip_code')->nullable(false)->change();
