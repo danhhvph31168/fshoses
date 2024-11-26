@@ -10,51 +10,56 @@ class CouponController extends Controller
 {
     public function applyCoupon(Request $request)
     {
-        $cart = new Cart();
+        $cart = session('cart');
+        $totalAmount = 0;
+
+        // Tính toán tổng giá trị đơn hàng
+        if ($cart) {
+            foreach ($cart as $item) {
+                $totalAmount += $item['quantity'] * ($item['price_sale'] ?: $item['price_regular']);
+            }
+        }
+
         $couponCode = $request->input('code');
         $coupon = Coupon::findByCode($couponCode);
 
         $messages = [];
-        if (!$coupon->is_active) {
-            $messages[] = 'Coupon không tồn tại!';
-            return redirect()->route('cart.index')->withErrors($messages);
-        }
         if (!$coupon) {
             $messages[] = 'Coupon không tồn tại!';
             return redirect()->route('cart.index')->withErrors($messages);
         }
 
-        $currentDate = now();
-        if ($currentDate < $coupon->start_date || $currentDate > $coupon->end_date) {
-            $messages[] = 'Coupon không tồn tại!';
+        if (!$coupon->is_active) {
+            $messages[] = 'Coupon không còn hiệu lực!';
             return redirect()->route('cart.index')->withErrors($messages);
         }
+
+        $currentDate = now();
+        if ($currentDate < $coupon->start_date || $currentDate > $coupon->end_date) {
+            $messages[] = 'Coupon không còn hiệu lực!';
+            return redirect()->route('cart.index')->withErrors($messages);
+        }
+
         if ($coupon->quantity <= 0) {
             $messages[] = 'Coupon đã hết số lượng!';
             return redirect()->route('cart.index')->withErrors($messages);
         }
 
-        // Kiểm tra người dùng
-        $userId = auth()->id();
-        $hasUsedCoupon = CouponUsage::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
 
-        if ($hasUsedCoupon) {
-            $messages[] = 'Bạn đã sử dụng coupon này rồi!';
-            return redirect()->route('cart.view')->withErrors($messages);
-        }
-
-        $finalPrice = $cart->getFinalPrice($coupon);
+        // Tính toán giảm giá
+        $discount = $coupon->type === 'fixed' ? $coupon->value * 1000 : ($totalAmount * $coupon->value / 100);
 
         // Giảm số lượng coupon còn lại trong cơ sở dữ liệu
         $coupon->decrement('quantity', 1);
+
+        // Lưu coupon vào session
         session(['coupon' => [
-            'type' => $coupon->type, // Loại coupon: 'fixed' hoặc 'percentage'
-            'value' => $coupon->value, // Giá trị giảm giá
+            'type' => $coupon->type,
+            'value' => $coupon->value,
         ]]);
+        session(['discount' => $discount]);
+
         // Chuyển hướng về view cart với thông báo thành công
-        return redirect()->route('cart.index')->with([
-            'finalPrice' => $finalPrice,
-            'message' => 'Coupon áp dụng thành công!',
-        ]);
+        return redirect()->route('cart.list')->with(['discount' => $discount]);
     }
 }
