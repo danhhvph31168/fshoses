@@ -14,6 +14,7 @@ class OrderHistoryController extends Controller
         $orders = Auth::user()->orders()->orderBy('created_at', 'DESC')->paginate(5);
         return view("client.orders.list-order", compact("orders"));
     }
+
     public function getDetailOrderItem($slug)
     {
         $order = Order::where('sku_order', $slug)->with([
@@ -22,12 +23,15 @@ class OrderHistoryController extends Controller
             "orderItems.productVariant.size",
             'coupon',
         ])->first();
+
         if (!$order) {
-            return back();
+            return view("page-error.404");
         }
-        // dd  ($order);
+
         return view("client.orders.detail-order", compact("order"));
     }
+
+
     public function cancelOrder(Request $request, $slug)
     {
         // dd($request->all());

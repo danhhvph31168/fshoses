@@ -11,6 +11,10 @@ class ReviewController extends Controller
 {
     public function handleAddComment(ReviewRequest $request)
     {
+        $request->validated([
+            'comment' => 'required'
+        ]);
+
         $data = [
             'comment' => $request->comment,
             'product_id' => $request->product_id,

@@ -72,15 +72,16 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge rounded-pill 
+                                        <span
+                                            class="badge rounded-pill 
                                         {{ $order->status_payment === 'unpaid'
-                                             ? 'bg-secondary'
-                                         : ($order->status_payment === 'pending'
-                                              ? 'bg-warning text-dark'
-                                             : ($order->status_payment === 'paid'
-                                                 ? 'bg-success'
-                                                 : ($order->status_payment === 'refunded'
-                                                      ? 'bg-info text-dark'
+                                            ? 'bg-secondary'
+                                            : ($order->status_payment === 'pending'
+                                                ? 'bg-warning text-dark'
+                                                : ($order->status_payment === 'paid'
+                                                    ? 'bg-success'
+                                                    : ($order->status_payment === 'refunded'
+                                                        ? 'bg-info text-dark'
                                                         : 'bg-danger'))) }}">
                                             {{ $order->status_payment }}
                                         </span>

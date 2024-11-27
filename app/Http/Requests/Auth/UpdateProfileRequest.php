@@ -32,7 +32,6 @@ class UpdateProfileRequest extends FormRequest
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'phone' => 'nullable|regex:/^[0-9]{10,15}$/',
             'address' => 'nullable|string|max:255',
-            'balance' => 'nullable|numeric|min:0',
             'district' => 'nullable',
             'province' => 'nullable',
             'ward' => 'nullable',

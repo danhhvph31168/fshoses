@@ -1,17 +1,19 @@
 <?php
 
-use App\Http\Controllers\Account\AccountController;
-use App\Http\Controllers\Account\OrderHistoryController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Auth\AuthenController;
 use App\Http\Controllers\Auth\GoogleController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\MessageSuccessResetController;
 use App\Http\Controllers\Client\CartController;
-use App\Http\Controllers\Client\CheckoutController;
-use App\Http\Controllers\Client\Product\ProductController;
+use App\Http\Controllers\Client\CouponController;
+use App\Http\Controllers\Client\RatingController;
 use App\Http\Controllers\Client\ReviewController;
+use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Account\OrderSearchController;
-use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Account\OrderHistoryController;
+use App\Http\Controllers\Client\Product\ProductController;
+use App\Http\Controllers\Auth\MessageSuccessResetController;
 
 // product
 Route::get('/',                 [ProductController::class, 'index'])->name('client.home');
@@ -19,9 +21,9 @@ Route::get('/brand/{brd}',      [ProductController::class, 'listProductByBrand']
 Route::get('/category/{cate}',  [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
 Route::get('/products',         [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
-// Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
 Route::get('search-order',  [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
 Route::post('search-order', [OrderSearchController::class, 'handleSearchOrder'])->name('handleSearchOrder');
+
 
 Route::prefix('auth')
     ->name('auth.')
@@ -96,3 +98,11 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 //search categories
 Route::get('/search-products', [SearchController::class, 'searchProducts'])->name('search.products');
+
+
+//Coupon
+Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('cart.applyCoupon');
+
+//Rating
+Route::get('ratings/create/{orderId}', [RatingController::class, 'create'])->name('ratings.create');
+Route::post('ratings/store', [RatingController::class, 'store'])->name('ratings.store');

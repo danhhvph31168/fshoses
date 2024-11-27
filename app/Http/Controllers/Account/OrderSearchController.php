@@ -12,7 +12,6 @@ class OrderSearchController extends Controller
     {
         return view("client.orders.form-search-order");
     }
-
     public function handleSearchOrder(SearchOrderRequest $request)
     {
         $order = Order::where('sku_order', $request->sku_order)
@@ -20,9 +19,18 @@ class OrderSearchController extends Controller
             ->first();
 
         if (!$order) {
-            return redirect()->back()->with(['error' => 'Order not found in the system!']);
+            return back()->with(['error' => 'No orders were found with the information provided.']);
+        } else {
+            session()->put('searchOrder', $order->id);
         }
 
+        return view('client.orders.list-order-search', compact('order'));
+    }
+
+    public function viewOrderSearch()
+    {
+        $order = Order::where('id', session('searchOrder'))->first();
+        session()->forget('searchOrder');
         return view('client.orders.list-order-search', compact('order'));
     }
 }

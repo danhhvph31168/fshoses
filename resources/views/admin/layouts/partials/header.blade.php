@@ -15,7 +15,8 @@
 
                     <a href="index.html" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
+                            <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt=""
+                                height="22">
                         </span>
                         <span class="logo-lg">
                             <img src="assets/images/logo-light.png" alt="" height="17">
@@ -91,12 +92,12 @@
                                 <span
                                     class="d-none d-xl-inline-block ms-1 fw-medium user-name-text fw-bold text-danger">
                                     @if (Auth::user())
-                                    {{ Auth::user()->name }}
+                                    {{ implode(' ', array_slice(explode(' ', Auth::user()->name), -2)) }}
                                     @endif
                                 </span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">
                                     @if (Auth::user())
-                                    {{ Auth::user()->role->name }}
+                                        {{ Auth::user()->role->name }}
                                     @endif
                                 </span>
                             </span>
@@ -109,7 +110,7 @@
                                 class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Profile</span></a>
 
-                        <form action="{{ route('auth.logout') }}" method="post">
+                        <form action="{{ route('admin.logout') }}" method="post">
                             @csrf
                             <button type="submit" class="border-0 dropdown-item">
                                 <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>

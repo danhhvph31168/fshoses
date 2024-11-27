@@ -30,7 +30,6 @@
         }
 
         .footer .row {
-
             position: relative;
             padding-top: 50px;
             padding-left: 50px;
@@ -63,13 +62,14 @@
             </div>
         </div>
     </section>
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-xl-9">
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h5 class="card-title flex-grow-1 mb-0">Order: {{ $order->sku_order }}</h5>
+                            <h5 class="card-title flex-grow-1 mb-0 text-danger">Order: {{ $order->sku_order }}</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -89,11 +89,12 @@
                                             <td>
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
-                                                        <img src="{{ $item->productVariant->product->img_thumbnail }}"
+                                                        <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
                                                             alt="" class="img-fluid d-block">
                                                     </div>
                                                     <div class="flex-grow-1 ms-3">
-                                                        <h5 class="fs-15"><a href="apps-ecommerce-product-details.html"
+                                                        <h5 class="fs-15"><a
+                                                                href="{{ route('productDetail', $item->productVariant->product->slug) }}"
                                                                 class="link-primary">{{ $item->productVariant->product->name }}</a>
                                                         </h5>
                                                         <p class="text-muted mb-0">Color: <span
@@ -110,42 +111,176 @@
                                             <td class="fw-medium text-end">
                                                 {{ number_format($item->quantity * $item->price, 0, '.', '.') }}
                                             </td>
+                                            <td>
+                                                <a href="{{ route('ratings.create', [
+                                                    'orderId' => $order->id,
+                                                    'productId' => $item->productVariant->product->id,
+                                                    'productVariantId' => $item->productVariant->id,
+                                                ]) }}"
+                                                    class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal">Review</a>
+
+                                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <p class="modal-title fs-5" id="exampleModalLabel">Ratings
+                                                                    and
+                                                                    Reviews</p>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="card card-rating mb-4">
+                                                                <div class="row g-0">
+                                                                    <!-- Cột chứa hình ảnh -->
+                                                                    <div class="col-md-4">
+                                                                        <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
+                                                                            class="img-fluid rounded-start w-100 h-auto"
+                                                                            alt="Sản phẩm" />
+                                                                    </div>
+                                                                    <!-- Cột chứa nội dung văn bản -->
+                                                                    <div class="col-md-8">
+                                                                        <div
+                                                                            class="card-body d-flex flex-column justify-content-center h-100">
+                                                                            <h5 class="card-title text-truncate"
+                                                                                style="max-width: 100%;">
+                                                                                {{ $item->productVariant->product->name }}
+                                                                            </h5>
+                                                                            <p class="card-text text-muted mb-1">Price:
+                                                                                {{ $item->price }}</p>
+                                                                            <p class="card-text text-muted mb-1">Size:
+                                                                                {{ $item->productVariant->size->name }}</p>
+                                                                            <div class="d-flex align-items-center mb-1">
+                                                                                <p class="card-text text-muted mb-0 me-2">
+                                                                                    Color:
+                                                                                </p>
+                                                                                <!-- Ô tròn màu sắc -->
+                                                                                <div
+                                                                                    style="
+                                                                                            width: 20px;
+                                                                                            height: 20px;
+                                                                                            border-radius: 50%;
+                                                                                            background-color: {{ $item->productVariant->color->name }};
+                                                                                            border: 1px solid #ddd;">
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <form action="{{ route('ratings.store') }}" method="POST">
+                                                                @csrf
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" name="user_id"
+                                                                        value="{{ auth()->id() }}" />
+                                                                    <input type="hidden" name="order_id"
+                                                                        value="{{ $order->id }}" />
+
+                                                                    <input type="hidden" name="product_id"
+                                                                        value="{{ $item->productVariant->product->id }}">
+                                                                    <input type="hidden" name="product_variant_id"
+                                                                        value="{{ $item->productVariant->id }}">
+
+                                                                    <!-- Đánh giá -->
+                                                                    <div class="mb-4">
+                                                                        <label for="rating" class="form-label">Your
+                                                                            rating:</label>
+                                                                        <div class="rating">
+                                                                            <input type="radio" id="star5"
+                                                                                name="value" value="5" required />
+                                                                            <label for="star5"
+                                                                                title="Tuyệt vời">&#9733;</label>
+
+                                                                            <input type="radio" id="star4"
+                                                                                name="value" value="4" required />
+                                                                            <label for="star4"
+                                                                                title="Tốt">&#9733;</label>
+
+                                                                            <input type="radio" id="star3"
+                                                                                name="value" value="3" required />
+                                                                            <label for="star3"
+                                                                                title="Bình thường">&#9733;</label>
+
+                                                                            <input type="radio" id="star2"
+                                                                                name="value" value="2" required />
+                                                                            <label for="star2"
+                                                                                title="Tệ">&#9733;</label>
+
+                                                                            <input type="radio" id="star1"
+                                                                                name="value" value="1" required />
+                                                                            <label for="star1"
+                                                                                title="Rất tệ">&#9733;</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Nhận xét -->
+                                                                    <div class="mb-4">
+                                                                        <label for="comment" class="form-label">Your
+                                                                            review:</label>
+                                                                        <textarea class="form-control" id="comment" name="comment" rows="4"
+                                                                            placeholder="Please share your thoughts about this product..." required></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit"
+                                                                        class="btn btn-rating btn-primary w-100">Send</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </td>
                                         </tr>
                                     @endforeach
                                     <tr class="border-top border-top-dashed">
-                                        <td colspan="3"></td>
+                                        <td colspan="3">
+                                            <textarea class="form-control bg-white" rows="3" disabled>{{ $order->user_note }}</textarea>
+                                        </td>
                                         <td colspan="2" class="fw-medium p-0">
                                             <table class="table table-borderless mb-0">
-
                                                 <tbody>
                                                     @php
-                                                        $subTotal = $item->quantity * $item->price;
-                                                        $discount = $order->coupon->value;
+                                                        $subTotal = $order->total_amount;
+                                                        $discount = $order->coupon->value ?? null;
                                                         $shippingCharge = $subTotal < 1000000 ? 50000 : 0;
                                                         $total = $subTotal - $discount + $shippingCharge;
                                                     @endphp
                                                     <tr>
                                                         <td>Sub Total :</td>
                                                         <td class="text-end">
-                                                            {{ number_format($subTotal, 0, '.', '.') }}
+                                                            {{ number_format($subTotal, 0, '.', '.') }} VNĐ
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Discount <span
-                                                                class="text-muted">({{ $order->coupon->name }})</span> : :
-                                                        </td>
-                                                        <td class="text-end">-{{ number_format($discount, 0, '.', '.') }}
-                                                        </td>
+                                                        @if ($discount)
+                                                            <td>Discount <span
+                                                                    class="text-muted">({{ $order->coupon->name ?? null }})</span>
+                                                                :
+                                                            </td>
+                                                            <td class="text-end">
+                                                                {{ number_format($discount, 0, '.', '.') }}
+                                                            </td>
+                                                        @endif
+
+
                                                     </tr>
                                                     <tr>
                                                         <td>Shipping Charge :</td>
 
-                                                        <td class="text-end">{{ $shippingCharge }}</td>
+                                                        <td class="text-end">
+                                                            {{ number_format($shippingCharge, 0, '.', '.') }} VNĐ</td>
 
                                                     </tr>
-                                                    <tr class="border-top border-top-dashed">
-                                                        <th scope="row">Total:</th>
-                                                        <th class="text-end"> {{ number_format($total, 0, '.', '.') }}</th>
+                                                    <tr class="border-top border-top-dashed text-danger">
+                                                        <th scope="row" style="font-weight: 800; font-size: 20px;">
+                                                            Total:
+                                                        </th>
+                                                        <th class="text-end" style="font-weight: 800; font-size: 20px;">
+                                                            {{ number_format($total, 0, '.', '.') }} VNĐ
+                                                        </th>
                                                     </tr>
                                                 </tbody>
 
@@ -163,7 +298,6 @@
                         <div class="d-sm-flex align-items-center">
                             <h5 class="card-title flex-grow-1 mb-0">Order Status</h5>
                             <div class="flex-shrink-0 mt-2 mt-sm-0">
-
 
                                 @if ($order->status_order === 'pending' || $order->status_order === 'confirmed' || $order->status_order === 'processing')
                                     <!-- Nút "Hủy đơn" mở modal -->
@@ -403,13 +537,16 @@
                         </div>
                     </div>
                     <!--end card-->
+
+
                     @if (Auth::check())
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex">
                                     <h5 class="card-title flex-grow-1 mb-0">Customer Details</h5>
                                     <div class="flex-shrink-0">
-                                        <a href="javascript:void(0);" class="link-secondary">View Profile</a>
+                                        <a href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"
+                                            class="link-secondary">View Profile</a>
                                     </div>
                                 </div>
                             </div>
@@ -418,8 +555,8 @@
                                     <li>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
-                                                <img src="{{ $order->user->avatar }}" alt=""
-                                                    class="avatar-sm rounded">
+                                                <img src="{{ Storage::url($order->user->avatar) }}" alt=""
+                                                    class="avatar-sm  rounded-circle">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h6 class="fs-14 mb-1">{{ $order->user->name }}</h6>
@@ -435,13 +572,25 @@
                                     </li>
                                     <li>
                                         <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
+                                        {{ $order->user->province }}
+                                    </li>
+                                    <li>
+                                        <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
+                                        {{ $order->user->district }}
+                                    </li>
+                                    <li>
+                                        <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
+                                        {{ $order->user->ward }}
+                                    </li>
+                                    <li>
+                                        <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
                                         {{ $order->user->address }}
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     @endif
-                    <!--end card-->
+
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>
@@ -464,13 +613,24 @@
                                 </li>
                                 <li>
                                     <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
+                                    {{ $order->user_province }}
+                                </li>
+                                <li>
+                                    <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
+                                    {{ $order->user_district }}
+                                </li>
+                                <li>
+                                    <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
+                                    {{ $order->user_ward }}
+                                </li>
+                                <li>
+                                    <i class="mdi mdi-map-marker text-muted fs-16 align-middle me-1"></i>
                                     {{ $order->user_address }}
                                 </li>
                             </ul>
 
                         </div>
                     </div>
-                    <!--end card-->
 
                     <div class="card">
                         <div class="card-header">
@@ -495,8 +655,7 @@
                                 <div class="flex-shrink-0">
                                     <p class="text-muted mb-0">
                                         <i class="ri-money-dollar-circle-line me-2 align-middle text-muted fs-16"></i>
-                                        Total
-                                        Amount:
+                                        Total Amount:
                                     </p>
                                 </div>
                                 <div class="flex-grow-1 ms-2">
@@ -504,15 +663,17 @@
                                 </div>
                             </div>
 
+
+
                         </div>
                     </div>
                     <!--end card-->
                 </div>
             @endif
-
         </div>
     </div>
 
+    <!-- Shopping Cart Section End -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -522,7 +683,6 @@
             @endif
         });
     </script>
-    <!-- Shopping Cart Section End -->
 @endsection
 @section('scripts')
     <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>

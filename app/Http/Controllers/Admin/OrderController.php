@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Order};
+use App\Models\{Brand, Category, Order};
 use App\Services\OrderAdmin\OrderFormServices;
 use App\Services\OrderAdmin\OrderServices;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -17,7 +18,14 @@ class OrderController extends Controller
 
     public function index()
     {
-        $data = Order::query()->with(['user', 'role'])->get();
+        $data = Order::query()->with(['user', 'role'])->latest('id')->paginate(10);
+
+        if ($key = request()->key) {
+            $data = Order::query()->with(['user', 'role'])->latest('id')
+                ->where('sku_order', 'like', '%' . $key . '%')
+                ->orwhere('user_name', 'like', '%' . $key . '%')
+                ->paginate(5);
+        }
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -60,9 +68,18 @@ class OrderController extends Controller
             }
 
             $payment = $order->payment;
+
             $payment->update([
                 'status' => request('payment_status'),
             ]);
+
+            // Log::info($order);
+
+            // $log = DB::table('telescope_entries')->where('type', 'log')->get()
+            //     ->map(function ($log) {
+            //         $log->decoded_content = json_decode($log->content, true); // Giải mã content
+            //         return $log;
+            //     });;
 
             DB::commit();
 

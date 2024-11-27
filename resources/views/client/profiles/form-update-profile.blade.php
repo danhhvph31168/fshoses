@@ -18,7 +18,7 @@
         </div>
     </section>
     <div class="page-content">
-        <div class="container-fluid" style="padding-left: 100px; padding-right: 100px;">
+        <div class="container">
             <div class="row">
                 @if (session('success'))
                     <div class="alert alert-success">
@@ -35,7 +35,7 @@
                                         alt="user-profile-image" />
                                 </div>
                                 <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
-                                <p class="text-muted mb-0">{{$user->email}}</p>
+                                <p class="text-muted mb-0">{{ $user->email }}</p>
                             </div>
                         </div>
                     </div>
@@ -127,28 +127,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="username" class="form-label">Address</label>
-                                                    <input type="text"
-                                                        class="form-control @error('address') is-invalid @enderror"
-                                                        name="address" value="{{ $user->address }}" id="address"
-                                                        placeholder="Enter address">
-                                                    @error('address')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
                                                     <label for="province" class="form-label">Province</label>
                                                     <select id="province"
                                                         class="form-control pb-1 @error('province') is-invalid @enderror"
                                                         name="province">
-                                                        <option value="">{{ $user->province }}</option>
+                                                        <option value="{{ $user->province }}">{{ $user->province }}</option>
 
                                                     </select>
                                                     <input type="hidden" name="province_text" id="province_text">
@@ -165,7 +150,7 @@
                                                     <select id="district"
                                                         class="form-control pb-1 @error('district') is-invalid @enderror"
                                                         name="district">
-                                                        <option value="">{{ $user->district }}</option>
+                                                        <option value="{{ $user->district }}">{{ $user->district }}</option>
 
                                                     </select>
                                                     <input type="hidden" name="district_text" id="district_text">
@@ -182,11 +167,25 @@
                                                     <select id="ward"
                                                         class="form-control pb-1 @error('ward') is-invalid @enderror"
                                                         name="ward">
-                                                        <option value="" selected>{{ $user->ward }}</option>
+                                                        <option value="{{ $user->ward }}" selected>{{ $user->ward }}</option>
                                                     </select>
                                                     <input type="hidden" name="ward_text" id="ward_text">
 
                                                     @error('ward')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label">Address</label>
+                                                    <input type="text"
+                                                        class="form-control @error('address') is-invalid @enderror"
+                                                        name="address" value="{{ $user->address }}" id="address"
+                                                        placeholder="Enter address">
+                                                    @error('address')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>
@@ -331,8 +330,6 @@
                 $('#district_text').val($("#district option:selected").text())
                 $('#ward_text').val($("#ward option:selected").text())
             })
-
-
         }
     </script>
 @endsection

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\Category;
 use App\Http\Controllers\Controller;
-// use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCategoryRequest;
 

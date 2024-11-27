@@ -22,7 +22,7 @@
                             value="{{ $item->name }}">
                         <span>{{ $item->name }}</span>
                     </div>
-                    <span class="badge bg-secondary">{{ $item->products->count() }}</span>
+                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
                 </div>
                 @endforeach
             </div>
@@ -38,7 +38,7 @@
                             value="{{ $item->name }}">
                         <span>{{ $item->name }}</span>
                     </div>
-                    <span class="badge bg-secondary">{{ $item->products->count() }}</span>
+                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
                 </div>
                 @endforeach
             </div>

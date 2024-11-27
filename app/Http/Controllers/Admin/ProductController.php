@@ -27,10 +27,12 @@ class ProductController extends Controller
     {
 
         if (Auth::user()->role_id == 1) {
+            $brands = Brand::pluck('name', 'id')->all();
+            $categories = Category::pluck('name', 'id')->all();
 
             $data = Product::query()->with(['category', 'brand'])->latest('id')->paginate(5);
 
-            return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+            return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'brands', 'categories'));
         } else {
 
             return back()->with('error', 'Access denied!');
@@ -56,7 +58,6 @@ class ProductController extends Controller
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'sizes', 'colors', 'brands'));
         } else {
-
             return back()->with('error', 'Access denied!');
         }
     }
@@ -66,8 +67,6 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-
-
         if (Auth::user()->role_id == 1) {
 
             list($dataProduct, $dataProductVariants, $dataProductGalleries)
