@@ -87,11 +87,4 @@ class Product extends Model
              ->get()
              ->pluck('count', 'value');
      }
-         // Tính phần trăm số lượt đánh giá cho một số sao cụ thể
-    public function ratingPercentage($star)
-    {
-        $totalRatings = $this->totalRatings();
-        $ratings = $this->ratingBreakdown();
-        return $totalRatings > 0 ? ($ratings->get($star, 0) / $totalRatings) * 100 : 0;
-    }
 }
