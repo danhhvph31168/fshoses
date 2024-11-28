@@ -48,7 +48,7 @@
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
                             data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
                             <a href="{{ route('cart.list') }}" class="d-flex align-items-center  text-black">
-                                <i class="bi bi-cart"></i>
+                                <i class="fa-solid fa-cart-shopping fs-5"></i>
                             </a>
                         </button>
 
@@ -94,7 +94,8 @@
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
                             data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
                             <a class="d-flex align-items-center text-black">
-                                <i class="mdi mdi-cart-outline text-muted fs-16">Cart</i>
+                                <i class="fa-solid fa-cart-shopping fs-4"></i>
+                                {{-- <i class="mdi mdi-cart-outline text-muted fs-16">Cart</i> --}}
                             </a>
                         </button>
 
@@ -102,8 +103,9 @@
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span
                                 class="d-flex align-items-center text-start ms-xl-2 d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                style="font-size: 18px; font-family: sans-serif;"><i
-                                    class="mdi mdi-account-outline text-muted fs-16">Login</i>
+                                style="font-size: 18px; font-family: sans-serif;">
+                                <i class="fa-regular fa-user fs-4"></i>
+                                {{-- <i class="mdi mdi-account-outline text-muted fs-16">Login</i> --}}
                             </span>
                         </button>
 

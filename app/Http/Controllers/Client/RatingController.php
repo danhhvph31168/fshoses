@@ -16,17 +16,25 @@ class RatingController extends Controller
         $ratings = Rating::all(); // Lấy tất cả đánh giá
         return view('ratings.index', ['ratings' => $ratings]); // Trả về view với danh sách đánh giá
     }
+
     public function create($productId, $orderId, $productVariantId)
     {
+
+        
         // Tìm sản phẩm theo ID
         $product = Product::findOrFail($productId);
 
         // Tìm đơn hàng theo ID
+        $order = Order::findOrFail($orderId);
+
+        dd($order);
 
         $productVariant = ProductVariant::findOrFail($productVariantId);
+
         // Trả về view để tạo rating
+
         // Bạn có thể muốn truyền cả cái đơn hàng vào view nếu cần thiết
-        return view('client.ratings.create', compact('product', 'productVariant'));
+        return view('client.ratings.create', compact('product', 'productVariant', 'order'));
     }
 
 

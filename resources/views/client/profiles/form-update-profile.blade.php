@@ -133,10 +133,12 @@
                                                     <select id="province"
                                                         class="form-control pb-1 @error('province') is-invalid @enderror"
                                                         name="province">
-                                                        <option value="{{ $user->province }}">{{ $user->province }}</option>
+                                                        <option value="{{ $user->province }}">{{ $user->province }}
+                                                        </option>
 
                                                     </select>
-                                                    <input type="hidden" name="province_text" id="province_text">
+                                                    <input type="hidden" name="province_text" id="province_text"
+                                                        value="{{ $user->province }}">
                                                     @error('province')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -150,10 +152,12 @@
                                                     <select id="district"
                                                         class="form-control pb-1 @error('district') is-invalid @enderror"
                                                         name="district">
-                                                        <option value="{{ $user->district }}">{{ $user->district }}</option>
+                                                        <option value="{{ $user->district }}">{{ $user->district }}
+                                                        </option>
 
                                                     </select>
-                                                    <input type="hidden" name="district_text" id="district_text">
+                                                    <input type="hidden" name="district_text" id="district_text"
+                                                        value="{{ $user->district }}">
                                                     @error('district')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -167,9 +171,11 @@
                                                     <select id="ward"
                                                         class="form-control pb-1 @error('ward') is-invalid @enderror"
                                                         name="ward">
-                                                        <option value="{{ $user->ward }}" selected>{{ $user->ward }}</option>
+                                                        <option value="{{ $user->ward }}" selected>{{ $user->ward }}
+                                                        </option>
                                                     </select>
-                                                    <input type="hidden" name="ward_text" id="ward_text">
+                                                    <input type="hidden" name="ward_text" id="ward_text"
+                                                        value="{{ $user->ward }}">
 
                                                     @error('ward')
                                                         <span class="invalid-feedback" role="alert">

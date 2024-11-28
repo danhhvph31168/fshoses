@@ -73,14 +73,6 @@ class OrderController extends Controller
                 'status' => request('payment_status'),
             ]);
 
-            // Log::info($order);
-
-            // $log = DB::table('telescope_entries')->where('type', 'log')->get()
-            //     ->map(function ($log) {
-            //         $log->decoded_content = json_decode($log->content, true); // Giải mã content
-            //         return $log;
-            //     });;
-
             DB::commit();
 
             return back()->with('success', 'Đặt hàng thành công');
