@@ -38,32 +38,33 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding: 0">
         <div class="row">
-            <div class="col-md-12">
-                <!-- Header Section Begin -->
-                @include('client.layouts.header')
-                <!-- Header Section End -->
+        </div>
+        <div class="col-md-12" style="padding: 0">
+            <!-- Header Section Begin -->
+            @include('client.layouts.header')
+            <!-- Header Section End -->
 
-                <!-- Product Section Begin -->
-                @yield('content')
-                <!-- Product Section End -->
+            <!-- Product Section Begin -->
+            @yield('content')
+            <!-- Product Section End -->
 
-                <!-- Footer Section Begin -->
-                @include('client.layouts.footer')
-                <!-- Footer Section End -->
+            <!-- Footer Section Begin -->
+            @include('client.layouts.footer')
+            <!-- Footer Section End -->
 
-                <!-- Search Begin -->
-                <div class="search-model">
-                    <div class="h-100 d-flex align-items-center justify-content-center">
-                        <div class="search-close-switch">+</div>
-                        <form class="search-model-form">
-                            <input type="text" id="search-input" placeholder="Search here.....">
-                        </form>
-                    </div>
+            <!-- Search Begin -->
+            <div class="search-model">
+                <div class="h-100 d-flex align-items-center justify-content-center">
+                    <div class="search-close-switch">+</div>
+                    <form class="search-model-form">
+                        <input type="text" id="search-input" placeholder="Search here.....">
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 

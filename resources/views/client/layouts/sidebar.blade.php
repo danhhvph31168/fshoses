@@ -1,44 +1,38 @@
-{{-- Bộ lọc --}}
 <div class="row mb-5">
     <div class="col-md-12">
-
+        <!-- Bộ lọc giá -->
         <div class="mb-4">
-            <h3 class="text-uppercase fw-bold mb-3">Price range</h3>
-            <div class="list-group">
-                <input type="hidden" id="hidden_minimun_price" name="hidden_minimun_price" value="0">
-                <input type="hidden" id="hidden_maximun_price" name="hidden_maximun_price" value="1000000">
-                <p id="price_show" class="fw-semibold">Price: 0 VNĐ - 1.000.000 VNĐ</p>
-                <div id="price_range"></div>
-            </div>
+            <p id="price_show" class="fw-semibold">Từ: 0 VNĐ - 5.000.000 VNĐ</p>
+            <input type="hidden" id="hidden_min_price" value="0">
+            <input type="hidden" id="hidden_max_price" value="{{ $maxPrice ?? 5000000 }}">
+            <div id="price_range"></div>
         </div>
 
+        <!-- Bộ lọc thương hiệu -->
         <div class="mb-4">
-            <h3 class="text-uppercase fw-bold mb-3">Brands</h3>
+            <h3 class="text-uppercase fw-bold mb-3">Thương hiệu</h3>
             <div class="list-group">
                 @foreach ($brd as $item)
-                <div class="list-group-item d-flex align-items-center justify-content-between">
-                    <div>
-                        <input type="checkbox" class="form-check-input me-2 common_selector brand"
-                            value="{{ $item->name }}">
-                        <span>{{ $item->name }}</span>
-                    </div>
-                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
+                <div class="list-group-item d-flex align-items-center">
+                    <input type="checkbox" class="form-check-input me-2 common_selector brand"
+                        value="{{ $item->name }}">
+                    <span>{{ $item->name }}</span>
+                    <span class="badge bg-secondary">{{ $item->products->count() }}</span>
                 </div>
                 @endforeach
             </div>
         </div>
 
+        <!-- Bộ lọc danh mục -->
         <div class="mb-4">
-            <h3 class="text-uppercase fw-bold mb-3">Categories</h3>
+            <h3 class="text-uppercase fw-bold mb-3">Danh mục</h3>
             <div class="list-group">
                 @foreach ($cate as $item)
-                <div class="list-group-item d-flex align-items-center justify-content-between">
-                    <div>
-                        <input type="checkbox" class="form-check-input me-2 common_selector category"
-                            value="{{ $item->name }}">
-                        <span>{{ $item->name }}</span>
-                    </div>
-                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
+                <div class="list-group-item d-flex align-items-center">
+                    <input type="checkbox" class="form-check-input me-2 common_selector category"
+                        value="{{ $item->name }}">
+                    <span>{{ $item->name }}</span>
+                    <span class="badge bg-secondary">{{ $item->products->count() }}</span>
                 </div>
                 @endforeach
             </div>
@@ -174,20 +168,17 @@ $(document).ready(function() {
     function fetchProducts() {
         const brands = [];
         const categories = [];
-        const minPrice = $('#hidden_minimun_price').val();
-        const maxPrice = $('#hidden_maximun_price').val();
+        const minPrice = $('#hidden_min_price').val();
+        const maxPrice = $('#hidden_max_price').val();
 
-        // Lấy danh sách các thương hiệu được chọn
         $('.common_selector.brand:checked').each(function() {
             brands.push($(this).val());
         });
 
-        // Lấy danh sách danh mục được chọn
         $('.common_selector.category:checked').each(function() {
             categories.push($(this).val());
         });
 
-        // AJAX
         $.ajax({
             url: "{{ route('search.products') }}",
             method: "GET",
@@ -198,7 +189,20 @@ $(document).ready(function() {
                 max_price: maxPrice,
             },
             success: function(response) {
-                $('#product-list').html(response.html); // Cập nhật danh sách sản phẩm
+                // Cập nhật danh sách sản phẩm
+                $('#product-list').html(response.html);
+
+                // Cập nhật maxPrice nếu cần
+                const currentMaxPrice = $('#price_range').slider('option', 'max');
+                if (response.maxPrice && response.maxPrice !== currentMaxPrice) {
+                    $('#price_range').slider('option', 'max', response.maxPrice);
+                    $('#hidden_max_price').val(response.maxPrice); // Cập nhật giá trị ẩn
+                }
+
+                // Cập nhật nhãn hiển thị giá
+                $('#price_show').html(
+                    `Từ: ${$('#price_range').slider('values', 0)} VNĐ - ${$('#price_range').slider('values', 1)} VNĐ`
+                );
             },
             error: function(xhr) {
                 console.log(xhr.responseText);
@@ -206,22 +210,33 @@ $(document).ready(function() {
         });
     }
 
-    // Thêm sự kiện thay đổi cho các bộ lọc
-    $('.common_selector').on('change', fetchProducts);
+    // Lắng nghe thay đổi của các bộ lọc
+    $('.common_selector').on('change', function() {
+        fetchProducts();
+    });
 
-    // Thay đổi giá (range slider)
+    // Cấu hình thanh trượt giá
     $('#price_range').slider({
         range: true,
         min: 0,
-        max: 1000000,
-        values: [0, 1000000],
-        step: 50000,
+        max: 5000000, // Giá trị mặc định
+        values: [0, 5000000],
+        step: 100000,
         slide: function(event, ui) {
-            $('#price_show').html('Từ: ' + ui.values[0] + ' VNĐ - ' + ui.values[1] + ' VNĐ');
-            $('#hidden_minimun_price').val(ui.values[0]);
-            $('#hidden_maximun_price').val(ui.values[1]);
-            fetchProducts();
+            $('#price_show').html(`Từ: ${ui.values[0]} VNĐ - ${ui.values[1]} VNĐ`);
+            $('#hidden_min_price').val(ui.values[0]);
+            $('#hidden_max_price').val(ui.values[1]);
+        },
+        stop: function(event, ui) {
+            fetchProducts(); // Gọi AJAX khi người dùng dừng kéo
         }
+    });
+
+    // Gọi AJAX lần đầu để đồng bộ maxPrice
+    fetchProducts();
+    console.log({
+        minPrice: $('#hidden_min_price').val(),
+        maxPrice: $('#hidden_max_price').val(),
     });
 });
 </script>

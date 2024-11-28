@@ -65,7 +65,8 @@
                                         </p>
                                         @endif
                                         <div class="mb-3 text-center">
-                                            <a style="background-color: #d17572" href="{{ route('productDetail', $item->slug) }}"
+                                            <a style="background-color: #d17572"
+                                                href="{{ route('productDetail', $item->slug) }}"
                                                 class="btn btn-secondary btn-sm w-100">Show more</a>
                                         </div>
                                     </div>
