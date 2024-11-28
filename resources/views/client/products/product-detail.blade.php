@@ -169,152 +169,70 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="flex-grow-1">
                                                                         <div class="fs-16 align-middle text-warning">
-                                                                            <i class="ri-star-fill"></i>
-                                                                            <i class="ri-star-fill"></i>
-                                                                            <i class="ri-star-fill"></i>
-                                                                            <i class="ri-star-fill"></i>
-                                                                            <i class="ri-star-half-fill"></i>
+                                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                                @if ($i <= floor($averageRating))
+                                                                                    <i class="bi bi-star-fill"></i>
+                                                                                @elseif ($i - $averageRating < 1)
+                                                                                    <i class="bi bi-star-half"></i>
+                                                                                @else
+                                                                                    <i class="bi bi-star"></i>
+                                                                                @endif
+                                                                            @endfor
                                                                         </div>
                                                                     </div>
                                                                     <div class="flex-shrink-0">
-                                                                        <h6 class="mb-0">4.5 out of 5</h6>
+                                                                        <h6 class="mb-0">{{ round($averageRating, 1) }}
+                                                                            out of 5</h6>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="text-center">
                                                                 <div class="text-muted">
                                                                     Total
-                                                                    <span class="fw-medium">5.50k</span>
+                                                                    <span
+                                                                        class="fw-medium">{{ number_format($totalRatings) }}</span>
                                                                     reviews
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="mt-3">
-                                                            <div class="row align-items-center g-2">
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0">5 star</h6>
+                                                            @foreach ([5, 4, 3, 2, 1] as $star)
+                                                                @php
+                                                                    $count = $ratingBreakdown->get($star, 0);
+                                                                    $percentage =
+                                                                        $totalRatings > 0
+                                                                            ? ($count / $totalRatings) * 100
+                                                                            : 0;
+                                                                @endphp
+                                                                <div class="row align-items-center g-2">
+                                                                    <div class="col-auto">
+                                                                        <div class="p-2">
+                                                                            <h6 class="mb-0">{{ $star }} star
+                                                                            </h6>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="p-2">
-                                                                        <div
-                                                                            class="progress animated-progress progress-sm">
-                                                                            <div class="progress-bar bg-success"
-                                                                                role="progressbar" style="width: 50.16%"
-                                                                                aria-valuenow="50.16" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
+                                                                    <div class="col">
+                                                                        <div class="p-2">
+                                                                            <div
+                                                                                class="progress animated-progress progress-sm">
+                                                                                <div class="progress-bar bg-{{ $star == 5 ? 'success' : ($star == 1 ? 'danger' : 'warning') }}"
+                                                                                    role="progressbar"
+                                                                                    style="width: {{ $percentage }}%"
+                                                                                    aria-valuenow="{{ $percentage }}"
+                                                                                    aria-valuemin="0" aria-valuemax="100">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <div class="p-2">
+                                                                            <h6 class="mb-0 text-muted">
+                                                                                {{ $count }}</h6>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0 text-muted">2758</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- end row -->
-
-                                                            <div class="row align-items-center g-2">
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0">4 star</h6>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="p-2">
-                                                                        <div
-                                                                            class="progress animated-progress progress-sm">
-                                                                            <div class="progress-bar bg-success"
-                                                                                role="progressbar" style="width: 19.32%"
-                                                                                aria-valuenow="19.32" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0 text-muted">1063</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- end row -->
-
-                                                            <div class="row align-items-center g-2">
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0">3 star</h6>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="p-2">
-                                                                        <div
-                                                                            class="progress animated-progress progress-sm">
-                                                                            <div class="progress-bar bg-success"
-                                                                                role="progressbar" style="width: 18.12%"
-                                                                                aria-valuenow="18.12" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0 text-muted">997</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- end row -->
-
-                                                            <div class="row align-items-center g-2">
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0">2 star</h6>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="p-2">
-                                                                        <div
-                                                                            class="progress animated-progress progress-sm">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar" style="width: 7.42%"
-                                                                                aria-valuenow="7.42" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0 text-muted">408</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- end row -->
-
-                                                            <div class="row align-items-center g-2">
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0">1 star</h6>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="p-2">
-                                                                        <div
-                                                                            class="progress animated-progress progress-sm">
-                                                                            <div class="progress-bar bg-danger"
-                                                                                role="progressbar" style="width: 4.98%"
-                                                                                aria-valuenow="4.98" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <div class="p-2">
-                                                                        <h6 class="mb-0 text-muted">274</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            @endforeach
                                                             <!-- end row -->
                                                         </div>
                                                     </div>
@@ -384,6 +302,7 @@
                                             </div>
                                             <!-- end Ratings & Reviews -->
                                         </div>
+
                                         <div class="row mt-4">
                                             <div class="ps-lg-4">
                                                 <div class="">

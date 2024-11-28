@@ -64,7 +64,7 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Information</h4>
-                    </div><!-- end card header -->
+                    </div>
 
                     <div class="card-body">
                         <div class="row">
@@ -86,10 +86,11 @@
                                             <label for="province" class="form-label">Province</label>
                                             <select id="province"
                                                 class="form-control pb-1 @error('province') is-invalid @enderror"
-                                                name="province">
+                                                name="">
                                                 <option value="">{{ $model->province }}</option>
                                             </select>
-                                            <input type="hidden" name="province_text" id="province_text">
+                                            <input type="hidden" name="province" id="province_text"
+                                                value="{{ $model->province }}">
                                             @error('province')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -100,10 +101,11 @@
                                             <label for="ward" class="form-label">Ward</label>
                                             <select id="ward"
                                                 class="form-control pb-1 @error('ward') is-invalid @enderror"
-                                                name="ward">
+                                                name="">
                                                 <option value="" selected>{{ $model->ward }}</option>
                                             </select>
-                                            <input type="hidden" name="ward_text" id="ward_text">
+                                            <input type="hidden" name="ward" id="ward_text"
+                                                value="{{ $model->ward }}">
                                             @error('ward')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -117,10 +119,11 @@
                                             <label for="district" class="form-label">District</label>
                                             <select id="district"
                                                 class="form-control pb-1 @error('district') is-invalid @enderror"
-                                                name="district">
+                                                name="">
                                                 <option value="">{{ $model->district }}</option>
                                             </select>
-                                            <input type="hidden" name="district_text" id="district_text">
+                                            <input type="hidden" name="district" id="district_text"
+                                                value="{{ $model->district }}">
                                             @error('district')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -156,7 +159,6 @@
                                 <div class="mb-3">
                                     <label for="role_id" class="form-label">Role: </label>
                                     <select id="role_id" name="role_id" class="form-control">
-                                        {{-- <option>-- Select Role --</option> --}}
                                         @foreach ($role as $id => $name)
                                             <option value="{{ $id }}" @selected($model->role_id === $id)>
                                                 {{ $name }}</option>
@@ -341,9 +343,9 @@
 
 
             $('#submit').click(function() {
-                $('#provinceText').val($('#province option:selected').text());
-                $('#districtText').val($('#district option:selected').text());
-                $('#wardText').val($('#ward option:selected').text());
+                $('#province_text').val($('#province option:selected').text());
+                $('#district_text').val($('#district option:selected').text());
+                $('#ward_text').val($('#ward option:selected').text());
             })
         }
     </script>
@@ -367,7 +369,6 @@
                     </div>
                 </div>
             `;
-
             $('#gallery_list').append(html);
         }
 

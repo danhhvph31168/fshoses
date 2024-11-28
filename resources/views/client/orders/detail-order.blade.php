@@ -77,15 +77,19 @@
                             <table class="table table-nowrap align-middle table-borderless mb-0">
                                 <thead class="table-light text-muted">
                                     <tr>
+                                        {{-- <th scope="col">#</th> --}}
                                         <th scope="col">Product Details</th>
                                         <th scope="col">Item Price</th>
                                         <th scope="col">Quantity</th>
-                                        <th scope="col" class="text-end">Total Amount</th>
+                                        <th scope="col" class="text-center">Total Amount</th>
+                                        <th scope="col" class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($order->orderItems as $item)
-                                        <tr>
+                                    @foreach ($order->orderItems as $key => $item)
+                                        {{-- @dd($item) --}}
+                                        <tr class="">
+                                            {{-- <td class="text-center align-middle">{{ $key + 1 }}</td> --}}
                                             <td>
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
@@ -106,133 +110,134 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-center">{{ number_format($item->price, 0, '.', '.') }}</td>
-                                            <td class="text-center">{{ $item->quantity }}</td>
-                                            <td class="fw-medium text-end">
+                                            <td class="text-center align-middle">
+                                                {{ number_format($item->price, 0, '.', '.') }}</td>
+                                            <td class="text-center align-middle">{{ $item->quantity }}</td>
+                                            <td class="fw-medium text-center align-middle">
                                                 {{ number_format($item->quantity * $item->price, 0, '.', '.') }}
                                             </td>
-                                            <td>
-                                                <a href="{{ route('ratings.create', [
-                                                    'orderId' => $order->id,
-                                                    'productId' => $item->productVariant->product->id,
-                                                    'productVariantId' => $item->productVariant->id,
-                                                ]) }}"
-                                                    class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Review</a>
-
-                                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <p class="modal-title fs-5" id="exampleModalLabel">Ratings
-                                                                    and
-                                                                    Reviews</p>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="card card-rating mb-4">
-                                                                <div class="row g-0">
-                                                                    <!-- Cột chứa hình ảnh -->
-                                                                    <div class="col-md-4">
-                                                                        <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
-                                                                            class="img-fluid rounded-start w-100 h-auto"
-                                                                            alt="Sản phẩm" />
-                                                                    </div>
-                                                                    <!-- Cột chứa nội dung văn bản -->
-                                                                    <div class="col-md-8">
-                                                                        <div
-                                                                            class="card-body d-flex flex-column justify-content-center h-100">
-                                                                            <h5 class="card-title text-truncate"
-                                                                                style="max-width: 100%;">
-                                                                                {{ $item->productVariant->product->name }}
-                                                                            </h5>
-                                                                            <p class="card-text text-muted mb-1">Price:
-                                                                                {{ $item->price }}</p>
-                                                                            <p class="card-text text-muted mb-1">Size:
-                                                                                {{ $item->productVariant->size->name }}</p>
-                                                                            <div class="d-flex align-items-center mb-1">
-                                                                                <p class="card-text text-muted mb-0 me-2">
-                                                                                    Color:
-                                                                                </p>
-                                                                                <!-- Ô tròn màu sắc -->
-                                                                                <div
-                                                                                    style="
+                                            @if ($order->status_order == 'delivered')
+                                                <td class="text-center align-middle">
+                                                    <a href="{{ route('ratings.create', [
+                                                        'orderId' => $order->id,
+                                                        'productId' => $item->productVariant->product->id,
+                                                        'productVariantId' => $item->productVariant->id,
+                                                    ]) }}"
+                                                        class="btn badge badge-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">Vote</a>
+                                                </td>
+                                            @endif
+                                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <p class="modal-title fs-5" id="exampleModalLabel">Ratings
+                                                                and
+                                                                Reviews</p>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="card card-rating mb-4">
+                                                            <div class="row g-0">
+                                                                <!-- Cột chứa hình ảnh -->
+                                                                <div class="col-md-4">
+                                                                    <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
+                                                                        class="img-fluid rounded-start w-100 h-auto"
+                                                                        alt="Sản phẩm" />
+                                                                </div>
+                                                                <!-- Cột chứa nội dung văn bản -->
+                                                                <div class="col-md-8">
+                                                                    <div
+                                                                        class="card-body d-flex flex-column justify-content-center h-100">
+                                                                        <h5 class="card-title text-truncate"
+                                                                            style="max-width: 100%;">
+                                                                            {{ $item->productVariant->product->name }}
+                                                                        </h5>
+                                                                        <p class="card-text text-muted mb-1">Price:
+                                                                            {{ $item->price }}</p>
+                                                                        <p class="card-text text-muted mb-1">Size:
+                                                                            {{ $item->productVariant->size->name }}</p>
+                                                                        <div class="d-flex align-items-center mb-1">
+                                                                            <p class="card-text text-muted mb-0 me-2">
+                                                                                Color:
+                                                                            </p>
+                                                                            <!-- Ô tròn màu sắc -->
+                                                                            <div
+                                                                                style="
                                                                                             width: 20px;
                                                                                             height: 20px;
                                                                                             border-radius: 50%;
                                                                                             background-color: {{ $item->productVariant->color->name }};
                                                                                             border: 1px solid #ddd;">
-                                                                                </div>
-
                                                                             </div>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <form action="{{ route('ratings.store') }}" method="POST">
-                                                                @csrf
-                                                                <div class="modal-body">
-                                                                    <input type="hidden" name="user_id"
-                                                                        value="{{ auth()->id() }}" />
-                                                                    <input type="hidden" name="order_id"
-                                                                        value="{{ $order->id }}" />
-
-                                                                    <input type="hidden" name="product_id"
-                                                                        value="{{ $item->productVariant->product->id }}">
-                                                                    <input type="hidden" name="product_variant_id"
-                                                                        value="{{ $item->productVariant->id }}">
-
-                                                                    <!-- Đánh giá -->
-                                                                    <div class="mb-4">
-                                                                        <label for="rating" class="form-label">Your
-                                                                            rating:</label>
-                                                                        <div class="rating">
-                                                                            <input type="radio" id="star5"
-                                                                                name="value" value="5" required />
-                                                                            <label for="star5"
-                                                                                title="Tuyệt vời">&#9733;</label>
-
-                                                                            <input type="radio" id="star4"
-                                                                                name="value" value="4" required />
-                                                                            <label for="star4"
-                                                                                title="Tốt">&#9733;</label>
-
-                                                                            <input type="radio" id="star3"
-                                                                                name="value" value="3" required />
-                                                                            <label for="star3"
-                                                                                title="Bình thường">&#9733;</label>
-
-                                                                            <input type="radio" id="star2"
-                                                                                name="value" value="2" required />
-                                                                            <label for="star2"
-                                                                                title="Tệ">&#9733;</label>
-
-                                                                            <input type="radio" id="star1"
-                                                                                name="value" value="1" required />
-                                                                            <label for="star1"
-                                                                                title="Rất tệ">&#9733;</label>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <!-- Nhận xét -->
-                                                                    <div class="mb-4">
-                                                                        <label for="comment" class="form-label">Your
-                                                                            review:</label>
-                                                                        <textarea class="form-control" id="comment" name="comment" rows="4"
-                                                                            placeholder="Please share your thoughts about this product..." required></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit"
-                                                                        class="btn btn-rating btn-primary w-100">Send</button>
-                                                                </div>
-                                                            </form>
                                                         </div>
+                                                        <form action="{{ route('ratings.store') }}" method="POST">
+                                                            @csrf
+                                                            <div class="modal-body">
+                                                                <input type="hidden" name="user_id"
+                                                                    value="{{ auth()->id() }}" />
+                                                                <input type="hidden" name="order_id"
+                                                                    value="{{ $order->id }}" />
+
+                                                                <input type="hidden" name="product_id"
+                                                                    value="{{ $item->productVariant->product->id }}">
+                                                                <input type="hidden" name="product_variant_id"
+                                                                    value="{{ $item->productVariant->id }}">
+
+                                                                <!-- Đánh giá -->
+                                                                <div class="mb-4">
+                                                                    <label for="rating" class="form-label">Your
+                                                                        rating:</label>
+                                                                    <div class="rating">
+                                                                        <input type="radio" id="star5"
+                                                                            name="value" value="5" required />
+                                                                        <label for="star5"
+                                                                            title="Tuyệt vời">&#9733;</label>
+
+                                                                        <input type="radio" id="star4"
+                                                                            name="value" value="4" required />
+                                                                        <label for="star4"
+                                                                            title="Tốt">&#9733;</label>
+
+                                                                        <input type="radio" id="star3"
+                                                                            name="value" value="3" required />
+                                                                        <label for="star3"
+                                                                            title="Bình thường">&#9733;</label>
+
+                                                                        <input type="radio" id="star2"
+                                                                            name="value" value="2" required />
+                                                                        <label for="star2"
+                                                                            title="Tệ">&#9733;</label>
+
+                                                                        <input type="radio" id="star1"
+                                                                            name="value" value="1" required />
+                                                                        <label for="star1"
+                                                                            title="Rất tệ">&#9733;</label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Nhận xét -->
+                                                                <div class="mb-4">
+                                                                    <label for="comment" class="form-label">Your
+                                                                        review:</label>
+                                                                    <textarea class="form-control" id="comment" name="comment" rows="4"
+                                                                        placeholder="Please share your thoughts about this product..." required></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit"
+                                                                    class="btn btn-rating btn-primary w-100">Send</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
-
-                                            </td>
+                                            </div>
                                         </tr>
                                     @endforeach
                                     <tr class="border-top border-top-dashed">
@@ -257,15 +262,13 @@
                                                     <tr>
                                                         @if ($discount)
                                                             <td>Discount <span
-                                                                    class="text-muted">({{ $order->coupon->name ?? null }})</span>
+                                                                    class="text-muted">({{ $order->coupon->code }})</span>
                                                                 :
                                                             </td>
                                                             <td class="text-end">
-                                                                {{ number_format($discount, 0, '.', '.') }}
+                                                                {{ number_format($discount, 0, '.', '.') }} %
                                                             </td>
                                                         @endif
-
-
                                                     </tr>
                                                     <tr>
                                                         <td>Shipping Charge :</td>
@@ -379,11 +382,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                @else
+                                @elseif ($order->status_order === 'canceled')
                                     <span type="button"
                                         class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 fw-bold text-danger"><i
                                             class="mdi mdi-archive-remove-outline align-middle me-1"></i> Order has been
                                         cancelled</span>
+                                @else
+                                    <span type="button"
+                                        class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 fw-bold text-danger">
+                                    </span>
                                 @endif
                             </div>
                         </div>

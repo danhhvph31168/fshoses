@@ -10,9 +10,9 @@
                     <div class="breadcrumb__text">
                         <h4>Shopping Cart</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
-                            <span>Shopping Cart</span>
+                            <a href="/" style="opacity: 50%">Home</a>
+                            <a href="{{ route('cart.list') }}" style="opacity: 50%">Shop</a>
+                            <strong style="font-weight: 600; !important">Shopping Cart</strong>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,8 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Are you sure?')"
-                                                        class="border-0 rounded-circle w-100 p-1"><b>x</b></button>
+                                                        class="border-0 bg-white ms-3"><i
+                                                            class="fa-solid fa-xmark text-danger"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -134,25 +135,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="col-lg-4">
-                    <div class="cart__discount">
-                        <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
-                            <button type="submit">Apply</button>
-                        </form>
-                    </div>
-                    <div class="cart__total">
-                        <h6>Cart total</h6>
-                        <ul>
-                            <li>Subtotal : <span class="cart-price total">{{ number_format($totalAmount) }}
-                                    VNĐ</span></li>
-                            <li>Total : <span class="cart-price total">{{ number_format($totalAmount) }}
-                                    VNĐ</span></li>
-                        </ul>
-                        <a href="{{ route('check-out') }}" class="primary-btn">Purchase</a>
-                    </div>
-                </div> --}}
                 <div class="col-lg-4">
                     <div class="cart__discount">
                         <h6>Discount codes</h6>
@@ -171,22 +153,23 @@
                     </div>
 
                     <div class="cart__total">
-                        <h6>Giỏ hàng tổng cộng</h6>
+                        {{-- <h6>Giỏ hàng tổng cộng</h6> --}}
                         {{-- Thông báo thành công nếu có --}}
                         @if (session('message'))
                             <div class="alert alert-success">
                                 {{ session('message') }}
                             </div>
                         @endif
-                        @if (session('discount'))
-                        
+
+                        @if (session('coupon'))
                             <ul>
                                 @if (session('coupon.type') === 'fixed')
-                                    <li>Discount: <span
-                                            class="cart-price total">{{ number_format(session('coupon.value')) }}
+                                    <li>Discount ({{ session('coupon.code') }}): <span
+                                            class="cart-price discount">{{ number_format(session('coupon.value')) }}
                                             VNĐ </span></li>
                                 @else
-                                    <li>Discount: <span class="cart-price total">{{ session('coupon.value') }} %</span>
+                                    <li>Discount ({{ session('coupon.code') }}): <span
+                                            class="cart-price discount">{{ session('coupon.value') }} %</span>
                                     </li>
                                 @endif
                                 <li>Total: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
@@ -221,7 +204,10 @@
             var formatter = new Intl.NumberFormat('en-US'); // Chỉ định ngôn ngữ và khu vực (US)
 
             $('.product').each(function() {
+
                 const price_sale_raw = $(this).find('.price_sale').data('price_sale');
+
+                const discount = $(this).find('.discount').data('discount');
 
                 const price_sale = parseInt(price_sale_raw.replace(/,/g, ''), 10);
 
@@ -229,10 +215,10 @@
 
                 $(this).find('input').on('change', function() {
                     const value_input = $(this).val();
-                    console.log('Input đã thay đổi:', this.value);
+                    // console.log('Input đã thay đổi:', this.value);
 
                     const dataId = $(this).data('id');
-                    console.log('id đã thay đổi:', dataId);
+                    // console.log('id đã thay đổi:', dataId);
 
                     price_element.text(formatter.format(price_sale * value_input));
 
@@ -244,7 +230,8 @@
                         },
                         data: {
                             variant_id: dataId,
-                            quatity: value_input
+                            quatity: value_input,
+                            discount: discount
                         },
                         dataType: "json",
                         success: function(response) {
@@ -255,6 +242,9 @@
 
                             $('.total').text(formatter.format(total_raw) + ' VNĐ')
                         },
+                        error: function(xhr, status, error) {
+                            console.error("Error: " + error);
+                        }
                     });
 
                 });

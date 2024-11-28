@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderHistoryController extends Controller
 {
+    /**
+     * @return [type]
+     */
     public function getListOrderHistory()
     {
         $orders = Auth::user()->orders()->orderBy('created_at', 'DESC')->paginate(5);
@@ -25,7 +28,7 @@ class OrderHistoryController extends Controller
         ])->first();
 
         if (!$order) {
-            return view("page-error.404");
+            return view("errors.403");
         }
 
         return view("client.orders.detail-order", compact("order"));
@@ -38,7 +41,7 @@ class OrderHistoryController extends Controller
         $request->validate([
             'cancel_reason' => 'required',
         ], [
-            'cancel_reason.required' => 'Please select reason for canceling order!', 
+            'cancel_reason.required' => 'Please select reason for canceling order!',
         ]);
 
         $order = Order::where('sku_order', $slug)->first();
@@ -54,6 +57,6 @@ class OrderHistoryController extends Controller
         ];
         $order->update($data);
         // dd($order);
-            return redirect()->back()->with('info', 'Order was canceled successfully.');
+        return redirect()->back()->with('info', 'Order was canceled successfully.');
     }
 }

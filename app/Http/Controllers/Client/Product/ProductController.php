@@ -85,7 +85,11 @@ class ProductController extends Controller
 
         // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
         $relatedProducts = Product::with(['galleries', 'productVariants'])->where('category_id', $product->category_id)->where('id', '<>', $product->id)->limit(4)->get();
+        // Thông tin đánh giá
+        $averageRating = $product->averageRating();
+        $totalRatings = $product->totalRatings();
+        $ratingBreakdown = $product->ratingBreakdown();
 
-        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts', 'productGalleries'));
+        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts', 'productGalleries', 'averageRating', 'totalRatings', 'ratingBreakdown'));
     }
 }

@@ -2,6 +2,8 @@
 
 
 @section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <section class="breadcrumb-option">
         <div class="container">
             <div class="row">
@@ -9,9 +11,9 @@
                     <div class="breadcrumb__text">
                         <h4>Check Out</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
-                            <span>Check Out</span>
+                            <a href="/" style="opacity: 50%">Home</a>
+                            <a href="{{ route('cart.list') }}" style="opacity: 50%">Shop</a>
+                            <strong style="font-weight: 600; !important">Check Out</strong>
                         </div>
                     </div>
                 </div>
@@ -78,7 +80,8 @@
                                         <p>Province<span>*</span></p>
                                         <select class="@error('user_province') is-invalid @enderror form-control w-100"
                                             name="user_province" id="province">
-                                            <option value="{{ auth()->user()?->province }}">{{ auth()->user()?->province }}
+                                            <option value="{{ auth()->user()?->province }}">
+                                                {{ auth()->user()?->province }}
                                             </option>
                                         </select>
                                         <input type="hidden" name="provinceText" id="provinceText">
@@ -174,8 +177,6 @@
                             <div class="checkout__order">
                                 <h4 class="order__title">Your product</h4>
                                 <div class="checkout__order__products">Product information</div>
-
-
                                 @foreach ($cart as $item)
                                     <ul class="checkout__total__products">
                                         <td class="product__cart__item">
@@ -235,12 +236,18 @@
                                         </td>
                                     </ul>
                                 @endforeach
+                                @php
+                                    $shippingCharge = $totalAmount < 1000000 ? 50000 : 0;
+                                    $total = $totalAmount + $shippingCharge;
+                                @endphp
 
                                 <ul class="checkout__total__all">
-                                    <li>Total <span>{{ number_format($totalAmount) }} VNĐ</span></li>
+                                    <li>Sub Total :<span>{{ number_format($totalAmount) }} VNĐ</span></li>
+                                    <li>Shipping Charge :<span>{{ number_format($shippingCharge) }} VNĐ</span></li>
+                                    <li>Total :<span>{{ number_format($total) }} VNĐ</span></li>
                                 </ul>
 
-                                <input type="hidden" name="totalAmount" value="{{ $totalAmount }}">
+                                <input type="hidden" name="totalAmount" value="{{ $total }}">
 
                                 <button type="submit" name="redirect" id="submit" class="site-btn">Pay</button>
                             </div>
@@ -321,8 +328,6 @@
                 $('#districtText').val($('#district option:selected').text());
                 $('#wardText').val($('#ward option:selected').text());
             })
-
-
         }
     </script>
 @endsection

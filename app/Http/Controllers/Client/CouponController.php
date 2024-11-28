@@ -13,8 +13,8 @@ class CouponController extends Controller
     public function applyCoupon(Request $request)
     {
         $cart = session('cart');
-        $totalAmount = 0;
 
+        $totalAmount = 0;
 
         // Tính toán tổng giá trị đơn hàng
         if ($cart) {
@@ -23,7 +23,6 @@ class CouponController extends Controller
                 $totalAmount += $item['quatity'] * ($price ?: $item['price_regular']);
             }
         }
-        // dd($totalAmount);
 
         $couponCode = $request->input('code');
         $coupon = Coupon::findByCode($couponCode);
@@ -49,22 +48,23 @@ class CouponController extends Controller
             $messages[] = 'Coupon is out of stock!';
             return redirect()->route('cart.list')->withErrors($messages);
         }
+
         // Tính toán giảm giá
         $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);
 
-        // Giảm số lượng coupon còn lại trong cơ sở dữ liệu
-        $coupon->decrement('quantity', 1);
-
         // Lưu coupon vào session
         session(['coupon' => [
+            'coupon_id' => $coupon->id,
             'code' => $coupon->code,
             'type' => $coupon->type,
             'value' => $coupon->value,
+            'quantity' => $coupon->quantity
         ]]);
 
         session([
             'discount' => $discount
         ]);
+
         session()->put('cart', $cart);
 
 

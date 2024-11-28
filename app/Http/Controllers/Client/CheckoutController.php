@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Events\OrderCreateClient;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Client\CheckoutRequest;
-use App\Models\{Order, OrderItem, Payment, ProductColor, User, Vnpay};
-use App\Services\OrderClient\AddOrderServices;
-use App\Services\OrderClient\AddVnpayServices;
-use App\Services\OrderClient\VnpayServices;
-use Illuminate\Support\Facades\{Auth, DB};
+use App\Models\Coupon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Events\OrderCreateClient;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\{Auth, DB};
+use App\Services\OrderClient\VnpayServices;
+use App\Http\Requests\Client\CheckoutRequest;
+use App\Services\OrderClient\AddOrderServices;
+use App\Services\OrderClient\AddVnpayServices;
+use App\Models\{Order, OrderItem, Payment, ProductColor, User, Vnpay};
 
 class CheckoutController extends Controller
 {
@@ -41,11 +42,15 @@ class CheckoutController extends Controller
 
     public function checkOut()
     {
-        $cart = session('cart');
+        if (!empty(session('cart'))) {
+            $cart = session('cart');
 
-        $totalAmount = session('totalAmount');
+            $totalAmount = session('totalAmount');
 
-        return view('client.checkout', compact('cart', 'totalAmount'));
+            return view('client.checkout', compact('cart', 'totalAmount'));
+        } else {
+            return back()->with('error', 'Your cart is empty!');
+        }
     }
 
     public function addOrder(CheckoutRequest $request)
@@ -89,6 +94,12 @@ class CheckoutController extends Controller
                 $payment = $payment->id;
                 $this->vnpayServices->vnpay($request, $order, $payment);
             }
+
+            // Giảm số lượng coupon còn lại trong cơ sở dữ liệu
+            $coupon = Coupon::findByCode(session('coupon')['code']);
+
+            $coupon->decrement('quantity', 1);
+
             return redirect()->route('orderSuccess', ['sku' => $order->sku_order])->with('success', 'Order successful');
         } catch (\Throwable $th) {
             dd($th->getMessage());
@@ -101,6 +112,7 @@ class CheckoutController extends Controller
 
     {
         $order = Order::where('sku_order', $sku)->firstOrFail();
+
         return view('client.order-success', compact('order'));
     }
 

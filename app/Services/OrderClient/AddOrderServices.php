@@ -45,14 +45,17 @@ class AddOrderServices
                 'email' => $request->user_email,
                 'phone' => $request->user_phone,
                 'address' => $request->user_address,
-                'role_id' => 1,
+                'role_id' => 3,
                 'status'  => false,
             ]);
         }
 
+        // dd(session('coupon')['coupon_id']);
+
         $order = Order::query()->create([
             'user_id'    => $user->id,
-            'role_id'    => 1,
+            // 'role_id'    => null,
+            'coupon_id' => session('coupon')['coupon_id'],
             'sku_order'  => 'DH-' . strtoupper(Str::random(6)),
             'user_name'  => $request->user_name,
             'user_email' => $request->user_email,
@@ -72,7 +75,8 @@ class AddOrderServices
     {
         $order = Order::query()->create([
             'user_id'    => Auth::user()->id,
-            'role_id'    => Auth::user()->role_id,
+            // 'role_id'    => Auth::user()->role_id,
+            'coupon_id' => session('coupon')['coupon_id'],
             'sku_order'  => 'DH-' . strtoupper(Str::random(6)),
             'user_name'  => $request->user_name,
             'user_email' => $request->user_email,
