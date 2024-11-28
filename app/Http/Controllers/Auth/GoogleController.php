@@ -22,7 +22,7 @@ class GoogleController extends Controller
     {
         try {
             // Lấy thông tin người dùng từ Google
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            $googleUser = Socialite::driver('google')->user();
             
             // Tìm người dùng trong cơ sở dữ liệu hoặc tạo mới
             $user = User::firstOrCreate(
@@ -36,7 +36,7 @@ class GoogleController extends Controller
             // Đăng nhập người dùng
             Auth::login($user);
 
-            return redirect()->route('client.home')->with('success', 'Login successfully'); // Chuyển hướng sau khi đăng nhập thành công
+            return redirect()->route('home')->with('success', 'Login successfully'); // Chuyển hướng sau khi đăng nhập thành công
         } catch (\Exception $e) {
             return redirect()->route('auth.showFormLogin')->with(['error' => 'Google login failed!']);
         }

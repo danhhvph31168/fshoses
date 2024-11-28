@@ -35,6 +35,11 @@ class User extends Authenticatable
         'ward',
         'zip_code',
     ];
+      // Accessor để lấy đường dẫn đầy đủ của avatar
+      public function getAvatarUrlAttribute()
+      {
+          return asset($this->avatar ?: 'image-default/avatar.jpg');
+      }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -69,5 +74,44 @@ class User extends Authenticatable
 
     public function orders(){
         return $this->hasMany(Order::class);
+    }
+
+    public function permissions()
+    {
+        return [
+            'users.index',
+            'roles.index',
+            'brands.index',
+            'categories.index',
+            'products.index',
+            'banners.index',
+            'orders.index',
+            'reviews.index',
+            'admin.index'
+        ];
+    }
+
+    public function hasPermission($route)
+    {
+        $routes = $this->routes();
+
+        // dd($routes);
+
+        return  in_array($route, $routes) ? true : false;
+    }
+
+    public function routes()
+    {
+        return [
+            'admin.users.index',
+            'admin.roles.index',
+            'admin.brands.index',
+            'admin.categories.index',
+            'admin.products.index',
+            'admin.banners.index',
+            'admin.orders.index',
+            'admin.reviews.index',
+            'admin.index'
+        ];
     }
 }

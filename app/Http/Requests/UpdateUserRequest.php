@@ -27,13 +27,13 @@ class UpdateUserRequest extends FormRequest
             'name'      => 'required|max:255',
             'email'     => 'required|max:255',
             'password'  => 'required|max:255',
-            'avatar'    => 'image',
+            'avatar'    => 'nullable|image|mimes:jpg,jpeg,png,gif|',
             'phone'     => 'required',
             'status'    => [Rule::in([0, 1])],
-            'address'   => 'max:255',
-            'balance'   => 'min:0',
-            'district'  => 'max:255',
-            'province'  => 'max:255'
+            'address' => 'nullable|string|max:255',
+            'district' => 'nullable',
+            'province' => 'nullable',
+            'ward' => 'nullable',
         ];
     }
 }

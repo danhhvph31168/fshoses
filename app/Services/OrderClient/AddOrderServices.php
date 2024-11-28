@@ -14,13 +14,14 @@ class AddOrderServices
         $totalAmount = 0;
         $dataItem = [];
         foreach (session('cart') as $variantID => $item) {
+            $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
 
-            $totalAmount += $item['quatity'] * ($item['price_sale'] ?: $item['price_regular']);
+            $totalAmount = session('totalAmount');
 
             $dataItem[] = [
                 'product_variant_id' => $variantID,
                 'quantity'           => $item['quatity'],
-                'price'              => $item['price_sale'] ?: $item['price_regular'],
+                'price'              => $price ?: $item['price_regular'],
             ];
         }
 

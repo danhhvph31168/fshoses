@@ -111,20 +111,20 @@
                                         <td>{{ $data->role->name }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Balance</td>
-                                        <td>{{ number_format($data->balance, 0, ',', '.') }} VNĐ</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address</td>
-                                        <td>{{ $data->address }}</td>
+                                        <td>Province</td>
+                                        <td>{{ $data->province }}</td>
                                     </tr>
                                     <tr>
                                         <td>District</td>
                                         <td>{{ $data->district }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Province</td>
-                                        <td>{{ $data->province }}</td>
+                                        <td>Ward</td>
+                                        <td>{{ $data->ward }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td>{{ $data->address }}</td>
                                     </tr>
                                     <tr>
                                         <td>Zip Code</td>
@@ -157,7 +157,6 @@
 @endsection
 
 @section('js')
-
     {{-- <script>
         new DataTable("#example", {
             order: [0, 'asc']

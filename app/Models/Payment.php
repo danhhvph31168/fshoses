@@ -25,8 +25,8 @@ class Payment extends Model
     const PAYMENTS_METHOD_CASH              = 'cash';
 
     const STATUS = [
-        'pending'       => 'Đang chờ xử lý',    # Giao dịch thanh toán đã được tạo nhưng chưa hoàn tất (ví dụ: chờ xác nhận từ cổng thanh toán, chờ khách hàng nhập thông tin thẻ).
-        'completed'     => 'Đã hoàn tất',
+        'Pending'       => 'Đang chờ xử lý',    # Giao dịch thanh toán đã được tạo nhưng chưa hoàn tất (ví dụ: chờ xác nhận từ cổng thanh toán, chờ khách hàng nhập thông tin thẻ).
+        'Completed'     => 'Đã hoàn tất',
         'failed'        => 'Thất bại',          # Thanh toán không thành công do lỗi (ví dụ: thẻ bị từ chối, thiếu tiền trong tài khoản, hoặc lỗi hệ thống).
         'refunded'      => 'Đã hoàn tiền',      # Số tiền thanh toán đã được hoàn lại cho khách hàng sau khi giao dịch hoàn tất.
         'canceled'      => 'Đã hủy',            # Giao dịch đã bị hủy bởi khách hàng hoặc hệ thống trước khi hoàn thành.
@@ -41,6 +41,6 @@ class Payment extends Model
     const STATUS_IN_PROGRESS    = 'in_progress';
 
     public function order(){
-        return $this->belongsTo(Order::class);
+        return $this->hasOne(Order::class);
     }
 }

@@ -23,8 +23,7 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Email</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    id="username" name="email" placeholder="Enter username" autofocus
-                                    value="{{ old('email') }}">
+                                    id="username" name="email" placeholder="Enter username" autofocus value="{{ old('email') }}">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -55,9 +54,10 @@
                                 <label class="form-check-label" for="auth-remember-check">Remember me</label>
                             </div>
 
-                            <div class="mt-5">
+                            <div class="mt-4">
                                 <button class="btn btn-success w-100" type="submit">Sign In</button>
                             </div>
+
                             <div class="mt-4 text-center">
                                 <div class="signin-other-title">
                                     <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium"
@@ -67,19 +67,6 @@
                                 </div>
 
                             </div>
-
-                            {{-- <div class="mt-4 text-center">
-                                <div class="signin-other-title">
-                                    <h5 class="fs-13 mb-4 title">Sign In with</h5>
-                                </div>
-                                <div>
-
-                                    <a href="{{ route('auth.google') }}"
-                                        class="btn btn-danger btn-icon waves-effect waves-light"><i
-                                            class="ri-google-fill fs-16"></i></a>
-
-                                </div>
-                            </div> --}}
                         </form>
                     </div>
                 </div>

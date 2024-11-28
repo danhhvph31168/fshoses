@@ -40,7 +40,6 @@
                     <div class="col-md-12">
                         <div class="row">
                             @foreach ($prds as $item)
-                            {{-- @dd($prds) --}}
                             <div class="col-md-4 mb-3">
                                 <div class="card">
                                     <div class="border-bottom" style="width: 100%">
@@ -65,8 +64,9 @@
                                             {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
                                         </p>
                                         @endif
-                                        <div class="mb-3">
-                                            <a href="#" class="btn btn-secondary">Thêm vào giỏ hàng</a>
+                                        <div class="mb-3 text-center">
+                                            <a style="background-color: #d17572" href="{{ route('productDetail', $item->slug) }}"
+                                                class="btn btn-secondary btn-sm w-100">Show more</a>
                                         </div>
                                     </div>
                                 </div>

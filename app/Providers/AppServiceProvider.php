@@ -35,11 +35,5 @@ class AppServiceProvider extends ServiceProvider
             $cate = Category::orderBy('name', 'ASC')->where('is_active', 1)->get();
             $view->with(compact('brd', 'cate'));
         });
-
-        view()->composer('client.layouts.filter', function ($view) {
-            $brd = Brand::orderBy('name', 'ASC')->where('status', 1)->get();
-            $cate = Category::orderBy('name', 'ASC')->where('is_active', 1)->get();
-            $view->with(compact('brd', 'cate'));
-        });
     }
 }

@@ -14,17 +14,23 @@ class OrderSearchController extends Controller
     }
     public function handleSearchOrder(SearchOrderRequest $request)
     {
-        // Tra cứu đơn hàng
         $order = Order::where('sku_order', $request->sku_order)
             ->where('user_phone', $request->user_phone)
             ->first();
 
         if (!$order) {
-            // Nếu không tìm thấy, trả về view với thông báo lỗi
             return back()->with(['error' => 'No orders were found with the information provided.']);
+        } else {
+            session()->put('searchOrder', $order->id);
         }
 
-        // Nếu tìm thấy, trả về view hiển thị thông tin đơn hàng
+        return view('client.orders.list-order-search', compact('order'));
+    }
+
+    public function viewOrderSearch()
+    {
+        $order = Order::where('id', session('searchOrder'))->first();
+        session()->forget('searchOrder');
         return view('client.orders.list-order-search', compact('order'));
     }
 }

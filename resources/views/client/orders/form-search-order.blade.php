@@ -5,7 +5,6 @@ Tra cứu đơn hàng
 @endsection
 
 @section('content')
-
 <section class="breadcrumb-option">
     <div class="container">
         <div class="row">
@@ -16,7 +15,6 @@ Tra cứu đơn hàng
                         <a href="{{ route('client.home') }}">Home</a>
                         <span>Order Tracking</span>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -27,7 +25,7 @@ Tra cứu đơn hàng
     {{ session('error') }}
 </div>
 @endif
-<div class="container mt-4 mb-5">
+<div class="container mt-4 mb-5" style="padding-left: 150px; ">
     <form class="w-50" action="{{ route('handleSearchOrder') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -52,8 +50,5 @@ Tra cứu đơn hàng
         </div>
         <button type="submit" class="btn btn-danger mt-2">Search</button>
     </form>
-
 </div>
-</section>
-
 @endsection

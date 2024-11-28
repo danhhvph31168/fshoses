@@ -12,10 +12,6 @@ var earningsData = JSON.parse(
     document.querySelector('meta[name="earnings-data"]').getAttribute("content")
 );
 
-var refundsData = JSON.parse(
-    document.querySelector('meta[name="refunds-data"]').getAttribute("content")
-);
-
 var productData = JSON.parse(
     document.querySelector('meta[name="product-data"]').getAttribute("content")
 );
@@ -61,11 +57,6 @@ var options,
                         data: earningsData,
                     },
                     {
-                        name: "Refunds",
-                        type: "line",
-                        data: refundsData,
-                    },
-                    {
                         name: "Order Cancel",
                         type: "line",
                         data: ordersCancelData,
@@ -106,16 +97,6 @@ var options,
                     axisTicks: { show: !1 },
                     axisBorder: { show: !1 },
                 },
-                // yaxis: {
-                //     min: 0,
-                //     max: 120,
-                //     tickAmount: 4,
-                //     labels: {
-                //         formatter: function (value) {
-                //             return value + " tr"; // Hiển thị đơn vị "tr"
-                //         }
-                //     }
-                // },
                 grid: {
                     show: !0,
                     xaxis: { lines: { show: !0 } },
@@ -148,13 +129,6 @@ var options,
                                               style: "currency",
                                               currency: "VND",
                                           })
-                                    : e;
-                            },
-                        },
-                        {
-                            formatter: function (e) {
-                                return void 0 !== e
-                                    ? e.toFixed(0) + " Sales"
                                     : e;
                             },
                         },

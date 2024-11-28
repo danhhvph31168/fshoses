@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Events\OrderCreateClient;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\CheckoutRequest;
-use App\Models\{Order, OrderItem, Payment, User, Vnpay};
+use App\Models\{Order, OrderItem, Payment, ProductColor, User, Vnpay};
 use App\Services\OrderClient\AddOrderServices;
 use App\Services\OrderClient\AddVnpayServices;
 use App\Services\OrderClient\VnpayServices;
@@ -21,19 +21,29 @@ class CheckoutController extends Controller
         public AddOrderServices $addOrderServices
     ) {}
 
+    // public function checkOut(User $user)
+    // {
+    //     $cart = session('cart');
+
+    //     $totalAmount = 0;
+    //     if (session()->has('cart')) {
+
+    //         foreach ($cart as $item) {
+    //             $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
+    //             $totalAmount += $item['quatity'] * ($price ?: $item['price_regular']);
+    //         }
+    //     } else {
+    //         $cart = [];
+    //     }
+
+    //     return view('client.checkout', compact('cart', 'totalAmount', 'price'));
+    // }
+
     public function checkOut()
     {
         $cart = session('cart');
 
-        $totalAmount = 0;
-        if (session()->has('cart')) {
-
-            foreach ($cart as $item) {
-                $totalAmount += $item['quatity'] * ($item['price_sale'] ?: $item['price_regular']);
-            }
-        } else {
-            $cart = [];
-        }
+        $totalAmount = session('totalAmount');
 
         return view('client.checkout', compact('cart', 'totalAmount'));
     }
@@ -70,8 +80,6 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            OrderCreateClient::dispatch($order);
-
             DB::commit();
 
             session()->forget('cart');
@@ -81,8 +89,7 @@ class CheckoutController extends Controller
                 $payment = $payment->id;
                 $this->vnpayServices->vnpay($request, $order, $payment);
             }
-
-            return redirect()->route('orderSuccess')->with('success', 'Order successful');
+            return redirect()->route('orderSuccess', ['sku' => $order->sku_order])->with('success', 'Order successful');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             DB::rollBack();
@@ -90,14 +97,20 @@ class CheckoutController extends Controller
         }
     }
 
-    public function orderSuccess()
+    public function orderSuccess($sku)
+
     {
-        return view('client.order-success');
+        $order = Order::where('sku_order', $sku)->firstOrFail();
+        return view('client.order-success', compact('order'));
     }
 
     public function vnpayReturn(Request $request, $order, $payment)
     {
+        $order2 = Order::query()->where('id', $order)->first();
+
         $this->addVnpayServices->addVnPay($request, $order, $payment);
+
+        OrderCreateClient::dispatch($order2);
 
         return redirect()->route('orderSuccess')->with('success', 'Order successful');
     }

@@ -20,7 +20,8 @@ class OrderServices
         foreach ($products as $key => $value) {
             $product = Product::query()->findOrFail($value['id']);
 
-            $priceSale = $product->price_sale;
+            $priceSale = $product->price_regular * ((100 - $product->price_sale) / 100);
+
 
             $totalAmout += $priceSale * $value['quatity'];
 
@@ -42,6 +43,7 @@ class OrderServices
                 ];
             }
         }
+        dd($priceSale . '-' . $totalAmout);
 
         return [$totalAmout, $productVariantID];
     }

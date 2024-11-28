@@ -6,8 +6,8 @@
             <h3 class="text-uppercase fw-bold mb-3">Price range</h3>
             <div class="list-group">
                 <input type="hidden" id="hidden_minimun_price" name="hidden_minimun_price" value="0">
-                <input type="hidden" id="hidden_maximun_price" name="hidden_maximun_price" value="100000000">
-                <p id="price_show" class="fw-semibold">Từ: 0 VNĐ - 1.000.000 VNĐ</p>
+                <input type="hidden" id="hidden_maximun_price" name="hidden_maximun_price" value="1000000">
+                <p id="price_show" class="fw-semibold">Price: 0 VNĐ - 1.000.000 VNĐ</p>
                 <div id="price_range"></div>
             </div>
         </div>
@@ -22,7 +22,7 @@
                             value="{{ $item->name }}">
                         <span>{{ $item->name }}</span>
                     </div>
-                    <span class="badge bg-secondary">{{ $item->products->count() }}</span>
+                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
                 </div>
                 @endforeach
             </div>
@@ -38,7 +38,7 @@
                             value="{{ $item->name }}">
                         <span>{{ $item->name }}</span>
                     </div>
-                    <span class="badge bg-secondary">{{ $item->products->count() }}</span>
+                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
                 </div>
                 @endforeach
             </div>

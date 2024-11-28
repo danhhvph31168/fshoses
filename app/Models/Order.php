@@ -23,6 +23,7 @@ class Order extends Model
         'status_order',
         'status_payment',
         'total_amount',
+        'cancel_reason',
     ];
 
     const STATUS_ORDER = [
@@ -73,10 +74,11 @@ class Order extends Model
     }
     public function payment()
     {
-        return $this->hasOne(Payment::class,);
+        return $this->hasOne(Payment::class);
     }
-    public function refund()
+    
+    public function coupon()
     {
-        return $this->hasOne(Refund::class);
+        return $this->belongsTo(Coupon::class);
     }
 }

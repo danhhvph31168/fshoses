@@ -18,7 +18,7 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Name<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    id="username" placeholder="Enter name" name="name" autofocus>
+                                    id="username" placeholder="Enter name" name="name">
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -38,8 +38,7 @@
 
 
                             <div class="mb-3">
-                                <label class="form-label" for="password-input">Password<span
-                                        class="text-danger">*</span></label>
+                                <label class="form-label" for="password-input">Password</label>
                                 <div class="position-relative auth-pass-inputgroup">
                                     <input type="password"
                                         class="form-control pe-5 password-input @error('password') is-invalid @enderror"
@@ -53,8 +52,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="password-input">Confirm Password<span
-                                        class="text-danger">*</span></label>
+                                <label class="form-label" for="password-input">Confirm Password</label>
                                 <div class="position-relative auth-pass-inputgroup">
                                     <input type="password"
                                         class="form-control pe-5 password-input @error('password_confirmation') is-invalid @enderror"
@@ -68,9 +66,10 @@
                                 </div>
                             </div>
 
-                            <div class="mt-5">
+                            <div class="mt-4">
                                 <button class="btn btn-success w-100" type="submit">Sign Up</button>
                             </div>
+
                             <div class="mt-4 text-center">
                                 <div class="signin-other-title">
                                     <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium"
@@ -80,19 +79,6 @@
                                 </div>
 
                             </div>
-                            {{-- <div class="mt-4 text-center">
-                                <div class="signin-other-title">
-                                    <h5 class="fs-13 mb-4 title text-muted">Create account with</h5>
-                                </div>
-
-                                <div>
-
-                                    <a href="{{ route('auth.google') }}"
-                                        class="btn btn-danger btn-icon waves-effect waves-light"><i
-                                            class="ri-google-fill fs-16"></i></a>
-
-                                </div>
-                            </div> --}}
                         </form>
 
                     </div>

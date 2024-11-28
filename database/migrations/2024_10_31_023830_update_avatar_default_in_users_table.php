@@ -15,7 +15,7 @@ return new class extends Migration
         // Cập nhật các giá trị NULL trong cột 'avatar' thành 'image-default/avatar.jpg'
         DB::table('users')->whereNull('avatar')->update(['avatar' => 'image-default/avatar.jpg']);
         Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar')->default('https://tinyurl.com/2pcrun9h')->nullable(false)->change();
+            $table->string('avatar')->default('image-default/avatar.jpg')->nullable(false)->change();
         });
     }
 
