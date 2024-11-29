@@ -27,8 +27,6 @@ class RatingController extends Controller
         // Tìm đơn hàng theo ID
         $order = Order::findOrFail($orderId);
 
-        dd($order);
-
         $productVariant = ProductVariant::findOrFail($productVariantId);
 
         // Trả về view để tạo rating

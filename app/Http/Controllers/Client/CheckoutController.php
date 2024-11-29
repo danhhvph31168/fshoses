@@ -22,23 +22,6 @@ class CheckoutController extends Controller
         public AddOrderServices $addOrderServices
     ) {}
 
-    // public function checkOut(User $user)
-    // {
-    //     $cart = session('cart');
-
-    //     $totalAmount = 0;
-    //     if (session()->has('cart')) {
-
-    //         foreach ($cart as $item) {
-    //             $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
-    //             $totalAmount += $item['quatity'] * ($price ?: $item['price_regular']);
-    //         }
-    //     } else {
-    //         $cart = [];
-    //     }
-
-    //     return view('client.checkout', compact('cart', 'totalAmount', 'price'));
-    // }
 
     public function checkOut()
     {

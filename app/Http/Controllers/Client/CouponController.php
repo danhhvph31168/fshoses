@@ -27,30 +27,49 @@ class CouponController extends Controller
         $couponCode = $request->input('code');
         $coupon = Coupon::findByCode($couponCode);
 
-        $messages = [];
+        // $messages = [];
+        if ($totalAmount < 1000000) {
+            return redirect()->route('cart.list')->with('error', 'The discount code is only applicable for orders with a total value over 1,000,000 VND');
+        }
         if (!$coupon) {
-            $messages[] = 'Coupon does not exist!!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            // $messages[] = 'Coupon does not exist!!';
+            // return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('cart.list')->with('error', 'Coupon does not exist!!');
         }
 
         if (!$coupon->is_active) {
-            $messages[] = 'Coupon is no longer valid!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            // $messages[] = 'Coupon is no longer valid!';
+            // return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('cart.list')->with('error', 'Coupon is no longer valid!');
         }
 
         $currentDate = now();
         if ($currentDate < $coupon->start_date || $currentDate > $coupon->end_date) {
-            $messages[] = 'Coupon is no longer valid!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            // $messages[] = 'Coupon is no longer valid!';
+            // return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('cart.list')->with('error', 'Coupon is no longer valid!');
         }
 
         if ($coupon->quantity <= 0) {
-            $messages[] = 'Coupon is out of stock!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            // $messages[] = 'Coupon is out of stock!';
+            // return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('cart.list')->with('error', 'Coupon is out of stock!');
         }
 
         // Tính toán giảm giá
-        $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);
+        // $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);
+
+        if ($coupon) {
+            $discount = $coupon->value;
+            if ($coupon->type == 'percent') {
+                $totalAmount = $totalAmount * ((100 - $discount) / 100);
+            } else {
+                $totalAmount = $totalAmount - $discount;
+            }
+        } else {
+            $discount  = 0;
+            $totalAmount = $totalAmount - $discount;
+        }
 
         // Lưu coupon vào session
         session(['coupon' => [

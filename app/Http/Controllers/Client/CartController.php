@@ -31,11 +31,15 @@ class CartController extends Controller
 
         if (session('coupon')) {
             $discount = session('coupon')['value'];
+            if (session('coupon')['type'] == 'percent') {
+                $totalAmount = $totalAmount * ((100 - $discount) / 100);
+            } else {
+                $totalAmount -=  $discount;
+            }
         } else {
             $discount  = 0;
+            $totalAmount -=  $discount;
         }
-
-        $totalAmount = $totalAmount * ((100 - $discount) / 100);
 
         session(['totalAmount' => $totalAmount]);
 
@@ -107,11 +111,15 @@ class CartController extends Controller
 
         if (session('coupon')) {
             $discount = session('coupon')['value'];
+            if (session('coupon')['type'] == 'percent') {
+                $totalCart = $totalCart * ((100 - $discount) / 100);
+            } else {
+                $totalCart -=  $discount;
+            }
         } else {
             $discount  = 0;
+            $totalCart -=  $discount;
         }
-
-        $totalCart = $totalCart * ((100 - $discount) / 100);
 
         return response()->json([
             'data' => [
