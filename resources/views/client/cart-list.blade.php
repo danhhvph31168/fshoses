@@ -215,10 +215,10 @@
 
                 $(this).find('input').on('change', function() {
                     const value_input = $(this).val();
-                    // console.log('Input đã thay đổi:', this.value);
+                    console.log('Input đã thay đổi:', this.value);
 
                     const dataId = $(this).data('id');
-                    // console.log('id đã thay đổi:', dataId);
+                    console.log('id đã thay đổi:', dataId);
 
                     price_element.text(formatter.format(price_sale * value_input));
 

@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Danh sách đặt hàng
+    List Orders
 @endsection
 
 @section('content')

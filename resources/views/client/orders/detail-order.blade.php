@@ -1,20 +1,17 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Chi tiết đơn hàng
+    Order detail
 @endsection
-@section('css')
-    <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
-    <!-- Layout config Js -->
-    <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
 
-    <!-- Icons Css -->
+@section('css')
     <link href="{{ asset('theme/admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
     <link href="{{ asset('theme/admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- custom Css-->
-    <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
+        .container {
+            max-width: 1300px;
+        }
+
         .footer {
             background-color: black !important;
             margin-top: 80px;
@@ -45,6 +42,7 @@
         }
     </style>
 @endsection
+
 @section('content')
     <section class="breadcrumb-option">
         <div class="container">
@@ -77,7 +75,6 @@
                             <table class="table table-nowrap align-middle table-borderless mb-0">
                                 <thead class="table-light text-muted">
                                     <tr>
-                                        {{-- <th scope="col">#</th> --}}
                                         <th scope="col">Product Details</th>
                                         <th scope="col">Item Price</th>
                                         <th scope="col">Quantity</th>
@@ -87,9 +84,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($order->orderItems as $key => $item)
-                                        {{-- @dd($item) --}}
                                         <tr class="">
-                                            {{-- <td class="text-center align-middle">{{ $key + 1 }}</td> --}}
                                             <td>
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
@@ -165,11 +160,11 @@
                                                                             <!-- Ô tròn màu sắc -->
                                                                             <div
                                                                                 style="
-                                                                                            width: 20px;
-                                                                                            height: 20px;
-                                                                                            border-radius: 50%;
-                                                                                            background-color: {{ $item->productVariant->color->name }};
-                                                                                            border: 1px solid #ddd;">
+                                                                                        width: 20px;
+                                                                                        height: 20px;
+                                                                                        border-radius: 50%;
+                                                                                        background-color: {{ $item->productVariant->color->name }};
+                                                                                        border: 1px solid #ddd;">
                                                                             </div>
 
                                                                         </div>
@@ -261,13 +256,23 @@
                                                     </tr>
                                                     <tr>
                                                         @if ($discount)
-                                                            <td>Discount <span
-                                                                    class="text-muted">({{ $order->coupon->code }})</span>
-                                                                :
-                                                            </td>
-                                                            <td class="text-end">
-                                                                {{ number_format($discount, 0, '.', '.') }} %
-                                                            </td>
+                                                            @if ($order->coupon->type == 'percent')
+                                                                <td>Discount <span
+                                                                        class="text-muted">({{ $order->coupon->code }})</span>
+                                                                    :
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    {{ number_format($discount, 0, '.', '.') }} %
+                                                                </td>
+                                                            @else
+                                                                <td>Discount <span
+                                                                        class="text-muted">({{ $order->coupon->code }})</span>
+                                                                    :
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    {{ number_format($discount, 0, '.', '.') }} VNĐ
+                                                                </td>
+                                                            @endif
                                                         @endif
                                                     </tr>
                                                     <tr>
@@ -666,12 +671,9 @@
                                     </p>
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    <p class="mb-0 fw-bold">{{ $order->total_amount }}</p>
+                                    <p class="mb-0 fw-bold">{{ number_format($total, 0, '.', '.') }} VNĐ</p>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
                     <!--end card-->
@@ -681,10 +683,9 @@
     </div>
     <!-- Shopping Cart Section End -->
 @endsection
-@section('scripts')
-    <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
+
+
+
+@section('script')
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
 @endsection

@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
 
+
     @yield('css')
 </head>
 
