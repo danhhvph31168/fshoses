@@ -20,7 +20,8 @@ return new class extends Migration
 
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->integer('product_id')->default(0);
+            $table->foreignIdFor(Product::class)->constrained();
+
             $table->foreignIdFor(ProductVariant::class)->constrained();
             $table->integer('value')->default(0);
             $table->string('comment');
