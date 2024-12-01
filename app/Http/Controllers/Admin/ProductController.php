@@ -6,11 +6,11 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductSize;
+use Illuminate\Support\Str;
 use App\Models\ProductColor;
 use Illuminate\Http\Request;
 use App\Models\ProductGallery;
 use App\Models\ProductVariant;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -27,11 +27,10 @@ class ProductController extends Controller
     {
 
         if (Auth::user()->role_id == 1) {
+            $brands = Brand::pluck('name', 'id')->all();
+            $categories = Category::pluck('name', 'id')->all();
+
             $data = Product::query()->with(['category', 'brand'])->latest('id')->paginate(5);
-
-            $brands = Brand::query()->get();
-
-            $categories = Category::query()->get();
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'brands', 'categories'));
         } else {
@@ -59,7 +58,6 @@ class ProductController extends Controller
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('categories', 'sizes', 'colors', 'brands'));
         } else {
-
             return back()->with('error', 'Access denied!');
         }
     }
@@ -69,8 +67,6 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-
-
         if (Auth::user()->role_id == 1) {
 
             list($dataProduct, $dataProductVariants, $dataProductGalleries)
@@ -193,7 +189,7 @@ class ProductController extends Controller
                             'product_id'        => $item['product_id'],
                             'product_size_id'   => $item['product_size_id'],
                             'product_color_id'  => $item['product_color_id'],
-                        ],
+                        ], // điều kiện check tồn tại để cập nhật và thêm mới
                         $item
                     );
                 }

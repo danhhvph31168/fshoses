@@ -10,8 +10,8 @@
                     <div class="breadcrumb__text">
                         <h4>Shopping Cart</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
+                            <a href="/">Home</a>
+                            <a href="{{ route('cart.list') }}">Shop</a>
                             <span>Shopping Cart</span>
                         </div>
                     </div>
@@ -37,6 +37,9 @@
                             <tbody id="cart">
                                 @if (session()->has('cart'))
                                     @foreach ($cart as $key => $item)
+                                        @php
+                                            $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
+                                        @endphp
                                         <tr class="product">
                                             <td class="product__cart__item">
                                                 <div class="product__cart__item__pic">
@@ -48,15 +51,40 @@
                                                             height="100px">
                                                     @endif
                                                 </div>
-                                                <div class="product__cart__item__text">
-                                                    <a href="">
-                                                        <h6>{{ $item['name'] }}</h6>
-                                                    </a>
-                                                    <h5 class="price_sale"
-                                                        data-price_sale="{{ number_format($item['price_sale']) }}">$
-                                                        {{ number_format($item['price_sale']) }}
-                                                        <del
-                                                            class="badge text-secondary">{{ number_format($item['price_regular']) }}</del>
+                                                <div class="product__cart__item__text pt-0">
+                                                    <div class="mb-2 fs-6 fw-bold">
+                                                        {{ $item['name'] }}
+                                                    </div>
+                                                    @foreach ($colors as $id => $color)
+                                                        <div>
+                                                            <input type="radio" name="product_color"
+                                                                value="{{ $id }}" id="color-{{ $id }}"
+                                                                class="color-radio" style="display: none;">
+                                                        </div>
+                                                    @endforeach
+                                                    <div class="mb-3 d-flex">
+                                                        Size: {{ $item['size']['name'] }} -
+                                                        <div class="d-flex ms-2">
+                                                            Color:<label class="ms-3" for="color-{{ $id }}"
+                                                                style="
+                                                                    width: 20px;
+                                                                    height: 20px;
+                                                                    border: 2px solid #ccc;
+                                                                    background-color: {{ $item['color']['name'] }};
+                                                                    display: inline-block;
+                                                                    cursor: pointer;
+                                                                    transition: border-color 0.3s;
+                                                                ">
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <h5 class="price_sale text-danger"
+                                                        data-price_sale="{{ number_format($price) }}">
+                                                        {{ number_format($price) }} VNĐ
+                                                        <del class="badge text-secondary">{{ number_format($item['price_regular']) }}
+                                                            VNĐ</del>
                                                     </h5>
                                                 </div>
                                             </td>
@@ -67,22 +95,23 @@
                                                     <div class="quantity">
                                                         <div class="pro-qty-2">
                                                             <input type="number" id="quatity" name="quatity"
-                                                                class="quatity-input" value="{{ $item['quatity'] }}"
+                                                                class="quantity-input" value="{{ $item['quatity'] }}"
                                                                 data-id="{{ $key }}">
                                                         </div>
                                                     </div>
                                                 </form>
                                             </td>
-                                            <td class="cart__price cart-price-{{ $key }} ">$
-                                                <span
-                                                    class="price">{{ number_format($item['quatity'] * $item['price_sale']) }}</span>
+                                            <td class="cart__price cart-price-{{ $key }} ">
+                                                <span class="price">{{ number_format($item['quatity'] * $price) }}
+                                                </span>VNĐ
                                             </td>
                                             <td class="cart__close">
                                                 <form action="{{ route('cart.delItem', $key) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Are you sure?')"
-                                                        class="border-0 rounded-circle w-100 p-1"><b>x</b></button>
+                                                        class="border-0 bg-white ms-3"><i
+                                                            class="fa-solid fa-xmark text-danger"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -109,23 +138,90 @@
                 <div class="col-lg-4">
                     <div class="cart__discount">
                         <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
+                        <form action="{{ route('cart.applyCoupon') }}" method="post">
+                            @csrf
+                            <input type="text" placeholder="Coupon code" name="code">
                             <button type="submit">Apply</button>
                         </form>
+                        @if ($errors->any())
+                            <div class="alert alert-danger bg-white border-0 ">
+                                @foreach ($errors->all() as $error)
+                                    <strong class="text-danger">{{ $error }}</strong>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
+
                     <div class="cart__total">
-                        <h6>Cart total</h6>
-                        <ul>
-                            <li>Subtotal : <span class="cart-price total">{{ number_format($totalAmount) }}
-                                    VNĐ</span></li>
-                            <li>Total : <span class="cart-price total">{{ number_format($totalAmount) }}
-                                    VNĐ</span></li>
-                        </ul>
-                        <a href="{{ route('check-out') }}" class="primary-btn">Purchase</a>
+                        {{-- <h6>Giỏ hàng tổng cộng</h6> --}}
+                        {{-- Thông báo thành công nếu có --}}
+                        @if (session('message'))
+                            <div class="alert alert-success">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+
+                        @php
+                            $shippingCharge = $totalAmount < 1000000 ? 50000 : 0;
+                            $total = $totalAmount + $shippingCharge;
+                        @endphp
+                        {{-- @if (session('discount'))
+                            <ul>
+                                <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount + $discount) }}
+                                        VNĐ</span>
+                                </li>
+                                @if (session('coupon.type') === 'fixed')
+                                    <li>Discount ({{ session('coupon.code') }}): <span
+                                            class="cart-price total">{{ number_format(session('coupon.value')) }}
+                                            VNĐ </span></li>
+                                @else
+                                    <li>Discount ({{ session('coupon.code') }}): <span
+                                            class="cart-price total">{{ session('coupon.value') }} %</span>
+                                    </li>
+                                @endif
+                                <li>Shipping Charge: <span class="cart-price total">{{ number_format($shippingCharge) }}
+                                        VNĐ</span></li>
+                                <li>Total: <span class="cart-price total">{{ number_format($total) }} VNĐ</span>
+                                </li>
+                            </ul>
+                        @else
+                            <ul>
+                                <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
+                                </li>
+                                <li>Shipping Charge: <span class="cart-price total">{{ number_format($shippingCharge) }}
+                                        VNĐ</span></li>
+                                <li>Total: <span class="cart-price total">{{ number_format($total) }} VNĐ</span>
+                                </li>
+                            </ul>
+                        @endif --}}
+
+                        @if (session('discount'))
+                            <ul>
+                                @if (session('coupon.type') === 'fixed')
+                                    <li>Discount ({{ session('coupon.code') }}): <span
+                                            class="cart-price total">{{ number_format(session('coupon.value')) }}
+                                            VNĐ </span></li>
+                                @else
+                                    <li>Discount ({{ session('coupon.code') }}): <span
+                                            class="cart-price total">{{ session('coupon.value') }} %</span>
+                                    </li>
+                                @endif
+                                <li>Total: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
+                                </li>
+                            </ul>
+                        @else
+                            <ul>
+                                <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
+                                </li>
+                                <li>Total: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
+                                </li>
+                            </ul>
+                        @endif
+                        <a href="{{ route('check-out') }}" class="primary-btn">Proceed to checkout</a>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 @endsection
@@ -142,10 +238,12 @@
             var formatter = new Intl.NumberFormat('en-US'); // Chỉ định ngôn ngữ và khu vực (US)
 
             $('.product').each(function() {
-                const price_sale_raw = $(this).find('.price_sale').data('price_sale');
-                const price_sale = parseInt(price_sale_raw.replace(/,/g, ''), 10)
 
-                const price_element = $(this).find('.price')
+                const price_sale_raw = $(this).find('.price_sale').data('price_sale');
+
+                const price_sale = parseInt(price_sale_raw.replace(/,/g, ''), 10);
+
+                const price_element = $(this).find('.price');
 
                 $(this).find('input').on('change', function() {
                     const value_input = $(this).val();
@@ -155,7 +253,6 @@
                     console.log('id đã thay đổi:', dataId);
 
                     price_element.text(formatter.format(price_sale * value_input));
-
 
                     $.ajax({
                         type: "get",
@@ -169,12 +266,36 @@
                         },
                         dataType: "json",
                         success: function(response) {
+
+                            console.log(response);
+
                             const total_raw = Math.floor(response.data.totalCart)
 
                             $('.total').text(formatter.format(total_raw) + ' VNĐ')
                         },
                     });
 
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const colorRadios = document.querySelectorAll('.color-radio');
+
+            colorRadios.forEach((radio) => {
+                radio.addEventListener('change', function() {
+                    // Bỏ màu tối cho tất cả các label
+                    colorRadios.forEach((input) => {
+                        const label = document.querySelector(`label[for="${input.id}"]`);
+                        label.style.borderColor = '#ccc'; // Khôi phục viền màu gốc
+                        label.style.boxShadow = 'none'; // Bỏ hiệu ứng tối
+                    });
+
+                    // Làm tối màu cho label của radio được chọn
+                    const selectedLabel = document.querySelector(`label[for="${this.id}"]`);
+                    selectedLabel.style.borderColor = '#000'; // Viền màu đen
+                    selectedLabel.style.boxShadow =
+                        '0 0 5px rgba(0, 0, 0, 0.5)'; // Thêm hiệu ứng tối
                 });
             });
         });

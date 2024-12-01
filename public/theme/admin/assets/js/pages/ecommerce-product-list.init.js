@@ -23,7 +23,7 @@ if (inputValueJson) {
 }
 
 var editinputValueJson = sessionStorage.getItem('editInputValue');
-if(editinputValueJson){
+if (editinputValueJson) {
     editinputValueJson = JSON.parse(editinputValueJson);
     productListAllData = productListAllData.map(function (item) {
         if (item.id == editinputValueJson.id) {
@@ -32,8 +32,8 @@ if(editinputValueJson){
         return item;
     });
 }
-document.getElementById("addproduct-btn").addEventListener("click", function(){
-    sessionStorage.setItem('editInputValue',"")
+document.getElementById("addproduct-btn").addEventListener("click", function () {
+    sessionStorage.setItem('editInputValue', "")
 })
 
 var productListAll = new gridjs.Grid({

@@ -14,46 +14,44 @@ use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
+    const PATH_UPLOAD = 'users';
     public function showFormUpdateProfile()
     {
         if (request()->query()) {
             return redirect()->route('showFormUpdateProfile');
         }
 
-        $userId = Auth::user()->id;
-        $user = User::findOrFail($userId);
+        $user = User::findOrFail(Auth::user()->id);
 
-        return view('client.profiles.formProfile', compact('user'));
+        return view('client.profiles.form-update-profile', compact('user'));
     }
 
     public function handleUpdateProfile(UpdateProfileRequest $request)
     {
-        $user = Auth::user();
-        $linkAvatar = $user->avatar; // Giữ lại ảnh cũ
+        $user = User::query()->findOrFail(Auth::user()->id);
 
-        if ($request->hasFile('avatar')) {  // Kiểm tra xem request có gửi ảnh mới lên không
-            if ($user->avatar) {
-                Storage::delete($user->avatar); // Nếu có avatar cũ thì xóa file cũ trong storage
-            }
+        $data = $request->except('avatar');
 
-            $image = $request->file('avatar'); // Lấy file ảnh mới từ request
-            $newNameImage = time() . '.' . $image->getClientOriginalExtension(); // Tạo tên mới cho ảnh
+        if ($request->hasFile('avatar')) {
+            $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
+        }
+        $currentAvatar = $user->avatar;
 
-            // Lưu ảnh mới vào thư mục storage/app/public/images-profile/
-            $linkAvatar = $image->storeAs('public/images-profile', $newNameImage);
-            $linkAvatar = Storage::url($linkAvatar);  // Tạo đường dẫn công khai để truy cập file
+        if ($request->hasFile('cover')  && $currentAvatar && Storage::exists($currentAvatar)) {
+            Storage::delete($currentAvatar);
         }
 
-        // Cập nhật dữ liệu người dùng
+        $data['avatar'] = (empty($request->avatar)) ? $user->avatar : $data['avatar'];
+
         $data = [
-            'name'      => $request->name,
-            'avatar'    => $linkAvatar,
-            'phone'     => $request->phone,
-            'address'   => $request->address,
-            'district'  => $request->district_text,
-            'province'  => $request->province_text,
-            'ward'      => $request->ward_text,
-            'zip_code'  => $request->zip_code,
+            'name' => $request->name,
+            'avatar' =>  $data['avatar'],
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'district' => $data['district_text'],
+            'province' => $data['province_text'],
+            'ward' => $data['ward_text'],
+            'zip_code' => $request->zip_code,
         ];
 
         $user->update($data);
@@ -63,12 +61,13 @@ class AccountController extends Controller
 
     public function showFormChangePassword()
     {
-
-        return view('client.profiles.showFormChangePassword');
+        $user = User::findOrFail(Auth::user()->id);
+        return view('client.profiles.form-change-password', compact('user'));
     }
 
     public function handleChangePassword(ChangePasswordRequest $request)
     {
+
         $user = Auth::user();
 
         if (!Hash::check($request->old_password, $user->password)) {

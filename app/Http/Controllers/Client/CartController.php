@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\ProductVariant;
+use App\Models\ProductColor;
 use Illuminate\Http\Request;
+use App\Models\ProductVariant;
+use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
@@ -13,20 +14,35 @@ class CartController extends Controller
     {
         $cart = session('cart');
 
+        $colors = ProductColor::query()->get();
+        $sizes = ProductColor::query()->get();
+
         $totalAmount = 0;
+        $discount = session('discount', 0);
+
         if (session()->has('cart')) {
             foreach ($cart as $item) {
-                $totalAmount += $item['quatity'] * ($item['price_sale'] ?: $item['price_regular']);
+                $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
+                $totalAmount += $item['quatity'] * ($price ?: $item['price_regular']);
             }
         } else {
             $cart = [];
         }
 
-        return view('client.cart-list', compact('totalAmount', 'cart'));
+        $totalAmount = $totalAmount - $discount;
+
+        session(['totalAmount' => $totalAmount]);
+
+        return view('client.cart-list', compact('totalAmount', 'cart',  'discount', 'colors', 'sizes'));
     }
+
     public function add(Request $request)
     {
         $product = Product::query()->findOrFail(\request('product_id'));
+
+        if (!$request->product_size || !$request->product_color) {
+            return back()->with('error', 'Select Product Size and Color please!');
+        }
 
         $productVariant = ProductVariant::query()
             ->with(['color', 'size'])
@@ -67,15 +83,19 @@ class CartController extends Controller
         $quatity = $request->quatity;
 
         $cart = session('cart');
+
         $cart[$variant_id]['quatity'] = $quatity;
 
-        $totalAmount = $cart[$variant_id]['price_sale'] * $quatity;
+        $price = $cart[$variant_id]['price_regular'] * ((100 -  $cart[$variant_id]['price_sale']) / 100);
+
+        $totalAmount =  $price  * $quatity;
 
         session()->put('cart', $cart);
 
         $totalCart = 0;
+
         foreach (session('cart') as $item) {
-            $totalCart += $item['price_sale'] * $item['quatity'];
+            $totalCart += ($item['price_regular'] * ((100 -  $item['price_sale']) / 100)) * $item['quatity'];
         }
 
         return response()->json([

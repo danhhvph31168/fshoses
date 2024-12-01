@@ -59,7 +59,7 @@ class AuthenController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('home')->with('success', 'Welcome, you have successfully registered an account.');
+        return redirect()->route('client.home')->with('success', 'Welcome, you have successfully registered an account.');
     }
     public function showFormLogin()
     {
@@ -69,6 +69,7 @@ class AuthenController extends Controller
     public function handleLogin(HandleLoginRequest $request)
     {
         $checkStatus = User::where('email', $request->email)->where('status', 0)->first();
+        
         if ($checkStatus) {
             return back()->with('error', 'account does not exist');
         } else {

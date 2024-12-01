@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('sku')->unique();
             $table->string('img_thumbnail');
             $table->double('price_regular');
-            $table->double('price_sale')->nullable();
+            $table->double('price_sale')->default(0)->nullable();
             $table->unsignedBigInteger('views')->default(0);
             $table->text('description')->nullable();
             $table->text('content')->nullable();
