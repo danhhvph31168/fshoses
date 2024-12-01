@@ -13,7 +13,6 @@ class CartController extends Controller
     public function index()
     {
         $cart = session('cart');
-
         $colors = ProductColor::query()->get();
         $sizes = ProductColor::query()->get();
 
@@ -67,6 +66,14 @@ class CartController extends Controller
             $data['quatity'] += \request('quatity');
 
             session()->put('cart.' . $productVariant->id, $data);
+        }
+
+        foreach (session('cart') as $key => $item) {
+            if ($item['quatity'] > $item['quantity']) {
+                session()->put("cart.{$key}.quatity", $item['quantity']);
+                return  back()
+                    ->with('info', "The quantity has exceeded the quantity in stock. There are {$item['quantity']} products left.");
+            }
         }
 
         return redirect()->route('cart.list');

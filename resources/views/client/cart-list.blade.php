@@ -40,7 +40,11 @@
                                         @php
                                             $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
                                         @endphp
+
                                         <tr class="product">
+
+                                            <input type="hidden" value="{{ $item['quantity'] }}" id="maxquantity">
+
                                             <td class="product__cart__item">
                                                 <div class="product__cart__item__pic">
                                                     @if (!\Str::contains($item['img_thumbnail'], 'http'))
@@ -53,7 +57,9 @@
                                                 </div>
                                                 <div class="product__cart__item__text pt-0">
                                                     <div class="mb-2 fs-6 fw-bold">
-                                                        {{ $item['name'] }}
+                                                        <a class="text-black" href="{{ route('productDetail', $item['slug']) }}">
+                                                            {{ $item['name'] }}
+                                                        </a>
                                                     </div>
                                                     @foreach ($colors as $id => $color)
                                                         <div>
@@ -96,7 +102,8 @@
                                                         <div class="pro-qty-2">
                                                             <input type="number" id="quatity" name="quatity"
                                                                 class="quantity-input" value="{{ $item['quatity'] }}"
-                                                                data-id="{{ $key }}">
+                                                                data-id="{{ $key }}"
+                                                                oninput="validateQuantity(this)">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -227,7 +234,22 @@
 @endsection
 
 @section('js')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     <script>
+        function validateQuantity(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            let value = parseInt(input.value);
+
+            if (isNaN(value) || value < 1) {
+                input.value = 1;
+            } else if (value > 100) {
+                input.value = 100;
+            }
+        }
+
         $(document).ready(function() {
             $('#quatity').on('input', function() {
                 if ($(this).val() < 1) {
@@ -245,9 +267,19 @@
 
                 const price_element = $(this).find('.price');
 
+                const maxQuantity = parseInt($(this).find('#maxquantity').val());
+
                 $(this).find('input').on('change', function() {
                     const value_input = $(this).val();
-                    console.log('Input đã thay đổi:', this.value);
+                    console.log('Input đã thay đổi:', value_input);
+
+                    if (value_input > maxQuantity) {
+                        $(this).val(maxQuantity);
+                        toastr.info(
+                            `The quantity has exceeded the quantity in stock. There are ${maxQuantity} products left.`
+                        );
+                        return;
+                    }
 
                     const dataId = $(this).data('id');
                     console.log('id đã thay đổi:', dataId);

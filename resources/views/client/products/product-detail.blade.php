@@ -142,6 +142,7 @@
                                                     <h5 class="fs-14">Quantity</h5>
                                                     <div class="pro-qty-2">
                                                         <input type="text" value="1"
+                                                            oninput="validateQuantity(this)"
                                                             class="border-0 text-center mt-2" name="quatity">
                                                     </div>
                                                 </div>
@@ -155,9 +156,6 @@
                                         <hr>
 
                                         <div class="my-5">
-                                            {{-- <div class="my-3">
-                                                <span class="fs-5">Ratings & Reviews</span>
-                                            </div> --}}
                                             <div class="row gy-4 gx-0">
                                                 <div class="col-lg-4">
                                                     <div>
@@ -484,6 +482,18 @@
 
 @section('js')
     <script>
+        function validateQuantity(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            let value = parseInt(input.value);
+
+            if (isNaN(value) || value < 1) {
+                input.value = 1;
+            } else if (value > 100) {
+                input.value = 100;
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const colorRadios = document.querySelectorAll('.color-radio');
 

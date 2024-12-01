@@ -25,6 +25,13 @@ class CheckoutController extends Controller
     {
         $cart = session('cart');
 
+        foreach ($cart as $item) {
+            if ($item['quatity'] > $item['quantity']) {
+                return  back()
+                    ->with('info', "The quantity has exceeded the quantity in stock. There are {$item['quantity']} products left.");
+            }
+        }
+
         $totalAmount = session('totalAmount');
 
         return view('client.checkout', compact('cart', 'totalAmount'));
@@ -70,7 +77,7 @@ class CheckoutController extends Controller
                 $order = $order->id;
                 $payment = $payment->id;
                 $this->vnpayServices->vnpay($request, $order, $payment);
-            }else{
+            } else {
                 OrderCreateClient::dispatch($order);
             }
             return redirect()->route('orderSuccess', ['sku' => $order->sku_order])->with('success', 'Order successful');
