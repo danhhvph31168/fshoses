@@ -196,20 +196,22 @@
     proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
     proQty.on("click", ".qtybtn", function () {
         var $button = $(this);
-        var oldValue = $button.parent().find("input").val();
+        var $input = $button.parent().find("input");
+        var oldValue = parseInt($input.val()) || 1;
+
         if ($button.hasClass("inc")) {
-            var newVal = parseFloat(oldValue) + 1;
+            var newVal = oldValue + 1;
+            if (newVal > 100) newVal = 100;
         } else {
-            // Don't allow decrementing below zero
             if (oldValue > 1) {
-                var newVal = parseFloat(oldValue) - 1;
+                var newVal = oldValue - 1;
             } else {
                 newVal = 1;
             }
         }
-        $button.parent().find("input").val(newVal);
 
-        $button.parent().find("input").trigger("change");
+        $input.val(newVal);
+        $input.trigger("change");
     });
 
     /*------------------
