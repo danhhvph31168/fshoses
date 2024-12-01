@@ -11,12 +11,15 @@
         <div class="container my-5">
             <div class="row mb-4">
                 <div class="col-md-12">
-                    <h3 class="text-center text-uppercase text-secondary border-bottom pb-3">New Shoes</h3>
+                    <h3 class="text-center text-uppercase text-secondary border-bottom pb-3">New Arrivals</h3>
                 </div>
             </div>
 
             <div class="row">
                 @foreach ($listLatestProduct as $item)
+                    @php
+                        $price = $item->price_regular * ((100 - $item->price_sale) / 100);
+                    @endphp
                     <div class="col-md-3 mb-4">
                         <div class="card shadow-sm h-100">
 
@@ -31,15 +34,13 @@
 
                                 @if ($item->price_sale > 0)
                                     <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
-                                        Sale
+                                        {{ $item->price_sale }}%
                                     </div>
                                 @endif
                             </div>
 
 
                             <div class="card-body d-flex flex-column">
-
-
                                 <a href="{{ route('productDetail', $item->slug) }}"
                                     class="text-dark card-title fs-6 fw-bold text-center mb-2 text-truncate">
                                     {{ $item->name }}
@@ -47,9 +48,9 @@
 
                                 @if ($item->price_sale > 0)
                                     <p class="card-text text-danger text-center">
-                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
+                                        {{ number_format($price, 0, ',', '.') }} VNĐ -
                                         <span class="text-decoration-line-through text-muted">
-                                            {{ number_format($item->price_sale, 0, ',', '.') }} VNĐ
+                                            {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
                                         </span>
                                     </p>
                                 @else
@@ -58,7 +59,8 @@
                                     </p>
                                 @endif
                                 <div class="mb-3 text-center">
-                                    <a href="{{ route('productDetail', $item->slug) }}" class="btn btn-secondary btn-sm w-100">See details</a>
+                                    <a style="background-color: #d17572" href="{{ route('productDetail', $item->slug) }}"
+                                        class="btn btn-secondary btn-sm w-100">Show more</a>
                                 </div>
                             </div>
                         </div>
@@ -69,15 +71,17 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <a href="{{ route('client.product-list') }}" class="btn btn-outline-secondary my-3">
-                        See more >>
+                        More >>
                     </a>
                 </div>
             </div>
         </div>
 
+
         <div class="row mb-5">
             @include('client.layouts.hot_product')
         </div>
+
 
         {{-- Sản phẩm theo danh mục --}}
         <div class="container my-5">
@@ -97,7 +101,6 @@
                                 @foreach ($category->products()->take(4)->get() as $item)
                                     <div class="col-md-3 mb-4">
                                         <div class="card shadow-sm h-100">
-
                                             <!-- Hình ảnh sản phẩm -->
                                             <div class="border-bottom" style="position: relative; overflow: hidden;">
                                                 @if (\Str::contains($item->img_thumbnail, 'http'))
@@ -108,29 +111,26 @@
                                                         class="card-img-top" alt="..."
                                                         style="height: 200px; object-fit: cover;">
                                                 @endif
-
                                                 @if ($item->price_sale > 0)
                                                     <div
                                                         class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
-                                                        Sale
+                                                        {{ $item->price_sale }}%
                                                     </div>
                                                 @endif
                                             </div>
 
                                             <!-- Nội dung sản phẩm -->
                                             <div class="card-body d-flex flex-column">
-
-
-                                                <a href=""
+                                                <a href="{{ route('productDetail', $item->slug) }}"
                                                     class="text-dark card-title fs-6 fw-bold text-center mb-2 text-truncate">
                                                     {{ $item->name }}
                                                 </a>
 
                                                 @if ($item->price_sale > 0)
                                                     <p class="card-text text-danger text-center">
-                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
+                                                        {{ number_format($price, 0, ',', '.') }} VNĐ -
                                                         <span class="text-decoration-line-through text-muted">
-                                                            {{ number_format($item->price_sale, 0, ',', '.') }} VNĐ
+                                                            {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
                                                         </span>
                                                     </p>
                                                 @else
@@ -139,7 +139,9 @@
                                                     </p>
                                                 @endif
                                                 <div class="mb-3 text-center">
-                                                    <a href="{{ route('productDetail', $item->slug) }}" class="btn btn-secondary btn-sm w-100">See details</a>
+                                                    <a style="background-color: #d17572"
+                                                        href="{{ route('productDetail', $item->slug) }}"
+                                                        class="btn btn-secondary btn-sm w-100">Show more</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -152,7 +154,7 @@
                         <div class="col-md-12 text-center">
                             <a href="{{ route('client.productByCategory', $category->id) }}"
                                 class="btn btn-outline-secondary my-3">
-                                See more >>
+                                More >>
                             </a>
                         </div>
                     </div>
@@ -161,13 +163,8 @@
         </div>
     </section>
 @endsection
-
 @section('css')
     <style>
-        .border-bottom{
-            border-bottom: none !important;
-        }
-
         .card {
             border: none;
             border-radius: 12px;
@@ -219,7 +216,7 @@
         }
 
         .btn-secondary {
-            background-color: #f1bab4;
+            background-color: #EED5D2;
             border: none;
             transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -258,6 +255,10 @@
         }
 
         .card:hover .card-img-top {
+            /* zoom ảnh */
+            /* transform: rotate(360deg); */
+
+            /* xoay ảnh */
             transform: scale(1.1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }

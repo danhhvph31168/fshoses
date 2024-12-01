@@ -32,6 +32,7 @@ class UserController extends Controller
         }
 
         $user = Auth::user();
+
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
@@ -42,14 +43,13 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(User $user)
     {
-        $user = Auth::user();
+
         $role = Role::query()->pluck('name', 'id')->all();
 
-        // dd($role);
-        if ($user->role_id == 1) {
-            return view(self::PATH_VIEW . __FUNCTION__, compact('role'));
+        if (Auth::user()->role_id == 1) {
+            return view(self::PATH_VIEW . __FUNCTION__, compact('role', 'user'));
         } else {
             return back()->with('error', 'Access denied!');
         };
@@ -86,6 +86,8 @@ class UserController extends Controller
         $user = Auth::user();
         $data = User::query()->findOrFail($id);
 
+        // dd( $data);
+
         if ($user->role_id === 1) {
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
@@ -99,23 +101,21 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = Auth::user();
+
         $model = User::query()->findOrFail($id);
-        // dd($data);
 
         $role = Role::query()->pluck('name', 'id')->all();
-        if ($user->role_id == 1) {
+
+        if (Auth::user()->role_id == 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('model', 'role'));
         } else {
             return back()->with('error', 'Access denied!');
         };
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateUserRequest $request, string $id)
     {
+        // dd($request->all());
         $user = Auth::user();
 
         $model = User::query()->findOrFail($id);
@@ -149,9 +149,6 @@ class UserController extends Controller
         };
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $user = Auth::user();

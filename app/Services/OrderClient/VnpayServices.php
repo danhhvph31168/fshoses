@@ -9,7 +9,7 @@ class VnpayServices
 {
     public function vnpay(Request $request, $order, $payment)
     {
-
+        // $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/Transaction/PaymentMethod.html?token=a70738f5b4ab4b85a63151abcaf8eb37";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
         $vnp_Returnurl = route('vnpayReturn', ['order' => $order, 'payment' => $payment]);
@@ -22,7 +22,7 @@ class VnpayServices
         $vnp_OrderType = "Fshoes Shop";
         $vnp_Amount = $request->totalAmount * 100;
         $vnp_Locale = "VN";
-        $vnp_BankCode = "NCB";
+        $vnp_BankCode = "";
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         $inputData = array(
             "vnp_Version" => "2.1.0",

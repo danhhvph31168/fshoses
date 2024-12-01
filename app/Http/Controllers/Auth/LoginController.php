@@ -45,6 +45,6 @@ class LoginController extends Controller
 
         request()->session()->invalidate();
 
-        return redirect('auth.login');
+        return redirect('/');
     }
 }

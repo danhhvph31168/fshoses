@@ -1,18 +1,20 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\{
-    RoleController,
-    UserController,
-    BrandController,
-    OrderController,
-    BannerController,
-    ReviewController,
-    ProductController,
-    CategoryController,
-    DashboardController
-};
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\admin\BannerController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductSizeController;
+use App\Http\Controllers\Admin\ProductColorController;
 
 Route::prefix('admin')->as('admin.')
     ->as('admin.')
@@ -30,12 +32,12 @@ Route::prefix('admin')->as('admin.')
         Route::get('orders/{id}/edit',  [OrderController::class, 'edit'])->name('orders.edit');
         Route::put('orders/{id}/update',[OrderController::class, 'update'])->name('orders.update');
 
-        //review
+        // review
         Route::get('reviews',               [ReviewController::class, 'index'])->name('reviews.index');
         Route::get('reviews/{id}/show',     [ReviewController::class, 'show'])->name('reviews.show');
         Route::put('reviews/{id}/update',   [ReviewController::class, 'update'])->name('reviews.update');
 
-        //categories
+        // categories
         Route::prefix('categories')
             ->as('categories.')
             ->group(function () {
@@ -44,21 +46,42 @@ Route::prefix('admin')->as('admin.')
                 Route::post('store',        [CategoryController::class, 'store'])->name('store');
                 Route::get('{id}/edit',     [CategoryController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',   [CategoryController::class, 'update'])->name('update');
-                Route::delete('{id}/destroy',[CategoryController::class, 'destroy'])->name('destroy');
+                Route::delete('{id}/destroy',  [CategoryController::class, 'destroy'])->name('destroy');
             });
 
+        // products
         Route::resource('products', ProductController::class);
 
+        // users
         Route::resource('users', UserController::class);
 
+        // roles
         Route::resource('roles', RoleController::class);
 
+        // brands
         Route::resource('brands', BrandController::class);
 
+        // banners
         Route::resource('banners', BannerController::class);
+
+        // product sizes
+        Route::resource('productSizes', ProductSizeController::class);
+
+        // product colors
+        Route::resource('productColors', ProductColorController::class);
+
+        // coupon
+        Route::prefix('coupons')->as('coupons.')->group(function () {
+            Route::get('/',         [CouponController::class, 'index'])->name('index');
+            Route::get('/create',   [CouponController::class, 'create'])->name('create');
+            Route::post('/store',   [CouponController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [CouponController::class, 'edit'])->name('edit');
+            Route::put('/{id}',     [CouponController::class, 'update'])->name('update');
+            Route::delete('/{id}',  [CouponController::class, 'destroy'])->name('destroy');
+        });
 
         // auth
         Route::get('showFormLogin', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
         Route::post('login',        [LoginController::class, 'login'])->name('login');
-        Route::post('logout',       [LoginController::class, 'logout'])->name('logout');
+        Route::post('logout',        [LoginController::class, 'logout'])->name('logout');
     });

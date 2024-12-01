@@ -45,8 +45,8 @@ class AddOrderClient extends Notification implements ShouldQueue
             ->line('Phone : ' . $this->order->user_phone)
             ->line('Address : ' . $this->order->user_address)
             ->line('Note : ' . $this->order->user_note)
-            ->action('Order details', url('/'))
-            ->salutation('Thank you for trusting Fshoes');
+            ->action('Order details', url("/order-item/{$this->order->sku_order}"))
+            ->salutation('Thank you for trusting Fshoes');  
     }
 
     /**

@@ -11,6 +11,7 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'role_id',
+        'coupon_id',
         'sku_order',
         'user_name',
         'user_email',
@@ -23,6 +24,7 @@ class Order extends Model
         'status_order',
         'status_payment',
         'total_amount',
+        'cancel_reason',
     ];
 
     const STATUS_ORDER = [
@@ -32,8 +34,7 @@ class Order extends Model
         'shipping'      => 'Đang vận chuyển',
         'delivered'     => 'Đã giao hàng',          #Đơn hàng đã được giao thành công đến khách hàng.
         'canceled'      => 'Đơn hàng đã bị hủy',    #Đơn hàng đã bị khách hàng hoặc hệ thống hủy bỏ.
-        'refunded'      => 'Đã hoàn tiền',          #Đơn hàng bị hủy và khách hàng đã được hoàn tiền
-        'failed'        => 'Thất bại',              #Giao dịch hoặc thanh toán đơn hàng không thành công
+        // 'refunded'      => 'Đã hoàn tiền',          #Đơn hàng bị hủy và khách hàng đã được hoàn tiền
     ];
 
     const STATUS_ORDER_PENDING          = 'pending';
@@ -42,8 +43,8 @@ class Order extends Model
     const STATUS_ORDER_SHIPPING         = 'shipping';
     const STATUS_ORDER_DELIVERED        = 'delivered';
     const STATUS_ORDER_CANCELED         = 'canceled';
-    const STATUS_ORDER_REFUNDED         = 'refunded';
-    const STATUS_ORDER_FAILED           = 'failed';
+
+    // const STATUS_ORDER_REFUNDED         = 'refunded';
 
     const STATUS_PAYMENT = [
         'unpaid'    => 'Chưa thanh toán',
@@ -75,8 +76,9 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class);
     }
-    public function refund()
+
+    public function coupon()
     {
-        return $this->hasOne(Refund::class);
+        return $this->belongsTo(Coupon::class);
     }
 }

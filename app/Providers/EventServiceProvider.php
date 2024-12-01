@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\OrderCanceled;
 use App\Events\RefundCreate;
 use App\Listeners\SendRefundNotification;
 use App\Events\OrderCreateClient;
+use App\Events\OrderDelivered;
+use App\Listeners\SendOrderCanceled;
 use App\Listeners\SendOrderClientEmail;
+use App\Listeners\SendOrderDelivered;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,6 +31,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderCreateClient::class => [
             SendOrderClientEmail::class,
+        ],
+        OrderCanceled::class => [
+            SendOrderCanceled::class,
+        ],
+        OrderDelivered::class => [
+            SendOrderDelivered::class,
         ],
     ];
 

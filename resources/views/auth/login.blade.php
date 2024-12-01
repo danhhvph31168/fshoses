@@ -60,15 +60,12 @@
 
                             <div class="mt-4 text-center">
                                 <div class="signin-other-title">
-                                    <h5 class="fs-13 mb-4 title">Sign In with</h5>
+                                    <a href="{{ route('client.home') }}" class="fs-13 mb-4 title fw-medium"
+                                        style="color: #212529">
+                                        Back to home
+                                    </a>
                                 </div>
-                                <div>
 
-                                    <a href="{{ route('auth.google') }}"
-                                        class="btn btn-danger btn-icon waves-effect waves-light"><i
-                                            class="ri-google-fill fs-16"></i></a>
-
-                                </div>
                             </div>
                         </form>
                     </div>

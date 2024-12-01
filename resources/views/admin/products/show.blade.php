@@ -129,7 +129,7 @@
                                                 <div class="flex-grow-1">
                                                     <p class="text-muted mb-1">Price Sale:</p>
                                                     <h5 class="mb-0">
-                                                        {{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
+                                                        {{ number_format($product->price_sale, 0, ',', '.') }} %
                                                     </h5>
                                                 </div>
                                             </div>
