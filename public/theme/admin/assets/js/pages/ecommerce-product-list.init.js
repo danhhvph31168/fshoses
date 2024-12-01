@@ -23,7 +23,7 @@ if (inputValueJson) {
 }
 
 var editinputValueJson = sessionStorage.getItem('editInputValue');
-if (editinputValueJson) {
+if(editinputValueJson){
     editinputValueJson = JSON.parse(editinputValueJson);
     productListAllData = productListAllData.map(function (item) {
         if (item.id == editinputValueJson.id) {
@@ -32,8 +32,8 @@ if (editinputValueJson) {
         return item;
     });
 }
-document.getElementById("addproduct-btn").addEventListener("click", function () {
-    sessionStorage.setItem('editInputValue', "")
+document.getElementById("addproduct-btn").addEventListener("click", function(){
+    sessionStorage.setItem('editInputValue',"")
 })
 
 var productListAll = new gridjs.Grid({
@@ -275,6 +275,7 @@ Array.from(document.querySelectorAll(".filter-accordion .accordion-item")).forEa
         }, false);
         // clearall
         document.getElementById("clearall").addEventListener("click", function () {
+            console.log(1);
             subitem.checked = false;
             subitem.checked = false;
             filterChoicesInput.removeActiveItemsByValue(checkElm);
@@ -433,3 +434,38 @@ function removeSingleItem() {
         });
     });
 }
+//
+// var searchBrandInput = document.getElementsByClassName("productBrandRadio5");
+// searchBrandInput.addEventListener("keyup", function () {
+//     var inputVal = searchBrandInput.value.toLowerCase();
+//     var filterData = productListAllData.filter(function (product) {
+//         return product.brand.toLowerCase().includes(inputVal);
+//     });
+//
+//     // Cập nhật lại bảng hiển thị
+//     productListAll.updateConfig({
+//         data: filterData
+//     }).forceRender();
+//     checkRemoveItem(); // Kiểm tra trạng thái khi xóa
+// });
+//
+// // Thêm các checkbox lọc thương hiệu
+// Array.from(document.querySelectorAll(".brand-checkbox")).forEach(function (checkbox) {
+//     checkbox.addEventListener("change", function () {
+//         var selectedBrands = Array.from(document.querySelectorAll(".brand-checkbox:checked"))
+//             .map(function (cb) {
+//                 return cb.value;
+//             });
+//
+//         // Lọc dữ liệu dựa trên các thương hiệu được chọn
+//         var filterData = productListAllData.filter(function (product) {
+//             return selectedBrands.includes(product.brand);
+//         });
+//
+//         // Cập nhật bảng
+//         productListAll.updateConfig({
+//             data: filterData
+//         }).forceRender();
+//         checkRemoveItem(); // Cập nhật trạng thái
+//     });
+// });

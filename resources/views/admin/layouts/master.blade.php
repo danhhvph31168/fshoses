@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
-    data-sidebar-image="none" data-preloader="disable">
+      data-sidebar-image="none" data-preloader="disable">
 
 <head>
 
@@ -47,92 +47,89 @@
 
 <body>
 
-    <!-- Begin page -->
-    <div id="layout-wrapper">
+<!-- Begin page -->
+<div id="layout-wrapper">
 
-        @include('admin.layouts.partials.header')
+    @include('admin.layouts.partials.header')
 
-        @include('admin.layouts.partials.sidebar')
+    @include('admin.layouts.partials.sidebar')
 
-        <div class="vertical-overlay"></div>
+    <div class="vertical-overlay"></div>
 
-        <div class="main-content">
+    <div class="main-content">
 
-            <div class="page-content">
-                <div class="container-fluid">
-                    @yield('content')
-                </div>
-                <!-- container-fluid -->
+        <div class="page-content">
+            <div class="container-fluid">
+                @yield('content')
             </div>
-            <!-- End Page-content -->
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
 
-            @include('admin.layouts.partials.footer')
+        @include('admin.layouts.partials.footer')
+    </div>
+</div>
+<!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!--start back-to-top-->
+<button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+    <i class="ri-arrow-up-line"></i>
+</button>
+<!--end back-to-top-->
+
+<!--preloader-->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner-border text-primary avatar-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    <!-- end main content-->
+</div>
 
+<div class="customizer-setting d-none d-md-block">
+    <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
+         data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
+        <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
     </div>
-    <!-- END layout-wrapper -->
+</div>
 
-    <!--start back-to-top-->
-    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
-        <i class="ri-arrow-up-line"></i>
-    </button>
-    <!--end back-to-top-->
+<script>
+    const PATH_ROOT = '{{ asset('theme/admin') }}';
+</script>
+<!-- JAVASCRIPT -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
+<script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
+<script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
+<script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+<script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
 
-    <!--preloader-->
-    <div id="preloader">
-        <div id="status">
-            <div class="spinner-border text-primary avatar-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    </div>
+@yield('script-libs')
 
-    <div class="customizer-setting d-none d-md-block">
-        <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
-            data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-            <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
-        </div>
-    </div>
+@yield('js')
 
-    <script>
-    const PATH_ROOT = '{{ asset('
-    theme / admin ') }}';
-    </script>
-    <!-- JAVASCRIPT -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-    <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
-
-    @yield('script-libs')
-
-    @yield('js')
-
-    <!-- App js -->
-    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <!--datatable js-->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<!--datatable js-->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-    @yield('scripts')
+@yield('scripts')
 
-
+<!-- App js -->
+<script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
 </body>
 
 </html>

@@ -73,8 +73,8 @@
                     </div>
 
                     <div class="filter-choices-input">
-                        <input class="form-control" data-choices data-choices-removeItem type="text"
-                            id="filter-choices-input" value="" />
+                        <input class="form-control" data-choices data-choices-removeItem type="text" id="filter-choices-input"
+                               value=""/>
                     </div>
                 </div>
 
@@ -83,14 +83,11 @@
                         <div>
                             <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Products</p>
                             <ul class="list-unstyled mb-0 filter-list">
-                                @foreach ($categories as $key => $value)
+                                @foreach($categories as $category)
                                     <li>
                                         <a href="#" class="d-flex py-1 align-items-center">
                                             <div class="flex-grow-1">
-                                                <h5 class="fs-13 mb-0 listname">{{ $value }}</h5>
-                                            </div>
-                                            <div class="flex-shrink-0 ms-2">
-                                                <span class="badge bg-light text-muted">5</span>
+                                                <h5 class="fs-13 mb-0 listname">{{$category}}</h5>
                                             </div>
                                         </a>
                                     </li>
@@ -104,37 +101,35 @@
 
                         <div id="product-price-range"></div>
                         <div class="formCost d-flex gap-2 align-items-center mt-3">
-                            <input class="form-control form-control-sm" type="text" id="minCost" value="0" />
-                            <span class="fw-semibold text-muted">to</span> <input class="form-control form-control-sm"
-                                type="text" id="maxCost" value="20000000" />
+                            <input class="form-control form-control-sm" type="text" id="minCost" value="0" /> <span class="fw-semibold text-muted">to</span> <input
+                                class="form-control form-control-sm" type="text" id="maxCost" value="20000000" />
                         </div>
                     </div>
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-headingBrands">
                             <button class="accordion-button bg-transparent shadow-none" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#flush-collapseBrands" aria-expanded="true"
-                                aria-controls="flush-collapseBrands">
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseBrands"
+                                    aria-expanded="true" aria-controls="flush-collapseBrands">
                                 <span class="text-muted text-uppercase fs-12 fw-medium">Brands</span> <span
                                     class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
                             </button>
                         </h2>
 
                         <div id="flush-collapseBrands" class="accordion-collapse collapse show"
-                            aria-labelledby="flush-headingBrands">
+                             aria-labelledby="flush-headingBrands">
                             <div class="accordion-body text-body pt-0">
                                 <div class="search-box search-box-sm">
-                                    <input type="text" class="form-control bg-light border-0" id="searchBrandsList"
-                                        placeholder="Search Brands...">
+                                    <input type="text" class="form-control bg-light border-0" id="searchBrandsList" placeholder="Search Brands...">
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                                 <div class="d-flex flex-column gap-2 mt-3 filter-check">
-                                    @foreach ($brands as $key => $value)
+                                    @foreach($brands as $brand)
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $value }}"
-                                                id="productBrandRadio5">
+                                            <input class="form-check-input" type="checkbox" value="{{$brand}}"
+                                                   id="{{$brand}}">
                                             <label class="form-check-label"
-                                                for="productBrandRadio5">{{ $value }}</label>
+                                                   for="{{$brand}}">{{$brand}}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -155,15 +150,14 @@
                         <div class="row g-4">
                             <div class="col-sm-auto">
                                 <div>
-                                    <a href="{{ route('admin.products.create') }}" class="btn btn-success"
-                                        id="addproduct-btn"><i class="ri-add-line align-bottom me-1"></i> Add Product</a>
+                                    <a href="apps-ecommerce-add-product" class="btn btn-success" id="addproduct-btn"><i
+                                            class="ri-add-line align-bottom me-1"></i> Add Product</a>
                                 </div>
                             </div>
                             <div class="col-sm">
                                 <div class="d-flex justify-content-sm-end">
                                     <div class="search-box ms-2">
-                                        <input type="text" class="form-control" id="searchProductList"
-                                            placeholder="Search Products...">
+                                        <input type="text" class="form-control" id="searchProductList" placeholder="Search Products...">
                                         <i class="ri-search-line search-icon"></i>
                                     </div>
                                 </div>
@@ -176,68 +170,20 @@
                             <div class="col">
                                 <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab"
-                                            href="#productnav-all" role="tab">
-                                            All <span
-                                                class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">{{ count($data) }}</span>
+                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all"
+                                           role="tab">
+                                            All <span class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">{{count($data)}}</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-                            {{-- <div class="col-auto">
+                            <div class="col-auto">
                                 <div id="selection-element">
                                     <div class="my-n1 d-flex align-items-center text-muted">
-                                        Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
-                                        <button type="button" class="btn btn-link link-danger p-0 ms-3"
-                                            data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
+                                        Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result <button type="button" class="btn btn-link link-danger p-0 ms-3" data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
                                     </div>
                                 </div>
-                            </div> --}}
-                            <table class="table table-bordered table-striped mt-3">
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Brand</th>
-                                        <th>Slug</th>
-                                        <th>Sku</th>
-                                        <th>Price Regular</th>
-                                        <th>Price Sale</th>
-                                        <th>Status</th>
-                                        <th>is_active</th>
-                                        <th>is_sale</th>
-                                        <th>is_show_home</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $key => $item)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->category->name }}</td>
-                                            <td>{{ $item->brand->name }}</td>
-                                            <td>{{ $item->slug }}</td>
-                                            <td>{{ $item->sku }}</td>
-                                            <td>{{ $item->price_regular }}</td>
-                                            <td>{{ $item->price_sale }}</td>
-                                            <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td class="{{ $item->is_active == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->is_active == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td class="{{ $item->is_sale == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->is_sale == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td class="{{ $item->is_show_home == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->is_show_home == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
+                            </div>
                         </div>
                     </div>
                     <!-- end card header -->
@@ -251,8 +197,9 @@
 
                             <div class="tab-pane" id="productnav-draft" role="tabpanel">
                                 <div class="py-4 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                        colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
+                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
+                                               trigger="loop" colors="primary:#405189,secondary:#0ab39c"
+                                               style="width:72px;height:72px">
                                     </lord-icon>
                                     <h5 class="mt-4">Sorry! No Result Found</h5>
                                 </div>
@@ -276,12 +223,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="btn-close"></button>
+                            id="btn-close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mt-2 text-center">
                         <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                            colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                                   colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                         <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
                             <h4>Are you Sure ?</h4>
                             <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Product ?</p>
@@ -312,7 +259,7 @@
 
 @section('js')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <script>
         const detailRoute = "{{ route('admin.products.show', ':id') }}"
@@ -340,5 +287,5 @@
     <script src="https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"></script>
 
 
-    {{-- <script src="{{ URL::asset('theme/admin/assets/js/pages/ecommerce-product-list.init.js') }}"></script> --}}
+    <script src="{{ URL::asset('theme/admin/assets/js/pages/ecommerce-product-list.init.js') }}"></script>
 @endsection
