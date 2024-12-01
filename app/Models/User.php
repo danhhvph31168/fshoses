@@ -12,23 +12,34 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    protected $guarded = ['id'];
+
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'role_id',
         'name',
         'email',
         'password',
         'avatar',
         'phone',
+        'status',
         'address',
-        'balance',
-        'district',
         'province',
+        'district',
+        'ward',
         'zip_code',
     ];
+      // Accessor để lấy đường dẫn đầy đủ của avatar
+      public function getAvatarUrlAttribute()
+      {
+          return asset($this->avatar ?: 'image-default/avatar.jpg');
+      }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -49,8 +60,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function orders(){
+        return $this->hasMany(Order::class);
     }
 }

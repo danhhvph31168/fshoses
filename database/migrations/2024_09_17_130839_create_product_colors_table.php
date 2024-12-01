@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_colors', function (Blueprint $table) {
             $table->id();
-            $table->string(column: 'name');
+            $table->string('name');
             $table->timestamps();
         });
     }

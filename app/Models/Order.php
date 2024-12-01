@@ -16,6 +16,9 @@ class Order extends Model
         'user_email',
         'user_phone',
         'user_address',
+        'user_province',
+        'user_district',
+        'user_ward',
         'user_note',
         'status_order',
         'status_payment',
@@ -55,6 +58,7 @@ class Order extends Model
     const STATUS_PAYMENT_PAID       = 'paid';
     const STATUS_PAYMENT_REFUNDED   = 'refunded';
     const STATUS_PAYMENT_FAILED     = 'failed';
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -74,9 +78,5 @@ class Order extends Model
     public function refund()
     {
         return $this->hasOne(Refund::class);
-    }
-    public function products()
-    {
-        return $this->belongsToMany(Product::class);
     }
 }

@@ -1,9 +1,17 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Auth\AuthenController;
+use App\Http\Controllers\Auth\EmployeeController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Client\AccountController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\CheckEmployee;
+use App\Http\Middleware\CheckUser;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\RatingController;
-use App\Http\Controllers\Admin\CouponController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,18 +24,4 @@ use App\Http\Controllers\Admin\CouponController;
 */
 
 
-// Route::prefix('ratings')->group(function () {
-//     Route::get('/', [RatingController::class, 'index']);
-//     Route::post('/store', [RatingController::class, 'store']);
-//     Route::get('/{id}/average-rating', [RatingController::class, 'calculateAverageRating']);
-// });
-
-
-Route::prefix('coupons')->group(function () {
-    Route::get('/', [CouponController::class, 'index']);
-    Route::post('/store', [CouponController::class, 'store']);
-    Route::get('/{id}/edit', [CouponController::class, 'edit']);
-    Route::put('/{id}/update', [CouponController::class, 'update']);
-    Route::delete('/{id}', [CouponController::class, 'destroy']);
-});
 

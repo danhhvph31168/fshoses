@@ -43,6 +43,7 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
+            'verify_peer' => false,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
@@ -108,8 +109,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'duchieu068@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Dự án Laravel'),
     ],
 
     /*
