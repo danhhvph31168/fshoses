@@ -195,14 +195,11 @@ class ProductController extends Controller
                 }
 
 
+                ProductGallery::query()->where('product_id', $product->id)->delete();
+
                 foreach ($dataProductGalleries as $item) {
                     $item += ['product_id' => $product->id];
-                    ProductGallery::query()->updateOrCreate(
-                        [
-                            'id' => $item['id'],
-                        ],
-                        $item
-                    );
+                    ProductGallery::query()->create($item);
                 }
 
                 DB::commit();

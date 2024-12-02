@@ -59,7 +59,7 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
+    <form id="formData" action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -115,7 +115,10 @@
 
                             <div class="dropzone">
                                 <div class="fallback">
-                                    <input name="product_galleries[]" type="file" multiple="multiple">
+                                    <input type="file" multiple="multiple">
+                                </div>
+                                <div class="fallback">
+                                    <input name="product_galleries[]" type="file" multiple="multiple" id="product-galleries-input" class="d-none">
                                 </div>
                                 <div class="dz-message needsclick">
                                     <div class="mb-3">
@@ -148,54 +151,6 @@
                                         </div>
                                     </div>
                                 </li>
-{{--                                @if (count($product->galleries) > 0)--}}
-{{--                                    @foreach ($product->galleries as $item)--}}
-{{--                                        <li class="mt-2" id="dropzone-preview-list">--}}
-{{--                                            <div class="border rounded">--}}
-{{--                                                <div class="d-flex p-2">--}}
-{{--                                                    <div class="flex-shrink-0 me-3">--}}
-{{--                                                        <div class="avatar-sm bg-light rounded">--}}
-{{--                                                            <img src="{{  preg_match('/^(http|https):\/\//', $item->image) ? $item->image : asset('storage/' . $item->image)  }}" data-dz-thumbnail class="img-fluid rounded d-block" alt="Product-Image" />--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="flex-grow-1">--}}
-{{--                                                        <div class="pt-1">--}}
-{{--                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>--}}
-{{--                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>--}}
-{{--                                                            <strong class="error text-danger" data-dz-errormessage></strong>--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="flex-shrink-0 ms-3">--}}
-{{--                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </li>--}}
-{{--                                    @endforeach--}}
-{{--                                @else--}}
-{{--                                    <li class="mt-2" id="dropzone-preview-list">--}}
-{{--                                        <!-- This is used as the file preview template -->--}}
-{{--                                        <div class="border rounded">--}}
-{{--                                            <div class="d-flex p-2">--}}
-{{--                                                <div class="flex-shrink-0 me-3">--}}
-{{--                                                    <div class="avatar-sm bg-light rounded">--}}
-{{--                                                        <img data-dz-thumbnail class="img-fluid rounded d-block" src="#" alt="Product-Image" />--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                                <div class="flex-grow-1">--}}
-{{--                                                    <div class="pt-1">--}}
-{{--                                                        <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>--}}
-{{--                                                        <p class="fs-13 text-muted mb-0" data-dz-size></p>--}}
-{{--                                                        <strong class="error text-danger" data-dz-errormessage></strong>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                                <div class="flex-shrink-0 ms-3">--}}
-{{--                                                    <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </li>--}}
-{{--                                @endif--}}
                             </ul>
                             <!-- end dropzon-preview -->
                         </div>
@@ -363,7 +318,11 @@
                                                                    class="profile-img-file-input"
                                                                    data-size-id="{{ $sizeID }}"
                                                                    data-color-id="{{ $colorID }}"
-                                                                   name="product_variants[{{ $key }}][image]"/>
+                                                                   name="product_variants[{{ $key }}][image]"
+                                                            />
+                                                            <input type="hidden" class="form-control"
+                                                                   value="{{ $productVariants[$key]['image'] }}"
+                                                                   name="product_variants[{{ $key }}][current_image]">
                                                             <label for="profile-img-file-input-{{ $sizeID }}-{{ $colorID }}" class="d-block" tabindex="0">
                                                             <span class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
                                                                   style="height: 70px; width: 70px;">
@@ -426,35 +385,70 @@
     <script>
         CKEDITOR.replace('content');
         const images = @json($product->galleries);
-        var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
-        dropzonePreviewNode.itemid = "";
-        var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
-        dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
-        var dropzone = new Dropzone(".dropzone", {
-            url: 'https://httpbin.org/post',
-            method: "post",
-            previewTemplate: previewTemplate,
-            previewsContainer: "#dropzone-preview",
+        console.log(images);
+            var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
+            dropzonePreviewNode.itemid = "";
+            var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
+            dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
+            var dropzone = new Dropzone(".dropzone", {
+                url: '#',
+                method: "post",
+                paramName: "product_galleries[]",
+                previewTemplate: previewTemplate,
+                previewsContainer: "#dropzone-preview",
 
-            init: function () {
-                const dropzoneInstance = this;
+                init: function () {
+                    const dropzoneInstance = this;
 
-                // Thêm hình ảnh từ mảng vào Dropzone
-                images.forEach(image => {
-                    // Tạo một mock file
-                    const mockFile = { name: image.image };
+                    // Tạo DataTransfer để lưu trữ các file
+                    const input = document.querySelector("#product-galleries-input");
+                    const dataTransfer = new DataTransfer();
 
-                    // Thêm mock file vào Dropzone
-                    dropzoneInstance.emit("addedfile", mockFile);
-                    dropzoneInstance.emit("thumbnail", mockFile, image.image);
+                    // Khởi tạo Dropzone với file mock
+                    images.forEach(image => {
+                        const mockFile = { name: image.image, size: 1234 }; // Bạn có thể thêm `size` nếu cần
+                        dropzoneInstance.emit("addedfile", mockFile);
+                        dropzoneInstance.emit("thumbnail", mockFile, image.image);
+                        dropzoneInstance.emit("complete", mockFile);
 
-                    // Đặt trạng thái file là đã hoàn tất tải lên
-                    dropzoneInstance.emit("complete", mockFile);
+                        mockFile.previewElement.classList.add("dz-success", "dz-complete");
 
-                    // Thêm các lớp CSS để hiển thị trạng thái thành công
-                    mockFile.previewElement.classList.add("dz-success", "dz-complete");
-                });
-            }
+                        // Thêm file mock vào DataTransfer
+                        const blob = new Blob([], { type: 'image/png' }); // Tạo Blob đại diện cho file
+                        const file = new File([blob], image.image);
+                        dataTransfer.items.add(file);
+                    });
+
+                    // Đồng bộ DataTransfer với input
+                    input.files = dataTransfer.files;
+
+                    // Sự kiện khi thêm file mới vào Dropzone
+                    this.on("addedfile", function (file) {
+                        // Thêm file mới vào DataTransfer
+                        dataTransfer.items.add(file);
+                        input.files = dataTransfer.files; // Cập nhật input
+                    });
+
+                    // Sự kiện khi xoá file khỏi Dropzone
+                    this.on("removedfile", function (file) {
+                        const newDataTransfer = new DataTransfer();
+
+                        // Lọc ra các file còn lại trong DataTransfer
+                        Array.from(dataTransfer.files).forEach(f => {
+                            if (f.name !== file.name) {
+                                newDataTransfer.items.add(f);
+                            }
+                        });
+
+                        // Gán DataTransfer mới cho input
+                        input.files = newDataTransfer.files;
+
+                        // Gán lại DataTransfer ban đầu
+                        dataTransfer.items.clear();
+                        Array.from(newDataTransfer.files).forEach(f => dataTransfer.items.add(f));
+                        console.log(input.files)
+                    });
+                }
         });
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -464,28 +458,22 @@
                     var sizeID = input.getAttribute("data-size-id");
                     var colorID = input.getAttribute("data-color-id");
 
-                    // Lấy file đã chọn
                     var file = input.files[0];
                     if (file) {
                         var reader = new FileReader();
 
-                        // Khi file được đọc xong
                         reader.onload = function(event) {
-                            // Cập nhật hình ảnh Dark và Light
                             var darkImg = document.getElementById("dark-img-" + sizeID + "-" + colorID);
                             var lightImg = document.getElementById("light-img-" + sizeID + "-" + colorID);
 
-                            // Đặt src của ảnh
                             darkImg.src = event.target.result;
                             lightImg.src = event.target.result;
 
-                            // Thay đổi kích thước của ảnh container
                             var imageContainer = input.closest('label').querySelector('span');
                             imageContainer.style.height = '100px';
                             imageContainer.style.width = '200px';
                         };
 
-                        // Đọc file dưới dạng URL
                         reader.readAsDataURL(file);
                     }
                 });
