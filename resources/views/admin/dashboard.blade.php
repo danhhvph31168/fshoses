@@ -416,4 +416,241 @@ $(document).ready(function() {
 
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+/* Tổng quát */
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Font hiện đại */
+    background-color: #f8f9fa;
+    /* Nền sáng, dễ chịu */
+}
+
+/* Header */
+h4.fs-16 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #343a40;
+    /* Màu sắc đậm */
+}
+
+p.text-muted {
+    color: #6c757d;
+    /* Text nhẹ nhàng hơn */
+}
+
+/* Card */
+.card {
+    border: none;
+    border-radius: 8px;
+    /* Góc bo tròn mềm mại */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng mờ */
+}
+
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #495057;
+    /* Màu sắc tinh tế */
+}
+
+/* Progress Bar */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 50px;
+    height: 8px;
+}
+
+.progress-bar {
+    border-radius: 50px;
+}
+
+/* Bảng */
+.table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.table img {
+    border-radius: 5px;
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
+
+/* Button */
+.btn {
+    border-radius: 25px;
+}
+
+.btn-soft-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.btn-soft-info {
+    background-color: #cff4fc;
+    color: #055160;
+}
+
+.btn-soft-primary {
+    background-color: #e7f1ff;
+    color: #084298;
+}
+
+/* Input */
+.form-control {
+    border-radius: 25px;
+    box-shadow: none;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+/* Biểu đồ */
+#customer_impression_charts,
+#sales-by-locations {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+/* Tooltip */
+.tooltip {
+    background-color: #6c757d;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.table img:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f3f5;
+    cursor: pointer;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    /* Di chuyển card lên trên */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    /* Tăng bóng mờ */
+}
+
+.btn {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
+    /* Làm sáng nút */
+}
+
+.table tbody tr {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    /* Màu nền sáng khi hover */
+    transform: scale(1.02);
+    /* Phóng to nhẹ */
+    cursor: pointer;
+}
+
+.table img,
+.card img {
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 5px;
+}
+
+.table img:hover,
+.card img:hover {
+    transform: scale(1.1);
+    /* Phóng to hình ảnh */
+    filter: brightness(1.2);
+    /* Làm sáng hình ảnh */
+}
+
+/* Hiệu ứng lướt vào */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Áp dụng hiệu ứng */
+.card {
+
+    body {
+        background: linear-gradient(120deg, #fdfbfb, #ebedee);
+        /* Nền sáng chuyển màu */
+        font-family: 'Poppins', sans-serif;
+        /* Font chữ hiện đại */
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        /* Bóng đổ nhẹ */
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        /* Tăng bóng đổ khi hover */
+    }
+
+    animation: slideIn 0.5s ease;
+}
+
+/* Tạo hiệu ứng fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+body {
+    animation: fadeIn 1s ease-in-out;
+}
+
+* {
+    transition: all 0.3s ease;
+}
+</style>
 @endsection
