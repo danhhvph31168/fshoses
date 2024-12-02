@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
-
+    <link rel="icon" type="image/png" href="{{ asset('theme/client/img/logo/logott-rm.png') }}">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
@@ -89,12 +89,14 @@
     </script>
 
     <!-- Js Plugins -->
+
     <script src="{{ asset('theme/client/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.nicescroll.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.countdown.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('theme/client/js/jquery.slicknav.js') }}"></script>
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
@@ -104,7 +106,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-
+    @stack('scripts')
     @yield('js')
 
     @yield('scripts')

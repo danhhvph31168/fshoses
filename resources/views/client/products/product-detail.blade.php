@@ -33,7 +33,7 @@ Chi tiết sản phẩm
                                             @foreach ($productGalleries as $item)
                                             <div class="swiper-slide text-center">
 
-                                                @if (\Str::contains($item->img_thumbnail, 'http'))
+                                                @if (\Str::contains($item->image, 'http'))
                                                 <img src="{{ $item->image }}" class="img-fluid d-block" alt="...">
                                                 @else
                                                 <img src="{{ Storage::url($item->image) }}" class="img-fluid d-block"
@@ -52,7 +52,7 @@ Chi tiết sản phẩm
                                             <div class="swiper-slide">
                                                 <div class="nav-slide-item" style="width: 100%;">
 
-                                                    @if (\Str::contains($item->img_thumbnail, 'http'))
+                                                    @if (\Str::contains($item->image, 'http'))
                                                     <img src="{{ $item->image }}" class="img-fluid d-block"
                                                         height="200px" alt="...">
                                                     @else

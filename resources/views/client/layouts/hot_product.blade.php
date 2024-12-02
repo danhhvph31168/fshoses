@@ -8,7 +8,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="categories__hot__deal">
-                    <img src="{{ asset('theme/client/img/sale_01.webp') }}" alt="">
+                    <img src="{{ asset('theme/client/img/hero/hr1.png') }}" alt="">
                     <div class="hot__deal__sticker">
                         <span>Sale Of</span>
                         <h5>$29.99</h5>

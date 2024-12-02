@@ -59,12 +59,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('add-comment',                      [ReviewController::class, 'handleAddComment'])->name('handleAddComment');
     Route::delete('destroy-comment/{comment_id}',   [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
 
-    Route::get('order-history',     [OrderHistoryController::class, 'getListOrderHistory'])->name('getListOrderHistory');
+    //Bộ lọc Order
+    Route::get('/order-history', [OrderHistoryController::class, 'getListOrderHistory'])->name('getListOrderHistory');
+    Route::get('/orders/search', [OrderHistoryController::class, 'searchOrders'])->name('searchOrders');
 });
+
+
 
 Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 Route::post('order/{slug}/cancel', [OrderHistoryController::class, 'cancelOrder'])->name('orders.cancel');
 Route::get('product-detail/{slug}', [ProductController::class, 'productDetail'])->name('productDetail');
+
+
+
 
 // cart
 Route::get('cart',          [CartController::class, 'index'])->name('cart.list');
