@@ -9,6 +9,7 @@ use App\Models\{Brand, Category, Order, Payment};
 use App\Services\OrderAdmin\OrderFormServices;
 use App\Services\OrderAdmin\OrderServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\MessageBag;
 
@@ -20,7 +21,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $data = Order::query()->with(['user', 'role'])->latest('id')->paginate(10);
+        $data = Order::query()->with(['user', 'role'])->latest('id')->get();
 
         if ($key = request()->key) {
             $data = Order::query()->with(['user', 'role'])->latest('id')
@@ -62,6 +63,13 @@ class OrderController extends Controller
 
             $order = Order::query()->findOrFail($id);
 
+            if ($order->status_order == Order::STATUS_ORDER_CANCELED || $request->status_order == Order::STATUS_ORDER_CANCELED) {
+                foreach ($order->orderItems as $item) {
+                    $quantity = $item->productVariant->quantity + $item->quantity;
+                    $item->productVariant->update(['quantity' => $quantity]);
+                }
+            }
+
             // status order
             if (!($order->status_order == Order::STATUS_ORDER_CANCELED || $order->status_order == Order::STATUS_ORDER_DELIVERED)) {
 
@@ -84,6 +92,7 @@ class OrderController extends Controller
                 }
 
                 $order->update([
+                    'staff_id'       => Auth::user()->id,
                     'status_order'   => request('status_order'),
                 ]);
 
@@ -116,6 +125,11 @@ class OrderController extends Controller
                     $order->update([
                         'status_order' => Order::STATUS_ORDER_CANCELED,
                     ]);
+
+                    foreach ($order->orderItems as $item) {
+                        $quantity = $item->productVariant->quantity + $item->quantity;
+                        $item->productVariant->update(['quantity' => $quantity]);
+                    }
                 }
             }
 
@@ -154,6 +168,11 @@ class OrderController extends Controller
                     'status_order' => Order::STATUS_ORDER_CANCELED,
                     'status_payment' => Order::STATUS_PAYMENT_REFUNDED,
                 ]);
+
+                foreach ($order->orderItems as $item) {
+                    $quantity = $item->productVariant->quantity + $item->quantity;
+                    $item->productVariant->update(['quantity' => $quantity]);
+                }
             }
 
 

@@ -69,6 +69,12 @@ class CheckoutController extends Controller
                 ]);
             }
 
+            // - kho
+            foreach ($order->orderItems as $item) {
+                $quantity = $item->productVariant->quantity - $item->quantity;
+                $item->productVariant->update(['quantity' => $quantity]);
+            }
+
             DB::commit();
 
             session()->forget('cart');
@@ -98,6 +104,18 @@ class CheckoutController extends Controller
     public function vnpayReturn(Request $request, $order, $payment)
     {
         $order2 = Order::query()->where('id', $order)->first();
+
+        if ($request->vnp_TransactionStatus == 02) {
+            foreach ($order2->orderItems as $item) {
+                $item->delete();
+            }
+            $order2->payment->delete();
+            $order2->delete();
+            if(!Auth::check()){
+                $order2->user->delete();
+            }
+            return redirect()->route('check-out');
+        }
 
         $this->addVnpayServices->addVnPay($request, $order, $payment);
 

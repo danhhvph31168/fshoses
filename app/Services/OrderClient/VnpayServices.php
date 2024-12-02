@@ -9,7 +9,6 @@ class VnpayServices
 {
     public function vnpay(Request $request, $order, $payment)
     {
-        // $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/Transaction/PaymentMethod.html?token=a70738f5b4ab4b85a63151abcaf8eb37";
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
         $vnp_Returnurl = route('vnpayReturn', ['order' => $order, 'payment' => $payment]);
