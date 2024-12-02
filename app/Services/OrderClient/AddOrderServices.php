@@ -45,14 +45,13 @@ class AddOrderServices
                 'email' => $request->user_email,
                 'phone' => $request->user_phone,
                 'address' => $request->user_address,
-                'role_id' => 1,
                 'status'  => false,
+                'role_id' => 1,
             ]);
         }
 
         $order = Order::query()->create([
             'user_id'    => $user->id,
-            'role_id'    => 1,
             'sku_order'  => 'DH-' . strtoupper(Str::random(6)),
             'user_name'  => $request->user_name,
             'user_email' => $request->user_email,
@@ -72,7 +71,6 @@ class AddOrderServices
     {
         $order = Order::query()->create([
             'user_id'    => Auth::user()->id,
-            'role_id'    => Auth::user()->role_id,
             'sku_order'  => 'DH-' . strtoupper(Str::random(6)),
             'user_name'  => $request->user_name,
             'user_email' => $request->user_email,

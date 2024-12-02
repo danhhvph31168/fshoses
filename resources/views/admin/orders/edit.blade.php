@@ -37,6 +37,12 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="mb-3 d-flex">
+                                            <label for="billinginfo-firstName" class="form-label">{{ $order->staff->role->name }} :
+                                                <span class="text-danger">{{ $order->staff->name }}</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-3 d-flex">
                                             <label for="billinginfo-firstName" class="form-label">Sku :
                                                 <span class="text-danger">{{ $order->sku_order }}</span></label>
                                         </div>

@@ -43,6 +43,41 @@
         .footer .footer__widget {
             padding-right: 50px;
         }
+
+        // star
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            position: relative;
+        }
+
+        .star-rating label::before {
+            content: '★';
+            font-size: inherit;
+        }
+
+        .star-rating input:checked~label {
+            color: #ffc107;
+        }
+
+        .star-rating input:hover~label,
+        .star-rating label:hover~label {
+            color: #ffcc00;
+        }
     </style>
 @endsection
 @section('content')
@@ -78,7 +113,7 @@
                                 <thead class="table-light text-muted">
                                     <tr>
                                         <th scope="col">Product Details</th>
-                                        <th scope="col">Item Price</th>
+                                        <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col" class="text-center">Total Amount</th>
                                         <th scope="col" class="text-center">Action</th>
@@ -94,12 +129,13 @@
                                                             alt="" class="img-fluid d-block">
                                                     </div>
                                                     <div class="flex-grow-1 ms-3">
-                                                        <h5 class="fs-15"><a
-                                                                href="{{ route('productDetail', $item->productVariant->product->slug) }}"
-                                                                class="link-primary">{{ $item->productVariant->product->name }}</a>
+                                                        <h5 class="fs-15">
+                                                            <a href="{{ route('productDetail', $item->productVariant->product->slug) }}"
+                                                                class="link-primary text-wrap w-100">{{ $item->productVariant->product->name }}</a>
                                                         </h5>
-                                                        <p class="text-muted mb-0">Color: <span
-                                                                class="fw-medium">{{ $item->productVariant->color->name }}</span>
+                                                        <p class="text-muted mb-0">Color:
+                                                            <span class="fw-medium ms-2"
+                                                                style="background: {{ $item->productVariant->color->name }}; padding:0px 10px"></span>
                                                         </p>
                                                         <p class="text-muted mb-0">Size: <span
                                                                 class="fw-medium">{{ $item->productVariant->size->name }}</span>
@@ -113,128 +149,117 @@
                                             <td class="fw-medium text-center align-middle">
                                                 {{ number_format($item->quantity * $item->price, 0, '.', '.') }}
                                             </td>
-                                            <td class="text-center align-middle">
-                                                <a href="{{ route('ratings.create', [
-                                                    'orderId' => $order->id,
-                                                    'productId' => $item->productVariant->product->id,
-                                                    'productVariantId' => $item->productVariant->id,
-                                                ]) }}"
-                                                    class="btn badge badge-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Review</a>
-                                            </td>
-                                            <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <p class="modal-title fs-5" id="exampleModalLabel">Ratings
-                                                                and
-                                                                Reviews</p>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="card card-rating mb-4">
-                                                            <div class="row g-0">
-                                                                <!-- Cột chứa hình ảnh -->
-                                                                <div class="col-md-4">
-                                                                    <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
-                                                                        class="img-fluid rounded-start w-100 h-auto"
-                                                                        alt="Sản phẩm" />
-                                                                </div>
-                                                                <!-- Cột chứa nội dung văn bản -->
-                                                                <div class="col-md-8">
-                                                                    <div
-                                                                        class="card-body d-flex flex-column justify-content-center h-100">
-                                                                        <h5 class="card-title text-truncate"
-                                                                            style="max-width: 100%;">
-                                                                            {{ $item->productVariant->product->name }}
-                                                                        </h5>
-                                                                        <p class="card-text text-muted mb-1">Price:
-                                                                            {{ $item->price }}</p>
-                                                                        <p class="card-text text-muted mb-1">Size:
-                                                                            {{ $item->productVariant->size->name }}</p>
-                                                                        <div class="d-flex align-items-center mb-1">
-                                                                            <p class="card-text text-muted mb-0 me-2">
-                                                                                Color:
-                                                                            </p>
-                                                                            <!-- Ô tròn màu sắc -->
-                                                                            <div
-                                                                                style="
-                                                                                            width: 20px;
-                                                                                            height: 20px;
-                                                                                            border-radius: 50%;
-                                                                                            background-color: {{ $item->productVariant->color->name }};
-                                                                                            border: 1px solid #ddd;">
-                                                                            </div>
 
+                                            <td class="text-center align-middle">
+                                                <a href="#" class="btn badge badge-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#reviewModal-{{ $item->id }}">Review</a>
+                                            </td>
+                                        </tr>
+
+                                        <div class="modal fade" id="reviewModal-{{ $item->id }}" tabindex="-1"
+                                            aria-labelledby="reviewModalLabel-{{ $item->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <p class="modal-title fs-5"
+                                                            id="reviewModalLabel-{{ $item->id }}">Ratings and Reviews
+                                                        </p>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="card card-rating mb-3">
+                                                        <div class="row g-0">
+                                                            <div class="col-md-4">
+                                                                <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
+                                                                    class="img-fluid rounded-start w-100 h-auto"
+                                                                    alt="Sản phẩm" />
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div
+                                                                    class="card-body d-flex flex-column justify-content-center h-100">
+                                                                    <h5 class="card-title text-truncate"
+                                                                        style="max-width: 100%;">
+                                                                        {{ $item->productVariant->product->name }}
+                                                                    </h5>
+                                                                    <p class="card-text text-muted mb-1">Price:
+                                                                        {{ $item->price }}</p>
+                                                                    <p class="card-text text-muted mb-1">Size:
+                                                                        {{ $item->productVariant->size->name }}</p>
+                                                                    <div class="d-flex align-items-center mb-1">
+                                                                        <p class="card-text text-muted mb-0 me-2">Color:</p>
+                                                                        <div
+                                                                            style="
+                                    width: 20px;
+                                    height: 20px;
+                                    border-radius: 50%;
+                                    background-color: {{ $item->productVariant->color->name }};
+                                    border: 1px solid #ddd;">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <form action="{{ route('ratings.store') }}" method="POST">
-                                                            @csrf
-                                                            <div class="modal-body">
-                                                                <input type="hidden" name="user_id"
-                                                                    value="{{ auth()->id() }}" />
-                                                                <input type="hidden" name="order_id"
-                                                                    value="{{ $order->id }}" />
-
-                                                                <input type="hidden" name="product_id"
-                                                                    value="{{ $item->productVariant->product->id }}">
-                                                                <input type="hidden" name="product_variant_id"
-                                                                    value="{{ $item->productVariant->id }}">
-
-                                                                <!-- Đánh giá -->
-                                                                <div class="mb-4">
-                                                                    <label for="rating" class="form-label">Your
-                                                                        rating:</label>
-                                                                    <div class="rating">
-                                                                        <input type="radio" id="star5"
-                                                                            name="value" value="5" required />
-                                                                        <label for="star5"
-                                                                            title="Tuyệt vời">&#9733;</label>
-
-                                                                        <input type="radio" id="star4"
-                                                                            name="value" value="4" required />
-                                                                        <label for="star4"
-                                                                            title="Tốt">&#9733;</label>
-
-                                                                        <input type="radio" id="star3"
-                                                                            name="value" value="3" required />
-                                                                        <label for="star3"
-                                                                            title="Bình thường">&#9733;</label>
-
-                                                                        <input type="radio" id="star2"
-                                                                            name="value" value="2" required />
-                                                                        <label for="star2"
-                                                                            title="Tệ">&#9733;</label>
-
-                                                                        <input type="radio" id="star1"
-                                                                            name="value" value="1" required />
-                                                                        <label for="star1"
-                                                                            title="Rất tệ">&#9733;</label>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Nhận xét -->
-                                                                <div class="mb-4">
-                                                                    <label for="comment" class="form-label">Your
-                                                                        review:</label>
-                                                                    <textarea class="form-control" id="comment" name="comment" rows="4"
-                                                                        placeholder="Please share your thoughts about this product..." required></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="submit"
-                                                                    class="btn btn-rating btn-primary w-100">Send</button>
-                                                            </div>
-                                                        </form>
                                                     </div>
+                                                    <form action="{{ route('ratings.store') }}" method="POST">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="user_id"
+                                                                value="{{ auth()->id() }}" />
+                                                            <input type="hidden" name="order_id"
+                                                                value="{{ $order->id }}" />
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $item->productVariant->product->id }}">
+                                                            <input type="hidden" name="product_variant_id"
+                                                                value="{{ $item->productVariant->id }}">
+
+                                                            <div class="mb-3">
+                                                                <label for="rating" class="form-label">Your
+                                                                    rating:</label>
+                                                                <div class="star-rating">
+                                                                    <input type="radio" id="star5-{{ $item->id }}"
+                                                                        name="value" value="5" />
+                                                                    <label for="star5-{{ $item->id }}"
+                                                                        title="Excellent"></label>
+
+                                                                    <input type="radio" id="star4-{{ $item->id }}"
+                                                                        name="value" value="4" />
+                                                                    <label for="star4-{{ $item->id }}"
+                                                                        title="Good"></label>
+
+                                                                    <input type="radio" id="star3-{{ $item->id }}"
+                                                                        name="value" value="3" />
+                                                                    <label for="star3-{{ $item->id }}"
+                                                                        title="Average"></label>
+
+                                                                    <input type="radio" id="star2-{{ $item->id }}"
+                                                                        name="value" value="2" />
+                                                                    <label for="star2-{{ $item->id }}"
+                                                                        title="Poor"></label>
+
+                                                                    <input type="radio" id="star1-{{ $item->id }}"
+                                                                        name="value" value="1" />
+                                                                    <label for="star1-{{ $item->id }}"
+                                                                        title="Very Poor"></label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <label for="comment-{{ $item->id }}"
+                                                                    class="form-label">Your review:</label>
+                                                                <textarea class="form-control" id="comment-{{ $item->id }}" name="comment" rows="4"
+                                                                    placeholder="Please share your thoughts about this product..." required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit"
+                                                                class="btn btn-rating btn-primary w-100">Send</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
-                                        </tr>
+                                        </div>
                                     @endforeach
+
                                     <tr class="border-top border-top-dashed">
                                         <td colspan="3">
                                             <textarea class="form-control bg-white" rows="3" disabled>{{ $order->user_note }}</textarea>
