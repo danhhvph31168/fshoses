@@ -115,7 +115,10 @@
 
                             <div class="dropzone">
                                 <div class="fallback">
-                                    <input name="product_galleries[]" type="file" multiple="multiple">
+                                    <input type="file" multiple="multiple">
+                                </div>
+                                <div class="fallback">
+                                    <input name="product_galleries[]" type="file" multiple="multiple" id="product-galleries-input" class="d-none">
                                 </div>
                                 <div class="dz-message needsclick">
                                     <div class="mb-3">
@@ -388,6 +391,7 @@
     <script>
         CKEDITOR.replace('content');
 
+        const url = @json(asset('storage/'));
         var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
         dropzonePreviewNode.itemid = "";
         var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
@@ -395,8 +399,39 @@
         var dropzone = new Dropzone(".dropzone", {
             url: 'https://httpbin.org/post',
             method: "post",
+            paramName: "product_galleries[]",
             previewTemplate: previewTemplate,
             previewsContainer: "#dropzone-preview",
+
+            init: function () {
+                const dropzoneInstance = this;
+
+                const input = document.querySelector("#product-galleries-input");
+                const dataTransfer = new DataTransfer();
+
+                input.files = dataTransfer.files;
+
+                this.on("addedfile", function (file) {
+                    console.log(file)
+                    dataTransfer.items.add(file);
+                    input.files = dataTransfer.files;
+                });
+
+                this.on("removedfile", function (file) {
+                    const newDataTransfer = new DataTransfer();
+
+                    Array.from(dataTransfer.files).forEach(f => {
+                        if (f.name !== file.name) {
+                            newDataTransfer.items.add(f);
+                        }
+                    });
+
+                    input.files = newDataTransfer.files;
+
+                    dataTransfer.items.clear();
+                    Array.from(newDataTransfer.files).forEach(f => dataTransfer.items.add(f));
+                });
+            }
         });
 
         document.addEventListener("DOMContentLoaded", function() {

@@ -135,7 +135,7 @@
                                         <div class="d-flex p-2">
                                             <div class="flex-shrink-0 me-3">
                                                 <div class="avatar-sm bg-light rounded">
-                                                    <img data-dz-thumbnail class="img-fluid rounded d-block" src="#" alt="Product-Image" />
+                                                    <img data-dz-thumbnail class="img-fluid rounded d-block w-100 h-100" src="#" alt="Product-Image" />
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
@@ -385,13 +385,13 @@
     <script>
         CKEDITOR.replace('content');
         const images = @json($product->galleries);
-        console.log(images);
+        const url = @json(asset('storage/'));
             var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
             dropzonePreviewNode.itemid = "";
             var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
             dropzonePreviewNode.parentNode.removeChild(dropzonePreviewNode);
             var dropzone = new Dropzone(".dropzone", {
-                url: '#',
+                url: 'https://httpbin.org/post',
                 method: "post",
                 paramName: "product_galleries[]",
                 previewTemplate: previewTemplate,
@@ -400,59 +400,48 @@
                 init: function () {
                     const dropzoneInstance = this;
 
-                    // Tạo DataTransfer để lưu trữ các file
                     const input = document.querySelector("#product-galleries-input");
                     const dataTransfer = new DataTransfer();
 
-                    // Khởi tạo Dropzone với file mock
                     images.forEach(image => {
-                        const mockFile = { name: image.image, size: 1234 }; // Bạn có thể thêm `size` nếu cần
+                        const mockFile = { name: image.image };
                         dropzoneInstance.emit("addedfile", mockFile);
-                        dropzoneInstance.emit("thumbnail", mockFile, image.image);
+                        dropzoneInstance.emit("thumbnail", mockFile, url + '/' + image.image);
                         dropzoneInstance.emit("complete", mockFile);
 
                         mockFile.previewElement.classList.add("dz-success", "dz-complete");
 
-                        // Thêm file mock vào DataTransfer
-                        const blob = new Blob([], { type: 'image/png' }); // Tạo Blob đại diện cho file
+                        const blob = new Blob([], { type: 'image/png' });
                         const file = new File([blob], image.image);
                         dataTransfer.items.add(file);
                     });
 
-                    // Đồng bộ DataTransfer với input
                     input.files = dataTransfer.files;
 
-                    // Sự kiện khi thêm file mới vào Dropzone
                     this.on("addedfile", function (file) {
-                        // Thêm file mới vào DataTransfer
+                        console.log(file)
                         dataTransfer.items.add(file);
-                        input.files = dataTransfer.files; // Cập nhật input
+                        input.files = dataTransfer.files;
                     });
 
-                    // Sự kiện khi xoá file khỏi Dropzone
                     this.on("removedfile", function (file) {
                         const newDataTransfer = new DataTransfer();
 
-                        // Lọc ra các file còn lại trong DataTransfer
                         Array.from(dataTransfer.files).forEach(f => {
                             if (f.name !== file.name) {
                                 newDataTransfer.items.add(f);
                             }
                         });
 
-                        // Gán DataTransfer mới cho input
                         input.files = newDataTransfer.files;
 
-                        // Gán lại DataTransfer ban đầu
                         dataTransfer.items.clear();
                         Array.from(newDataTransfer.files).forEach(f => dataTransfer.items.add(f));
-                        console.log(input.files)
                     });
                 }
         });
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Lắng nghe sự kiện thay đổi cho tất cả các input file
             document.querySelectorAll(".profile-img-file-input").forEach(function(input) {
                 input.addEventListener("change", function() {
                     var sizeID = input.getAttribute("data-size-id");
