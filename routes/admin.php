@@ -31,7 +31,7 @@ Route::prefix('admin')->as('admin.')
         Route::post('orders/store',     [OrderController::class, 'store'])->name('orders.store');
         Route::get('orders/{id}/edit',  [OrderController::class, 'edit'])->name('orders.edit');
         Route::put('orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
-
+        Route::get('orders/search', [OrderController::class, 'search'])->name('orders.search');
         //review
         Route::get('reviews',               [ReviewController::class, 'index'])->name('reviews.index');
         Route::get('reviews/{id}/show',     [ReviewController::class, 'show'])->name('reviews.show');
