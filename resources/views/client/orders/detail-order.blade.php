@@ -216,9 +216,9 @@
                                         'productVariantId' => $item->productVariant->id]) }}" class="btn btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#exampleModal">Review</a> --}}
                                             <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal">
-                                                Launch demo modal
-                                            </button> -->
+                                                        data-bs-target="#exampleModal">
+                                                        Launch demo modal
+                                                    </button> -->
 
                                             {{-- <div class="modal fade" id="exampleModal" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -309,14 +309,20 @@
                                                 </div>
                                             </div>
                                         </div> --}}
-                                        @php
-                                        // Kiểm tra xem biến thể đã được đánh giá bởi người dùng này chưa
-                                        $hasReviewed = $item->productVariant->ratings()->where('user_id', Auth::id())->exists();                                        @endphp
+                                            @php
+                                                // Kiểm tra xem biến thể đã được đánh giá bởi người dùng này chưa
+                                                $hasReviewed = $item->productVariant
+                                                    ->ratings()
+                                                    ->where('user_id', Auth::id())
+                                                    ->where('order_id', $order->id)
+
+                                                    
+                                                ->exists(); @endphp
                                             @if ($order->status_order == 'delivered' && !$hasReviewed)
                                                 <td>
 
                                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal{{ $item->id }}">Đánh giá</a>
+                                                        data-bs-target="#exampleModal{{ $item->id }}">Rating</a>
                                             @endif
 
                                             <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
@@ -324,8 +330,8 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <p class="modal-title fs-5" id="exampleModalLabel">Đánh giá và
-                                                                Nhận xét</p>
+                                                            <p class="modal-title fs-5" id="exampleModalLabel">Ratings and
+                                                                Reviews</p>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
@@ -342,12 +348,12 @@
                                                                         class="card-body d-flex flex-column justify-content-center h-100">
                                                                         <h5 class="card-title">
                                                                             {{ $item->productVariant->product->name }}</h5>
-                                                                        <p class="card-text text-muted">Giá:
+                                                                        <p class="card-text text-muted">Price:
                                                                             {{ number_format($item->price, 0, ',', '.') }}
                                                                             VNĐ</p>
-                                                                        <p class="card-text text-muted">Màu sắc:
+                                                                        <p class="card-text text-muted">Color:
                                                                             {{ $item->productVariant->color->name }}</p>
-                                                                        <p class="card-text text-muted">Kích thước:
+                                                                        <p class="card-text text-muted">Size:
                                                                             {{ $item->productVariant->size->name }}</p>
                                                                     </div>
                                                                 </div>
@@ -366,8 +372,8 @@
                                                                 <input type="hidden" name="product_variant_id"
                                                                     value="{{ $item->productVariant->id }}" />
                                                                 <div class="mb-4">
-                                                                    <label for="rating" class="form-label">Đánh giá của
-                                                                        bạn:</label>
+                                                                    <label for="rating" class="form-label">Your
+                                                                        rating:</label>
                                                                     <div class="rating">
                                                                         <input type="radio"
                                                                             id="star5{{ $item->id }}" name="value"
@@ -410,7 +416,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="submit"
-                                                                        class="btn btn-rating btn-primary w-100">Gửi</button>
+                                                                        class="btn btn-rating btn-primary w-100">Send</button>
                                                                 </div>
                                                         </form>
                                                     </div>

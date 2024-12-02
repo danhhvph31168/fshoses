@@ -61,18 +61,16 @@ class RatingController extends Controller
         return redirect()->back()->with('message', 'Đánh giá đã được lưu thành công!');
     }
 
-    public function calculateAverageRating($productId)
+
+    public function getRatingByProductSlug($slug)
     {
-        $product = Product::findOrFail($productId);
-        $ratings = $product->ratings;
-        $average = $ratings->isEmpty() ? 0 : $ratings->avg('value');
+        // Tìm sản phẩm theo slug
+        $product = Product::where('slug', $slug)->firstOrFail();
 
-        return view('products.show', [
-            'product' => $product,
-            'average_rating' => $average
-        ]);
-    }
-    public function getRatingByProductId($productId){
+        // Lấy tất cả đánh giá của sản phẩm này
+        $ratings = $product->ratings()->with('user')->get();
 
+        // Trả về view với cả sản phẩm và đánh giá
+        return view('client.products.product-detail', compact('product', 'ratings'));
     }
 }

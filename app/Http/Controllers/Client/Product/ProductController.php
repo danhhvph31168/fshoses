@@ -64,7 +64,7 @@ class ProductController extends Controller
 
     public function productDetail($slug)
     {
-        $product = Product::query()->with(['productVariants', 'category', 'galleries'])->where('slug', $slug)->first();
+        $product = Product::query()->with(['productVariants', 'category', 'galleries', 'ratings'])->where('slug', $slug)->first();
 
 
         // Kiểm tra sản phẩm có tồn tại hay không
@@ -77,15 +77,32 @@ class ProductController extends Controller
         // Lấy danh sách màu sắc và kích thước
         $colors = ProductColor::query()->pluck('name', 'id')->all();
         $sizes = ProductSize::query()->pluck('name', 'id')->all();
-
+        //lấy ratings
+        $ratings = $product->ratings()->with('user')->get();
+        $averageRating = $ratings->isEmpty() ? 0 : $ratings->avg('value');
+        $totalRatings = $product->ratings->count();
+        $fiveStarCount = $product->ratings->where('value', 5)->count();
+        $fourStarCount = $product->ratings->where('value', 4)->count();
+        $threeStarCount = $product->ratings->where('value', 3)->count();
+        $twoStarCount = $product->ratings->where('value', 2)->count();
+        $oneStarCount = $product->ratings->where('value', 1)->count();
         // Lấy các bình luận cho sản phẩm
+
         $comments = Review::with('user')->where('product_id', $product->id)
-        ->where('is_show', 0)
-        ->orderBy('id', 'DESC')->get();
+            ->where('is_show', 0)
+            ->orderBy('id', 'DESC')->get();
 
         // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
         $relatedProducts = Product::with(['galleries', 'productVariants'])->where('category_id', $product->category_id)->where('id', '<>', $product->id)->limit(4)->get();
 
-        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts', 'productGalleries'));
+        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts', 'productGalleries',
+        'averageRating',
+        'totalRatings',
+        'fiveStarCount',
+        'fourStarCount',
+        'threeStarCount',
+        'twoStarCount',
+        'oneStarCount',
+    'ratings'));
     }
 }
