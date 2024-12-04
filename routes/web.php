@@ -50,7 +50,7 @@ Route::get('handle-forgot-pass', [MessageSuccessResetController::class, 'message
 
 // profile
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile',[AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::get('/profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
     Route::get('change-password',   [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('destroy-comment/{comment_id}',   [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
 
     Route::get('order-history',     [OrderHistoryController::class, 'getListOrderHistory'])->name('getListOrderHistory');
+    Route::get('/orders/search', [OrderHistoryController::class, 'searchOrders'])->name('searchOrders');
 });
 
 Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');

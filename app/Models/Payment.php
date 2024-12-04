@@ -24,13 +24,13 @@ class Payment extends Model
 
     const STATUS = [
         'pending'       => 'Đang chờ xử lý',    # Giao dịch thanh toán đã được tạo nhưng chưa hoàn tất (ví dụ: chờ xác nhận từ cổng thanh toán, chờ khách hàng nhập thông tin thẻ).
-        'completed'     => 'Đã hoàn tất',
+        'paid'          => 'Đã thanh toán',
         'failed'        => 'Thất bại',          # Thanh toán không thành công do lỗi (ví dụ: thẻ bị từ chối, thiếu tiền trong tài khoản, hoặc lỗi hệ thống).
         'refunded'      => 'Đã hoàn tiền',      # Số tiền thanh toán đã được hoàn lại cho khách hàng sau khi giao dịch hoàn tất.
     ];
 
     const STATUS_PENDING        = 'pending';
-    const STATUS_COMPLETED      = 'completed';
+    const STATUS_PAID           = 'paid';
     const STATUS_FAILED         = 'failed';
     const STATUS_REFUNDED       = 'refunded';
 

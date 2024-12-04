@@ -15,7 +15,36 @@
                         <li class="breadcrumb-item text-danger">List</li>
                     </ol>
                 </div>
+            </div>
 
+            <div class="search-bar mt-3">
+                <form action="" method="GET" class="form-inline d-flex align-items-center">
+                    <div class="input-group me-3">
+                        <select id="status_order_filter" class="form-select" name="status_order">
+                            <option value="" {{ request('status_order') == '' ? 'selected' : '' }}>All Status
+                            </option>
+                            <option value="pending" {{ request('status_order') == 'pending' ? 'selected' : '' }}>
+                                Pending</option>
+                            <option value="confirmed" {{ request('status_order') == 'confirmed' ? 'selected' : '' }}>
+                                Confirmed</option>
+                            <option value="processing" {{ request('status_order') == 'processing' ? 'selected' : '' }}>
+                                Processing</option>
+                            <option value="shipping" {{ request('status_order') == 'shipping' ? 'selected' : '' }}>
+                                Shipping</option>
+                            <option value="delivered" {{ request('status_order') == 'delivered' ? 'selected' : '' }}>
+                                Delivered</option>
+                            <option value="canceled" {{ request('status_order') == 'canceled' ? 'selected' : '' }}>
+                                Canceled</option>
+                            <option value="refunded" {{ request('status_order') == 'refunded' ? 'selected' : '' }}>
+                                Refunded</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" aria-label="Recipient's username"
+                            aria-describedby="button-addon2" name="key" placeholder="Search ...">
+                        <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -28,78 +57,87 @@
                     <table id="example" class="table responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th scope="col" style="width: 10px;">
+                                <th scope="col" style="width: 5px;">
                                     <div class="form-check"></div>
                                 </th>
                                 <th data-ordering="false">Sku</th>
                                 <th data-ordering="false">Customer</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Total Amount</th>
                                 <th>Payment</th>
+                                <th>Staff</th>
                                 <th>Status Order</th>
                                 <th>Status Payment</th>
-                                <th>Staff</th>
                                 <th>Order Date</th>
-                                <th>User address :</th>
-                                <th>User email :</th>
-                                <th>User phone :</th>
                                 <th>Product Item</th>
-
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
+
+
                             @foreach ($data as $item)
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check">
                                         </div>
                                     </th>
+
                                     <td>{{ $item->sku_order }}</td>
 
                                     <td class="{{ !($item->user->password == null) ? 'text-info' : '' }}">
                                         {{ $item->user->name }}</td>
+                                    <td>{{ $item->user_address }}</td>
+                                    <td class="fs-6">{{ $item->user_email }}</td>
+                                    <td>{{ $item->user_phone }}</td>
 
                                     <td>{{ number_format($item->total_amount) }} vnđ</td>
+
                                     <td
                                         class="{{ $item->payment->payments_method == 'vnpay' ? 'text-info' : 'text-warning' }}">
-                                        {{ $item->payment->payments_method }}</td>
+                                        {{ Str::upper($item->payment->payments_method) }}
+                                    </td>
+
+                                    <td>{{ $item->staff_id ? $item->staff->name : 'unprocessed' }}</td>
+
                                     <td>
                                         <span class="badge bg-success-subtle text-info">{{ $item->status_order }}</span>
                                     </td>
+
                                     <td>
-                                        <span class="badge bg-danger-subtle text-info">{{ $item->status_payment }}</span>
+                                        <span class="badge bg-danger-subtle text-info">{{ $item->payment->status }}</span>
                                     </td>
-                                    <td>{{ $item->staff_id ? $item->staff->name : 'unprocessed' }}</td>
+
                                     <td>
                                         <span class="badge rounded-pill text-bg-success">
                                             {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</span>
                                     </td>
-                                    <td>{{ $item->user_address }}</td>
-                                    <td>{{ $item->user_email }}</td>
-                                    <td>{{ $item->user_phone }}</td>
+
                                     <td>
                                         @foreach ($item->orderItems as $orderItem)
-                                            <div class="d-flex align-items-center mt-1">
+                                            <div class="d-flex align-items-center mt-2">
                                                 <div class="flex-shrink-0 me-3">
-                                                    <div class="avatar-xl bg-light rounded p-1">
-                                                        <img src="{{ $orderItem->productVariant->image }}" alt=""
-                                                            height="100px" width="100%" class="img-fluid d-block" />
+                                                    <div class="avatar-xl bg-light rounded">
+                                                        <img src="{{ Storage::url($orderItem->productVariant->image) }}"
+                                                            alt="" height="100%" width="100%" class="d-block rounded" />
                                                     </div>
                                                 </div>
 
                                                 <div class="flex-grow-1">
-                                                    <h5 class="fs-14 mb-3">
+                                                    <h5 class="fs-14 mb-2">
                                                         <a href="#" class="text-body">
                                                             {{ $orderItem->productVariant->product->name }}
                                                         </a>
                                                     </h5>
 
-                                                    <p class="rounded-circle text-muted mb-2">
+                                                    <p class="rounded-circle text-muted mb-1">
                                                         Color: <i class="ri-checkbox-blank-circle-fill"
-                                                            style="color: {{ $orderItem->productVariant['color']->name }};"></i>
+                                                            style="color: {{ $orderItem->productVariant['color']->name }};"></i> -
                                                         Size: {{ $orderItem->productVariant['size']->name }}
                                                     </p>
-                                                    <p class="rounded-circle text-muted mb-2">
+                                                    <p class="rounded-circle text-muted mb-1">
                                                         Price:
                                                         {{ number_format($orderItem->price) }}
                                                         x {{ $orderItem->quantity }}
@@ -108,25 +146,20 @@
                                             </div>
                                         @endforeach
                                     </td>
+
                                     <td>
                                         <ul class="list-inline hstack gap-2 mb-0">
-                                            <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                                data-bs-placement="top" title="View">
-                                                <a href="apps-ecommerce-order-details" class="text-primary d-inline-block">
-                                                    <i class="ri-eye-fill fs-16"></i>
-                                                </a>
-                                            </li>
                                             <li class="list-inline-item edit" data-bs-toggle="tooltip"
                                                 data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                <a href="{{ route('admin.orders.edit', $item) }}"
-                                                    class="text-primary d-inline-block edit-item-btn">
-                                                    <i class="ri-pencil-fill fs-16"></i>
+                                                <a href="{{ route('admin.orders.edit', $item) }}" class="btn btn-warning">
+                                                    <i class="ri-pencil-fill"></i>
                                                 </a>
                                             </li>
                                         </ul>
                                     </td>
                                 </tr>
                             @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -160,8 +193,6 @@
     <script src="{{ URL::asset('theme/admin/assets/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('theme/admin/assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
     <script src="{{ URL::asset('theme/admin/assets/js/pages/datatables.init.js') }}"></script>
-
-    <!--ecommerce-customer init js -->
     <script src="{{ URL::asset('theme/admin/assets/js/pages/ecommerce-order.init.js') }}"></script>
     <script src="{{ URL::asset('theme/admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 @endsection
@@ -176,5 +207,10 @@
         padding: 5px 10px;
         border-radius: 4px;
         cursor: pointer;
+    }
+
+    .avatar-xl {
+        height: 5rem !important;
+        width: 7.5rem !important;
     }
 </style>

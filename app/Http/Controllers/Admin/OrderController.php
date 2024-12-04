@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\OrderCanceled;
-use App\Events\OrderDelivered;
 use App\Http\Controllers\Controller;
-use App\Models\{Brand, Category, Order, Payment};
-use App\Services\OrderAdmin\OrderFormServices;
-use App\Services\OrderAdmin\OrderServices;
+use App\Events\{OrderCanceled, OrderDelivered};
+use App\Models\{Order, Payment};
+use App\Services\OrderAdmin\{OrderFormServices, OrderServices};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\{Auth, DB};
 
 class OrderController extends Controller
 {
@@ -36,24 +32,9 @@ class OrderController extends Controller
     {
         $order = Order::query()->with(['user', 'role', 'orderItems', 'payment'])->findOrFail($id);
 
-        $dataOrderItem = [];
-        foreach ($order->orderItems as $orderItems) {
-            $dataOrderItem[] = [
-                'product'   => $orderItems->productVariant->product,
-                'size'      => $orderItems->productVariant->size,
-                'color'     => $orderItems->productVariant->color,
-                'quantity'  => $orderItems->quantity,
-            ];
-        }
-
-        $dataProductVariant = [];
-        foreach ($dataOrderItem as $key => $value) {
-            $dataProductVariant[] = $value;
-        }
-
         $data = $this->orderFormServices->handleFormEdit();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('order', 'data', 'dataProductVariant'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('order', 'data'));
     }
 
     public function update(Request $request, $id)
@@ -64,6 +45,37 @@ class OrderController extends Controller
             $order = Order::query()->findOrFail($id);
 
             if ($order->status_order == Order::STATUS_ORDER_CANCELED || $request->status_order == Order::STATUS_ORDER_CANCELED) {
+                foreach ($order->orderItems as $item) {
+                    $quantity = $item->productVariant->quantity + $item->quantity;
+                    $item->productVariant->update(['quantity' => $quantity]);
+                }
+            }
+
+            // payment
+            if (!($order->payment->status == Payment::STATUS_REFUNDED)) {
+                if ($order->payment->status == Payment::STATUS_PAID) {
+                    $request->validate([
+                        'payment_status' => 'required|in:' . Payment::STATUS_PAID . ',' . Payment::STATUS_REFUNDED,
+                    ]);
+                }
+
+                if ($order->payment->status == Payment::STATUS_FAILED) {
+                    $request->validate([
+                        'payment_status' => 'required|in:' . Payment::STATUS_FAILED . ',' . Payment::STATUS_PAID,
+                    ]);
+                }
+
+                $payment = $order->payment;
+                $payment->update([
+                    'status' => request('payment_status'),
+                ]);
+            }
+
+            if ($request->payment_status == Payment::STATUS_REFUNDED) {
+                $order->update([
+                    'status_order' => Order::STATUS_ORDER_CANCELED,
+                ]);
+
                 foreach ($order->orderItems as $item) {
                     $quantity = $item->productVariant->quantity + $item->quantity;
                     $item->productVariant->update(['quantity' => $quantity]);
@@ -91,45 +103,20 @@ class OrderController extends Controller
                     ]);
                 }
 
-                $order->update([
-                    'staff_id'       => Auth::user()->id,
-                    'status_order'   => request('status_order'),
-                ]);
-
-                // status payment
-                if (!($order->status_payment == Order::STATUS_PAYMENT_REFUNDED)) {
-                    if ($order->status_payment == Order::STATUS_PAYMENT_PENDING) {
-                        $request->validate([
-                            'status_payment' => 'required|in:' . Order::STATUS_PAYMENT_PENDING . ',' . Order::STATUS_PAYMENT_PAID . ',' . Order::STATUS_PAYMENT_FAILED . ',' . Order::STATUS_PAYMENT_REFUNDED,
+                if ($request->status_order == Order::STATUS_ORDER_DELIVERED) {
+                    if ($order->payment->status == Payment::STATUS_PAID) {
+                        $order->update([
+                            'staff_id'       => Auth::user()->id,
+                            'status_order'   => request('status_order'),
                         ]);
+                    } else {
+                        return back()->with('info', 'Orders must be paid successfully to change status.');
                     }
-
-                    if ($order->status_payment == Order::STATUS_PAYMENT_PAID) {
-                        $request->validate([
-                            'status_payment' => 'required|in:' . Order::STATUS_PAYMENT_REFUNDED . ',' . Order::STATUS_PAYMENT_PAID,
-                        ]);
-                    }
-
-                    if ($order->status_payment == Order::STATUS_PAYMENT_FAILED) {
-                        $request->validate([
-                            'status_payment' => 'required|in:' . Order::STATUS_PAYMENT_PAID . ',' . Order::STATUS_PAYMENT_FAILED,
-                        ]);
-                    }
-
+                } else {
                     $order->update([
-                        'status_payment' => request('status_payment'),
+                        'staff_id'       => Auth::user()->id,
+                        'status_order'   => request('status_order'),
                     ]);
-                }
-
-                if ($request->status_payment == Order::STATUS_PAYMENT_REFUNDED) {
-                    $order->update([
-                        'status_order' => Order::STATUS_ORDER_CANCELED,
-                    ]);
-
-                    foreach ($order->orderItems as $item) {
-                        $quantity = $item->productVariant->quantity + $item->quantity;
-                        $item->productVariant->update(['quantity' => $quantity]);
-                    }
                 }
             }
 
@@ -141,41 +128,6 @@ class OrderController extends Controller
             if ($order->status_order == Order::STATUS_ORDER_DELIVERED) {
                 OrderDelivered::dispatch($order);
             }
-
-            // payment
-            if (!($order->payment->status == Payment::STATUS_REFUNDED)) {
-                if ($order->payment->status == Payment::STATUS_COMPLETED) {
-                    $request->validate([
-                        'payment_status' => 'required|in:' . Payment::STATUS_COMPLETED . ',' . Payment::STATUS_REFUNDED,
-                    ]);
-                }
-
-                if ($order->payment->status == Payment::STATUS_FAILED) {
-                    $request->validate([
-                        'payment_status' => 'required|in:' . Payment::STATUS_FAILED . ',' . Payment::STATUS_COMPLETED,
-                    ]);
-                }
-
-                $payment = $order->payment;
-
-                $payment->update([
-                    'status' => request('payment_status'),
-                ]);
-            }
-
-            if ($request->payment_status == Payment::STATUS_REFUNDED) {
-                $order->update([
-                    'status_order' => Order::STATUS_ORDER_CANCELED,
-                    'status_payment' => Order::STATUS_PAYMENT_REFUNDED,
-                ]);
-
-                foreach ($order->orderItems as $item) {
-                    $quantity = $item->productVariant->quantity + $item->quantity;
-                    $item->productVariant->update(['quantity' => $quantity]);
-                }
-            }
-
-
 
             DB::commit();
 

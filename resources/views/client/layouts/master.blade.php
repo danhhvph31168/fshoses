@@ -77,6 +77,7 @@
     <script src="{{ asset('theme/client/js/jquery.nicescroll.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.countdown.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('theme/client/js/jquery.slicknav.js') }}"></script>
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
@@ -84,8 +85,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
 
+    @stack('scripts')
     @yield('js')
-
     @yield('scripts')
 
 </body>
