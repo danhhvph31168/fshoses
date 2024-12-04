@@ -1,0 +1,61 @@
+<div class="table-responsive table-card">
+    <table class="table table-borderless align-middle mb-0">
+        <thead class="table-light text-muted">
+            <tr>
+                <th style="width: 90px;" scope="col">Product</th>
+                <th scope="col">Product Info</th>
+                <th scope="col" class="text-end">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($dataProductVariant as $item)
+            @php
+            $price =
+            $item['product']->price_regular *
+            ((100 - $item['product']->price_sale) / 100);
+
+            $totalPrice =
+            (empty($price) ? $item['product']->price_regular : $price) *
+            $item['quantity'];
+            @endphp
+            <tr>
+                <td>
+                    <div class="avatar-md bg-light rounded p-1">
+                        <img src="{{ $item['product']->img_thumbnail }}" alt=""
+                            class="img-fluid d-block">
+                    </div>
+                </td>
+                <td>
+                    <h5 class="fs-14"><a href="apps-ecommerce-product-details"
+                            class="text-body">{{ $item['product']->name }}</a>
+                    </h5>
+                    <p class="rounded-circle text-muted mb-0">
+                        Color: <i class="ri-checkbox-blank-circle-fill"
+                            style="color: {{ $item['color']->name }};"></i> -
+                        Size: {{ $item['size']->name }}</p>
+                    <p class="text-muted mb-0">
+                        {{ number_format($price, 0, '.', ',') }}
+                    </p>
+                </td>
+                <td class="text-end">
+                    {{ number_format($totalPrice, 0, '.', ',') }}
+                    VND
+                </td>
+            </tr>
+            @endforeach
+            <tr>
+                <td class="fw-semibold text-danger" colspan="2">Sub Total :</td>
+                <td class="fw-semibold text-danger text-end">
+                    {{ number_format($order->total_amount, 0, '.', ',') }} VND
+                </td>
+            </tr>
+
+            <tr>
+                <td class="fw-semibold float-start" colspan="2">Payment Method :</td>
+                <td class="fw-semibold text-end">{{ $order->payment->payments_method }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>

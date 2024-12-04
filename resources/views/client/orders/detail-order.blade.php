@@ -154,6 +154,7 @@
                                                 <a href="#" class="btn badge badge-primary" data-bs-toggle="modal"
                                                     data-bs-target="#reviewModal-{{ $item->id }}">Review</a>
                                             </td>
+
                                         </tr>
 
                                         <div class="modal fade" id="reviewModal-{{ $item->id }}" tabindex="-1"

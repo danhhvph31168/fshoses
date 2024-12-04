@@ -113,9 +113,9 @@ class HandleChartServices
     public function handleMap($orderPercentages)
     {
         $orderCount3 = Order::query()
-            ->select('user_address', DB::raw('count(*) as total'))
+            ->select('user_province', DB::raw('count(*) as total'))
             ->where('status_order', Order::STATUS_ORDER_DELIVERED)
-            ->groupBy('user_address')
+            ->groupBy('user_province')
             ->limit(3)
             ->orderByDesc('total')
             ->get();
@@ -124,7 +124,7 @@ class HandleChartServices
             ->where('status_order', Order::STATUS_ORDER_DELIVERED)->count();
 
         foreach ($orderCount3 as $item) {
-            $orderPercentages[$item->user_address] = $totalOrders > 0 ? ($item->total / $totalOrders) * 100 : 0;
+            $orderPercentages[$item->user_province] = $totalOrders > 0 ? ($item->total / $totalOrders) * 100 : 0;
         }
 
         return $orderPercentages;
@@ -160,6 +160,7 @@ class HandleChartServices
             }
         };
 
+        // data top product
         if (!$request->page) {
             $topProducts = $filterProduct(
                 Product::query()
@@ -208,30 +209,31 @@ class HandleChartServices
             );
         }
 
+
         // top Categories
         $topCategory = Product::query()
             ->select(
                 'categories.name as category_name',
                 'categories.id as category_id',
                 'categories.image as category_image',
-                'products.id as product_id',
-                'products.name as product_name',
+                'categories.description as category_description',
                 DB::raw('SUM(order_items.quantity) as total_sold'),
                 DB::raw('SUM(orders.total_amount) as total_amount'),
-                DB::raw('SUM(product_variants.quantity) as stock'),
+                DB::raw('SUM(product_variants.quantity) as stock')
             )
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
             ->join('order_items', 'product_variants.id', '=', 'order_items.product_variant_id')
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->where('orders.status_order', Order::STATUS_ORDER_DELIVERED)
-            ->groupBy('categories.name', 'products.id')
+            ->groupBy('categories.id', 'categories.name', 'categories.image')
             ->orderByDesc('total_sold')
             ->take(6)
             ->get();
 
 
-        // dd($topProducts);
+
+        // dd($topCategory);
 
         return [$topProducts, $topCategory];
     }

@@ -34,6 +34,10 @@ class RatingController extends Controller
     {
         // dd($request->all());
 
+        if(!$request->value){
+            toastr()->error('value is required');
+        }
+
         $validatedData = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'order_id' => 'required|integer|exists:orders,id',

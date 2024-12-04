@@ -51,7 +51,6 @@
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Created at</th>
-                                <th>Updated at</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -63,13 +62,8 @@
                                     <th class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
                                         {{ $item->status == 1 ? 'Active' : 'Inactive' }}</th>
                                     <th>{{ $item->created_at }}</th>
-                                    <th>{{ $item->updated_at }}</th>
 
                                     <td>
-                                        {{-- <a href="{{ route('admin.roles.show', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a> --}}
-
                                         <a href="{{ route('admin.roles.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
