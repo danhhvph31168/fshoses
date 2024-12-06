@@ -48,14 +48,13 @@
                         <thead>
                             <tr class="">
                                 <th>#</th>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Collection</th>
-                                <th>Title</th>
+                                <th>Url</th>
                                 <th>Description</th>
-                                <th>Image</th>
                                 <th>Status</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
+                                <th>Created</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -64,23 +63,21 @@
                             @foreach ($data as $key => $item)
                                 <tr class="align-middle">
                                     <td>{{ $key + 1 }}</td>
+                                    <td style="width: 100px"> <img src="{{ Storage::url($item->image) }}" alt=""
+                                            width="100" height="100">
+                                    </td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->collection }}</td>
-                                    <td>{{ $item->title }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td style="width: 100px"> <img src="{{ Storage::url($item->image) }}" alt=""
-                                            width="50px">
-                                    </td>
-                                    <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
-
                                     <td>
-                                        {{-- <a href="{{ route('admin.banners.show', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a> --}}
+                                        <a href="{{ $item->url }}">{{ $item->url }}</a>
+                                    </td>
+                                    <td>{{ $item->description }}</td>
 
+                                    <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
+                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}
+                                    </td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>
                                         <a href="{{ route('admin.banners.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>

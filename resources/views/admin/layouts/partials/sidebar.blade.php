@@ -7,12 +7,10 @@
 
         <a href="{{ route('admin.') }}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="http://fshoes.test/theme/client/img/logo/newlogoblack1.png" alt="" width="100px"
-                    height="50" width="150">
+                <img src="http://fshoes.test/theme/client/img/logo/newlogoblack1.png" alt="" width="150">
             </span>
             <span class="logo-lg fs-1 text-black">
-                <img src="http://fshoes.test/theme/client/img/logo/newlogoblack1.png" alt="" width="100px"
-                    height="100">
+                <img src="http://fshoes.test/theme/client/img/logo/newlogoblack1.png" alt="" width="150">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -45,24 +43,9 @@
                         <div class="collapse menu-dropdown" id="sidebarAccounts">
                             <ul class="nav nav-sm flex-column">
 
-                                {{-- Role --}}
                                 <li class="nav-item">
-                                    <a class="nav-link menu-link" href="#sidebarRole" data-bs-toggle="collapse"
-                                        role="button" aria-expanded="false" aria-controls="sidebarRole">
-                                        <i class="ri-file-list-3-line"></i> <span data-key="t-forms">Role</span>
-                                    </a>
-                                    <div class="collapse menu-dropdown" id="sidebarRole">
-                                        <ul class="nav nav-sm flex-column">
-                                            <li class="nav-item">
-                                                <a href="{{ route('admin.roles.index') }}" class="nav-link"
-                                                    data-key="t-horizontal">List</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('admin.roles.create') }}" class="nav-link"
-                                                    data-key="t-horizontal">Add</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <a href="{{ route('admin.roles.index') }}" class="nav-link"
+                                        data-key="t-horizontal">Role</a>
                                 </li>
 
                                 <li class="nav-item">
@@ -71,7 +54,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.users.index') }}" class="nav-link"
+                                    <a href="{{ route('admin.users.listCustomer') }}" class="nav-link"
                                         data-key="t-horizontal">Customer</a>
                                 </li>
 
@@ -98,45 +81,14 @@
 
                                 {{-- Product Sizes --}}
                                 <li class="nav-item">
-                                    <a class="nav-link menu-link" href="#sidebarProductSizes" data-bs-toggle="collapse"
-                                        role="button" aria-expanded="false" aria-controls="sidebarProductSizes">
-                                        <i class="ri-file-list-3-line"></i> <span data-key="t-forms">Product
-                                            Sizes</span>
-                                    </a>
-                                    <div class="collapse menu-dropdown" id="sidebarProductSizes">
-                                        <ul class="nav nav-sm flex-column">
-                                            <li class="nav-item">
-                                                <a href="{{ route('admin.productSizes.index') }}" class="nav-link"
-                                                    data-key="t-horizontal">List</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('admin.productSizes.create') }}" class="nav-link"
-                                                    data-key="t-horizontal">Add</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <a href="{{ route('admin.productSizes.index') }}" class="nav-link"
+                                        data-key="t-horizontal">Size</a>
                                 </li>
 
                                 {{-- Product Colors --}}
                                 <li class="nav-item">
-                                    <a class="nav-link menu-link" href="#sidebarProductColors"
-                                        data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                        aria-controls="sidebarProductColors">
-                                        <i class="ri-file-list-3-line"></i> <span data-key="t-forms">Product
-                                            Colors</span>
-                                    </a>
-                                    <div class="collapse menu-dropdown" id="sidebarProductColors">
-                                        <ul class="nav nav-sm flex-column">
-                                            <li class="nav-item">
-                                                <a href="{{ route('admin.productColors.index') }}" class="nav-link"
-                                                    data-key="t-horizontal">List</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('admin.productColors.create') }}" class="nav-link"
-                                                    data-key="t-horizontal">Add</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <a href="{{ route('admin.productColors.index') }}" class="nav-link"
+                                        data-key="t-horizontal">Color</a>
                                 </li>
 
                             </ul>
@@ -232,10 +184,11 @@
                         </div>
                     </li>
 
+                    {{-- Comment --}}
                     @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="{{ route('admin.reviews.index') }}">
-                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Review</span>
+                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Comment</span>
                             </a>
                         </li>
                     @endif

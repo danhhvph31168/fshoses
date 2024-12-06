@@ -90,8 +90,8 @@
                                 <div class="col-md-6">
                                     <div class="row gy-4 mb-3">
                                         <div>
-                                            <label for="title" class="form-label">Title</label>
-                                            <input type="text" class="form-control" name="title" id="title">
+                                            <label for="title" class="form-label">Url</label>
+                                            <input type="text" class="form-control" name="url">
                                         </div>
                                     </div>
 

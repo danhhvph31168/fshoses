@@ -11,7 +11,7 @@ class OrderHistoryController extends Controller
 {
     public function getListOrderHistory()
     {
-        $orders = Auth::user()->orders()->orderBy('created_at', 'DESC')->paginate(5);
+        $orders = Auth::user()->orders()->orderBy('created_at', 'DESC')->paginate(10);
         return view("client.orders.list-order", compact("orders"));
     }
 
@@ -29,7 +29,8 @@ class OrderHistoryController extends Controller
                     return $query->where('status_order', $statusOrder);
                 })
                 ->orderBy('created_at', 'desc')
-                ->paginate(5);
+                ->paginate(10);
+
             // Trả về dữ liệu JSON nếu request là AJAX
             if ($request->ajax()) {
                 return response()->json([
@@ -37,6 +38,7 @@ class OrderHistoryController extends Controller
                     'pagination' => $orders->links('pagination::bootstrap-4')->toHtml(),
                 ]);
             }
+
             // Trả về view bình thường nếu không phải AJAX (trường hợp fallback)
             return view('client.orders.list-order', compact('orders'));
         } catch (\Exception $e) {

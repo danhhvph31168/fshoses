@@ -141,22 +141,22 @@ class HandleChartServices
         }
 
         $filterProduct = function ($query, $filProduct) {
-            if ($filProduct == 'all') {
-                return $query->paginate(5);
+            if ($filProduct == 'today') {
+                return $query->whereDate('orders.created_at', Carbon::now())->paginate(5);
             } else if ($filProduct == 'yesterday') {
                 return $query->whereDate('orders.created_at', Carbon::yesterday())->paginate(5);
             } else if ($filProduct == 'last_7_days') {
                 return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(7), Carbon::now()])->paginate(5);
             } else if ($filProduct == 'last_30_days') {
                 return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(30), Carbon::now()])->paginate(5);
-            } else if ($filProduct == 'this_mouth') {
+            } else if ($filProduct == 'this_month') {
                 return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->startOfMonth(), Carbon::now()])->paginate(5);
             } else if ($filProduct == 'last_month') {
                 return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()])->paginate(5);
             } else if ($filProduct == 'last_year') {
                 return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(365), Carbon::now()])->paginate(5);
             } else {
-                return $query->whereDate('orders.created_at', Carbon::now())->paginate(5);
+                return $query->paginate(5);
             }
         };
 
@@ -195,6 +195,7 @@ class HandleChartServices
                         'products.img_thumbnail',
                         'products.description',
                         DB::raw('SUM(order_items.quantity) as total_sold'),
+                        DB::raw('SUM(orders.total_amount) as total_amount'),
                         DB::raw('count(orders.id) as count_orders'),
                         DB::raw('SUM(product_variants.quantity) as stock'),
                     )
@@ -230,10 +231,6 @@ class HandleChartServices
             ->orderByDesc('total_sold')
             ->take(6)
             ->get();
-
-
-
-        // dd($topCategory);
 
         return [$topProducts, $topCategory];
     }

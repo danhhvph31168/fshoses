@@ -74,10 +74,22 @@
     </section>
 
     <style>
-        .small.text-muted{
+        .small.text-muted {
+            display: none !important;
+        }
+
+        .form-select.w-25{
+            display: block !important;
+        }
+
+        .nice-select.form-select.w-25{
             display: none !important;
         }
     </style>
+@endsection
+
+@section('js')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
 
 @push('scripts')

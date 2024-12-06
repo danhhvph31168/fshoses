@@ -199,7 +199,9 @@
                                                     @endif
                                                     @php($flagRowspan = false)
 
-                                                    <td>{{ $colorName }}</td>
+                                                    <td>
+                                                        <span style="background: {{ $colorName }}; padding: 5px 15px"></span>
+                                                    </td>
                                                     <td>
                                                         <input type="text" class="form-control" value="0"
                                                             name="product_variants[{{ $sizeID . '-' . $colorID }}][quantity]">

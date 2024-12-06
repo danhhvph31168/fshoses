@@ -201,7 +201,7 @@
 
         if ($button.hasClass("inc")) {
             var newVal = oldValue + 1;
-            if (newVal > 100) newVal = 100;
+            if (newVal > 15) newVal = 15;
         } else {
             if (oldValue > 1) {
                 var newVal = oldValue - 1;

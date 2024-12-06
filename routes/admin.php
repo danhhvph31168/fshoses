@@ -31,7 +31,7 @@ Route::prefix('admin')->as('admin.')
         Route::get('orders/create',     [OrderController::class, 'create'])->name('orders.create');
         Route::post('orders/store',     [OrderController::class, 'store'])->name('orders.store');
         Route::get('orders/{id}/edit',  [OrderController::class, 'edit'])->name('orders.edit');
-        Route::put('orders/{id}/update',[OrderController::class, 'update'])->name('orders.update');
+        Route::put('orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
         Route::get('orders/search',     [OrderController::class, 'search'])->name('orders.search');
 
         // review
@@ -56,13 +56,24 @@ Route::prefix('admin')->as('admin.')
             Route::get('/',         [CouponController::class, 'index'])->name('index');
             Route::get('/create',   [CouponController::class, 'create'])->name('create');
             Route::post('/store',   [CouponController::class, 'store'])->name('store');
-            Route::get('/{id}/edit',[CouponController::class, 'edit'])->name('edit');
+            Route::get('/{id}/edit', [CouponController::class, 'edit'])->name('edit');
             Route::put('/{id}',     [CouponController::class, 'update'])->name('update');
             Route::delete('/{id}',  [CouponController::class, 'destroy'])->name('destroy');
         });
 
         // users
-        Route::resource('users', UserController::class);
+        Route::prefix('users')->as('users.')->group(function () {
+            Route::get('/',         [UserController::class, 'index'])->name('index');
+            Route::get('/{id}/show',         [UserController::class, 'show'])->name('show');
+            Route::get('/create',   [UserController::class, 'create'])->name('create');
+            Route::post('/store',   [UserController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('/{id}',     [UserController::class, 'update'])->name('update');
+            Route::delete('/{id}',  [UserController::class, 'destroy'])->name('destroy');
+            Route::get('/customers', [UserController::class, 'listCustomer'])->name('listCustomer');
+            Route::put('/{id}/update',   [UserController::class, 'updateCustomer'])->name('updateCustomer');
+        });
+
 
         // roles
         Route::resource('roles', RoleController::class);
