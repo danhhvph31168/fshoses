@@ -66,7 +66,7 @@ class ProductController extends Controller
     {
         $product = Product::query()->with(['productVariants', 'category', 'galleries'])->where('slug', $slug)->first();
 
-
+        // dd($product);
         // Kiểm tra sản phẩm có tồn tại hay không
         if (!$product) {
             abort(404);

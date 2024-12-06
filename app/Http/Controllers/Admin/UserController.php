@@ -33,7 +33,7 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        if ($user->role_id === 1) {
+        if ($user->role_id === 1 || $user->role_id === 2) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -88,7 +88,7 @@ class UserController extends Controller
 
         // dd( $data);
 
-        if ($user->role_id === 1) {
+        if ($user->role_id === 1 || $user->role_id === 2) {
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {

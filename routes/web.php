@@ -20,6 +20,7 @@ Route::get('/',                 [ProductController::class, 'index'])->name('clie
 Route::get('/brand/{brd}',      [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
 Route::get('/category/{cate}',  [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
 Route::get('/products',         [ProductController::class, 'getAllProducts'])->name('client.product-list');
+// Route::get('/contact',         [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
 Route::get('search-order',  [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
 Route::post('search-order', [OrderSearchController::class, 'handleSearchOrder'])->name('handleSearchOrder');

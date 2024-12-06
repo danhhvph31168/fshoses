@@ -34,7 +34,7 @@
                         </li>
 
                         <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
-                                href="#">Contact</a>
+                                href="contact.html">Contact</a>
                         </li>
 
                         <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"

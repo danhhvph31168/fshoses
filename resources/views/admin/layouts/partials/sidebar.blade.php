@@ -26,23 +26,18 @@
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                @if (Auth::user()->role_id === 1)
-                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
+                @if (Auth::user()->role_id === 1)
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="{{ route('admin.') }}">
                             <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                         </a>
                     </li>
+                @endif
 
-                    @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('admin.orders.index') }}">
-                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Orders</span>
-                            </a>
-                        </li>
-                    @endif
 
+                @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                     {{-- Accounts --}}
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAccounts" data-bs-toggle="collapse" role="button"
@@ -51,18 +46,25 @@
                         </a>
                         <div class="collapse menu-dropdown" id="sidebarAccounts">
                             <ul class="nav nav-sm flex-column">
+
                                 <li class="nav-item">
                                     <a href="{{ route('admin.users.index') }}" class="nav-link"
                                         data-key="t-horizontal">List</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.users.create') }}" class="nav-link"
-                                        data-key="t-horizontal">Add new</a>
-                                </li>
+
+                                @if (Auth::user()->role_id === 1)
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.users.create') }}" class="nav-link"
+                                            data-key="t-horizontal">Add
+                                            new</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </li>
+                @endif
 
+                @if (Auth::user()->role_id === 1)
                     {{-- Roles --}}
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarRoles" data-bs-toggle="collapse" role="button"
@@ -77,12 +79,15 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.roles.create') }}" class="nav-link"
-                                        data-key="t-horizontal">Add new</a>
+                                        data-key="t-horizontal">Add
+                                        new</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
+                @endif
 
+                @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                     {{-- Products --}}
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarProducts" data-bs-toggle="collapse" role="button"
@@ -95,18 +100,20 @@
                                     <a href="{{ route('admin.products.index') }}" class="nav-link"
                                         data-key="t-horizontal">List</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.products.create') }}" class="nav-link"
-                                        data-key="t-horizontal">Add</a>
-                                </li>
+                                @if (Auth::user()->role_id === 1)
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.products.create') }}" class="nav-link"
+                                            data-key="t-horizontal">Add</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </li>
 
                     {{-- Categories --}}
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarCategory" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="sidebarCategory">
+                        <a class="nav-link menu-link" href="#sidebarCategory" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarCategory">
                             <i class="ri-layout-3-line"></i> <span data-key="t-layout">Categories</span>
                         </a>
                         <div class="collapse menu-dropdown" id="sidebarCategory">
@@ -115,14 +122,17 @@
                                     <a href="{{ route('admin.categories.index') }}" class="nav-link"
                                         data-key="t-horizontal">List</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.categories.create') }}" class="nav-link"
-                                        data-key="t-horizontal">Add</a>
-                                </li>
+                                @if (Auth::user()->role_id === 1)
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.categories.create') }}" class="nav-link"
+                                            data-key="t-horizontal">Add</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </li>
-
+                @endif
+                @if (Auth::user()->role_id === 1)
                     {{-- Product Sizes --}}
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarProductSizes" data-bs-toggle="collapse"
@@ -222,14 +232,19 @@
                             </ul>
                         </div>
                     </li>
+                @endif
 
-                    @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('admin.reviews.index') }}">
-                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Review</span>
-                            </a>
-                        </li>
-                    @endif
+                @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="{{ route('admin.reviews.index') }}">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Review</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="{{ route('admin.orders.index') }}">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Orders</span>
+                        </a>
+                    </li>
                 @endif
             </ul>
         </div>

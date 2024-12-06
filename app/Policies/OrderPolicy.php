@@ -22,7 +22,7 @@ class OrderPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role === 2;
+        return $user->role == 2;
     }
 
     /**
@@ -30,7 +30,7 @@ class OrderPolicy
      */
     public function view(User $user)
     {
-        if ($user->role === 2) {
+        if ($user->role == 2) {
             return true;
         }
     }
