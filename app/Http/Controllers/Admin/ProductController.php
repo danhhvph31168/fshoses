@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Order;
 
 class ProductController extends Controller
 {
@@ -132,13 +133,35 @@ class ProductController extends Controller
             $sizes = ProductSize::query()->pluck('name', 'id')->all();
             $brands = Brand::query()->pluck('name', 'id')->all();
 
+            $orderCount = Product::query()->select(
+                'products.id',
+                DB::raw('SUM(order_items.quantity) as total_sold'),
+                DB::raw('SUM(orders.total_amount) as total_amount'),
+                DB::raw('count(orders.id) as count_orders'),
+            )
+                ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
+                ->join('order_items', 'product_variants.id', '=', 'order_items.product_variant_id')
+                ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                ->where('orders.status_order', Order::STATUS_ORDER_DELIVERED)
+                ->where('products.id', $product->id ?? null)
+                ->groupBy('products.id', 'products.name')
+                ->orderByDesc('total_sold')
+                ->first();
+
             if (count($product->galleries) > 0) {
                 foreach ($product->galleries as $item) {
                     $img = $item->image;
                 }
             }
 
-            return view(self::PATH_VIEW . __FUNCTION__, compact('product', 'categories', 'colors', 'sizes', 'brands'));
+            return view(self::PATH_VIEW . __FUNCTION__, compact(
+                'product',
+                'categories',
+                'colors',
+                'sizes',
+                'brands',
+                'orderCount'
+            ));
         } else {
             return back()->with('error', 'Access denied!');
         }

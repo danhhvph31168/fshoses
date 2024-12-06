@@ -219,7 +219,9 @@
 
                                                     @php($key = $sizeID . '-' . $colorID)
 
-                                                    <td>{{ $colorName }}</td>
+                                                    <td>
+                                                        <span style="background: {{ $colorName }}; padding: 5px 15px"></span>
+                                                    </td>
                                                     <td>
                                                         <input type="text" class="form-control"
                                                             value="{{ $productVariants[$key]['quantity'] }}"

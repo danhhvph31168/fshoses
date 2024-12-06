@@ -73,10 +73,22 @@
                         <div class="live-preview">
                             <div class="row gy-4">
                                 <div class="col-md-4">
-                                    <div>
+                                    <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
                                         <input type="text" class="form-control" name="name" id="name"
                                             value="{{ $model->name }}">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Image</label>
+                                        <input type="file" id="image" name="image" class="form-control"
+                                            onchange="showImage(event)">
+                                        <img src="{{ Storage::url($model->image) }}" width="100" height="100">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Description</label>
+                                        <textarea name="description" class="form-control" rows="3">{{ $model->description }}</textarea>
                                     </div>
 
                                     <div class="mb-3">

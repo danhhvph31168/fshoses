@@ -11,7 +11,7 @@
                     {{ $item->sku_order }}
                 </a>
             </td>
-            <td>{{ $item->created_at->toDateString() }}</td>
+            <td>{{ $item->created_at->format('d/m/Y') }}</td>
             <td>
                 <span
                     class="badge rounded-pill
@@ -36,16 +36,16 @@
             <td>
                 <span
                     class="badge rounded-pill
-                        {{ $item->status_payment === 'unpaid'
+                        {{ $item->payment->status === 'unpaid'
                             ? 'bg-secondary'
-                            : ($item->status_payment === 'pending'
+                            : ($item->payment->status === 'pending'
                                 ? 'bg-warning text-dark'
-                                : ($item->status_payment === 'paid'
+                                : ($item->payment->status === 'paid'
                                     ? 'bg-success'
-                                    : ($item->status_payment === 'refunded'
+                                    : ($item->payment->status === 'refunded'
                                         ? 'bg-info text-dark'
                                         : 'bg-danger'))) }}">
-                    {{ $item->status_payment }}
+                    {{ $item->payment->status }}
                 </span>
             </td>
             <td>{{ number_format($item->total_amount, 0, ',', '.') }} VNĐ</td>

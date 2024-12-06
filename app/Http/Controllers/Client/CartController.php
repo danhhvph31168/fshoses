@@ -72,7 +72,7 @@ class CartController extends Controller
             if ($item['quatity'] > $item['quantity']) {
                 session()->put("cart.{$key}.quatity", $item['quantity']);
                 return  back()
-                    ->with('info', "The quantity has exceeded the quantity in stock. There are {$item['quantity']} products left.");
+                    ->with('info', "Sorry, there are currently {$item['quantity']} products left in this product and it has been added to your cart.");
             }
         }
 

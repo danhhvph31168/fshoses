@@ -25,14 +25,15 @@
 
     <div class="row">
         <div class="col-12">
-            <textarea class="form-control" cols="30" rows="5" disabled>{{ $review->comment }}</textarea>
+            <textarea class="form-control" cols="30" rows="5" readonly>{{ $review->comment }}</textarea>
         </div>
     </div>
 
-    <div class="row mt-3 bg-white">
+    <div class="row mt-3 bg-white m-1">
         <div class="col-6 mt-3">
             <div class="text-center">
-                <img class="rounded" width="50%" src="{{ $review->product->img_thumbnail }}" alt="">
+                <img class="rounded" width="50%" height="180px" src="{{ Storage::url($review->product->img_thumbnail) }}"
+                    alt="">
             </div>
             <div class="mt-5">
                 Name : {{ $review->product->name }}
@@ -41,10 +42,10 @@
                 Sku : {{ $review->product->sku }}
             </div>
             <div class="mt-3">
-                Price Regular : {{ $review->product->price_regular }}
+                Price Regular : {{ number_format($review->product->price_regular) }}
             </div>
             <div class="mt-3">
-                Price Sale : {{ $review->product->price_sale }}
+                Price Sale : {{ $review->product->price_sale }}%
             </div>
             <div class="mt-3">
                 View : {{ $review->product->views }}
@@ -52,7 +53,8 @@
         </div>
         <div class="col-6 mt-3">
             <div class="text-center mb-3">
-                <img class="rounded-circle" width="180px" height="180px" src="{{ $review->user->avatar }}" alt="">
+                <img class="rounded-circle" width="180px" height="180px" src="{{ Storage::url($review->user->avatar) }}"
+                    alt="">
             </div>
             <div class="row">
                 <div class="col-2"></div>
@@ -69,14 +71,11 @@
                     <div class="mt-3">
                         Phone : {{ $review->user->phone }}
                     </div>
-                    <div class="mt-3">
-                        Zip code : {{ $review->user->zip_code }}
-                    </div>
                 </div>
 
                 <div class="col-5">
                     <div class="mt-3">
-                        Balance : {{ $review->user->balance }}
+                        Zip code : {{ $review->user->zip_code }}
                     </div>
                     <div class="mt-3">
                         Address : {{ $review->user->address }}

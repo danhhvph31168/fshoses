@@ -91,7 +91,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
+                            @foreach ($customer as $item)
                                 <tr class="align-middle text-center">
                                     <td style="width: 10px">{{ $item->id }}</td>
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}" alt=""
@@ -101,8 +101,16 @@
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ $item->role->name }}</td>
-                                    <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                    {{-- <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
+                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td> --}}
+
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}" {{ $item->status == 0 ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
+                                    
                                     <td>
                                         <a href="{{ route('admin.users.show', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
@@ -111,22 +119,13 @@
                                         <a href="{{ route('admin.users.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
-
-                                        <form action="{{ route('admin.users.destroy', $item->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('Are you sure you want to delete this user?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
-                                                title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
 
-                    {{ $data->appends(request()->all())->links() }}
+                    {{ $customer->links() }}
                 </div>
             </div>
         </div><!--end col-->
@@ -137,5 +136,26 @@
 @section('css')
 @endsection
 
-@section('js')
+@section('scripts')
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let reviewId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 0 : 1;
+
+            $.ajax({
+                url: "{{ route('admin.users.updateCustomer', ':id') }}".replace(':id', reviewId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    status: newValue
+                },
+                success: function(response) {
+                    console.log(200);
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
 @endsection

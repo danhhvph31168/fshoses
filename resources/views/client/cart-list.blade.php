@@ -172,35 +172,6 @@
                             $shippingCharge = $totalAmount < 1000000 ? 50000 : 0;
                             $total = $totalAmount + $shippingCharge;
                         @endphp
-                        {{-- @if (session('discount'))
-                            <ul>
-                                <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount + $discount) }}
-                                        VNĐ</span>
-                                </li>
-                                @if (session('coupon.type') === 'fixed')
-                                    <li>Discount ({{ session('coupon.code') }}): <span
-                                            class="cart-price total">{{ number_format(session('coupon.value')) }}
-                                            VNĐ </span></li>
-                                @else
-                                    <li>Discount ({{ session('coupon.code') }}): <span
-                                            class="cart-price total">{{ session('coupon.value') }} %</span>
-                                    </li>
-                                @endif
-                                <li>Shipping Charge: <span class="cart-price total">{{ number_format($shippingCharge) }}
-                                        VNĐ</span></li>
-                                <li>Total: <span class="cart-price total">{{ number_format($total) }} VNĐ</span>
-                                </li>
-                            </ul>
-                        @else
-                            <ul>
-                                <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
-                                </li>
-                                <li>Shipping Charge: <span class="cart-price total">{{ number_format($shippingCharge) }}
-                                        VNĐ</span></li>
-                                <li>Total: <span class="cart-price total">{{ number_format($total) }} VNĐ</span>
-                                </li>
-                            </ul>
-                        @endif --}}
 
                         @if (session('discount'))
                             <ul>
