@@ -26,7 +26,7 @@ class ProductController extends Controller
     public function index()
     {
 
-        if (Auth::user()->role_id == 1) {
+        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
             $brands = Brand::pluck('name', 'id')->all();
             $categories = Category::pluck('name', 'id')->all();
 

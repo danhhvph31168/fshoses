@@ -34,4 +34,8 @@ class ProductVariant extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 }

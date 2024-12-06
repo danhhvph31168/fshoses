@@ -18,15 +18,20 @@ class OrderController extends Controller
 
     public function index()
     {
-        $data = Order::query()->with(['user', 'role'])->latest('id')->paginate(10);
+        // dd(Auth::user()->role_id);
+        if (Auth::user()->role_id == 2) {
+            $data = Order::query()->with(['user', 'role'])->latest('id')->paginate(10);
 
-        if ($key = request()->key) {
-            $data = Order::query()->with(['user', 'role'])->latest('id')
-                ->where('sku_order', 'like', '%' . $key . '%')
-                ->orwhere('user_name', 'like', '%' . $key . '%')
-                ->paginate(5);
+            if ($key = request()->key) {
+                $data = Order::query()->with(['user', 'role'])->latest('id')
+                    ->where('sku_order', 'like', '%' . $key . '%')
+                    ->orwhere('user_name', 'like', '%' . $key . '%')
+                    ->paginate(5);
+            }
+            return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        } else {
+            return back()->with('error', 'Access denied!');
         }
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     public function edit($id)

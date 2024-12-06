@@ -20,7 +20,7 @@ class CategoryController extends Controller
     {
         $user = Auth::user();
         $data = Category::query()->latest('id')->paginate(10);
-        if ($user->role_id === 1) {
+        if ($user->role_id === 1 || $user->role_id === 2) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');

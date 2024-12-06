@@ -9,7 +9,7 @@
     <link href="{{ asset('theme/admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .container {
-            max-width: 1300px;
+            max-width: 1320px;
         }
 
         .footer {
@@ -27,6 +27,7 @@
         }
 
         .footer .row {
+
             position: relative;
             padding-top: 50px;
             padding-left: 50px;
@@ -39,6 +40,99 @@
 
         .footer .footer__widget {
             padding-right: 50px;
+        }
+
+        /* css rating */
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            color: #333;
+        }
+
+        .container-rating {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            font-size: 2.5rem;
+            font-weight: bold;
+
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-control,
+        .form-select {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+            border-color: #ff6b6b;
+        }
+
+        .btn-rating {
+            border: none;
+            padding: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-rating:hover {
+            background: linear-gradient(45deg, #ff4757, #ff6b6b);
+            transform: scale(1.05);
+        }
+
+        .alert {
+            border-radius: 8px;
+        }
+
+        .rating {
+            display: flex;
+            justify-content: center;
+            flex-direction: row-reverse;
+            /* Xếp sao từ phải qua trái trong HTML */
+        }
+
+        .rating input {
+            display: none;
+            /* Ẩn radio buttons */
+        }
+
+        .rating label {
+            font-size: 2.5rem;
+            /* Kích thước sao */
+            color: #ddd;
+            /* Màu mặc định */
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+        /* Khi hover, làm sáng tất cả sao phía trước (trái sang phải) */
+        .rating label:hover,
+        .rating label:hover~label {
+            color: #FFCC33;
+        }
+
+        /* Khi chọn sao, làm sáng tất cả sao phía trước và sao được chọn */
+        .rating input:checked~label {
+            color: #FFCC33;
+        }
+
+        .card-rating {
+            margin-top: 10px;
         }
     </style>
 @endsection
@@ -111,7 +205,7 @@
                                             <td class="fw-medium text-center align-middle">
                                                 {{ number_format($item->quantity * $item->price, 0, '.', '.') }}
                                             </td>
-                                            @if ($order->status_order == 'delivered')
+                                            {{-- @if ($order->status_order == 'delivered')
                                                 <td class="text-center align-middle">
                                                     <a href="{{ route('ratings.create', [
                                                         'orderId' => $order->id,
@@ -121,14 +215,31 @@
                                                         class="btn badge badge-primary" data-bs-toggle="modal"
                                                         data-bs-target="#exampleModal">Vote</a>
                                                 </td>
+                                            @endif --}}
+
+                                            @php
+                                                // Kiểm tra xem biến thể đã được đánh giá bởi người dùng này chưa
+                                                $hasReviewed = $item->productVariant
+                                                    ->ratings()
+                                                    ->where('user_id', Auth::id())
+                                                    ->where('order_id', $order->id)
+
+                                                    ->exists();
+                                            @endphp
+                                            
+                                            @if ($order->status_order == 'delivered' && !$hasReviewed)
+                                                <td>
+
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal{{ $item->id }}">Rating</a>
                                             @endif
-                                            <div class="modal fade" id="exampleModal" tabindex="-1"
+
+                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <p class="modal-title fs-5" id="exampleModalLabel">Ratings
-                                                                and
+                                                            <p class="modal-title fs-5" id="exampleModalLabel">Ratings and
                                                                 Reviews</p>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
@@ -136,83 +247,70 @@
                                                         <div class="card card-rating mb-4">
                                                             <div class="row g-0">
                                                                 <!-- Cột chứa hình ảnh -->
-                                                                <div class="col-md-4">
-                                                                    <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
-                                                                        class="img-fluid rounded-start w-100 h-auto"
-                                                                        alt="Sản phẩm" />
+                                                                <div class="col-md-7">
+                                                                    <img src="{{ $item->productVariant->product->img_thumbnail }}"
+                                                                        class="img-fluid rounded-start" alt="Sản phẩm" />
                                                                 </div>
                                                                 <!-- Cột chứa nội dung văn bản -->
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-5">
                                                                     <div
                                                                         class="card-body d-flex flex-column justify-content-center h-100">
-                                                                        <h5 class="card-title text-truncate"
-                                                                            style="max-width: 100%;">
-                                                                            {{ $item->productVariant->product->name }}
-                                                                        </h5>
-                                                                        <p class="card-text text-muted mb-1">Price:
-                                                                            {{ $item->price }}</p>
-                                                                        <p class="card-text text-muted mb-1">Size:
+                                                                        <h5 class="card-title">
+                                                                            {{ $item->productVariant->product->name }}</h5>
+                                                                        <p class="card-text text-muted">Price:
+                                                                            {{ number_format($item->price, 0, ',', '.') }}
+                                                                            VNĐ</p>
+                                                                        <p class="card-text text-muted">Color:
+                                                                            {{ $item->productVariant->color->name }}</p>
+                                                                        <p class="card-text text-muted">Size:
                                                                             {{ $item->productVariant->size->name }}</p>
-                                                                        <div class="d-flex align-items-center mb-1">
-                                                                            <p class="card-text text-muted mb-0 me-2">
-                                                                                Color:
-                                                                            </p>
-                                                                            <!-- Ô tròn màu sắc -->
-                                                                            <div
-                                                                                style="
-                                                                                        width: 20px;
-                                                                                        height: 20px;
-                                                                                        border-radius: 50%;
-                                                                                        background-color: {{ $item->productVariant->color->name }};
-                                                                                        border: 1px solid #ddd;">
-                                                                            </div>
-
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <form action="{{ route('ratings.store') }}" method="POST">
+                                                            <!-- Lưu ý là phương thức request là GET vì bạn đã thiết lập route là GET -->
                                                             @csrf
                                                             <div class="modal-body">
                                                                 <input type="hidden" name="user_id"
                                                                     value="{{ auth()->id() }}" />
                                                                 <input type="hidden" name="order_id"
                                                                     value="{{ $order->id }}" />
-
                                                                 <input type="hidden" name="product_id"
-                                                                    value="{{ $item->productVariant->product->id }}">
+                                                                    value="{{ $item->productVariant->product->id }}" />
                                                                 <input type="hidden" name="product_variant_id"
-                                                                    value="{{ $item->productVariant->id }}">
-
-                                                                <!-- Đánh giá -->
+                                                                    value="{{ $item->productVariant->id }}" />
                                                                 <div class="mb-4">
                                                                     <label for="rating" class="form-label">Your
                                                                         rating:</label>
                                                                     <div class="rating">
-                                                                        <input type="radio" id="star5"
+                                                                        <input type="radio" id="star5{{ $item->id }}"
                                                                             name="value" value="5" required />
-                                                                        <label for="star5"
+                                                                        <label for="star5{{ $item->id }}"
                                                                             title="Tuyệt vời">&#9733;</label>
 
-                                                                        <input type="radio" id="star4"
-                                                                            name="value" value="4" required />
-                                                                        <label for="star4"
+                                                                        <input type="radio"
+                                                                            id="star4{{ $item->id }}" name="value"
+                                                                            value="4" required />
+                                                                        <label for="star4{{ $item->id }}"
                                                                             title="Tốt">&#9733;</label>
 
-                                                                        <input type="radio" id="star3"
-                                                                            name="value" value="3" required />
-                                                                        <label for="star3"
+                                                                        <input type="radio"
+                                                                            id="star3{{ $item->id }}" name="value"
+                                                                            value="3" required />
+                                                                        <label for="star3{{ $item->id }}"
                                                                             title="Bình thường">&#9733;</label>
 
-                                                                        <input type="radio" id="star2"
-                                                                            name="value" value="2" required />
-                                                                        <label for="star2"
+                                                                        <input type="radio"
+                                                                            id="star2{{ $item->id }}" name="value"
+                                                                            value="2" required />
+                                                                        <label for="star2{{ $item->id }}"
                                                                             title="Tệ">&#9733;</label>
 
-                                                                        <input type="radio" id="star1"
-                                                                            name="value" value="1" required />
-                                                                        <label for="star1"
+                                                                        <input type="radio"
+                                                                            id="star1{{ $item->id }}" name="value"
+                                                                            value="1" required />
+                                                                        <label for="star1{{ $item->id }}"
                                                                             title="Rất tệ">&#9733;</label>
                                                                     </div>
                                                                 </div>
@@ -224,11 +322,10 @@
                                                                     <textarea class="form-control" id="comment" name="comment" rows="4"
                                                                         placeholder="Please share your thoughts about this product..." required></textarea>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="submit"
-                                                                    class="btn btn-rating btn-primary w-100">Send</button>
-                                                            </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit"
+                                                                        class="btn btn-rating btn-primary w-100">Send</button>
+                                                                </div>
                                                         </form>
                                                     </div>
                                                 </div>
