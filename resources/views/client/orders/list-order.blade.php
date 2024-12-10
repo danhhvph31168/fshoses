@@ -107,27 +107,6 @@
                     }
                 });
             });
-            // Xử lý phân trang thông qua AJAX
-            $(document).on('click', '.pagination a', function(e) {
-                e.preventDefault();
-                let url = $(this).attr('href');
-                // Thêm trạng thái "loading"
-                $('.pagination').addClass('loading');
-                $.ajax({
-                    url: url,
-                    success: function(response) {
-                        // Cập nhật dữ liệu
-                        $('table tbody').html(response.html);
-                        $('.p-3').html(response.pagination);
-                        // Gỡ trạng thái "loading"
-                        $('.pagination').removeClass('loading');
-                    },
-                    error: function(xhr) {
-                        console.error('Pagination Error:', xhr.responseText);
-                        alert('Error: ' + xhr.status + ' - ' + xhr.statusText);
-                    }
-                });
-            });
         });
     </script>
 @endpush

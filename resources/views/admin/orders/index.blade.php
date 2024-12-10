@@ -40,9 +40,8 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <input type="text" class="form-control" aria-label="Recipient's username"
+                        <input id="searchSku" type="text" class="form-control" aria-label="Recipient's username"
                             aria-describedby="button-addon2" name="key" placeholder="Search ...">
-                        <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
                     </div>
                 </form>
             </div>
@@ -76,17 +75,13 @@
                             </tr>
                         </thead>
                         <tbody>
-
-
                             @foreach ($data as $item)
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check">
                                         </div>
                                     </th>
-
                                     <td>{{ $item->sku_order }}</td>
-
                                     <td class="{{ !($item->user->password == null) ? 'text-info' : '' }}">
                                         {{ $item->user->name }}</td>
                                     <td>{{ $item->user_address }}</td>
@@ -167,6 +162,40 @@
         </div>
         <!--end col-->
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterDropdown = document.getElementById("status_order_filter");
+            filterDropdown.addEventListener("change", function () {
+                const selectedStatus = filterDropdown.value.toLowerCase();
+                document.querySelectorAll("#example tbody tr").forEach((row) => {
+                    const statusOrderCell = row.querySelector("td:nth-child(10) .badge");
+                    const statusOrder = statusOrderCell ? statusOrderCell.textContent.toLowerCase() : "";
+                    if (selectedStatus === "" || statusOrder.includes(selectedStatus)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("searchSku");
+            searchInput.addEventListener("input", function () {
+                const searchSku = searchInput.value.toLowerCase();
+                document.querySelectorAll("#example tbody tr").forEach((row) => {
+                    const skuCell = row.querySelector("td:nth-child(2)");
+                    const sku = skuCell ? skuCell.textContent.toLowerCase() : "";
+                    if (searchSku === "" || sku.includes(searchSku)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
 
 @section('style-libs')
@@ -193,7 +222,6 @@
     <script src="{{ URL::asset('theme/admin/assets/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('theme/admin/assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
     <script src="{{ URL::asset('theme/admin/assets/js/pages/datatables.init.js') }}"></script>
-    <script src="{{ URL::asset('theme/admin/assets/js/pages/ecommerce-order.init.js') }}"></script>
     <script src="{{ URL::asset('theme/admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 @endsection
 
