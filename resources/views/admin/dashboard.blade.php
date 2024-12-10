@@ -62,12 +62,11 @@
                                                 <p class="text-primary mb-0">Orders</p>
                                             </div>
                                         </div>
-
                                         <div class="col-3">
                                             <div class="p-3 border border-dashed border-start-0">
                                                 <h5 class="mb-1"><span class="counter-value text-success"
-                                                        data-target="{{ $dataDate['filterDayEarning'] }}">0</span><span
-                                                        class="text-success">k</span>
+                                                        data-target="{{ floor($dataDate['filterDayEarning']) }}">0</span><span
+                                                        class="text-success"> vnđ</span>
                                                 </h5>
                                                 <p class="text-success mb-0">Earnings</p>
                                             </div>
@@ -258,20 +257,6 @@
                             <div class="card card-height-100">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">Top Categories</h4>
-                                    <div class="flex-shrink-0">
-                                        <div class="dropdown card-header-dropdown">
-                                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <span class="text-muted">Report<i
-                                                        class="mdi mdi-chevron-down ms-1"></i></span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Download Report</a>
-                                                <a class="dropdown-item" href="#">Export</a>
-                                                <a class="dropdown-item" href="#">Import</a>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="card-body">

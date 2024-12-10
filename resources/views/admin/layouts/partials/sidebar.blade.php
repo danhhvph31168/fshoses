@@ -49,7 +49,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.users.create') }}" class="nav-link"
+                                    <a href="{{ route('admin.users.index') }}" class="nav-link"
                                         data-key="t-horizontal">Staff</a>
                                 </li>
 

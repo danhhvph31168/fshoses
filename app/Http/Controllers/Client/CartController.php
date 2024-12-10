@@ -58,21 +58,33 @@ class CartController extends Controller
 
             $data['quatity'] = \request('quatity');
 
-            session()->put('cart.' . $productVariant->id, $data);
+            if ($productVariant->quantity == 0) {
+                return back()
+                    ->with('info', "Your product is out of stock, please choose another product.");
+            } else {
+                if ($data['quatity'] > $data['quantity']) {
+                    return back()
+                        ->with('info', "Sorry,Sorry, this product currently has only {$data['quantity']} products left.");
+                } else {
+                    session()->put('cart.' . $productVariant->id, $data);
+                }
+            }
         } else {
 
             $data = session('cart')[$productVariant->id];
 
             $data['quatity'] += \request('quatity');
 
-            session()->put('cart.' . $productVariant->id, $data);
-        }
-
-        foreach (session('cart') as $key => $item) {
-            if ($item['quatity'] > $item['quantity']) {
-                session()->put("cart.{$key}.quatity", $item['quantity']);
-                return  back()
-                    ->with('info', "Sorry, there are currently {$item['quantity']} products left in this product and it has been added to your cart.");
+            if ($productVariant->quantity == 0) {
+                return back()
+                    ->with('info', "Your product is out of stock, please choose another product.");
+            } else {
+                if ($data['quatity'] > $data['quantity']) {
+                    return back()
+                        ->with('info', "Sorry,Sorry, this product currently has only {$data['quantity']} products left.");
+                } else {
+                    session()->put('cart.' . $productVariant->id, $data);
+                }
             }
         }
 

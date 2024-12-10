@@ -21,16 +21,9 @@ class UserController extends Controller
 
     public function index()
     {
-        $data = User::query()->with('role')
-        ->latest('id')->paginate(5);
-
-        $staff = User::whereHas('role', function ($query) {
+        $data = User::whereHas('role', function ($query) {
             $query->where('name', 'staff');
-        })->get();
-
-        $admin = User::whereHas('role', function ($query) {
-            $query->where('name', 'admin');
-        })->get();
+        })->latest('id')->paginate(5);
 
         if ($key = request()->key) {
             $data = User::query()->with('role')->latest('id')

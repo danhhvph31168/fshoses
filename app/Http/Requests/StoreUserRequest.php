@@ -34,7 +34,6 @@ class StoreUserRequest extends FormRequest
             'balance'   => 'nullable|min:0',
             'district'  => 'nullable|max:255',
             'province'  => 'nullable|max:255',
-            'zip_code'  => 'numeric',
         ];
     }
 

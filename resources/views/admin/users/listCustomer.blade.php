@@ -85,9 +85,9 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Role</th>
+                                <th>Addres</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Created</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,9 +100,10 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->role->name }}</td>
-                                    {{-- <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td> --}}
+                                    <td>
+                                        {{ $item->address }} - {{ $item->ward }} <br>
+                                        {{ $item->district }} - {{ $item->province }}
+                                    </td>
 
                                     <td>
                                         <div class="form-check form-switch">
@@ -110,15 +111,9 @@
                                                 data-id="{{ $item->id }}" {{ $item->status == 0 ? 'checked' : '' }}>
                                         </div>
                                     </td>
-                                    
-                                    <td>
-                                        <a href="{{ route('admin.users.show', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a>
 
-                                        <a href="{{ route('admin.users.edit', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
-                                                class="ri-pencil-fill align-bottom"></i></a>
+                                    <td>
+                                        {{ $item->created_at->format('d/m/Y') }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -137,6 +132,8 @@
 @endsection
 
 @section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         $(document).on('change', '.toggle-switch', function() {
             let reviewId = $(this).data('id');
