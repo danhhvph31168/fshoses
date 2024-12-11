@@ -15,13 +15,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        // $product = Product::query()->with(['variants', 'category', 'brand'])->latest('id')->limit(4);
-
         $products = Product::query()->where('status', '1')
             ->with(['productVariants', 'category', 'brand'])->orderBy('name', 'asc')->limit(9)->get();
 
-        // $categories = Category::query()->with(['products'])->where('is_active', '1')
-        //     ->orderBy('name', 'ASC')->get();
         $categories = Category::query()->with('products')->get();
 
         $brands = Brand::query()->where('status', '1')->get();

@@ -76,28 +76,17 @@
                                         <input type="text" class="form-control text-uppercase" name="name" id="name">
                                     </div>
 
-                                    {{-- <div class="mt-3">
-                                        <label for="parent_id" class="form-label">Category</label>
-                                        <select type="text" class="form-select" name="parent_id" id="parent_id">
-                                            <option value="" selected>Trống</option>
-
-                                            @foreach ($parentCategories as $parent)
-                                                @php($each = '')
-
-                                                @include('admin.categories.nested-category', [
-                                                    'category' => $parent,
-                                                ])
-                                            @endforeach
-                                        </select>
-                                    </div> --}}
-
-
                                     <div class="mb-3">
-                                        <label for="image" class="form-label">Image: </label>
+                                        <label for="image" class="form-label">Image </label>
                                         <input type="file" id="image" name="image" class="form-control"
                                             onchange="showImage(event)">
                                         <img id="img_danh_muc" src="" alt="Avatar"
                                             style="width: 80px; display:none">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Description</label>
+                                        <textarea name="description" class="form-control" rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>

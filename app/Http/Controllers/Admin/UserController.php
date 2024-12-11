@@ -21,7 +21,17 @@ class UserController extends Controller
 
     public function index()
     {
-        $data = User::query()->with('role')->latest('id')->paginate(5);
+        $data = User::query()->with('role')
+        ->latest('id')->paginate(5);
+
+        $staff = User::whereHas('role', function ($query) {
+            $query->where('name', 'staff');
+        })->get();
+
+        $admin = User::whereHas('role', function ($query) {
+            $query->where('name', 'admin');
+        })->get();
+
         if ($key = request()->key) {
             $data = User::query()->with('role')->latest('id')
                 ->where('name', 'like', '%' . $key . '%')
@@ -32,12 +42,37 @@ class UserController extends Controller
         }
 
         $user = Auth::user();
-
-        if ($user->role_id === 1 || $user->role_id === 2) {
+        if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
         };
+    }
+
+    public function listCustomer(){
+        $customer = User::whereHas('role', function ($query) {
+            $query->where('name', 'customer');
+        })->paginate(10);
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('customer'));
+    }
+
+    public function updateCustomer($id){
+        $userCustomer = User::findOrFail($id);
+        $userCustomer->update([
+            'status' => request('status')
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+
+    }
+
+    public function listStaff(){
+        $staff = User::whereHas('role', function ($query) {
+            $query->where('name', 'staff');
+        })->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('staff'));
     }
 
     /**
@@ -45,7 +80,6 @@ class UserController extends Controller
      */
     public function create(User $user)
     {
-
         $role = Role::query()->pluck('name', 'id')->all();
 
         if (Auth::user()->role_id == 1) {
@@ -86,9 +120,7 @@ class UserController extends Controller
         $user = Auth::user();
         $data = User::query()->findOrFail($id);
 
-        // dd( $data);
-
-        if ($user->role_id === 1 || $user->role_id === 2) {
+        if ($user->role_id === 1) {
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
@@ -115,7 +147,6 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, string $id)
     {
-        // dd($request->all());
         $user = Auth::user();
 
         $model = User::query()->findOrFail($id);
@@ -149,9 +180,6 @@ class UserController extends Controller
         };
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $user = Auth::user();

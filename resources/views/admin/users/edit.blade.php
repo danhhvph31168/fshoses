@@ -89,8 +89,7 @@
                                                 name="">
                                                 <option value="">{{ $model->province }}</option>
                                             </select>
-                                            <input type="hidden" name="province" id="province_text"
-                                                value="{{ $model->province }}">
+                                            <input type="hidden" name="province" id="province_text" value="{{ $model->province }}">
                                             @error('province')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -104,8 +103,7 @@
                                                 name="">
                                                 <option value="" selected>{{ $model->ward }}</option>
                                             </select>
-                                            <input type="hidden" name="ward" id="ward_text"
-                                                value="{{ $model->ward }}">
+                                            <input type="hidden" name="ward" id="ward_text" value="{{ $model->ward }}">
                                             @error('ward')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -122,8 +120,7 @@
                                                 name="">
                                                 <option value="">{{ $model->district }}</option>
                                             </select>
-                                            <input type="hidden" name="district" id="district_text"
-                                                value="{{ $model->district }}">
+                                            <input type="hidden" name="district" id="district_text" value="{{ $model->district }}">
                                             @error('district')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -143,17 +140,6 @@
                                             @enderror
                                         </div>
                                     </div>
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="zip_code" class="form-label">Zip Code: </label>
-                                    <input type="number" id="zip_code" name="zip_code" min="0"
-                                        class="form-control @error('zip_code') is_invalid @enderror"
-                                        value="{{ $model->zip_code }}">
-                                    @error('zip_code')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
                                 </div>
 
                                 <div class="mb-3">
@@ -369,6 +355,7 @@
                     </div>
                 </div>
             `;
+
             $('#gallery_list').append(html);
         }
 

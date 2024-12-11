@@ -16,6 +16,7 @@ class Coupon extends Model
         'code',
         'type',
         'value',
+        'minimum_order_value',
         'is_active',
         'start_date',
         'end_date',

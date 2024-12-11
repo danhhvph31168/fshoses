@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
 use App\Models\Coupon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 
 class CouponController extends Controller
@@ -61,20 +62,33 @@ class CouponController extends Controller
 
 
     public function update(UpdateCouponRequest $request, $id)
-    {
+    {        
         $coupon = Coupon::findOrFail($id);
 
+        $validatedData = $request->validated(); // Sử dụng validated() để lấy dữ liệu đã kiểm tra        
 
-        $validatedData = $request->validated(); // Sử dụng validated() để lấy dữ liệu đã kiểm tra
+        $coupon->update($request->all());
 
-
-        $coupon->update($validatedData);
         $user = Auth::user();
         if ($user->role_id === 1) {
             return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated successfully');
         } else {
             return back()->with('error', 'Access denied!');
         };
+    }
+
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'is_active' => 'required'
+        ]);
+
+        $coupon = Coupon::findOrFail($id);
+        $coupon->update([
+            'is_active' => $request->is_active
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
     }
 
 

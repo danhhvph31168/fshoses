@@ -20,7 +20,6 @@ Route::get('/',                 [ProductController::class, 'index'])->name('clie
 Route::get('/brand/{brd}',      [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
 Route::get('/category/{cate}',  [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
 Route::get('/products',         [ProductController::class, 'getAllProducts'])->name('client.product-list');
-// Route::get('/contact',         [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
 Route::get('search-order',  [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
 Route::post('search-order', [OrderSearchController::class, 'handleSearchOrder'])->name('handleSearchOrder');
@@ -51,7 +50,7 @@ Route::get('handle-forgot-pass', [MessageSuccessResetController::class, 'message
 
 // profile
 Route::middleware(['auth'])->group(function () {
-    Route::get('profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
+    Route::get('/profile', [AccountController::class, 'showFormUpdateProfile'])->name('showFormUpdateProfile');
     Route::put('profile', [AccountController::class, 'handleUpdateProfile'])->name('handleUpdateProfile');
 
     Route::get('change-password',   [AccountController::class, 'showFormChangePassword'])->name('showFormChangePassword');
@@ -61,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('destroy-comment/{comment_id}',   [ReviewController::class, 'handleDestroyComment'])->name('destroyComment');
 
     Route::get('order-history',     [OrderHistoryController::class, 'getListOrderHistory'])->name('getListOrderHistory');
+    Route::get('/orders/search', [OrderHistoryController::class, 'searchOrders'])->name('searchOrders');
 });
 
 Route::get('order-item/{slug}', [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
@@ -76,6 +76,7 @@ Route::delete('cart/deleteItem/{id}', [CartController::class, 'deleteItem'])->na
 
 // checkout
 Route::get('check-out',     [CheckoutController::class, 'checkOut'])->name('check-out');
+Route::post('removeCoupon',     [CheckoutController::class, 'removeCoupon'])->name('removeCoupon');
 Route::post('addOrder',     [CheckoutController::class, 'addOrder'])->name('addOrder');
 Route::get('order-success/{sku}', [CheckoutController::class, 'orderSuccess'])->name('orderSuccess');
 Route::get('vnpayReturn/{order}/{payment}',   [CheckoutController::class, 'vnpayReturn'])->name('vnpayReturn');

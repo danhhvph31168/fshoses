@@ -142,16 +142,6 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="zip_code" class="form-label">Zip Code: </label>
-                                        <input type="number" id="zip_code" name="zip_code" min="0"
-                                            class="form-control @error('zip_code') is_invalid @enderror"
-                                            value="{{ old('zip_code') }}" placeholder="zip_code">
-                                        @error('zip_code')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
                                         <label for="role_id" class="form-label">Role: </label>
                                         <select id="role_id" name="role_id" class="form-control">
                                             <option>-- Select Role --</option>

@@ -16,29 +16,28 @@ class RatingController extends Controller
         $ratings = Rating::all(); // Lấy tất cả đánh giá
         return view('ratings.index', ['ratings' => $ratings]); // Trả về view với danh sách đánh giá
     }
-
+    
     public function create($productId, $orderId, $productVariantId)
     {
-
-        
         // Tìm sản phẩm theo ID
         $product = Product::findOrFail($productId);
 
         // Tìm đơn hàng theo ID
-        $order = Order::findOrFail($orderId);
 
         $productVariant = ProductVariant::findOrFail($productVariantId);
-
         // Trả về view để tạo rating
-
         // Bạn có thể muốn truyền cả cái đơn hàng vào view nếu cần thiết
-        return view('client.ratings.create', compact('product', 'productVariant', 'order'));
+        return view('client.ratings.create', compact('product', 'productVariant'));
     }
 
 
     public function store(Request $request)
     {
         // dd($request->all());
+
+        if (!$request->value) {
+            toastr()->error('value is required');
+        }
 
         $validatedData = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
@@ -57,13 +56,13 @@ class RatingController extends Controller
             ->first();
 
         if ($existingRating) {
-            return redirect()->back()->withErrors(['message' => 'Tài khoản đã đánh giá cho sản phẩm trong đơn hàng này.']);
+            return redirect()->back()->with(['error', 'Tài khoản đã đánh giá cho sản phẩm trong đơn hàng này.']);
         }
 
         // Nếu chưa có đánh giá, tạo đánh giá mới
         Rating::create($validatedData);
 
-        return redirect()->back()->with('message', 'Đánh giá đã được lưu thành công!');
+        return redirect()->back()->with('error', 'Thank you for reviewing the product');
     }
 
     public function calculateAverageRating($productId)

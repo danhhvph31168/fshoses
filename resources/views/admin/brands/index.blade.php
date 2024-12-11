@@ -48,33 +48,27 @@
                         <thead>
                             <tr class="">
                                 <th>#</th>
-                                <th>Name</th>
                                 <th>Image</th>
+                                <th>Name</th>
                                 <th>Status</th>
                                 <th>Created at</th>
-                                <th>Updated at</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             @foreach ($data as $key => $item)
                                 <tr class="align-middle">
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $item->name }}</td>
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->image) }}" alt=""
                                             width="50px">
                                     </td>
+                                    <td>{{ $item->name }}</td>
                                     <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
                                         {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
                                     <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
 
                                     <td>
-                                        {{-- <a href="{{ route('admin.brands.show', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a> --}}
-
                                         <a href="{{ route('admin.brands.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>

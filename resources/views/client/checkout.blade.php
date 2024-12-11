@@ -1,5 +1,13 @@
 @extends('client.layouts.checkout.checkout')
+<style>
+    .checkout__order {
+        padding: 20px !important;
+    }
 
+    .spad {
+        padding-top: 50px !important;
+    }
+</style>
 
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -25,11 +33,35 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12 align-content-center">
+                        <h4 class="">PAYMENT DETAILS</h4>
+                    </div>
+                    <div class="col-lg-5 col-md-12">
+                        <form action="{{ route('cart.applyCoupon') }}" method="post">
+                            @csrf
+                            <div class="checkout__order input-group">
+                                <select class="select-group" name="code" style="width:375px;">
+                                    <option value="">-- Select Coupon --</option>
+                                    @foreach ($coupons as $coupon)
+                                        <option value="{{ $coupon->code }}">{{ $coupon->code }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-secondary px-4 ms-2">Apply</button>
+                            </div>
+                            <div class="checkout__order input-group py-0" style="justify-content: flex-end">
+                                @if (session('coupon'))
+                                    <input class="ps-2" type="text" value="{{ session('coupon')['code'] }}" disabled>
+                                    <button id="remove-coupon-btn" class="btn btn-danger ms-1">X</button>
+                                @endif
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <form action="{{ route('addOrder') }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-lg-7 col-md-6">
-                            <h6 class="checkout__title">Payment Details</h6>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
@@ -84,7 +116,8 @@
                                                 {{ auth()->user()?->province }}
                                             </option>
                                         </select>
-                                        <input type="hidden" name="provinceText" id="provinceText">
+                                        <input type="hidden" name="provinceText" id="provinceText"
+                                            value="{{ auth()->user()?->province }}">
                                         @error('user_province')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -100,7 +133,8 @@
                                             <option value="{{ auth()->user()?->district }}">
                                                 {{ auth()->user()?->district }}</option>
                                         </select>
-                                        <input type="hidden" name="districtText" id="districtText">
+                                        <input type="hidden" name="districtText" id="districtText"
+                                            value="{{ auth()->user()?->district }}">
                                         @error('user_district')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -116,7 +150,8 @@
                                             <option value="{{ auth()->user()?->ward }}">{{ auth()->user()?->ward }}
                                             </option>
                                         </select>
-                                        <input type="hidden" name="wardText" id="wardText">
+                                        <input type="hidden" name="wardText" id="wardText"
+                                            value="{{ auth()->user()?->ward }}">
                                         @error('user_ward')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -129,7 +164,6 @@
                                 <p>Note<span>*</span></p>
                                 <textarea class="form-control" name="user_note" cols="30" rows="3"></textarea>
                             </div>
-
 
                             <div class="mt-4">
                                 <h5 class="font-weight-bold">Payment Method</h5>
@@ -170,13 +204,14 @@
                                     @enderror
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="col-lg-5 col-md-6">
                             <div class="checkout__order">
                                 <h4 class="order__title">Your product</h4>
                                 <div class="checkout__order__products">Product information</div>
+                                @php
+                                    $totalAmount = 0;
+                                @endphp
                                 @foreach ($cart as $item)
                                     <ul class="checkout__total__products">
                                         <td class="product__cart__item">
@@ -235,17 +270,53 @@
                                             </div>
                                         </td>
                                     </ul>
+                                    @php
+                                        $sub = $item['quatity'] * $price;
+                                        $totalAmount += $sub;
+                                    @endphp
                                 @endforeach
+
                                 @php
                                     $shippingCharge = $totalAmount < 1000000 ? 50000 : 0;
-                                    $total = $totalAmount + $shippingCharge;
                                 @endphp
 
-                                <ul class="checkout__total__all">
-                                    <li>Sub Total :<span>{{ number_format($totalAmount) }} VNĐ</span></li>
-                                    <li>Shipping Charge :<span>{{ number_format($shippingCharge) }} VNĐ</span></li>
-                                    <li>Total :<span>{{ number_format($total) }} VNĐ</span></li>
-                                </ul>
+                                @if (session('coupon'))
+                                    <ul class="checkout__total__all">
+                                        @php
+                                            $discount = session('coupon')['value'];
+                                        @endphp
+                                        @if (session('coupon.type') === 'percent')
+                                            <li>Discount ({{ session('coupon.code') }}): <span
+                                                    class="cart-price discount">{{ number_format(session('coupon.value')) }}
+                                                    % </span></li>
+
+                                            @php
+                                                $total = $totalAmount * ((100 - $discount) / 100) + $shippingCharge;
+                                            @endphp
+                                        @else
+                                            <li>Discount ({{ session('coupon.code') }}): <span
+                                                    class="cart-price discount">{{ number_format(session('coupon.value')) }}
+                                                    VNĐ</span>
+                                            </li>
+                                            @php
+                                                $total = $totalAmount - $discount + $shippingCharge;
+                                            @endphp
+                                        @endif
+
+                                        <li>Sub Total :<span>{{ number_format($totalAmount) }} VNĐ</span></li>
+                                        <li>Shipping Charge :<span>{{ number_format($shippingCharge) }} VNĐ</span></li>
+                                        <li>Total :<span>{{ number_format($total) }} VNĐ</span></li>
+                                    </ul>
+                                @else
+                                    <ul class="checkout__total__all">
+                                        @php
+                                            $total = $totalAmount + $shippingCharge;
+                                        @endphp
+                                        <li>Sub Total :<span>{{ number_format($totalAmount) }} VNĐ</span></li>
+                                        <li>Shipping Charge :<span>{{ number_format($shippingCharge) }} VNĐ</span></li>
+                                        <li>Total :<span>{{ number_format($total) }} VNĐ</span></li>
+                                    </ul>
+                                @endif
 
                                 <input type="hidden" name="totalAmount" value="{{ $total }}">
 
@@ -268,12 +339,10 @@
     <script>
         const host = "https://provinces.open-api.vn/api/";
         var callAPI = (api) => {
-            let row = `<option value="">{{ auth()->user()?->province ? auth()->user()?->province : 'Chọn' }}</option>`;
+            let row =
+                `<option value="{{ auth()->user()?->province ? auth()->user()?->province : 'Chọn' }}">{{ auth()->user()?->province ? auth()->user()?->province : 'Chọn' }}</option>`;
             return axios.get(api)
                 .then((response) => {
-                    // const a = auth()->user()?->province
-                    // const data = response.data.filter(item => item !== a);
-                    // console.log(response.data)
                     renderData(response.data, "province", row);
                 });
         }
@@ -328,6 +397,29 @@
                 $('#districtText').val($('#district option:selected').text());
                 $('#wardText').val($('#ward option:selected').text());
             })
+
+
         }
+    </script>
+
+    <script>
+        document.getElementById('remove-coupon-btn').addEventListener('click', function() {
+            fetch('{{ route('removeCoupon') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        // Tùy chọn: Làm mới giỏ hàng để cập nhật giá trị
+                        location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     </script>
 @endsection

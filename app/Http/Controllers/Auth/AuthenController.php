@@ -51,7 +51,7 @@ class AuthenController extends Controller
                 'name'      => $request->name,
                 'email'     => $request->email,
                 'password'  => $request->password,
-                'role_id'   => 3,
+                'role_id'   => 1,
             ]);
 
             Auth::login($user);
@@ -69,7 +69,7 @@ class AuthenController extends Controller
     public function handleLogin(HandleLoginRequest $request)
     {
         $checkStatus = User::where('email', $request->email)->where('status', 0)->first();
-
+        
         if ($checkStatus) {
             return back()->with('error', 'account does not exist');
         } else {

@@ -28,48 +28,35 @@ class CouponController extends Controller
         $coupon = Coupon::findByCode($couponCode);
 
         // $messages = [];
-        if ($totalAmount < 1000000) {
-            return redirect()->route('cart.list')->with('error', 'The discount code is only applicable for orders with a total value over 1,000,000 VND');
+        if (trim($couponCode) == '') {
+            return redirect()->route('check-out')->with('error', 'Please enter coupon code');
         }
         if (!$coupon) {
-            // $messages[] = 'Coupon does not exist!!';
-            // return redirect()->route('cart.list')->withErrors($messages);
-            return redirect()->route('cart.list')->with('error', 'Coupon does not exist!!');
+            return redirect()->route('check-out')->with('error', 'Coupon does not exist!!');
         }
 
         if (!$coupon->is_active) {
-            // $messages[] = 'Coupon is no longer valid!';
-            // return redirect()->route('cart.list')->withErrors($messages);
-            return redirect()->route('cart.list')->with('error', 'Coupon is no longer valid!');
+            return redirect()->route('check-out')->with('error', 'Coupon is no longer valid!');
         }
 
         $currentDate = now();
         if ($currentDate < $coupon->start_date || $currentDate > $coupon->end_date) {
-            // $messages[] = 'Coupon is no longer valid!';
-            // return redirect()->route('cart.list')->withErrors($messages);
-            return redirect()->route('cart.list')->with('error', 'Coupon is no longer valid!');
+            return redirect()->route('check-out')->with('error', 'Coupon is no longer valid!');
         }
 
         if ($coupon->quantity <= 0) {
-            // $messages[] = 'Coupon is out of stock!';
-            // return redirect()->route('cart.list')->withErrors($messages);
-            return redirect()->route('cart.list')->with('error', 'Coupon is out of stock!');
+            return redirect()->route('check-out')->with('error', 'Coupon is out of stock!');
+        }
+
+        // Kiểm tra người dùng
+        $userId = auth()->id();
+        $hasUsedCoupon = CouponUsage::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
+        if ($hasUsedCoupon) {
+            return redirect()->route('check-out')->with('error', 'The discount code has been used!');
         }
 
         // Tính toán giảm giá
-        // $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);
-
-        if ($coupon) {
-            $discount = $coupon->value;
-            if ($coupon->type == 'percent') {
-                $totalAmount = $totalAmount * ((100 - $discount) / 100);
-            } else {
-                $totalAmount = $totalAmount - $discount;
-            }
-        } else {
-            $discount  = 0;
-            $totalAmount = $totalAmount - $discount;
-        }
+        $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);
 
         // Lưu coupon vào session
         session(['coupon' => [
@@ -88,6 +75,6 @@ class CouponController extends Controller
 
 
         // Chuyển hướng về view cart với thông báo thành công
-        return redirect()->route('cart.list')->with(['discount' => $discount]);
+        return redirect()->route('check-out')->with(['discount' => $discount]);
     }
 }

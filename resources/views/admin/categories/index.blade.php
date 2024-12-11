@@ -48,10 +48,11 @@
                         <thead>
                             <tr class="">
                                 <th>#</th>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Status</th>
+                                <th>Description</th>
                                 <th>Created at</th>
-                                <th>Updated at</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -59,11 +60,14 @@
                             @foreach ($data as $key => $item)
                                 <tr class="align-middle">
                                     <th>{{ $key + 1 }}</th>
+                                    <th>
+                                        <img src="{{ Storage::url($item->image) }}" width="100" height="100">
+                                    </th>
                                     <th>{{ $item->name }}</th>
                                     <th class="{{ $item->is_active == 1 ? 'text-success' : 'text-danger' }}">
                                         {{ $item->is_active == 1 ? 'Active' : 'Inactive' }}</th>
+                                    <th>{{ $item->description }}</th>
                                     <th>{{ $item->created_at }}</th>
-                                    <th>{{ $item->updated_at }}</th>
                                     <td>
                                         <a href="{{ route('admin.categories.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i

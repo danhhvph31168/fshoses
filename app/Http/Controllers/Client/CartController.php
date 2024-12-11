@@ -29,19 +29,7 @@ class CartController extends Controller
             $cart = [];
         }
 
-        if (session('coupon')) {
-            $discount = session('coupon')['value'];
-            if (session('coupon')['type'] == 'percent') {
-                $totalAmount = $totalAmount * ((100 - $discount) / 100);
-            } else {
-                $totalAmount -=  $discount;
-            }
-        } else {
-            $discount  = 0;
-            $totalAmount -=  $discount;
-        }
-
-        session(['totalAmount' => $totalAmount]);
+        session(['totalAmount' => $totalAmount]);        
 
         return view('client.cart-list', compact('totalAmount', 'cart', 'colors', 'sizes'));
     }
@@ -79,6 +67,14 @@ class CartController extends Controller
             session()->put('cart.' . $productVariant->id, $data);
         }
 
+        foreach (session('cart') as $key => $item) {
+            if ($item['quatity'] > $item['quantity']) {
+                session()->put("cart.{$key}.quatity", $item['quantity']);
+                return  back()
+                    ->with('info', "Sorry, there are currently {$item['quantity']} products left in this product and it has been added to your cart.");
+            }
+        }
+
         return redirect()->route('cart.list');
     }
 
@@ -109,23 +105,10 @@ class CartController extends Controller
             $totalCart += ($item['price_regular'] * ((100 -  $item['price_sale']) / 100)) * $item['quatity'];
         }
 
-        if (session('coupon')) {
-            $discount = session('coupon')['value'];
-            if (session('coupon')['type'] == 'percent') {
-                $totalCart = $totalCart * ((100 - $discount) / 100);
-            } else {
-                $totalCart -=  $discount;
-            }
-        } else {
-            $discount  = 0;
-            $totalCart -=  $discount;
-        }
-
         return response()->json([
             'data' => [
                 'totalAmount' => $totalAmount,
                 "totalCart" => $totalCart,
-                "discount" => $discount
             ]
         ], 200);
     }

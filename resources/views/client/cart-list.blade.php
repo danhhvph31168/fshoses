@@ -23,9 +23,9 @@
     <section class="shopping-cart spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12 col-md-12">
                     <div class="shopping__cart__table">
-                        <table>
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>Product</th>
@@ -105,7 +105,7 @@
                                                 <span class="price">{{ number_format($item['quatity'] * $price) }}
                                                 </span>VNĐ
                                             </td>
-                                            <td class="cart__close">
+                                            <td class="cart__close" style="width: 10px;">
                                                 <form action="{{ route('cart.delItem', $key) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
@@ -117,74 +117,39 @@
                                         </tr>
                                     @endforeach
                                 @endif
-
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        <h4 class="text-danger">Total: </h4>
+                                    </td>
+                                    <td class="cart-price total text-danger fs-4">
+                                        <h4 class="text-danger">{{ number_format($totalAmount) }} VNĐ</h4>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="continue__btn">
                                 <a href="{{ route('client.home') }}">Continue shopping</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
                             <div class="continue__btn update__btn">
                                 <a onclick="return confirm('Are you sure you want to clear your cart?')"
                                     href="{{ route('cart.delete') }}"><i class="fa fa-spinner"></i>Clear all</a>
                             </div>
                         </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <div class="continue__btn update__btn">
+
+                                <a href="{{ route('check-out') }}" class="primary-btn">Proceed to checkout</a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="cart__discount">
-                        <h6>Discount codes</h6>
-                        <form action="{{ route('cart.applyCoupon') }}" method="post">
-                            @csrf
-                            <input type="text" placeholder="Coupon code" name="code">
-                            <button type="submit">Apply</button>
-                        </form>
-                        @if ($errors->any())
-                            <div class="alert alert-danger bg-white border-0 ">
-                                @foreach ($errors->all() as $error)
-                                    <strong class="text-danger">{{ $error }}</strong>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="cart__total">
-                        {{-- <h6>Giỏ hàng tổng cộng</h6> --}}
-                        {{-- Thông báo thành công nếu có --}}
-                        @if (session('message'))
-                            <div class="alert alert-success">
-                                {{ session('message') }}
-                            </div>
-                        @endif
-
-                        @if (session('coupon'))
-                            <ul>
-                                @if (session('coupon.type') === 'fixed')
-                                    <li>Discount ({{ session('coupon.code') }}): <span
-                                            class="cart-price discount">{{ number_format(session('coupon.value')) }}
-                                            VNĐ </span></li>
-                                @else
-                                    <li>Discount ({{ session('coupon.code') }}): <span
-                                            class="cart-price discount">{{ session('coupon.value') }} %</span>
-                                    </li>
-                                @endif
-                                <li>Total: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
-                                </li>
-                            </ul>
-                        @else
-                            <ul>
-                                <li>Subtotal: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
-                                </li>
-                                <li>Total: <span class="cart-price total">{{ number_format($totalAmount) }} VNĐ</span>
-                                </li>
-                            </ul>
-                        @endif
-                        <a href="{{ route('check-out') }}" class="primary-btn">Proceed to checkout</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -193,7 +158,22 @@
 @endsection
 
 @section('js')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     <script>
+        function validateQuantity(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            let value = parseInt(input.value);
+
+            if (isNaN(value) || value < 1) {
+                input.value = 1;
+            } else if (value > 15) {
+                input.value = 15;
+            }
+        }
+
         $(document).ready(function() {
             $('#quatity').on('input', function() {
                 if ($(this).val() < 1) {
@@ -207,15 +187,23 @@
 
                 const price_sale_raw = $(this).find('.price_sale').data('price_sale');
 
-                const discount = $(this).find('.discount').data('discount');
-
                 const price_sale = parseInt(price_sale_raw.replace(/,/g, ''), 10);
 
                 const price_element = $(this).find('.price');
 
+                const maxQuantity = parseInt($(this).find('#maxquantity').val());
+
                 $(this).find('input').on('change', function() {
                     const value_input = $(this).val();
-                    console.log('Input đã thay đổi:', this.value);
+                    console.log('Input đã thay đổi:', value_input);
+
+                    if (value_input > maxQuantity) {
+                        $(this).val(maxQuantity);
+                        toastr.info(
+                            `The quantity has exceeded the quantity in stock. There are ${maxQuantity} products left.`
+                        );
+                        return;
+                    }
 
                     const dataId = $(this).data('id');
                     console.log('id đã thay đổi:', dataId);
@@ -230,8 +218,7 @@
                         },
                         data: {
                             variant_id: dataId,
-                            quatity: value_input,
-                            discount: discount
+                            quatity: value_input
                         },
                         dataType: "json",
                         success: function(response) {
@@ -242,9 +229,6 @@
 
                             $('.total').text(formatter.format(total_raw) + ' VNĐ')
                         },
-                        error: function(xhr, status, error) {
-                            console.error("Error: " + error);
-                        }
                     });
 
                 });

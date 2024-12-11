@@ -84,11 +84,9 @@
                                 <th>Avatar</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Phone Number</th>
+                                <th>Phone</th>
                                 <th>Role</th>
                                 <th>Status</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -99,15 +97,12 @@
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}" alt=""
                                             width="50px">
                                     </td>
-                                    <td style="width: 400px">{{ $item->name }}</td>
+                                    <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ $item->role->name }}</td>
                                     <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
                                         {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
-
                                     <td>
                                         <a href="{{ route('admin.users.show', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i

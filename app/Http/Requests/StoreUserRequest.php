@@ -31,10 +31,8 @@ class StoreUserRequest extends FormRequest
             'phone'     => 'required|numeric',
             'status'    => [Rule::in([0, 1])],
             'address'   => 'nullable|max:255',
-            'balance'   => 'nullable|min:0',
             'district'  => 'nullable|max:255',
             'province'  => 'nullable|max:255',
-            'zip_code'  => 'numeric',
         ];
     }
 

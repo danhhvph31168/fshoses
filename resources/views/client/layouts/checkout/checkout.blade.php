@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
+        type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/bootstrap.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/font-awesome.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/elegant-icons.css') }}" type="text/css">
@@ -30,10 +32,6 @@
     <link rel="stylesheet" href="{{ asset('theme/client/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('theme/client/css/style.css') }}" type="text/css">
-
-    <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
-        type="text/css">
-
     @yield('css')
 </head>
 
@@ -80,7 +78,8 @@
     <script src="{{ asset('theme/client/js/jquery.slicknav.js') }}"></script>
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
-
+    <script src="{{ asset('theme/client/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
     @yield('js')
 
 </body>

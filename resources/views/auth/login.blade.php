@@ -10,7 +10,7 @@
                 <div class="card-body p-4">
                     <div class="text-center mt-2">
                         <h5 class="text-primary">Welcome Back !</h5>
-                        <p class="text-muted">Sign in to continue to Male fashion.</p>
+                        <p class="text-muted">Sign in to continue to F-shoes.</p>
                     </div>
                     @if (session('error'))
                         <div class="alert alert-danger">

@@ -20,7 +20,7 @@ class ReviewController extends Controller
     public function show($id)
     {
         $review = Review::query()->findOrFail($id);
-        
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('review'));
     }
 
@@ -30,11 +30,11 @@ class ReviewController extends Controller
             'is_show' => 'required'
         ]);
 
-        $review = Review::query()->findOrFail($id);
+        $review = Review::findOrFail($id);
         $review->update([
-            'is_show' => request('is_show')
+            'is_show' => $request->is_show
         ]);
 
-        return back();
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
     }
 }

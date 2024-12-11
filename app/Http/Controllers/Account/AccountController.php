@@ -40,9 +40,9 @@ class AccountController extends Controller
         if ($request->hasFile('cover')  && $currentAvatar && Storage::exists($currentAvatar)) {
             Storage::delete($currentAvatar);
         }
-        
+
         $data['avatar'] = (empty($request->avatar)) ? $user->avatar : $data['avatar'];
-   
+
         $data = [
             'name' => $request->name,
             'avatar' =>  $data['avatar'],
@@ -57,8 +57,7 @@ class AccountController extends Controller
         $user->update($data);
 
         return redirect()->back()->with('success', 'Account information updated successfully.');
-    }   
-
+    }
 
     public function showFormChangePassword()
     {

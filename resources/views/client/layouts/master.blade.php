@@ -33,7 +33,6 @@
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
 
-
     @yield('css')
 </head>
 
@@ -71,6 +70,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+
     <!-- Js Plugins -->
     <script src="{{ asset('theme/client/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/bootstrap.min.js') }}"></script>
@@ -85,8 +85,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
 
+    @stack('scripts')
     @yield('js')
-
     @yield('scripts')
 
 </body>
