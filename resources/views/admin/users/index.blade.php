@@ -85,7 +85,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Role</th>
+                                <th>Address</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -100,7 +100,10 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->role->name }}</td>
+                                    <td>
+                                        {{ $item->address }} - {{ $item->ward }} <br>
+                                        {{ $item->district }} - {{ $item->province }}
+                                    </td>
                                     <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
                                         {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
                                     <td>

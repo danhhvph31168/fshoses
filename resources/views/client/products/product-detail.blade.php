@@ -5,14 +5,14 @@
 @endsection
 
 @section('content')
+
     <div class="shop-details" style="padding: 0;">
         <div class="product__details__pic" style="width: 100%; margin:0;">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="product__details__breadcrumb" style=" margin-bottom: 0 !important;">
-                        <a href="./index.html" style="opacity: 50%">Home</a>
-                        <a href="./shop.html" style="opacity: 50%">Shop</a>
-                        <span style="color:black; font-weight: 600; opacity: 75%">{{ $product->name }}</span>
+                        <a href="/" style="opacity: 50%">Home</a>
+                        <span style="color:red; font-weight: 600; opacity: 75%">{{ $product->name }}</span>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,11 @@
 
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14 mb-2">Description :</h5>
-                                                <p>{{ $product->description ?? 'ahjhj' }}</p>
+                                                <p>{{ $product->description ?? '' }}</p>
+                                            </div>
+                                            <div class="mt-4 text-muted">
+                                                <h5 class="fs-14 mb-2"></h5>
+                                                <p>{!! $product->content ?? '' !!}</p>
                                             </div>
 
                                             <div class="row">
@@ -581,5 +585,5 @@
     <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>    
 @endsection

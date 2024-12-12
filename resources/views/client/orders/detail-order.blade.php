@@ -124,8 +124,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $total = 0;
+                                    @endphp
                                     @foreach ($order->orderItems as $item)
-                                        {{-- @dd($order) --}}
                                         <tr class="">
                                             <td>
                                                 <div class="d-flex">
@@ -153,6 +155,9 @@
                                             <td class="text-center align-middle">{{ $item->quantity }}</td>
                                             <td class="fw-medium text-center align-middle">
                                                 {{ number_format($item->quantity * $item->price, 0, '.', '.') }}
+                                                @php
+                                                    $total += $item->quantity * $item->price;
+                                                @endphp
                                             </td>
 
                                             @if ($order->status_order == 'delivered')
@@ -161,9 +166,7 @@
                                                         data-bs-target="#reviewModal-{{ $item->id }}">Review</a>
                                                 </td>
                                             @endif
-
                                         </tr>
-
                                         <div class="modal fade" id="reviewModal-{{ $item->id }}" tabindex="-1"
                                             aria-labelledby="reviewModalLabel-{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -267,7 +270,6 @@
                                             </div>
                                         </div>
                                     @endforeach
-
                                     <tr class="border-top border-top-dashed">
                                         <td colspan="3">
                                             <textarea class="form-control bg-white" rows="3" disabled>{{ $order->user_note }}</textarea>
@@ -283,7 +285,7 @@
                                                     <tr>
                                                         <td>Sub Total :</td>
                                                         <td class="text-end">
-                                                            {{ number_format($subTotal, 0, '.', '.') }} VNĐ
+                                                            {{ number_format($total, 0, '.', '.') }} VNĐ
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -296,11 +298,6 @@
                                                                 <td class="text-end">
                                                                     {{ number_format($discount, 0, '.', '.') }} %
                                                                 </td>
-                                                                @php
-                                                                    $total =
-                                                                        $subTotal * ((100 - $discount) / 100) +
-                                                                        $shippingCharge;
-                                                                @endphp
                                                             @else
                                                                 <td>Discount <span
                                                                         class="text-muted">({{ $order->coupon->code }})</span>
@@ -309,9 +306,6 @@
                                                                 <td class="text-end">
                                                                     {{ number_format($discount, 0, '.', '.') }} VNĐ
                                                                 </td>
-                                                                @php
-                                                                    $total = $subTotal - $discount + $shippingCharge;
-                                                                @endphp
                                                             @endif
                                                         @endif
                                                     </tr>
@@ -327,13 +321,7 @@
                                                             Total:
                                                         </th>
                                                         <th class="text-end" style="font-weight: 800; font-size: 20px;">
-                                                            @php
-                                                                $total =
-                                                                    $discount > 0
-                                                                        ? $total
-                                                                        : $subTotal + $shippingCharge;
-                                                            @endphp
-                                                            {{ number_format($total, 0, '.', '.') }} VNĐ
+                                                            {{ number_format($subTotal, 0, '.', '.') }} VNĐ
                                                         </th>
                                                     </tr>
                                                 </tbody>

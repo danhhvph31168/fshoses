@@ -5,7 +5,6 @@ namespace App\Services\DashBoard;
 use App\Models\{Order, OrderItem, Product};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -13,7 +12,6 @@ use Illuminate\Support\Facades\DB;
  */
 class HandleChartServices
 {
-    
     public function handleFilterDay(Request $request, $dataDate)
     {
         if ($request->dateStart || $request->dateEnd) {

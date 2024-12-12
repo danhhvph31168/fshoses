@@ -11,7 +11,7 @@ use App\Models\ProductSize;
 use App\Models\ProductColor;
 use App\Http\Controllers\Controller;
 
-class ProductController extends Controller
+class ProductController1 extends Controller
 {
     public function index()
     {

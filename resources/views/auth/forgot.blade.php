@@ -33,7 +33,7 @@
                                 <label class="form-label">Email</label>
                                 <input type="email" name="email"
                                     class="form-control @error('email') is-invalid @enderror" id="email"
-                                    placeholder="Enter Email">
+                                    placeholder="Enter Your Email">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -42,7 +42,7 @@
                             </div>
 
                             <div class="text-center mt-4">
-                                <button class="btn btn-success w-100" type="submit">Send Reset Link</button>
+                                <button class="btn btn-success w-100" type="submit">Send</button>
                             </div>
                         </form><!-- end form -->
                     </div>

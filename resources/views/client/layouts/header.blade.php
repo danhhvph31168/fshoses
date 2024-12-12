@@ -68,7 +68,8 @@
                                     {{ implode(' ', array_slice(explode(' ', Auth::user()->name), -2)) }}
                                 </strong></span>
                             @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
-                                <a class="dropdown-item" target="#" href="{{ route('admin.') }}"><i
+                                <a class="dropdown-item" target="#" href="{{ route('admin.') }}">
+                                    <i
                                         class="mdi mdi-view-dashboard-outline text-muted fs-16 align-middle me-1"></i>
                                     <span class="align-middle">Admin Page</span></a>
                             @endif

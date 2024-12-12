@@ -38,7 +38,7 @@ class DashboardController extends Controller
         $topProducts = $topProducts[0];
         $topCategory = $topCategory[1];
 
-        // dd($topProducts);
+        // dd($dataDate);
 
         return view(
             "admin/dashboard",

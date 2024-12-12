@@ -11,19 +11,18 @@ class AddOrderServices
 {
     public function dataOrderItem()
     {
-        $totalAmount = 0;
         $dataItem = [];
         foreach (session('cart') as $variantID => $item) {
             $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
-
             $totalAmount = session('totalAmount');
-
             $dataItem[] = [
                 'product_variant_id' => $variantID,
                 'quantity'           => $item['quatity'],
                 'price'              => $price ?: $item['price_regular'],
             ];
-        }
+        }      
+        
+        // dd($totalAmount);
 
         return [$totalAmount, $dataItem];
     }
@@ -62,14 +61,18 @@ class AddOrderServices
             'user_ward' => $request->wardText,
             'user_note'    => $request->user_note,
             'total_amount' => $totalAmount,
-            'coupon_id' => session('coupon')['coupon_id'],
+            'coupon_id' => session('coupon')['coupon_id'] ?? null,
         ]);
+
+        session()->forget('cart');
+        session()->forget('coupon');
 
         return $order;
     }
 
     public function loggedIn(CheckoutRequest $request, $totalAmount)
     {
+        // dd($totalAmount);
         $order = Order::query()->create([
             'user_id'    => Auth::user()->id,
             'sku_order'  => 'DH-' . strtoupper(Str::random(6)),
@@ -82,9 +85,11 @@ class AddOrderServices
             'user_ward' => $request->wardText,
             'user_note'    => $request->user_note,
             'total_amount' => $totalAmount,
-            'coupon_id' => session('coupon')['coupon_id'],
+            'coupon_id' => session('coupon')['coupon_id'] ?? null,
         ]);
 
+        session()->forget('cart');
+        session()->forget('coupon');
         return $order;
     }
 }

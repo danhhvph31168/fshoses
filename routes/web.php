@@ -9,11 +9,11 @@ use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Client\RatingController;
 use App\Http\Controllers\Client\ReviewController;
 use App\Http\Controllers\Account\AccountController;
-use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Account\OrderSearchController;
 use App\Http\Controllers\Account\OrderHistoryController;
 use App\Http\Controllers\Client\Product\ProductController;
 use App\Http\Controllers\Auth\MessageSuccessResetController;
+use App\Http\Controllers\Client\CheckoutController;
 
 // product
 Route::get('/',                 [ProductController::class, 'index'])->name('client.home');

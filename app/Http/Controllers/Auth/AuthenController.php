@@ -51,7 +51,7 @@ class AuthenController extends Controller
                 'name'      => $request->name,
                 'email'     => $request->email,
                 'password'  => $request->password,
-                'role_id'   => 1,
+                'role_id'   => 3,
             ]);
 
             Auth::login($user);

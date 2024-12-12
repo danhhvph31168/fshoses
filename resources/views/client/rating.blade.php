@@ -35,12 +35,12 @@
                 {{-- Kiểm tra nếu sản phẩm biến thể chưa được đánh giá --}}
                 <div class="mb-3">
                     <label for="product_variant_id_{{ $productVariantId }}" class="form-label">
-                        Đánh Giá cho Sản Phẩm: {{ $item->productVariant->product->name }}
+                        Product Review: {{ $item->productVariant->product->name }}
                     </label>
                     <input type="hidden" name="product_variant_id[]" value="{{ $productVariantId }}">
                     {{-- Sử dụng mảng cho nhiều sản phẩm --}}
                     <select class="form-control" name="value[]" required> {{-- Cũng sử dụng mảng cho điểm đánh giá --}}
-                        <option value="">Chọn Điểm Đánh Giá</option>
+                        <option value="">Star rating</option>
                         @for ($i = 1; $i <= 5; $i++)
                             <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
@@ -50,7 +50,7 @@
             @endif
         @endforeach
 
-        <button type="submit" class="btn btn-primary">Gửi Đánh Giá</button>
+        <button type="submit" class="btn btn-primary">Send</button>
     </form>
 
 </div>

@@ -44,7 +44,17 @@
                                 <select class="select-group" name="code" style="width:375px;">
                                     <option value="">-- Select Coupon --</option>
                                     @foreach ($coupons as $coupon)
-                                        <option value="{{ $coupon->code }}">{{ $coupon->code }}</option>
+                                        <option value="{{ $coupon->code }}">{{ $coupon->code }} -
+                                            {{ number_format($coupon->value, 0, ',', '.') }}
+                                            @php
+                                                if ($coupon->type == 'percent') {
+                                                    echo '%';
+                                                } else {
+                                                    echo 'VNĐ';
+                                                }
+                                            @endphp
+
+                                        </option>
                                     @endforeach
                                 </select>
                                 <button type="submit" class="btn btn-secondary px-4 ms-2">Apply</button>

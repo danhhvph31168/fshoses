@@ -76,7 +76,7 @@
 
             <div class="mt-4 text-center">
                 <p class="mb-0">Don't have an account ? <a href="{{ route('auth.showFormRegister') }}"
-                        class="fw-semibold text-primary text-decoration-underline"> Signup </a> </p>
+                        class="fw-semibold text-primary text-decoration-underline"> Register </a> </p>
             </div>
 
         </div>

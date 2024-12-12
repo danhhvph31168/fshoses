@@ -42,6 +42,7 @@ class CheckoutController extends Controller
 
                 $totalAmount += $item['quatity'] * ($price ?: $item['price_regular']);
             }
+            // dd($totalAmount);
 
             $currentDate = now();
 
@@ -61,9 +62,21 @@ class CheckoutController extends Controller
     public function addOrder(CheckoutRequest $request)
     {
         try {
-            DB::beginTransaction();
+            DB::beginTransaction();      
+            
+            $totalAmount = session('totalAmount');
 
-            [$totalAmount, $dataItem]  = $this->addOrderServices->dataOrderItem();
+            if (session('coupon')) {
+                if (session('coupon')['type'] == "percent") {
+                    $totalAmount =  $totalAmount * ((100 - session('coupon')['value']) / 100);
+                } else {
+                    $totalAmount = $totalAmount - session('coupon')['value'];
+                }
+            }           
+            session()->put('totalAmount',$totalAmount);
+            // dd($totalAmount);            
+
+            [$totalAmount, $dataItem]  = $this->addOrderServices->dataOrderItem();            
 
             if (Auth::check() == false) {
                 $order = $this->addOrderServices->notLogin($request, $totalAmount);
@@ -96,14 +109,14 @@ class CheckoutController extends Controller
                 $item->productVariant->update(['quantity' => $quantity]);
             }
 
-            // Giảm số lượng coupon còn lại trong cơ sở dữ liệu
-            $coupon = Coupon::findByCode(session('coupon')['code']);
-            $coupon->decrement('quantity', 1);
+
+            // dd(session('coupon'));
+            if (session('coupon')) {
+                $coupon = Coupon::findByCode(session('coupon')['code']);
+                $coupon->decrement('quantity', 1);
+            }
 
             DB::commit();
-
-            session()->forget('cart');
-            session()->forget('coupon');
 
             if ($request->payment_method == Payment::PAYMENTS_METHOD_VNPAY) {
                 $order = $order->id;
@@ -112,9 +125,13 @@ class CheckoutController extends Controller
             } else {
                 OrderCreateClient::dispatch($order);
             }
+
+            session()->forget('cart');
+            session()->forget('coupon');
+
             return redirect()->route('orderSuccess', ['sku' => $order->sku_order])->with('success', 'Order successful');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+
             DB::rollBack();
             return back()->with('error', 'Lỗi đặt hàng: ' . $th->getMessage());
         }
