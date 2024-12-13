@@ -31,7 +31,7 @@
                 <div class="card ribbon-box ribbon-fill shadow-none right">
                     <div class="tab-content">
                         <div>
-                            @if ($order->total_amount >= 500000)
+                            @if ($order->total_amount >= 1000000)
                                 <div class="ribbon-two ribbon-two-danger"><span>Free Ship</span></div>
                             @endif
 

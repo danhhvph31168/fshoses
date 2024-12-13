@@ -18,31 +18,27 @@
             </div>
 
             <div class="search-bar mt-3">
-                <form action="" method="GET" class="form-inline d-flex align-items-center">
+                <form action="{{ route('admin.orders.index') }}" method="GET" class="form-inline d-flex w-50 float-end">
                     <div class="input-group me-3">
-                        <select id="status_order_filter" class="form-select" name="status_order">
-                            <option value="" {{ request('status_order') == '' ? 'selected' : '' }}>All Status
-                            </option>
-                            <option value="pending" {{ request('status_order') == 'pending' ? 'selected' : '' }}>
-                                Pending</option>
-                            <option value="confirmed" {{ request('status_order') == 'confirmed' ? 'selected' : '' }}>
-                                Confirmed</option>
-                            <option value="processing" {{ request('status_order') == 'processing' ? 'selected' : '' }}>
-                                Processing</option>
-                            <option value="shipping" {{ request('status_order') == 'shipping' ? 'selected' : '' }}>
-                                Shipping</option>
-                            <option value="delivered" {{ request('status_order') == 'delivered' ? 'selected' : '' }}>
-                                Delivered</option>
-                            <option value="canceled" {{ request('status_order') == 'canceled' ? 'selected' : '' }}>
-                                Canceled</option>
-                            <option value="refunded" {{ request('status_order') == 'refunded' ? 'selected' : '' }}>
-                                Refunded</option>
+                        <select class="form-select" name="status_order">
+                            <option value="" selected>Status Order</option>
+                            @foreach ($status['statusOrder'] as $id => $vi)
+                                <option value="{{ $id }}" @selected(request('status_order') == $id)>{{ ucwords($id) }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="input-group">
-                        <input type="text" class="form-control" aria-label="Recipient's username"
-                            aria-describedby="button-addon2" name="key" placeholder="Search ...">
-                        <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
+                        <select class="form-select" name="staff">
+                            <option value="" selected>Handler</option>
+                            <option value="unprocessed" class="text-danger">Unprocessed</option>
+                            @foreach ($staff as $item)
+                                <option value="{{ $item->id }}" @selected(request('staff') == $item->id)>
+                                    {{ $item->name  }} ({{ $item->role->name }})
+                                </option>
+                            @endforeach
+                        </select>
+                        <button class="btn btn-primary ms-2" type="submit">Fillter</button>
                     </div>
                 </form>
             </div>
@@ -79,7 +75,7 @@
 
 
                             @foreach ($data as $item)
-                                <tr>
+                                <tr class="{{ !($item->user->password == null) ? '' : 'text-black-50' }}">
                                     <th scope="row">
                                         <div class="form-check">
                                         </div>
@@ -87,10 +83,10 @@
 
                                     <td>{{ $item->sku_order }}</td>
 
-                                    <td class="{{ !($item->user->password == null) ? 'text-info' : '' }}">
+                                    <td class="">
                                         {{ $item->user->name }}</td>
                                     <td>{{ $item->user_address }}</td>
-                                    <td class="fs-6">{{ $item->user_email }}</td>
+                                    <td class="">{{ $item->user_email }}</td>
                                     <td>{{ $item->user_phone }}</td>
 
                                     <td>{{ number_format($item->total_amount) }} vnđ</td>
@@ -100,7 +96,7 @@
                                         {{ Str::upper($item->payment->payments_method) }}
                                     </td>
 
-                                    <td>{{ $item->staff_id ? $item->staff->name : 'unprocessed' }}</td>
+                                    <td class="{{ $item->staff_id == null ? 'text-danger' : '' }}">{{ $item->staff_id ? $item->staff->name : 'unprocessed' }}</td>
 
                                     <td>
                                         <span class="badge bg-success-subtle text-info">{{ $item->status_order }}</span>
@@ -121,7 +117,8 @@
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar-xl bg-light rounded">
                                                         <img src="{{ Storage::url($orderItem->productVariant->image) }}"
-                                                            alt="" height="100%" width="100%" class="d-block rounded" />
+                                                            alt="" height="100%" width="100%"
+                                                            class="d-block rounded" />
                                                     </div>
                                                 </div>
 
@@ -134,7 +131,8 @@
 
                                                     <p class="rounded-circle text-muted mb-1">
                                                         Color: <i class="ri-checkbox-blank-circle-fill"
-                                                            style="color: {{ $orderItem->productVariant['color']->name }};"></i> -
+                                                            style="color: {{ $orderItem->productVariant['color']->name }};"></i>
+                                                        -
                                                         Size: {{ $orderItem->productVariant['size']->name }}
                                                     </p>
                                                     <p class="rounded-circle text-muted mb-1">

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Events\{OrderCanceled, OrderDelivered};
-use App\Models\{Order, Payment};
+use App\Models\{Order, Payment, User};
 use App\Services\OrderAdmin\{OrderFormServices, OrderServices};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, DB};
@@ -15,18 +15,36 @@ class OrderController extends Controller
 
     public function __construct(public OrderServices $orderServices, public OrderFormServices $orderFormServices) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = Order::query()->with(['user', 'role'])->latest('id')->get();
+        $query = Order::query()->with(['user', 'role'])->latest('id');
 
-        if ($key = request()->key) {
-            $data = Order::query()->with(['user', 'role'])->latest('id')
-                ->where('sku_order', 'like', '%' . $key . '%')
-                ->orwhere('user_name', 'like', '%' . $key . '%')
-                ->paginate(5);
+        $statusOrder = $request->input('status_order');
+        $staff = $request->input('staff');
+
+        if ($statusOrder) {
+            $query->where('status_order', $statusOrder);
         }
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+
+        if ($staff) {
+            if ($request->staff == 'unprocessed') {
+                $query->where('staff_id', null);
+            } else {
+                $query->where('staff_id', $staff);
+            }
+        }
+
+        $data = $query->get();
+
+        $status = $this->orderFormServices->handleFormEdit();
+
+        $staff = User::whereHas('role', function ($query) {
+            $query->where('name', 'staff')->orWhere('name', 'admin');
+        })->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'status', 'staff'));
     }
+
 
     public function edit($id)
     {

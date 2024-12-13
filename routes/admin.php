@@ -25,6 +25,8 @@ Route::prefix('admin')->as('admin.')
         // dashboard
         Route::get('/',  [DashboardController::class, 'orderStatistical']);
         Route::post('/', [DashboardController::class, 'orderStatistical'])->name('dashboard.year');
+        Route::get('/dashboard/exportProduct',  [DashboardController::class, 'exportProduct'])->name('dashboard.exportProduct');
+        Route::get('/dashboard/exportCategory', [DashboardController::class, 'exportCategory'])->name('dashboard.exportCategory');
 
         // order
         Route::get('orders',            [OrderController::class, 'index'])->name('orders.index');

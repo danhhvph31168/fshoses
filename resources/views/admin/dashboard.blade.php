@@ -188,8 +188,13 @@
                                                 {{ session('fillterProduct') === 'last_year' ? 'selected' : '' }}>Last Year
                                             </option>
                                         </select>
-
                                     </div>
+
+                                    <div>
+                                        <a href="{{ route('admin.dashboard.exportProduct') }}"
+                                            class="btn btn-primary ms-2">Export</a>
+                                    </div>
+
                                 </div>
 
                                 <div class="card-body">
@@ -257,6 +262,9 @@
                             <div class="card card-height-100">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">Top Categories</h4>
+                                    <div>
+                                        <a href="{{ route('admin.dashboard.exportCategory') }}" class="btn btn-primary ms-2">Export</a>
+                                    </div>
                                 </div>
 
                                 <div class="card-body">

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\DashboardCateExport;
+use App\Exports\DashboardExport;
 use App\Http\Controllers\Controller;
 use App\Services\DashBoard\HandleChartServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -33,12 +36,12 @@ class DashboardController extends Controller
         $orderPercentages = $this->handleChartServices->handleMap($orderPercentages);
 
         // xử lý best selling product
-        $topProducts = $this->handleChartServices->handleSellingProduct($request);
-        $topCategory = $this->handleChartServices->handleSellingProduct($request);
+        $topProducts = $this->handleChartServices->handleSellingProduct($request, perPage: 5);
+        $topCategory = $this->handleChartServices->handleSellingProduct($request, perPage: 5);
         $topProducts = $topProducts[0];
         $topCategory = $topCategory[1];
 
-        // dd($topProducts);
+        // dd($this->handleChartServices->handleSellingProduct($request, perPage: null)[1]->collect());
 
         return view(
             "admin/dashboard",
@@ -54,5 +57,15 @@ class DashboardController extends Controller
                 'topCategory',
             )
         );
+    }
+
+    public function exportProduct(Request $request)
+    {
+        return Excel::download(new DashboardExport($this->handleChartServices->handleSellingProduct($request, perPage: null)[0]->collect()), 'product.xlsx');
+    }
+
+    public function exportCategory(Request $request)
+    {
+        return Excel::download(new DashboardCateExport($this->handleChartServices->handleSellingProduct($request, perPage: null)[1]->collect()), 'category.xlsx');
     }
 }
