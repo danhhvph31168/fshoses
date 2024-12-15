@@ -106,7 +106,10 @@
                                                     @else
                                                         <input type="radio" class="btn-check" name="payment_status"
                                                             id="paymetnStatus_{{ $id }}"
-                                                            value="{{ $id }}" @disabled($order->payment->status == App\Models\Payment::STATUS_REFUNDED)>
+                                                            value="{{ $id }}" @disabled(
+                                                                $order->payment->status == App\Models\Payment::STATUS_FAILED ||
+                                                                    $order->payment->status == App\Models\Payment::STATUS_PAID ||
+                                                                    $order->status_order == App\Models\Order::STATUS_ORDER_CANCELED)>
                                                         <label class="btn btn-outline-success"
                                                             for="paymetnStatus_{{ $id }}">{{ $id }}</label>
                                                     @endif
@@ -132,32 +135,38 @@
 
             {{-- Product --}}
             <div class="card">
-                <h5 class="fw-bold">Product</h5>
                 <div>
                     <table class="table text-center">
                         <thead>
                             <tr>
-                                <th style="width: 170px;" scope="col"></th>
+                                <th style="width: 170px;" scope="col">Product</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Variant</th>
                                 <th scope="col" class="text-end">Total</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $subtotal = 0;
+                            @endphp
                             @foreach ($order->orderItems as $item)
                                 <tr>
                                     <td>
-                                        <div class="avatar-md bg-light rounded">
+                                        @if ($item->productVariant->image)
                                             <img src="{{ Storage::url($item->productVariant->image) }}" alt=""
-                                                class="img-fluid rounded">
-                                        </div>
+                                                height="80%" width="80%" class="d-block rounded" />
+                                        @else
+                                            <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
+                                                alt="" height="80%" width="80%" class="d-block rounded" />
+                                        @endif
                                     </td>
-                                    <td>
-                                        <h5 class="fs-14"><a href="apps-ecommerce-product-details"
+                                    <td style="align-content: center;">
+                                        <h5 class="fs-14"><a
+                                                href="{{ route('productDetail', $item->productVariant->product->slug) }}"
                                                 class="text-body">{{ $item->productVariant->product->name }}</a>
                                         </h5>
                                     </td>
-                                    <td>
+                                    <td style="align-content: center !important;">
                                         <p class="rounded-circle text-muted mb-0">
                                             Color: <i class="ri-checkbox-blank-circle-fill"
                                                 style="color: {{ $item->productVariant->color->name }};"></i> -
@@ -172,36 +181,28 @@
                                         $total = $price * $item->quantity;
                                     @endphp
 
-                                    <td class="text-end">
+                                    <td class="text-end" style="align-content: center;">
                                         {{ number_format($total) }}
                                         vnđ
                                     </td>
                                 </tr>
+                                @php
+                                    $subtotal += $total;
+                                @endphp
                             @endforeach
 
-                            @php
-                                $total1 = 0;
-                            @endphp
-                            @if ($order->coupon)
-                                @if ($order->coupon->type == 'percent')
-                                    @php
-                                        $total1 = $order->total_amount * ((100 - $order->coupon->value) / 100);
-                                    @endphp
-                                @else
-                                    @php
-                                        $total1 = $order->total_amount - $order->coupon->value;
-                                    @endphp
-                                @endif
+                            {{-- @dd($subtotal) --}}
 
+                            @if ($order->coupon)
                                 <tr>
                                     <td class="fw-semibold text-danger text-start" colspan="3">Sub Total :</td>
                                     <td class="fw-semibold text-danger text-end">
-                                        {{ number_format($order->total_amount) }} vnđ
+                                        {{ number_format($subtotal) }} vnđ
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="fw-semibold text-danger text-start" colspan="3">Discount
-                                        ({{ $order->coupon->code }}) :</td>
+                                        [{{ $order->coupon->code }}] :</td>
                                     <td class="fw-semibold text-danger text-end">
                                         {{ number_format($order->coupon->value) }}
                                         @if ($order->coupon->type == 'percent')
@@ -214,10 +215,21 @@
                                 <tr>
                                     <td class="fw-semibold text-danger text-start" colspan="3">Total :</td>
                                     <td class="fw-semibold text-danger text-end">
-                                        {{ number_format($total1) }} vnđ
+                                        {{ number_format($order->total_amount) }} vnđ
                                     </td>
                                 </tr>
                             @else
+                                <tr>
+                                    <td class="fw-semibold text-danger text-start" colspan="3">Sub Total :</td>
+                                    <td class="fw-semibold text-danger text-end">
+                                        {{ number_format($order->total_amount) }} vnđ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-danger text-start" colspan="3">Discount
+                                        ({{ $order->coupon->code }}) :</td>
+                                    <td class="fw-semibold text-danger text-end"> 0 </td>
+                                </tr>
                                 <tr>
                                     <td class="fw-semibold text-danger text-start" colspan="3">Total :</td>
                                     <td class="fw-semibold text-danger text-end">
@@ -314,9 +326,14 @@
                             {{ $order->user_address }}, {{ $order->user_ward }}, {{ $order->user_district }},
                             {{ $order->user_province }}
                         </li>
+
+                        <li><i class="ri-sticky-note-line  me-2 align-middle text-muted fs-16"></i>{{ $order->user_note }}
+                        </li>
+
                     </ul>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -512,7 +529,7 @@
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/toastify-js" async></script>
-    <script src="{{ URL::asset('theme/admin/assets/libs/prismjs/prism.js') }}"></script>
-    <script src="{{ URL::asset('theme/admin/assets/js/pages/modal.init.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/prismjs/prism.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/js/pages/modal.init.js') }}"></script>
     <script src="https://cdn.lordicon.com/libs/mssddfmo/lord-icon-2.1.0.js"></script>
 @endsection

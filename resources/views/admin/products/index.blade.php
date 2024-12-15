@@ -60,7 +60,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div>
-                        <a class="btn btn-success" href="{{ route('admin.products.create') }}">
+                        <a class="btn btn-primary" href="{{ route('admin.products.create') }}">
                             <i class="ri-add-fill"></i> Add product </a>
                     </div>
                     <div>
@@ -74,38 +74,50 @@
                         style="width:100%">
                         <thead>
                             <tr class="text-center">
+                                <th>#</th>
                                 <th>Sku</th>
-                                <th>Img_Thumbnail</th>
+                                <th>Img Thumbnail</th>
                                 <th>Name</th>
                                 <th>Brand</th>
                                 <th>Category</th>
                                 <th>Price Regular</th>
                                 <th>Price Sale (%)</th>
+                                <th>Views</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
+                            @foreach ($data as $key => $item)
                                 @php
                                     $price = $item->price_regular * ((100 - $item->price_sale) / 100);
                                 @endphp
 
                                 <tr class="align-middle text-center">
+                                    <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->sku }}</td>
-                                    <td style="width: 100px">
+                                    <td style="width:150px;">
                                         @if (\Str::contains($item->img_thumbnail, 'http'))
                                             <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
                                                 height="100px">
                                         @else
                                             <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
-                                                alt="..." height="100px">
+                                                alt="..." height="100px" width="50px">
                                         @endif
                                     </td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->brand?->name }}</td>
                                     <td>{{ $item->category->name }}</td>
-                                    <td class="text-danger">{{ number_format($item->price_regular, 0, ',', '.') }} VNĐ</td>
-                                    <td class="text-success">{{ $item->price_sale }}%</td>
+                                    <td>{{ number_format($item->price_regular, 0, ',', '.') }} VNĐ</td>
+                                    <td class="text-primary">{{ $item->price_sale }}%</td>
+                                    <td>{{ $item->views }}</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}"
+                                                {{ $item->is_active == 1 ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
                                     <td>
                                         <a href="{{ route('admin.products.show', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
@@ -135,6 +147,31 @@
         <!--end col-->
     </div>
     <!--end row-->
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let productId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: "{{ route('admin.products.updateProduct', ':id') }}".replace(':id', productId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    is_active: newValue
+                },
+                success: function(response) {
+                    toastr.success('Status updated success')
+                    console.log(200);
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
 @endsection
 
 @section('css')

@@ -11,7 +11,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
-                        <li class="breadcrumb-item text-info">Product Detail</li>
+                        <li class="breadcrumb-item text-primary">Product Detail</li>
                         <li class="breadcrumb-item text-danger">{{ $product->name }}</li>
                     </ol>
                 </div>
@@ -34,7 +34,7 @@
                                             @foreach ($product->galleries as $item)
                                                 <div class="swiper-slide">
                                                     <img src="{{ \Storage::url($item->image) }}" class=""
-                                                        height="400px">
+                                                        style="margin: auto;" height="400px">
                                                 </div>
                                             @endforeach
                                         @endif
@@ -48,9 +48,9 @@
                                         @if (count($product->galleries) > 0)
                                             @foreach ($product->galleries as $item)
                                                 <div class="swiper-slide">
-                                                    <div class="nav-slide-item">
-                                                        <img src="{{ \Storage::url($item->image) }}" class=""
-                                                            height="100px">
+                                                    <div class="nav-slide-item" style="max-width: 150px;">
+                                                        <img src="{{ \Storage::url($item->image) }}" height="100px"
+                                                            width="100px;">
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -72,6 +72,9 @@
                                                         class="text-body fw-medium">{{ $product->sku }}</span></a>
                                             </div>
                                             <div class="vr"></div>
+                                            <div><a href="#" class="text-primary d-block">Views : <span
+                                                        class="text-body fw-medium">{{ $product->views }}</span></a>
+                                            </div>
                                             <div class="text-muted"></div>
                                             <div class="vr"></div>
                                             <div class="text-muted">Published : <span
@@ -89,14 +92,12 @@
 
                                 {{-- Rating stars --}}
                                 <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
-                                    <div class="text-muted fs-16">
-                                        <span class="mdi mdi-star text-warning"></span>
-                                        <span class="mdi mdi-star text-warning"></span>
-                                        <span class="mdi mdi-star text-warning"></span>
-                                        <span class="mdi mdi-star text-warning"></span>
-                                        <span class="mdi mdi-star text-warning"></span>
+                                    {!! renderStars($averageRating) !!}
+
+                                    <div class="flex-shrink-0">
+                                        <h6 class="mb-0">{{ round($averageRating, 1) }}
+                                            out of 5</h6>
                                     </div>
-                                    <div class="text-muted">( 5.50k Customer Review )</div>
                                 </div>
 
                                 <div class="row mt-4">
@@ -163,7 +164,8 @@
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <p class="text-muted mb-1">Total Revenue :</p>
-                                                    <h5 class="mb-0">{{ $orderCount['total_amount'] ?? 0 }}</h5>
+                                                    <h5 class="mb-0">
+                                                        {{ number_format($orderCount['total_amount']) ?? 0 }}</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,7 +189,6 @@
                                                                     <th>Size</th>
                                                                     <th>Color</th>
                                                                     <th>Quantity</th>
-                                                                    <th>Image</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -227,20 +228,13 @@
                                                                             @php($key = $sizeID . '-' . $colorID)
 
                                                                             <td><span
-                                                                                    style="background: {{ $colorName }}; padding: 5px 15px"></span>
+                                                                                    style="background: {{ $colorName }}; padding: 5px 15px; border: 1px solid gray"></span>
                                                                             </td>
 
-                                                                            <td>
+                                                                            <td class="w-25">
                                                                                 <input type="text" class="form-control"
                                                                                     value="{{ $productVariants[$key]['quantity'] }}"
                                                                                     name="product_variants[{{ $key }}][quantity]">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="file" class="form-control"
-                                                                                    name="product_variants[{{ $key }}][image]">
-                                                                                <input type="hidden" class="form-control"
-                                                                                    value="{{ $productVariants[$key]['image'] }}"
-                                                                                    name="product_variants[{{ $key }}][current_image]">
                                                                             </td>
                                                                             <td>
                                                                                 @if ($productVariants[$key]['image'])
@@ -318,7 +312,7 @@
                                                             <td>
                                                                 @foreach ($colors as $id => $name)
                                                                     <span
-                                                                        style="background: {{ $name }}; padding: 5px 15px; margin-left: 5px">
+                                                                        style="background: {{ $name }}; padding: 5px 15px; margin-left: 5px; border: 1px solid gray">
                                                                     </span>
                                                                 @endforeach
                                                             </td>
@@ -366,6 +360,9 @@
 @section('css')
     <!--Swiper slider css-->
     <link href="{{ asset('theme/admin/assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 
 @section('js')
@@ -373,6 +370,11 @@
     <script src="{{ asset('theme/admin/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
     <!-- ecommerce product details init -->
     <script src="{{ asset('theme/admin/assets/js/pages/ecommerce-product-details.init.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"
+        integrity="sha512-1JkMy1LR9bTo3psH+H4SV5bO2dFylgOy+UJhMus1zF4VEFuZVu5lsi4I6iIndE4N9p01z1554ZDcvMSjMaqCBQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     {{-- <script>
         new DataTable("#example", {

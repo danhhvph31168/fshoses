@@ -48,7 +48,7 @@ Tra cứu đơn hàng
             </span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-danger mt-2">Search</button>
+        <button type="submit" class="btn btn-primary mt-2">Search</button>
     </form>
 </div>
 @endsection

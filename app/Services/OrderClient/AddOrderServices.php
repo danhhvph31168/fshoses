@@ -21,8 +21,6 @@ class AddOrderServices
                 'price'              => $price ?: $item['price_regular'],
             ];
         }      
-        
-        // dd($totalAmount);
 
         return [$totalAmount, $dataItem];
     }
@@ -47,6 +45,10 @@ class AddOrderServices
                 'status'  => false,
                 'role_id' => 3,
             ]);
+        }
+
+        if(Order::where('user_phone',$request->user_phone)->exists()){
+
         }
 
         $order = Order::query()->create([

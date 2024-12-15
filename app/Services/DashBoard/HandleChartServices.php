@@ -130,7 +130,7 @@ class HandleChartServices
         return $orderPercentages;
     }
 
-    public function handleSellingProduct(Request $request)
+    public function handleSellingProduct(Request $request, $perPage)
     {
         if ($request->has('fillterProduct')) {
             session(['fillterProduct' => $request->fillterProduct]);
@@ -140,23 +140,23 @@ class HandleChartServices
             session()->forget('fillterProduct');
         }
 
-        $filterProduct = function ($query, $filProduct) {
+        $filterProduct = function ($query, $filProduct) use ($perPage) {
             if ($filProduct == 'today') {
-                return $query->whereDate('orders.created_at', Carbon::now())->paginate(5);
+                return $query->whereDate('orders.created_at', Carbon::now())->paginate($perPage);
             } else if ($filProduct == 'yesterday') {
-                return $query->whereDate('orders.created_at', Carbon::yesterday())->paginate(5);
+                return $query->whereDate('orders.created_at', Carbon::yesterday())->paginate($perPage);
             } else if ($filProduct == 'last_7_days') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(7), Carbon::now()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(7), Carbon::now()])->paginate($perPage);
             } else if ($filProduct == 'last_30_days') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(30), Carbon::now()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(30), Carbon::now()])->paginate($perPage);
             } else if ($filProduct == 'this_month') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->startOfMonth(), Carbon::now()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->startOfMonth(), Carbon::now()])->paginate($perPage);
             } else if ($filProduct == 'last_month') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()])->paginate($perPage);
             } else if ($filProduct == 'last_year') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(365), Carbon::now()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(365), Carbon::now()])->paginate($perPage);
             } else {
-                return $query->paginate(5);
+                return $query->paginate($perPage);
             }
         };
 

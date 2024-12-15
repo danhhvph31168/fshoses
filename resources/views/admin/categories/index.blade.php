@@ -30,7 +30,7 @@
                         <h3>Categories List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.categories.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.categories.create') }}"><i class="btn btn-primary ri-add-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -50,9 +50,9 @@
                                 <th>#</th>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Status</th>
-                                <th>Description</th>
                                 <th>Created at</th>
+                                <th>Description</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -64,10 +64,13 @@
                                         <img src="{{ Storage::url($item->image) }}" width="100" height="100">
                                     </th>
                                     <th>{{ $item->name }}</th>
-                                    <th class="{{ $item->is_active == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->is_active == 1 ? 'Active' : 'Inactive' }}</th>
+                                    <th>{{ $item->created_at->format('d/m/Y') }}</th>
                                     <th>{{ $item->description }}</th>
-                                    <th>{{ $item->created_at }}</th>
+                                    <th>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}" {{ $item->is_active == 1 ? 'checked' : '' }}>
+                                        </div>
                                     <td>
                                         <a href="{{ route('admin.categories.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
@@ -91,6 +94,30 @@
             </div>
         </div><!--end col-->
     </div><!--end row-->
+@endsection
+@section('scripts')
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let categoryId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: "{{ route('admin.categories.updateStatus', ':id') }}".replace(':id', categoryId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    is_active: newValue
+                },
+                success: function(response) {
+                    toastr.success(`Status updated successfully`);
+                    console.log(200);
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
 @endsection
 
 @section('css')

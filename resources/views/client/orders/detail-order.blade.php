@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Chi tiết đơn hàng
+    Order detail
 @endsection
 @section('css')
     <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
@@ -133,7 +133,7 @@
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
                                                         <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
-                                                            alt="" class="img-fluid d-block">
+                                                            alt="" height="100%" width="100%">
                                                     </div>
                                                     <div class="flex-grow-1 ms-3">
                                                         <h5 class="fs-15">
@@ -159,14 +159,17 @@
                                                     $total += $item->quantity * $item->price;
                                                 @endphp
                                             </td>
-
-                                            @if ($order->status_order == 'delivered')
-                                                <td class="text-center align-middle">
-                                                    <a href="#" class="btn badge badge-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#reviewModal-{{ $item->id }}">Review</a>
-                                                </td>
+                                            @if (!$checkReviewed)
+                                                @if ($order->status_order == 'delivered')
+                                                    <td class="text-center align-middle">
+                                                        <a href="#" class="btn badge badge-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#reviewModal-{{ $item->id }}">Review</a>
+                                                    </td>
+                                                @endif
                                             @endif
                                         </tr>
+                                        {{-- @dd($item->productVariant->product->id) --}}
                                         <div class="modal fade" id="reviewModal-{{ $item->id }}" tabindex="-1"
                                             aria-labelledby="reviewModalLabel-{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -220,8 +223,8 @@
                                                                 value="{{ $order->id }}" />
                                                             <input type="hidden" name="product_id"
                                                                 value="{{ $item->productVariant->product->id }}">
-                                                            <input type="hidden" name="product_variant_id"
-                                                                value="{{ $item->productVariant->id }}">
+                                                            {{-- <input type="hidden" name="product_variant_id"
+                                                                value="{{ $item->productVariant->id }}"> --}}
 
                                                             <div class="mb-3">
                                                                 <label for="rating" class="form-label">Your
@@ -422,10 +425,14 @@
                                         </div>
                                     </div>
                                 @else
-                                    <span type="button"
-                                        class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 fw-bold text-danger"><i
-                                            class="mdi mdi-archive-remove-outline align-middle me-1"></i> Order has been
-                                        cancelled</span>
+                                    @if ($order->status_order == 'cancelled')
+                                        <span type="button"
+                                            class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 fw-bold text-danger"><i
+                                                class="mdi mdi-archive-remove-outline align-middle me-1"></i> Order has
+                                            been
+                                            cancelled</span>
+                                    @else
+                                    @endif
                                 @endif
                             </div>
                         </div>
@@ -597,8 +604,13 @@
                                     <li>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
-                                                <img src="{{ Storage::url($order->user->avatar) }}" alt=""
-                                                    class="avatar-sm  rounded-circle">
+                                                @if (!empty($order->user->avatar))
+                                                    <img src="{{ Storage::url($order->user->avatar) }}" alt=""
+                                                        class="avatar-sm rounded-circle">
+                                                @else
+                                                    <img src="{{ asset('image-default/avatar.jpg') }}" alt=""
+                                                        class="avatar-sm rounded">
+                                                @endif
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h6 class="fs-14 mb-1">{{ $order->user->name }}</h6>
@@ -641,6 +653,7 @@
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
+
                                 <li class="fw-medium fs-14">
                                     <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                                     {{ $order->user_name }}
@@ -701,7 +714,7 @@
                                     </p>
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    <p class="mb-0 fw-bold">{{ $order->total_amount }}</p>
+                                    <p class="mb-0 fw-bold">{{ number_format($order->total_amount, 0, ',', '.') }} VNĐ</p>
                                 </div>
                             </div>
 

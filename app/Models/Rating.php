@@ -13,7 +13,6 @@ class Rating extends Model
         'user_id',
         'order_id',
         'product_id',
-        'product_variant_id',
         'value',
         'comment',
     ];
@@ -21,14 +20,8 @@ class Rating extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function order()
+    public function product()
     {
-        return $this->belongsTo(Order::class);
-    }
-
-    public function productVariant()
-    {
-        return $this->belongsTo(ProductVariant::class);
+        return $this->belongsTo(Product::class);
     }
 }

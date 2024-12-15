@@ -67,8 +67,8 @@
                                     </th>
                                     <th>{{ $item->quantity }}</th>
                                     <th>{{ number_format($item->minimum_order_value, 0, ',', '.') }} VNĐ</th>
-                                    <th>{{ $item->start_date }}</th>
-                                    <th>{{ $item->end_date }}</th>
+                                    <th>{{ \Carbon\Carbon::parse($item->start_date)->format('d/m/Y') }}</th>
+                                    <th>{{ \Carbon\Carbon::parse($item->end_date)->format('d/m/Y') }}</th>
                                     <th>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input toggle-switch" type="checkbox"

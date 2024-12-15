@@ -61,7 +61,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div>
-                        <a class="btn btn-success" href="{{ route('admin.users.create') }}">
+                        <a class="btn btn-primary" href="{{ route('admin.users.create') }}">
                             <i class="ri-add-fill"></i> Add User </a>
                     </div>
                     <div class="d-flex">
@@ -69,7 +69,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" aria-label="Recipient's username"
                                     aria-describedby="button-addon2" name="key" placeholder="Search ...">
-                                <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
+                                <button class="btn btn-primary ms-2" type="submit" id="button-addon2">Search</button>
                             </div>
                         </form>
                     </div>
@@ -101,14 +101,23 @@
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>
-                                        {{ $item->address }} - {{ $item->ward }} <br>
-                                        {{ $item->district }} - {{ $item->province }}
+                                        @if ($item->address)
+                                            {{ $item->address }}
+                                            @endif @if ($item->ward)
+                                                -{{ $item->ward }}
+                                            @endif
+                                            <br>
+                                            @if ($item->district)
+                                                {{ $item->district }}
+                                                @endif @if ($item->province)
+                                                    -{{ $item->province }}
+                                                @endif
                                     </td>
 
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input toggle-switch" type="checkbox"
-                                                data-id="{{ $item->id }}" {{ $item->status == 0 ? 'checked' : '' }}>
+                                                data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
                                         </div>
                                     </td>
 
@@ -125,7 +134,6 @@
             </div>
         </div><!--end col-->
     </div><!--end row-->
-
 @endsection
 
 @section('css')
@@ -137,7 +145,7 @@
     <script>
         $(document).on('change', '.toggle-switch', function() {
             let reviewId = $(this).data('id');
-            let newValue = $(this).is(':checked') ? 0 : 1;
+            let newValue = $(this).is(':checked') ? 1 : 0;
 
             $.ajax({
                 url: "{{ route('admin.users.updateCustomer', ':id') }}".replace(':id', reviewId),
@@ -147,6 +155,7 @@
                     status: newValue
                 },
                 success: function(response) {
+                    toastr.success('Status updated success')
                     console.log(200);
                 },
                 error: function() {

@@ -76,7 +76,7 @@
                         <div class="live-preview">
                             <div class="row gy-4">
                                 <div class="col-md-4">
-                                    <div>
+                                    <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
                                         <input type="text" class="form-control" name="name" id="name"
                                             value="{{ $model->name }}">
@@ -98,23 +98,15 @@
                                                     id="gridRadios2" value="0"
                                                     {{ $model->status == 0 ? 'checked' : '' }}>
                                                 <label class="form-check-label text-danger" for="gridRadios2">
-                                                    Inactive
+                                                    Disable
                                                 </label>
                                             </div>
+
                                         </div>
                                     </div>
+                                    
+                                    <button class="btn btn-primary" type="submit">Save</button>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="card">
-                                        <div class="card-header align-items-center d-flex">
-                                            <button class="btn btn-primary" type="submit">Save</button>
-                                        </div><!-- end card header -->
-                                    </div>
-                                </div>
-                                <!--end col-->
                             </div>
                         </div>
                     </form>

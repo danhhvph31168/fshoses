@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Cart;
 use App\Models\CouponUsage;
+use App\Models\Order;
 
 class CouponController extends Controller
 {
@@ -48,24 +49,29 @@ class CouponController extends Controller
             return redirect()->route('check-out')->with('error', 'Coupon is out of stock!');
         }
 
-        // Kiểm tra người dùng
+        // Kiểm tra người dùng đã dùng mã giảm giá này chưa
         $userId = auth()->id();
-        $hasUsedCoupon = CouponUsage::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
-        if ($hasUsedCoupon) {
-            return redirect()->route('check-out')->with('error', 'The discount code has been used!');
-        }
+        $hasUsedCoupon = Order::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
+
+        // if ($hasUsedCoupon) {
+        //     return redirect()->route('check-out')->with('error', 'The Coupon code has been used!');
+        // }
 
         // Tính toán giảm giá
         $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);
 
-        // Lưu coupon vào session
-        session(['coupon' => [
-            'coupon_id' => $coupon->id,
-            'code' => $coupon->code,
-            'type' => $coupon->type,
-            'value' => $coupon->value,
-            'quantity' => $coupon->quantity
-        ]]);
+        // Kiểm tra mã giảm giá và Lưu vào session
+        if (empty(session('coupon')) || ((session('coupon') && session('coupon')['coupon_id'] != $coupon->id))) {
+            session(['coupon' => [
+                'coupon_id' => $coupon->id,
+                'code' => $coupon->code,
+                'type' => $coupon->type,
+                'value' => $coupon->value,
+                'quantity' => $coupon->quantity
+            ]]);
+        } else {
+            return back()->with('info', 'This discount code is currently being used.');
+        }
 
         session([
             'discount' => $discount

@@ -33,13 +33,15 @@
     <link rel="stylesheet" href="{{ asset('theme/client/font-awesome-4.7.0/css/font-awesome.min.css') }}"
         type="text/css">
 
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+
     @yield('css')
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12" style="p-0">
+            <div class="col-md-12 p-0">
                 <!-- Header Section Begin -->
                 @include('client.layouts.header')
                 <!-- Header Section End -->
@@ -72,12 +74,16 @@
     </script>
 
     <!-- Js Plugins -->
+    @yield('js')
     <script src="{{ asset('theme/client/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.nicescroll.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/jquery.countdown.min.js') }}"></script>
+
+
+
     <script src="{{ asset('theme/client/js/jquery.slicknav.js') }}"></script>
     <script src="{{ asset('theme/client/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('theme/client/js/owl.carousel.min.js') }}"></script>
@@ -85,9 +91,17 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/js/all.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
     @stack('scripts')
-    @yield('js')
+
     @yield('scripts')
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
+
 
 </body>
 

@@ -26,7 +26,6 @@ class ProductController extends Controller
     const PATH_VIEW = 'admin.products.';
     public function index()
     {
-
         if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
             $brands = Brand::pluck('name', 'id')->all();
             $categories = Category::pluck('name', 'id')->all();
@@ -46,7 +45,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-
         if (Auth::user()->role_id == 1) {
 
             $categories = Category::query()->pluck('name', 'id')->all();
@@ -154,13 +152,21 @@ class ProductController extends Controller
                 }
             }
 
+            // Thông tin đánh giá
+            $averageRating = $product->averageRating();
+            $totalRatings = $product->totalRatings();
+            $ratingBreakdown = $product->ratingBreakdown();
+
             return view(self::PATH_VIEW . __FUNCTION__, compact(
                 'product',
                 'categories',
                 'colors',
                 'sizes',
                 'brands',
-                'orderCount'
+                'orderCount',
+                'averageRating',
+                'totalRatings',
+                'ratingBreakdown',
             ));
         } else {
             return back()->with('error', 'Access denied!');
@@ -194,6 +200,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        // dd($request->all());
         if (Auth::user()->role_id == 1) {
             list($dataProduct, $dataProductVariants, $dataProductGalleries, $dataDeleteGalleries)
                 = $this->handleData($request);
@@ -272,7 +279,6 @@ class ProductController extends Controller
                         Storage::delete($item['image']);
                     }
                 }
-                echo 2;
                 dd($th->getMessage());
                 return back()->with('error', $th->getMessage());
             }
@@ -376,5 +382,19 @@ class ProductController extends Controller
         } else {
             return back()->with('error', 'Access denied!');
         }
+    }
+
+    public function updateProduct($id, Request $request)
+    {
+        $request->validate([
+            'is_active' => 'required'
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->update([
+            'is_active' => $request->is_active
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
     }
 }

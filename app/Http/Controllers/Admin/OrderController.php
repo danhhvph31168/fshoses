@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Events\{OrderCanceled, OrderDelivered};
-use App\Models\{Order, Payment};
+use App\Models\{Order, Payment, User};
 use App\Services\OrderAdmin\{OrderFormServices, OrderServices};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, DB};
@@ -15,25 +15,35 @@ class OrderController extends Controller
 
     public function __construct(public OrderServices $orderServices, public OrderFormServices $orderFormServices) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
-            $data = Order::query()->with(['user', 'role'])->latest('id')->get();
-            
-            if ($key = request()->key) {
-                $data = Order::query()->with(['user', 'role'])->latest('id')
-                    ->where('sku_order', 'like', '%' . $key . '%')
-                    ->orwhere('user_name', 'like', '%' . $key . '%')
-                    ->paginate(5);
-            }
+        $query = Order::query()->with(['user', 'role'])->latest('id');
 
-            return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
-        } else {
+        $statusOrder = $request->input('status_order');
+        $staff = $request->input('staff');
 
-            return back()->with('error', 'Access denied!');
+        if ($statusOrder) {
+            $query->where('status_order', $statusOrder);
         }
-    }
 
+        if ($staff) {
+            if ($request->staff == 'unprocessed') {
+                $query->where('staff_id', null);
+            } else {
+                $query->where('staff_id', $staff);
+            }
+        }
+
+        $data = $query->get();
+
+        $status = $this->orderFormServices->handleFormEdit();
+
+        $staff = User::whereHas('role', function ($query) {
+            $query->where('name', 'staff')->orWhere('name', 'admin');
+        })->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'status', 'staff'));
+    }
     public function edit($id)
     {
         $order = Order::query()->with(['user', 'role', 'orderItems', 'payment'])->findOrFail($id);
@@ -57,11 +67,15 @@ class OrderController extends Controller
                 }
             }
 
-            // payment
-            if (!($order->payment->status == Payment::STATUS_REFUNDED)) {
+
+
+            // status order
+            if (!($order->status_order == Order::STATUS_ORDER_CANCELED || $order->status_order == Order::STATUS_ORDER_DELIVERED)) {
+
+                // payment
                 if ($order->payment->status == Payment::STATUS_PAID) {
                     $request->validate([
-                        'payment_status' => 'required|in:' . Payment::STATUS_PAID . ',' . Payment::STATUS_REFUNDED,
+                        'payment_status' => 'required|in:' . Payment::STATUS_PAID,
                     ]);
                 }
 
@@ -75,9 +89,7 @@ class OrderController extends Controller
                 $payment->update([
                     'status' => request('payment_status'),
                 ]);
-            }
 
-            if ($request->payment_status == Payment::STATUS_REFUNDED) {
                 $order->update([
                     'status_order' => Order::STATUS_ORDER_CANCELED,
                 ]);
@@ -86,10 +98,6 @@ class OrderController extends Controller
                     $quantity = $item->productVariant->quantity + $item->quantity;
                     $item->productVariant->update(['quantity' => $quantity]);
                 }
-            }
-
-            // status order
-            if (!($order->status_order == Order::STATUS_ORDER_CANCELED || $order->status_order == Order::STATUS_ORDER_DELIVERED)) {
 
                 if ($order->status_order == Order::STATUS_ORDER_CONFIRMED) {
                     $request->validate([

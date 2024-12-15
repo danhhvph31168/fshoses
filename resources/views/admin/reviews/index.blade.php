@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    List Review
+    List Comment
 @endsection
 
 @section('content')
@@ -9,12 +9,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">List Review</h4>
+                <h4 class="mb-sm-0">List Comment</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">List Review</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Comment</a></li>
+                        <li class="breadcrumb-item active">List</li>
                     </ol>
                 </div>
 
@@ -26,9 +26,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">List Review</h5>
-                </div>
+                
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
@@ -50,7 +48,8 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>
-                                        <img src="{{ Storage::url($item->product->img_thumbnail) }}" width="100" height="100" alt="">
+                                        <img src="{{ Storage::url($item->product->img_thumbnail) }}" width="100"
+                                            height="100" alt="">
                                     </td>
                                     <td>{{ $item->user->name }}</td>
                                     <td>
@@ -63,7 +62,7 @@
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input toggle-switch" type="checkbox"
-                                                data-id="{{ $item->id }}" {{ $item->is_show == 0 ? 'checked' : '' }}>
+                                                data-id="{{ $item->id }}" {{ $item->is_show == 1 ? 'checked' : '' }}>
                                         </div>
                                     </td>
                                     <td>
@@ -83,10 +82,11 @@
 @endsection
 
 @section('scripts')
+
     <script>
         $(document).on('change', '.toggle-switch', function() {
             let reviewId = $(this).data('id');
-            let newValue = $(this).is(':checked') ? 0 : 1;
+            let newValue = $(this).is(':checked') ? 1 : 0;
 
             $.ajax({
                 url: "{{ route('admin.reviews.update', ':id') }}".replace(':id', reviewId),
@@ -96,6 +96,7 @@
                     is_show: newValue
                 },
                 success: function(response) {
+                    toastr.success(`Status updated successfully`);
                     console.log(200);
                 },
                 error: function() {

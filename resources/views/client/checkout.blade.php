@@ -292,6 +292,7 @@
 
                                 @if (session('coupon'))
                                     <ul class="checkout__total__all">
+                                        <li>Sub Total :<span>{{ number_format($totalAmount) }} VNĐ</span></li>
                                         @php
                                             $discount = session('coupon')['value'];
                                         @endphp
@@ -313,7 +314,7 @@
                                             @endphp
                                         @endif
 
-                                        <li>Sub Total :<span>{{ number_format($totalAmount) }} VNĐ</span></li>
+                                        
                                         <li>Shipping Charge :<span>{{ number_format($shippingCharge) }} VNĐ</span></li>
                                         <li>Total :<span>{{ number_format($total) }} VNĐ</span></li>
                                     </ul>

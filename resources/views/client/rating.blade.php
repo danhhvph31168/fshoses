@@ -1,5 +1,5 @@
 <div class="container">
-    <h1>Đánh Giá Sản Phẩm</h1>
+    <h1>Product Review</h1>
 
     {{-- Hiển thị thông báo lỗi nếu có --}}
     @if ($errors->any())

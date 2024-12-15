@@ -8,9 +8,6 @@
                         <span class="logo-sm">
                             <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
                         </span>
-                        <span class="logo-lg">
-                            <img src="assets/images/logo-dark.png" alt="" height="17">
-                        </span>
                     </a>
 
                     <a href="index.html" class="logo logo-light">
@@ -18,31 +15,8 @@
                             <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt=""
                                 height="22">
                         </span>
-                        <span class="logo-lg">
-                            <img src="assets/images/logo-light.png" alt="" height="17">
-                        </span>
                     </a>
                 </div>
-
-                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
-                    id="topnav-hamburger-icon">
-                    <span class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
-                </button>
-
-                <!-- App Search-->
-                <form class="app-search d-none d-md-block">
-                    <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Search..." autocomplete="off"
-                            id="search-options" value="">
-                        <span class="mdi mdi-magnify search-widget-icon"></span>
-                        <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
-                            id="search-close-options"></span>
-                    </div>
-                </form>
             </div>
 
             <div class="d-flex align-items-center">
@@ -66,21 +40,7 @@
                             </div>
                         </form>
                     </div>
-                </div>
-
-                <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
-                        data-toggle="fullscreen">
-                        <i class='bx bx-fullscreen fs-22'></i>
-                    </button>
-                </div>
-
-                <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button"
-                        class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-moon fs-22'></i>
-                    </button>
-                </div>=
+                </div>  
 
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
@@ -105,11 +65,6 @@
                     </button>
 
                     <div class="dropdown-menu dropdown-menu-end">
-                        {{-- <h6 class="dropdown-header fw-bold text-danger">{{ Auth::user()->name }}!</h6> --}}
-                        <a class="dropdown-item" href="pages-profile.html"><i
-                                class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Profile</span></a>
-
                         <form action="{{ route('admin.logout') }}" method="post">
                             @csrf
                             <button type="submit" class="border-0 dropdown-item">

@@ -25,11 +25,6 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->status == 1) {
-                if (Auth::user()->role_id == 1) {
-                    return redirect()->route('admin.')->with('success', 'Login successful!');
-                } else if (Auth::user()->role_id == 2) {
-                    return redirect()->route('admin.orders.index')->with('success', 'Login successful!');
-                }
                 return redirect()->intended('/');
             }
         }
@@ -39,11 +34,13 @@ class LoginController extends Controller
         ])->onlyInput('email');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
 
-        request()->session()->invalidate();
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }

@@ -101,11 +101,25 @@
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>
-                                        {{ $item->address }} - {{ $item->ward }} <br>
-                                        {{ $item->district }} - {{ $item->province }}
+                                        @if ($item->address)
+                                            {{ $item->address }}
+                                            @endif @if ($item->ward)
+                                                -{{ $item->ward }}
+                                            @endif
+                                            <br>
+                                            @if ($item->district)
+                                                {{ $item->district }}
+                                                @endif @if ($item->province)
+                                                    -{{ $item->province }}
+                                                @endif
+
                                     </td>
-                                    <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
                                     <td>
                                         <a href="{{ route('admin.users.show', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
@@ -115,14 +129,14 @@
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
 
-                                        <form action="{{ route('admin.users.destroy', $item->id) }}" method="POST"
+                                        {{-- <form action="{{ route('admin.users.destroy', $item->id) }}" method="POST"
                                             class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this user?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
                                                 title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
@@ -134,11 +148,38 @@
             </div>
         </div><!--end col-->
     </div><!--end row-->
+@endsection
 
+@section('scripts')
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let userId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: "{{ route('admin.users.updateCustomer', ':id') }}".replace(':id', userId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    status: newValue
+                },
+                success: function(response) {
+                    toastr.success(`Status updated successfully`);
+                    console.log(200);
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
 @endsection
 
 @section('css')
 @endsection
 
-@section('js')
+@section('script-libs')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    </script>
 @endsection

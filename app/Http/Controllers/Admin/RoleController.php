@@ -109,4 +109,18 @@ class RoleController extends Controller
             return back()->with('error', 'Access denied!');
         };
     }
+
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        $role = Role::findOrFail($id);
+        $role->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+    }
 }

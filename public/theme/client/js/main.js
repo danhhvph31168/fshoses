@@ -50,8 +50,8 @@
     });
 
     /*------------------
-		Navigation
-	--------------------*/
+        Navigation
+    --------------------*/
     $(".mobile-menu").slicknav({
         prependTo: "#mobile-menu-wrap",
         allowParentLinks: true,
@@ -105,8 +105,8 @@
     $("select").niceSelect();
 
     /*-------------------
-		Radio Btn
-	--------------------- */
+        Radio Btn
+    --------------------- */
     $(
         ".product__color__select label, .shop__sidebar__size label, .product__details__option__size label"
     ).on("click", function () {
@@ -117,8 +117,8 @@
     });
 
     /*-------------------
-		Scroll
-	--------------------- */
+        Scroll
+    --------------------- */
     $(".nice-scroll").niceScroll({
         cursorcolor: "#0d0d0d",
         cursorwidth: "5px",
@@ -155,23 +155,23 @@
         $(this).html(
             event.strftime(
                 "<div class='cd-item'><span>%D</span> <p>Days</p> </div>" +
-                    "<div class='cd-item'><span>%H</span> <p>Hours</p> </div>" +
-                    "<div class='cd-item'><span>%M</span> <p>Minutes</p> </div>" +
-                    "<div class='cd-item'><span>%S</span> <p>Seconds</p> </div>"
+                "<div class='cd-item'><span>%H</span> <p>Hours</p> </div>" +
+                "<div class='cd-item'><span>%M</span> <p>Minutes</p> </div>" +
+                "<div class='cd-item'><span>%S</span> <p>Seconds</p> </div>"
             )
         );
     });
 
     /*------------------
-		Magnific
-	--------------------*/
+        Magnific
+    --------------------*/
     $(".video-popup").magnificPopup({
         type: "iframe",
     });
 
     /*-------------------
-		Quantity change
-	--------------------- */
+        Quantity change
+    --------------------- */
     var proQty = $(".pro-qty");
     proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
     proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
@@ -201,7 +201,7 @@
 
         if ($button.hasClass("inc")) {
             var newVal = oldValue + 1;
-            if (newVal > 15) newVal = 15;
+            if (newVal > 5) { newVal = 5; toastr.info('Sorry, you can only purchase a maximum of 5 products.') }
         } else {
             if (oldValue > 1) {
                 var newVal = oldValue - 1;

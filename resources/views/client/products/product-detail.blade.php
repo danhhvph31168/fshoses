@@ -1,11 +1,10 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Chi tiết sản phẩm
+    Product Detail
 @endsection
 
 @section('content')
-
     <div class="shop-details" style="padding: 0;">
         <div class="product__details__pic" style="width: 100%; margin:0;">
             <div class="row">
@@ -26,36 +25,40 @@
                         <div class="card-body" style="border: none !important">
                             <div class="row gx-lg-5">
                                 <div class="col-xl-4 col-md-8 mx-auto">
-                                    <div class="product-img-slider sticky-side-div">
+                                    <div class="product-img-slider sticky-side-div text-center">
                                         <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
                                             <div class="swiper-wrapper">
-                                                @foreach ($productGalleries as $item)
-                                                    <div class="swiper-slide text-center">
-                                                        <img src="{{ Storage::url($item->image) }}" alt=""
-                                                            class="img-fluid d-block" />
-                                                    </div>
-                                                @endforeach
+                                                @if (count($product->galleries) > 0)
+                                                    @foreach ($product->galleries as $item)
+                                                        <div class="swiper-slide">
+                                                            <img src="{{ \Storage::url($item->image) }}" class=""
+                                                                style="margin: auto;" height="400px">
+                                                        </div>
+                                                    @endforeach
+                                                @endif
                                             </div>
                                             <div class="swiper-button-next"></div>
                                             <div class="swiper-button-prev"></div>
                                         </div>
-
+                                        <!-- end swiper thumbnail slide -->
                                         <div class="swiper product-nav-slider mt-2">
                                             <div class="swiper-wrapper">
-                                                @foreach ($productGalleries as $item)
-                                                    <div class="swiper-slide">
-                                                        <div class="nav-slide-item" style="width: 100%;">
-                                                            <img src="{{ Storage::url($item->image) }}" alt=""
-                                                                class="img-fluid d-block" height="200px" />
+                                                @if (count($product->galleries) > 0)
+                                                    @foreach ($product->galleries as $item)
+                                                        <div class="swiper-slide">
+                                                            <div class="nav-slide-item" style="max-width: 150px;">
+                                                                <img src="{{ \Storage::url($item->image) }}" height="100px"
+                                                                    width="100px;">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                @endforeach
+                                                    @endforeach
+                                                @endif
                                             </div>
                                         </div>
-
+                                        <!-- end swiper nav slide -->
                                     </div>
                                 </div>
-
+                                <!-- end col -->
 
                                 <div class="col-xl-8">
                                     <div class="mt-xl-0 mt-5">
@@ -88,6 +91,11 @@
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                                             <div class="mt-4 text-muted">
+                                                <h5 class="text-danger text-uppercase">Price :
+                                                    {{ number_format($product->price_regular, 0, ',', '.') }} VNĐ</h5>
+                                            </div>
+
+                                            <div class="mt-4 text-muted">
                                                 <h5 class="fs-14 mb-2">Description :</h5>
                                                 <p>{{ $product->description ?? '' }}</p>
                                             </div>
@@ -114,7 +122,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
 
                                                 <div class="col-xl-6">
                                                     <div class="mt-4">
@@ -164,9 +171,6 @@
                                         <hr>
 
                                         <div class="my-5">
-                                            {{-- <div class="my-3">
-                                                <span class="fs-5">Ratings & Reviews</span>
-                                            </div> --}}
                                             <div class="row gy-4 gx-0">
                                                 <div class="col-lg-4">
                                                     <div>
@@ -284,7 +288,7 @@
                                                                                                     @if ($i <= floor($item->value))
                                                                                                         <i
                                                                                                             class="bi bi-star-fill"></i>
-                                                                                                        @elseif ($i - $item->value < 1)
+                                                                                                    @elseif($i - $item->value < 1)
                                                                                                         <i
                                                                                                             class="bi bi-star-half"></i>
                                                                                                     @else
@@ -417,55 +421,58 @@
 
                 <div class="row">
                     @foreach ($relatedProducts as $item)
-                        @php
-                            $price = $item->price_regular * ((100 - $item->price_sale) / 100);
-                        @endphp
-                        <div class="col-md-3 mb-4">
-                            <div class="card shadow-sm h-100">
+                        @if ($item->is_active == 1)
+                            @php
+                                $price = $item->price_regular * ((100 - $item->price_sale) / 100);
+                            @endphp
+                            <div class="col-md-3 mb-4">
+                                <div class="card shadow-sm h-100">
 
-                                <div class="border-bottom" style="position: relative; overflow: hidden;">
-                                    @if (\Str::contains($item->img_thumbnail, 'http'))
-                                        <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
-                                            style="height: 200px; object-fit: cover;">
-                                    @else
-                                        <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
-                                            alt="..." style="height: 200px; object-fit: cover;">
-                                    @endif
+                                    <div class="border-bottom" style="position: relative; overflow: hidden;">
+                                        @if (\Str::contains($item->img_thumbnail, 'http'))
+                                            <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
+                                                style="height: 200px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                alt="..." style="height: 200px; object-fit: cover;">
+                                        @endif
 
-                                    @if ($item->price_sale > 0)
-                                        <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
-                                            {{ $item->price_sale }}%
-                                        </div>
-                                    @endif
-                                </div>
+                                        @if ($item->price_sale > 0)
+                                            <div
+                                                class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
+                                                {{ $item->price_sale }}%
+                                            </div>
+                                        @endif
+                                    </div>
 
 
-                                <div class="card-body d-flex flex-column">
-                                    <a href="{{ route('productDetail', $item->slug) }}"
-                                        class="text-dark card-title fs-6 fw-bold text-center mb-2 text-truncate">
-                                        {{ $item->name }}
-                                    </a>
+                                    <div class="card-body d-flex flex-column">
+                                        <a href="{{ route('productDetail', $item->slug) }}"
+                                            class="text-dark card-title fs-6 fw-bold text-center mb-2 text-truncate">
+                                            {{ $item->name }}
+                                        </a>
 
-                                    @if ($item->price_sale > 0)
-                                        <p class="card-text text-danger text-center">
-                                            {{ number_format($price, 0, ',', '.') }} VNĐ -
-                                            <span class="text-decoration-line-through text-muted">
+                                        @if ($item->price_sale > 0)
+                                            <p class="card-text text-danger text-center">
+                                                {{ number_format($price, 0, ',', '.') }} VNĐ -
+                                                <span class="text-decoration-line-through text-muted">
+                                                    {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
+                                                </span>
+                                            </p>
+                                        @else
+                                            <p class="card-text text-danger text-center">
                                                 {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
-                                            </span>
-                                        </p>
-                                    @else
-                                        <p class="card-text text-danger text-center">
-                                            {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
-                                        </p>
-                                    @endif
-                                    <div class="mb-3 text-center">
-                                        <a style="background-color: #d17572"
-                                            href="{{ route('productDetail', $item->slug) }}"
-                                            class="btn btn-secondary btn-sm w-100">Show more</a>
+                                            </p>
+                                        @endif
+                                        <div class="mb-3 text-center">
+                                            <a style="background-color: #d17572"
+                                                href="{{ route('productDetail', $item->slug) }}"
+                                                class="btn btn-secondary btn-sm w-100">Show more</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
                 </div>
 
@@ -550,8 +557,9 @@
 
             if (isNaN(value) || value < 1) {
                 input.value = 1;
-            } else if (value > 15) {
-                input.value = 15;
+            } else if (value > 5) {
+                input.value = 5;
+                toastr.info('Sorry, you can only purchase a maximum of 5 products.')
             }
         }
 
@@ -585,5 +593,5 @@
     <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>    
+    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
 @endsection

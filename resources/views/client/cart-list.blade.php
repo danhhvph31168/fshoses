@@ -94,9 +94,10 @@
                                                     <input type="hidden" name="variant_id" value="{{ $key }}">
                                                     <div class="quantity">
                                                         <div class="pro-qty-2">
-                                                            <input type="number" id="quatity" name="quatity"
+                                                            <input type="text" id="quatity" name="quatity"
                                                                 class="quantity-input" value="{{ $item['quatity'] }}"
-                                                                data-id="{{ $key }}">
+                                                                data-id="{{ $key }}"
+                                                                oninput="validateQuantity(this)">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -117,12 +118,13 @@
                                         </tr>
                                     @endforeach
                                 @endif
-                                <tr>
-                                    <td colspan="2" class="text-center">
+                                <tr class="border-bottom-none">
+                                    <td class="text-center float-start">
                                         <h4 class="text-danger">Total: </h4>
                                     </td>
-                                    <td class="cart-price total text-danger fs-4">
-                                        <h4 class="text-danger">{{ number_format($totalAmount) }} VNĐ</h4>
+                                    <td></td>
+                                    <td class="cart-price total text-danger">
+                                        <p class="text-danger fs-5 fw-bold">{{ number_format($totalAmount) }} VNĐ</p>
                                     </td>
                                 </tr>
                             </tbody>
@@ -169,8 +171,8 @@
 
             if (isNaN(value) || value < 1) {
                 input.value = 1;
-            } else if (value > 15) {
-                input.value = 15;
+            } else if (value > 5) {
+                input.value = 5;
             }
         }
 

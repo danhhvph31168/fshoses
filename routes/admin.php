@@ -8,13 +8,13 @@ use App\Http\Controllers\Admin\{
     BrandController,
     OrderController,
     BannerController,
-    CouponController,
     ReviewController,
     ProductController,
     CategoryController,
     DashboardController,
     ProductSizeController,
     ProductColorController,
+    CouponController
 };
 
 Route::prefix('admin')->as('admin.')
@@ -25,6 +25,8 @@ Route::prefix('admin')->as('admin.')
         // dashboard
         Route::get('/',  [DashboardController::class, 'orderStatistical']);
         Route::post('/', [DashboardController::class, 'orderStatistical'])->name('dashboard.year');
+        Route::get('/dashboard/exportProduct',  [DashboardController::class, 'exportProduct'])->name('dashboard.exportProduct');
+        Route::get('/dashboard/exportCategory', [DashboardController::class, 'exportCategory'])->name('dashboard.exportCategory');
 
         // order
         Route::get('orders',            [OrderController::class, 'index'])->name('orders.index');
@@ -49,6 +51,7 @@ Route::prefix('admin')->as('admin.')
                 Route::get('{id}/edit',         [CategoryController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',       [CategoryController::class, 'update'])->name('update');
                 Route::delete('{id}/destroy',   [CategoryController::class, 'destroy'])->name('destroy');
+                Route::put('/{id}/update',     [CategoryController::class, 'updateStatus'])->name('updateStatus');
             });
 
         // coupon
@@ -78,6 +81,9 @@ Route::prefix('admin')->as('admin.')
 
         // roles
         Route::resource('roles', RoleController::class);
+        Route::prefix('roles')->as('roles.')->group(function () {
+            Route::put('/{id}/update',   [RoleController::class, 'updateStatus'])->name('updateStatus');
+        });
 
         // auth
         Route::get('showFormLogin', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
@@ -86,16 +92,31 @@ Route::prefix('admin')->as('admin.')
 
         // products
         Route::resource('products', ProductController::class);
+        Route::prefix('products')->as('products.')->group(function () {
+            Route::put('/{id}/update',   [ProductController::class, 'updateProduct'])->name('updateProduct');
+        });
 
         // product sizes
         Route::resource('productSizes', ProductSizeController::class);
+        Route::prefix('productSizes')->as('productSizes.')->group(function () {
+            Route::put('/{id}/update',   [ProductSizeController::class, 'updateStatus'])->name('updateStatus');
+        });
 
         // product colors
         Route::resource('productColors', ProductColorController::class);
+        Route::prefix('productColors')->as('productColors.')->group(function () {
+            Route::put('/{id}/update',   [ProductColorController::class, 'updateStatus'])->name('updateStatus');
+        });
 
         // brands
         Route::resource('brands', BrandController::class);
+        Route::prefix('brands')->as('brands.')->group(function () {
+            Route::put('/{id}/update',   [BrandController::class, 'updateStatus'])->name('updateStatus');
+        });
 
         // banners
         Route::resource('banners', BannerController::class);
+        Route::prefix('banners')->as('banners.')->group(function () {
+            Route::put('/{id}/update',   [BannerController::class, 'updateStatus'])->name('updateStatus');
+        });
     });

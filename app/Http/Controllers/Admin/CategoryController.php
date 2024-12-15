@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCategoryRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
@@ -137,5 +138,19 @@ class CategoryController extends Controller
         } else {
             return back()->with('error', 'Access denied!');
         };
+    }
+
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'is_active' => 'required'
+        ]);
+
+        $category =Category::findOrFail($id);
+        $category->update([
+            'is_active' => $request->is_active
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
     }
 }

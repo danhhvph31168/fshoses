@@ -42,7 +42,8 @@ class CheckoutController extends Controller
 
                 $totalAmount += $item['quatity'] * ($price ?: $item['price_regular']);
             }
-            // dd($totalAmount);
+
+            session()->put('totalAmount', $totalAmount);
 
             $currentDate = now();
 
@@ -62,21 +63,20 @@ class CheckoutController extends Controller
     public function addOrder(CheckoutRequest $request)
     {
         try {
-            DB::beginTransaction();      
-            
-            $totalAmount = session('totalAmount');
+            DB::beginTransaction();
+
+            $total = session('totalAmount');
 
             if (session('coupon')) {
                 if (session('coupon')['type'] == "percent") {
-                    $totalAmount =  $totalAmount * ((100 - session('coupon')['value']) / 100);
+                    $totalAmount =  $total * ((100 - session('coupon')['value']) / 100);
                 } else {
-                    $totalAmount = $totalAmount - session('coupon')['value'];
+                    $totalAmount = $total - session('coupon')['value'];
                 }
-            }           
-            session()->put('totalAmount',$totalAmount);
-            // dd($totalAmount);            
+            }
+            session()->put('totalAmount', $totalAmount);
 
-            [$totalAmount, $dataItem]  = $this->addOrderServices->dataOrderItem();            
+            [$totalAmount, $dataItem]  = $this->addOrderServices->dataOrderItem();
 
             if (Auth::check() == false) {
                 $order = $this->addOrderServices->notLogin($request, $totalAmount);
@@ -109,8 +109,7 @@ class CheckoutController extends Controller
                 $item->productVariant->update(['quantity' => $quantity]);
             }
 
-
-            // dd(session('coupon'));
+            // Trừ số lượng coupon
             if (session('coupon')) {
                 $coupon = Coupon::findByCode(session('coupon')['code']);
                 $coupon->decrement('quantity', 1);

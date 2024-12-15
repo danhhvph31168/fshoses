@@ -1,4 +1,4 @@
-<section class="latest spad">
+<section class="latest">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
