@@ -51,8 +51,10 @@
                                 <th>Code</th>
                                 <th>Value</th>
                                 <th>Quantity</th>
+                                <th>Condition</th>
                                 <th>Start date</th>
                                 <th>End date</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -61,14 +63,20 @@
                                 <tr class="align-middle">
                                     <th>{{ $key + 1 }}</th>
                                     <th>{{ $item->code }}</th>
-                                    <th>{{ $item->type == 'percent' ? $item->value . '%' : number_format($item->value * 1000, 0, ',', '.') . ' VND' }}
+                                    <th>{{ $item->type == 'percent' ? $item->value . '%' : number_format($item->value, 0, ',', '.') . ' VND' }}
                                     </th>
                                     <th>{{ $item->quantity }}</th>
-                                    <th>{{ $item->start_date }}</th>
-                                    <th>{{ $item->end_date }}</th>
+                                    <th>{{ number_format($item->minimum_order_value, 0, ',', '.') }} VNĐ</th>
+                                    <th>{{ \Carbon\Carbon::parse($item->start_date)->format('d/m/Y') }}</th>
+                                    <th>{{ \Carbon\Carbon::parse($item->end_date)->format('d/m/Y') }}</th>
+                                    <th>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}"
+                                                {{ $item->is_active == 1 ? 'checked' : '' }}>
+                                        </div>
+                                    </th>
                                     <td>
-
-
                                         <a href="{{ route('admin.coupons.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
@@ -93,25 +101,91 @@
     </div><!--end row-->
 @endsection
 
-@section('css')
-    <!--datatable css-->
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" /> --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
+@section('scripts')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let couponId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: "{{ route('admin.coupons.updateStatus', ':id') }}".replace(':id', couponId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    is_active: newValue
+                },
+                success: function(response) {
+                    console.log(200);
+                    toastr.success(
+                        `Status updated successfully!`
+                    );
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
+@endsection
+
+@section('style-libs')
+    <style>
+        .form-check-input {
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            appearance: none;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-check-input:checked {
+            background-color: #4caf50;
+        }
+
+        .form-check-input::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-check-input:checked::before {
+            transform: translateX(20px);
+        }
+    </style>
+
+
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 
-@section('js')
+@section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-    {{-- <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script> --}}
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
@@ -119,4 +193,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    {{-- <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
+
+    <script>
+        new DataTable("#example", {
+            order: [
+                [0, 'desc']
+            ]
+        });
+    </script>
 @endsection

@@ -23,7 +23,7 @@
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Name</label>
                                     <input type="text" class="form-control @error('email') is-invalid @enderror"
-                                        name="name" value="{{ Storage::url($model->avatar) }}" id="username"
+                                        name="name" value="{{ Storage::url($user->avatar) }}" id="username"
                                         placeholder="Enter username">
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -34,7 +34,7 @@
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        name="email" value="{{ $model->email }}" id="email" placeholder="Enter email"
+                                        name="email" value="{{ $user->email }}" id="email" placeholder="Enter email"
                                         disabled>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -50,7 +50,7 @@
                                             class="form-control pe-5 password-input @error('avatar') is-invalid @enderror">
                                         <div class="card-body p-4 text-center">
                                             <div class="mx-auto avatar-md">
-                                                <img src="{{ Storage::url($model->avatar) }}" alt=""
+                                                <img src="{{ Storage::url($user->avatar) }}" alt=""
                                                     class="img-fluid rounded-circle">
                                             </div>
                                         </div>
@@ -64,7 +64,7 @@
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Phone</label>
                                     <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                        name="phone" value="{{ $model->phone }}" id="phone" placeholder="Enter phone">
+                                        name="phone" value="{{ $user->phone }}" id="phone" placeholder="Enter phone">
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -76,7 +76,7 @@
                                     <label for="province" class="form-label">Province</label>
                                     <select id="province" class="form-control @error('province') is-invalid @enderror"
                                         name="province">
-                                        <option value="">{{ $model->province }}</option>
+                                        <option value="">{{ $user->province }}</option>
 
                                     </select>
                                     <input type="hidden" name="province_text" id="province_text">
@@ -91,7 +91,7 @@
                                     <label for="district" class="form-label">District</label>
                                     <select id="district" class="form-control @error('district') is-invalid @enderror"
                                         name="district">
-                                        <option value="">{{ $model->district }}</option>
+                                        <option value="">{{ $user->district }}</option>
 
                                     </select>
                                     <input type="hidden" name="district_text" id="district_text">
@@ -106,7 +106,7 @@
                                     <label for="ward" class="form-label">Ward</label>
                                     <select id="ward" class="form-control @error('ward') is-invalid @enderror"
                                         name="ward">
-                                        <option value="" selected>{{ $model->ward }}</option>
+                                        <option value="" selected>{{ $user->ward }}</option>
                                     </select>
                                     <input type="hidden" name="ward_text" id="ward_text">
 
@@ -120,7 +120,7 @@
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Address</label>
                                     <input type="text" class="form-control @error('address') is-invalid @enderror"
-                                        name="address" value="{{ $model->address }}" id="address"
+                                        name="address" value="{{ $user->address }}" id="address"
                                         placeholder="Enter address">
                                     @error('address')
                                         <span class="invalid-feedback" role="alert">
@@ -132,7 +132,7 @@
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Zip_code</label>
                                     <input type="text" class="form-control @error('zip_code') is-invalid @enderror"
-                                        name="zip_code" value="{{ $model->zip_code }}" id="zip_code"
+                                        name="zip_code" value="{{ $user->zip_code }}" id="zip_code"
                                         placeholder="Enter zip_code">
                                     @error('zip_code')
                                         <span class="invalid-feedback" role="alert">
@@ -177,10 +177,10 @@
     <script>
         const host = "https://provinces.open-api.vn/api/";
         var callAPI = (api) => {
-            let row = `<option value="">{{ $model->province ? $model->province : 'Chọn' }}</option>`;
+            let row = `<option value="">{{ $user->province ? $user->province : 'Chọn' }}</option>`;
             return axios.get(api)
                 .then((response) => {
-                    // const a = $model->province
+                    // const a = $user->province
                     // const data = response.data.filter(item => item !== a);
                     // console.log(response.data)
                     renderData(response.data, "province", row);

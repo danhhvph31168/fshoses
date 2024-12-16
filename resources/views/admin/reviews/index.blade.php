@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    List Review
+    List Comment
 @endsection
 
 @section('content')
@@ -9,12 +9,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">List Review</h4>
+                <h4 class="mb-sm-0">List Comment</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">List Review</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Comment</a></li>
+                        <li class="breadcrumb-item active">List</li>
                     </ol>
                 </div>
 
@@ -26,9 +26,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">List Review</h5>
-                </div>
+                
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
@@ -36,46 +34,45 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Image Product</th>
                                 <th>User</th>
                                 <th>Product</th>
                                 <th>Comment</th>
-                                <th>Comment Date</th>
-                                <th>Update Date</th>
-                                <th>Is Show</th>
-                                <th>Action</th>
+                                <th>Date</th>
+                                <th>Show</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($reviews as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>
+                                        <img src="{{ Storage::url($item->product->img_thumbnail) }}" width="100"
+                                            height="100" alt="">
+                                    </td>
                                     <td>{{ $item->user->name }}</td>
-                                    <td>{{ \Str::limit($item->product->name, 30) }}</td>
+                                    <td>
+                                        <a href="{{ route('productDetail', $item->product->slug) }}">
+                                            {{ \Str::limit($item->product->name, 30) }}
+                                        </a>
+                                    </td>
                                     <td>{{ \Str::limit($item->comment, 30) }}</td>
-                                    <td>{{ $item->created_at->format('d/m/y') }}</td>
-                                    <td>{{ $item->updated_at->format('d/m/y') }}</td>
-
-                                    <form action="{{ route('admin.reviews.update', $item->id) }}" method="post">
-                                        @csrf
-                                        @method('PUT')
-                                        <td>
-                                            <select name="is_show" class="form-control border-0">
-                                                {!! $item->is_show == 0
-                                                    ? '<option value="0" checked>Show</option> <option value="1">Hide</option>'
-                                                    : '<option value="1" checked>Hide</option> <option value="0">Show</option>' !!}
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn btn-warning edit-item-btn"
-                                                href="{{ route('admin.reviews.show', $item->id) }}">Detail</a>
-
-                                            <button class="btn btn-info">Update</button>
-                                        </td>
-                                    </form>
-
+                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}" {{ $item->is_show == 1 ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.reviews.show', $item->id) }}"><i
+                                                class="ri-eye-fill align-bottom"></i></a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
+
 
                     </table>
                 </div>
@@ -85,9 +82,67 @@
 @endsection
 
 @section('scripts')
+
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let reviewId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: "{{ route('admin.reviews.update', ':id') }}".replace(':id', reviewId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    is_show: newValue
+                },
+                success: function(response) {
+                    toastr.success(`Status updated successfully`);
+                    console.log(200);
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
 @endsection
 
 @section('style-libs')
+    <style>
+        .form-check-input {
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            appearance: none;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-check-input:checked {
+            background-color: #4caf50;
+        }
+
+        .form-check-input::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-check-input:checked::before {
+            transform: translateX(20px);
+        }
+    </style>
+
+
     <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->

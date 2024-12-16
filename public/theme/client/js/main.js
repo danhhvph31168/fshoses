@@ -50,8 +50,8 @@
     });
 
     /*------------------
-		Navigation
-	--------------------*/
+        Navigation
+    --------------------*/
     $(".mobile-menu").slicknav({
         prependTo: "#mobile-menu-wrap",
         allowParentLinks: true,
@@ -105,8 +105,8 @@
     $("select").niceSelect();
 
     /*-------------------
-		Radio Btn
-	--------------------- */
+        Radio Btn
+    --------------------- */
     $(
         ".product__color__select label, .shop__sidebar__size label, .product__details__option__size label"
     ).on("click", function () {
@@ -117,8 +117,8 @@
     });
 
     /*-------------------
-		Scroll
-	--------------------- */
+        Scroll
+    --------------------- */
     $(".nice-scroll").niceScroll({
         cursorcolor: "#0d0d0d",
         cursorwidth: "5px",
@@ -155,23 +155,23 @@
         $(this).html(
             event.strftime(
                 "<div class='cd-item'><span>%D</span> <p>Days</p> </div>" +
-                    "<div class='cd-item'><span>%H</span> <p>Hours</p> </div>" +
-                    "<div class='cd-item'><span>%M</span> <p>Minutes</p> </div>" +
-                    "<div class='cd-item'><span>%S</span> <p>Seconds</p> </div>"
+                "<div class='cd-item'><span>%H</span> <p>Hours</p> </div>" +
+                "<div class='cd-item'><span>%M</span> <p>Minutes</p> </div>" +
+                "<div class='cd-item'><span>%S</span> <p>Seconds</p> </div>"
             )
         );
     });
 
     /*------------------
-		Magnific
-	--------------------*/
+        Magnific
+    --------------------*/
     $(".video-popup").magnificPopup({
         type: "iframe",
     });
 
     /*-------------------
-		Quantity change
-	--------------------- */
+        Quantity change
+    --------------------- */
     var proQty = $(".pro-qty");
     proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
     proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
@@ -196,20 +196,22 @@
     proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
     proQty.on("click", ".qtybtn", function () {
         var $button = $(this);
-        var oldValue = $button.parent().find("input").val();
+        var $input = $button.parent().find("input");
+        var oldValue = parseInt($input.val()) || 1;
+
         if ($button.hasClass("inc")) {
-            var newVal = parseFloat(oldValue) + 1;
+            var newVal = oldValue + 1;
+            if (newVal > 5) { newVal = 5; toastr.info('Sorry, you can only purchase a maximum of 5 products.') }
         } else {
-            // Don't allow decrementing below zero
             if (oldValue > 1) {
-                var newVal = parseFloat(oldValue) - 1;
+                var newVal = oldValue - 1;
             } else {
                 newVal = 1;
             }
         }
-        $button.parent().find("input").val(newVal);
 
-        $button.parent().find("input").trigger("change");
+        $input.val(newVal);
+        $input.trigger("change");
     });
 
     /*------------------

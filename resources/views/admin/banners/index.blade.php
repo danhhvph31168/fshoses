@@ -48,14 +48,13 @@
                         <thead>
                             <tr class="">
                                 <th>#</th>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Collection</th>
-                                <th>Title</th>
+                                <th>Url</th>
                                 <th>Description</th>
-                                <th>Image</th>
+                                <th>Created</th>
                                 <th>Status</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -64,23 +63,26 @@
                             @foreach ($data as $key => $item)
                                 <tr class="align-middle">
                                     <td>{{ $key + 1 }}</td>
+                                    <td style="width: 100px"> <img src="{{ Storage::url($item->image) }}" alt=""
+                                            width="100" height="100">
+                                    </td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->collection }}</td>
-                                    <td>{{ $item->title }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td style="width: 100px"> <img src="{{ Storage::url($item->image) }}" alt=""
-                                            width="50px">
+                                    <td>
+                                        <a href="{{ $item->url }}" target="_blank">{{ $item->url }}</a>
                                     </td>
-                                    <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                        {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
+                                    <td>{{ $item->description }}</td>
+
+                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
 
                                     <td>
-                                        {{-- <a href="{{ route('admin.banners.show', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a> --}}
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
 
+                                    <td>
                                         <a href="{{ route('admin.banners.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
@@ -105,11 +107,37 @@
     </div><!--end row-->
 @endsection
 
+@section('scripts')
+
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let bannerId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: "{{ route('admin.banners.updateStatus', ':id') }}".replace(':id', bannerId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    status: newValue
+                },
+                success: function(response) {
+                    toastr.success(`Status updated successfully`);
+                    console.log(200);
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
+@endsection
+
 @section('css')
 @endsection
 
-@section('js')
-    {{-- <script>
-        new DataTable("#myTable");
-    </script> --}}
+@section('script-libs')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    </script>
 @endsection

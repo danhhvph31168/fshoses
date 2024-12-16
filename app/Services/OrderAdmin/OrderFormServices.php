@@ -2,7 +2,7 @@
 
 namespace App\Services\OrderAdmin;
 
-use App\Models\{Order, Payment, Product, ProductColor, ProductSize, Refund, Role, User};
+use App\Models\{Order, Payment, Product, ProductColor, ProductSize, Role, User};
 
 
 /**
@@ -19,16 +19,15 @@ class OrderFormServices
             'users'         => User::query()->pluck('name', 'id')->all(),
             'roles'         => Role::query()->pluck('name', 'id')->all(),
             'statusOrder'   => Order::STATUS_ORDER,
-            'statusPayment' => Order::STATUS_PAYMENT,
         ];
     }
+    
     public function handleFormEdit()
     {
         return [
             'users'         => User::query()->pluck('name', 'id')->all(),
             'roles'         => Role::query()->pluck('name', 'id')->all(),
             'statusOrder'   => Order::STATUS_ORDER,
-            'statusPayment' => Order::STATUS_PAYMENT,
             'paymentStatus' => Payment::STATUS,
         ];
     }

@@ -30,7 +30,7 @@ class CheckoutRequest extends FormRequest
             'user_province'  => 'required',
             'user_district'  => 'required',
             'user_ward'      => 'required',
-            'user_note'      => 'nullable',
+            'user_note'      => 'nullable|max:150',
             'payment_method' => 'required',
         ];
     }

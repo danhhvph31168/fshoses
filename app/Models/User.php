@@ -33,7 +33,6 @@ class User extends Authenticatable
         'province',
         'district',
         'ward',
-        'zip_code',
     ];
       // Accessor để lấy đường dẫn đầy đủ của avatar
       public function getAvatarUrlAttribute()

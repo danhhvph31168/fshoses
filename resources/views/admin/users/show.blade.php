@@ -127,10 +127,6 @@
                                         <td>{{ $data->address }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Zip Code</td>
-                                        <td>{{ $data->zip_code }}</td>
-                                    </tr>
-                                    <tr>
                                         <td>Status</td>
                                         <td class="{{ $data->status == 1 ? 'text-success' : 'text-danger' }}">
                                             {{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>

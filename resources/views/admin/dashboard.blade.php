@@ -20,39 +20,6 @@
                                     <p class="text-muted mb-0">Here's what's happening with your store
                                         today.</p>
                                 </div>
-                                <div class="mt-3 mt-lg-0">
-                                    <form action="javascript:void(0);">
-                                        <div class="row g-3 mb-0 align-items-center">
-                                            <div class="col-sm-auto">
-                                                <div class="input-group">
-                                                    <input type="text"
-                                                        class="form-control border-0 dash-filter-picker shadow"
-                                                        data-provider="flatpickr" data-range-date="true"
-                                                        data-date-format="d M, Y"
-                                                        data-deafult-date="01 Jan 2022 to 31 Jan 2022">
-                                                    <div class="input-group-text bg-primary border-primary text-white">
-                                                        <i class="ri-calendar-2-line"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-auto">
-                                                <button type="button" class="btn btn-soft-success"><i
-                                                        class="ri-add-circle-line align-middle me-1"></i> Add
-                                                    Product
-                                                </button>
-                                            </div>
-
-                                            <div class="col-auto">
-                                                <button type="button"
-                                                    class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn">
-                                                    <i class="ri-pulse-line"></i></button>
-                                            </div>
-
-                                        </div>
-
-                                    </form>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -62,30 +29,25 @@
                         <div class="col-xl-8">
                             <div class="card">
                                 <div class="card-header border-0 align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Revenue Order</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">Filter By Date</h4>
                                     <div class="d-flex align-items-center justify-content-end">
                                         <input type="date" name="dateStart" id="dateStart"
                                             class="form-control border-info" style="width: 120px;"
-                                            value="{{ old('dateStart') }}">
+                                            value="{{ request('dateStart', date('Y-m-d')) }}">
 
                                         <span id="addDateEnd" data-bs-toggle="collapse" href="#collapseExample"
-                                            role="button" aria-expanded="false" aria-controls="collapseExample"> > </span>
+                                            role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            <i class="bi bi-arrow-right-circle-fill text-success mx-1"></i>
+                                        </span>
 
                                         <div class="collapse" id="collapseExample">
                                             <input type="date" name="dateEnd" id="dateEnd"
-                                                class="form-control border-info" style="width: 120px;">
+                                                value="{{ request('dateEnd', date('Y-m-d')) }}"
+                                                class="form-control border-info me-2" style="width: 120px;">
                                         </div>
 
                                         <button type="submit" id="subYear" class="btn btn-info"><i
-                                                class="bi bi-search"></i></button> >
-
-                                        <select id="yearSelect" name="filteryear" class="form-control border-info"
-                                            style="width: 62px;">
-                                            @foreach (range($currentYear, 2022) as $year)
-                                                <option class="border-none" value="{{ $year }}"
-                                                    @selected(request('filteryear') == $year)>{{ $year }}</option>
-                                            @endforeach
-                                        </select>
+                                                class="bi bi-search"></i></button>
                                     </div>
 
                                 </div>
@@ -100,12 +62,11 @@
                                                 <p class="text-primary mb-0">Orders</p>
                                             </div>
                                         </div>
-
                                         <div class="col-3">
                                             <div class="p-3 border border-dashed border-start-0">
                                                 <h5 class="mb-1"><span class="counter-value text-success"
-                                                        data-target="{{ $dataDate['filterDayEarning'] }}">0</span><span
-                                                        class="text-success">k</span>
+                                                        data-target="{{ floor($dataDate['filterDayEarning']) }}">0</span><span
+                                                        class="text-success"> vnđ</span>
                                                 </h5>
                                                 <p class="text-success mb-0">Earnings</p>
                                             </div>
@@ -132,6 +93,19 @@
                                     </div>
                                 </div>
 
+                                <div class="card-header border-bottom align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1">Filter By Month And Year</h4>
+                                    <div class="d-flex align-items-center justify-content-end">
+                                        <select id="yearSelect" name="filteryear" class="form-control border-info"
+                                            style="width: 62px;">
+                                            @foreach (range($currentYear, 2022) as $year)
+                                                <option class="border-none" value="{{ $year }}"
+                                                    @selected(request('filteryear') == $year)>{{ $year }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="card-body p-0 pb-2">
                                     <div class="w-100">
                                         <div id="customer_impression_charts"
@@ -140,7 +114,7 @@
                                     </div>
                                 </div>
 
-                            </div><!-- end card -->
+                            </div>
                         </div>
 
 
@@ -149,11 +123,6 @@
                             <div class="card card-height-100">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">Sales by Locations</h4>
-                                    <div class="flex-shrink-0">
-                                        <button type="button" class="btn btn-soft-primary btn-sm">
-                                            Export Report
-                                        </button>
-                                    </div>
                                 </div>
 
                                 <div class="card-body">
@@ -181,7 +150,7 @@
                                 </div>
 
                             </div>
-                            <!-- end card -->
+
                         </div>
 
                     </div>
@@ -194,21 +163,38 @@
                                     <div class="flex-shrink-0">
                                         <select name="fillterProduct" id="fillterProduct" class="form-control"
                                             onchange="submitForm()">
-                                            @if (session('fillterProduct'))
-                                                <option value="{{ session('fillterProduct') }}" selected>
-                                                    {{ ucwords(str_replace('_', ' ', session('fillterProduct'))) }}
-                                                </option>
-                                            @endif
-                                            <option value="today">Today</option>
-                                            <option value="all">All</option>
-                                            <option value="yesterday">Yesterday</option>
-                                            <option value="last_7_days">Last 7 Days</option>
-                                            <option value="last_30_days">Last 30 Days</option>
-                                            <option value="this_mouth">This Month</option>
-                                            <option value="last_month">Last Month</option>
-                                            <option value="last_year">Last Year</option>
+                                            <option value="all"
+                                                {{ session('fillterProduct') === 'all' || !session('fillterProduct') ? 'selected' : '' }}>
+                                                All</option>
+                                            <option value="today"
+                                                {{ session('fillterProduct') === 'today' ? 'selected' : '' }}>Today
+                                            </option>
+                                            <option value="yesterday"
+                                                {{ session('fillterProduct') === 'yesterday' ? 'selected' : '' }}>Yesterday
+                                            </option>
+                                            <option value="last_7_days"
+                                                {{ session('fillterProduct') === 'last_7_days' ? 'selected' : '' }}>Last 7
+                                                Days</option>
+                                            <option value="last_30_days"
+                                                {{ session('fillterProduct') === 'last_30_days' ? 'selected' : '' }}>Last
+                                                30 Days</option>
+                                            <option value="this_month"
+                                                {{ session('fillterProduct') === 'this_month' ? 'selected' : '' }}>This
+                                                Month</option>
+                                            <option value="last_month"
+                                                {{ session('fillterProduct') === 'last_month' ? 'selected' : '' }}>Last
+                                                Month</option>
+                                            <option value="last_year"
+                                                {{ session('fillterProduct') === 'last_year' ? 'selected' : '' }}>Last Year
+                                            </option>
                                         </select>
                                     </div>
+
+                                    <div>
+                                        <a href="{{ route('admin.dashboard.exportProduct') }}"
+                                            class="btn btn-primary ms-2">Export</a>
+                                    </div>
+
                                 </div>
 
                                 <div class="card-body">
@@ -220,8 +206,8 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                                    <img src="{{ $item->img_thumbnail }}" alt=""
-                                                                        class="img-fluid d-block" />
+                                                                    <img src="{{ Storage::url($item->img_thumbnail) }}"
+                                                                        alt="" class="img-fluid d-block" />
                                                                 </div>
                                                                 <div>
                                                                     <h5 class="fs-14 my-1"><a
@@ -236,7 +222,7 @@
 
                                                         <td>
                                                             <h5 class="fs-14 my-1 fw-normal">
-                                                                {{ number_format($item->price_sale ? $item->price_sale : $item->price_regular) }}
+                                                                {{ number_format($item->price_sale ? $item->price_regular * ((100 - $item->price_sale) / 100) : $item->price_regular) }}
                                                             </h5>
                                                             <span class="text-muted">Price</span>
                                                         </td>
@@ -276,19 +262,9 @@
                             <div class="card card-height-100">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">Top Categories</h4>
-                                    <div class="flex-shrink-0">
-                                        <div class="dropdown card-header-dropdown">
-                                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <span class="text-muted">Report<i
-                                                        class="mdi mdi-chevron-down ms-1"></i></span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Download Report</a>
-                                                <a class="dropdown-item" href="#">Export</a>
-                                                <a class="dropdown-item" href="#">Import</a>
-                                            </div>
-                                        </div>
+                                    <div>
+                                        <a href="{{ route('admin.dashboard.exportCategory') }}"
+                                            class="btn btn-primary ms-2">Export</a>
                                     </div>
                                 </div>
 
@@ -301,27 +277,30 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="flex-shrink-0 me-2">
-                                                                    <img src="{{ $item->category_image }}" alt=""
-                                                                        class="avatar-sm p-2" />
+                                                                    <img src="{{ Storage::url($item->category_image) }}"
+                                                                        alt="" class="avatar-sm p-2" />
                                                                 </div>
                                                                 <div>
                                                                     <h5 class="fs-14 my-1 fw-medium">
                                                                         <a href="apps-ecommerce-seller-details.html"
                                                                             class="text-reset">{{ $item->category_name }}</a>
                                                                     </h5>
+                                                                    <span
+                                                                        class="text-muted">{{ \Str::limit($item->category_description, 15) }}</span>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <span class="text-muted">{{ $item->total_sold }}</span>
+                                                            <p class="mb-0">{{ $item->total_sold }}</p>
+                                                            <span class="text-muted">Total Sold</span>
                                                         </td>
                                                         <td>
                                                             <p class="mb-0">{{ $item->stock }}</p>
                                                             <span class="text-muted">Stock</span>
                                                         </td>
                                                         <td>
-                                                            <span
-                                                                class="text-muted">{{ number_format($item->total_amount) }}</span>
+                                                            <p class="mb-0">{{ number_format($item->total_amount) }}</p>
+                                                            <span class="text-muted">Total Amount</span>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -393,6 +372,8 @@
 @endsection
 
 @section('script-libs')
+    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
+
     <!-- apexcharts -->
     <script src="{{ asset('theme/admin/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 

@@ -15,10 +15,10 @@ class CartController extends Controller
         $cart = session('cart');
 
         $colors = ProductColor::query()->get();
+
         $sizes = ProductColor::query()->get();
 
         $totalAmount = 0;
-        $discount = session('discount', 0);
 
         if (session()->has('cart')) {
             foreach ($cart as $item) {
@@ -29,19 +29,14 @@ class CartController extends Controller
             $cart = [];
         }
 
-        $totalAmount = $totalAmount - $discount;
-
         session(['totalAmount' => $totalAmount]);
 
-        return view('client.cart-list', compact('totalAmount', 'cart',  'discount', 'colors', 'sizes'));
+        return view('client.cart-list', compact('totalAmount', 'cart', 'colors', 'sizes'));
     }
 
     public function add(Request $request)
     {
-        // dd($request->all());
         $product = Product::query()->findOrFail(\request('product_id'));
-
-        // dd($product);
 
         if (!$request->product_size || !$request->product_color) {
             return back()->with('error', 'Select Product Size and Color please!');
@@ -56,23 +51,42 @@ class CartController extends Controller
             ])
             ->firstOrFail();
 
-
-
         if (!isset(session('cart')[$productVariant->id])) {
 
             $data = $product->toArray() + $productVariant->toArray();
 
             $data['quatity'] = \request('quatity');
 
-            session()->put('cart.' . $productVariant->id, $data);
+            if ($productVariant->quantity == 0) {
+                return back()
+                    ->with('info', "Your product is out of stock, please choose another product.");
+            } else {
+                if ($data['quatity'] > $data['quantity']) {
+                    return back()
+                        ->with('info', "Sorry, this product currently has only {$data['quantity']} products left.");
+                } else {
+                    session()->put('cart.' . $productVariant->id, $data);
+                }
+            }
         } else {
 
             $data = session('cart')[$productVariant->id];
 
             $data['quatity'] += \request('quatity');
 
-            session()->put('cart.' . $productVariant->id, $data);
+            if ($productVariant->quantity == 0) {
+                return back()
+                    ->with('info', "Your product is out of stock, please choose another product.");
+            } else {
+                if ($data['quatity'] > $data['quantity']) {
+                    return back()
+                        ->with('info', "Sorry,Sorry, this product currently has only {$data['quantity']} products left.");
+                } else {
+                    session()->put('cart.' . $productVariant->id, $data);
+                }
+            }
         }
+
 
         return redirect()->route('cart.list');
     }
@@ -85,9 +99,11 @@ class CartController extends Controller
         ]);
 
         $variant_id = $request->variant_id;
+
         $quatity = $request->quatity;
 
         $cart = session('cart');
+
         $cart[$variant_id]['quatity'] = $quatity;
 
         $price = $cart[$variant_id]['price_regular'] * ((100 -  $cart[$variant_id]['price_sale']) / 100);
@@ -97,15 +113,15 @@ class CartController extends Controller
         session()->put('cart', $cart);
 
         $totalCart = 0;
+
         foreach (session('cart') as $item) {
-            // dd($item['price_sale']);
             $totalCart += ($item['price_regular'] * ((100 -  $item['price_sale']) / 100)) * $item['quatity'];
         }
 
         return response()->json([
             'data' => [
                 'totalAmount' => $totalAmount,
-                "totalCart" => $totalCart
+                "totalCart" => $totalCart,
             ]
         ], 200);
     }
@@ -128,6 +144,7 @@ class CartController extends Controller
         session()->forget('cart');
         $cart = session('cart');
         session()->put('cart', $cart);
+        session()->forget('coupon');
 
         return back();
     }

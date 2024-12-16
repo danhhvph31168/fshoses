@@ -18,9 +18,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Role::class)->constrained();
+            $table->foreignIdFor('staff_id')->constrained('users');
             $table->string('sku_order')->unique();
-            
             $table->string('user_name');
             $table->string('user_email');
             $table->string('user_phone');
@@ -29,9 +28,7 @@ return new class extends Migration
             $table->string('user_district');
             $table->string('user_ward');
             $table->text('user_note')->nullable();
-
             $table->string('status_order')->default(Order::STATUS_ORDER_PENDING);
-            $table->string('status_payment')->default(Order::STATUS_PAYMENT_UNPAID);
             $table->double('total_amount');
             $table->timestamps();
         });

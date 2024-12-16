@@ -106,6 +106,12 @@
                                     </div>
 
                                     <div>
+                                        <label for="quantity" class="form-label">Condition</label>
+                                        <input type="number" class="form-control" name="minimum_order_value" id="minimum_order_value" value="{{  $coupon->minimum_order_value }}">
+
+                                    </div>
+
+                                    <div>
                                         <label for="start_date" class="form-label">Start date</label>
                                         <input type="date" class="form-control" name="start_date" id="start_date" value="{{  $coupon->start_date }}">
 

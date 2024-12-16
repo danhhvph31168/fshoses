@@ -24,11 +24,11 @@ class UpdateCouponRequest extends FormRequest
     {
         $id = $this->route('coupon'); // Lấy id từ route
 
-
         return [
-            'code' => 'required|string|unique:coupons,code,' . $id,
+            // 'code' => 'required|string|unique:coupons,code,' . $id,
             'type' => 'required|in:fixed,percent',
             'value' => 'required|numeric',
+            'minimum_order_value' => 'required|numeric',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date'
         ];

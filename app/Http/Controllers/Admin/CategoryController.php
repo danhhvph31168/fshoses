@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCategoryRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -20,7 +22,7 @@ class CategoryController extends Controller
     {
         $user = Auth::user();
         $data = Category::query()->latest('id')->paginate(10);
-        if ($user->role_id === 1) {
+        if ($user->role_id === 1 || $user->role_id === 2) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
@@ -35,7 +37,6 @@ class CategoryController extends Controller
         $user = Auth::user();
         $parentCategories = Category::query()->get();
 
-        // dd($parentCategories);
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('parentCategories'));
         } else {
@@ -95,7 +96,22 @@ class CategoryController extends Controller
         $user = Auth::user();
         $model = Category::query()->findOrFail($id);
 
-        $model->update($request->all());
+        $data = $request->except('image');
+
+        if ($request->hasFile('image')) {
+
+            $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+        }
+
+        $currentImage = $model->image;
+
+        $model->update($data);
+
+        if ($request->hasFile('image') && $currentImage && Storage::exists($currentImage)) {
+
+            Storage::delete($currentImage);
+        }
+
         if ($user->role_id === 1) {
             return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
         } else {
@@ -113,9 +129,28 @@ class CategoryController extends Controller
         if ($user->role_id === 1) {
             $model->delete();
 
+            if ($model->image && Storage::exists($model->image)) {
+
+                Storage::delete($model->image);
+            }
+
             return back()->with('success', 'Category deleted successfully!');
         } else {
             return back()->with('error', 'Access denied!');
         };
+    }
+
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'is_active' => 'required'
+        ]);
+
+        $category =Category::findOrFail($id);
+        $category->update([
+            'is_active' => $request->is_active
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
     }
 }

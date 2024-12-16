@@ -144,4 +144,17 @@ class BannerController extends Controller
             return back()->with('error', 'Access denied!');
         };
     }
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        $banner = Banner::findOrFail($id);
+        $banner->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+    }
 }

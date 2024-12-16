@@ -21,7 +21,10 @@ class UserController extends Controller
 
     public function index()
     {
-        $data = User::query()->with('role')->latest('id')->paginate(5);
+        $data = User::whereHas('role', function ($query) {
+            $query->where('name', 'staff');
+        })->latest('id')->paginate(5);
+
         if ($key = request()->key) {
             $data = User::query()->with('role')->latest('id')
                 ->where('name', 'like', '%' . $key . '%')
@@ -32,12 +35,37 @@ class UserController extends Controller
         }
 
         $user = Auth::user();
-
         if ($user->role_id === 1) {
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
         } else {
             return back()->with('error', 'Access denied!');
         };
+    }
+
+    public function listCustomer(){
+        $customer = User::whereHas('role', function ($query) {
+            $query->where('name', 'customer');
+        })->paginate(10);
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('customer'));
+    }
+
+    public function updateCustomer($id){
+        $userCustomer = User::findOrFail($id);
+        $userCustomer->update([
+            'status' => request('status')
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+
+    }
+
+    public function listStaff(){
+        $staff = User::whereHas('role', function ($query) {
+            $query->where('name', 'staff');
+        })->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('staff'));
     }
 
     /**
@@ -86,8 +114,6 @@ class UserController extends Controller
         $user = Auth::user();
         $data = User::query()->findOrFail($id);
 
-        // dd( $data);
-
         if ($user->role_id === 1) {
 
             return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
@@ -113,61 +139,41 @@ class UserController extends Controller
         };
     }
 
-    // public function update(UpdateUserRequest $request, string $id)
-    // {
-    //     $model = User::query()->findOrFail($id);
+    public function update(UpdateUserRequest $request, string $id)
+    {
+        $user = Auth::user();
 
-    //     // if (Auth::user()->role_id == 1) {
+        $model = User::query()->findOrFail($id);
 
-    //     $data = $request->except('avatar');
+        if ($user->role_id == 1) {
 
-    //     if ($request->hasFile('avatar')) {
-    //         $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
-    //     }
-    //     $currentAvatar = $model->avatar;
+            if ($model->email == $request->email) {
 
-    //     $model->update($data);
+                $data['email'] = $model->email;
 
-    //     if ($request->hasFile('cover')  && $currentAvatar && Storage::exists($currentAvatar)) {
-    //         Storage::delete($currentAvatar);
-    //     }
+                $data = $request->except('avatar');
 
-    //     // $data['province'] = (empty($model->province)) ? $request->province_text : $model->province;
-    //     // $data['district'] = (empty($model->district)) ? $request->district_text : $model->district;
-    //     // $data['ward'] = (empty($model->ward)) ? $request->ward_text : $model->ward;
-    //     // $data['avatar'] = (empty($request->avatar)) ? $model->avatar : $data['avatar'];
+                if ($request->hasFile('avatar')) {
+                    $data['avatar'] = Storage::put(self::PATH_UPLOAD, $request->file('avatar'));
+                }
 
-    //     // $data = [
-    //     //     'name'      => $request->name,
-    //     //     'avatar'    => $data['avatar'] ,
-    //     //     'phone'     => $request->phone,
-    //     //     'address'   => $request->address,
-    //     //     'district' => $data['district'],
-    //     //     'province' => $data['province'],
-    //     //     'ward' => $data['ward'],
-    //     //     'zip_code'  => $request->zip_code,
-    //     //     'role_id' => $request->role_id,
-    //     //     'password' => $request->password,
-    //     //     'status' => $request->status
-    //     // ];
+                $currentAvatar = $model->avatar;
 
-    //     // dd($data);
+                $model->update($data);
 
-    //     return redirect()->back()->with('success', 'Account information updated successfully.');
-    //     // } else {
-    //     //     return back()->with('error', 'Access denied!');
-    //     // };
+                if ($request->hasFile('cover') && $currentAvatar && Storage::exists($currentAvatar)) {
+                    Storage::delete($currentAvatar);
+                }
 
-    //     // return response()->json([
-    //     //     'status' => 'Thành công',
-    //     //     'message' => 'Cập nhật người dùng thành công.',
-    //     //     'account' => $user, // Trả về thông tin người dùng đã cập nhật
-    //     // ], 200);
-    // }
+                return redirect()->route('admin.users.index')->with('success', 'Account updated successfully!');
+            } else {
+                return back()->with('error', 'The email has already been taken!');
+            }
+        } else {
+            return back()->with('error', 'Access denied!');
+        };
+    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $user = Auth::user();

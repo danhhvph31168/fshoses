@@ -51,7 +51,7 @@ class AuthenController extends Controller
                 'name'      => $request->name,
                 'email'     => $request->email,
                 'password'  => $request->password,
-                'role_id'   => 1,
+                'role_id'   => 3,
             ]);
 
             Auth::login($user);
@@ -77,7 +77,7 @@ class AuthenController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
             ];
-            // Tạo remember_token khi người dùng tích vào ô checkbox
+            
             $remember = $request->has('remember');
 
             if (Auth::attempt($data, $remember)) {
@@ -85,7 +85,6 @@ class AuthenController extends Controller
 
                 return redirect()->intended()->with('success', 'Login successfully');
             } else {
-                // If authentication fails
                 return redirect()->back()->with(['error' => 'The login credentials are invalid. Please try again.']);
             }
         }
@@ -109,13 +108,10 @@ class AuthenController extends Controller
     }
     public function handleSendMailForgot(HandleSendMailForgotRequest $request)
     {
-        // Tìm kiếm người dùng qua email
         $user = User::where('email', $request->email)->first();
 
-        // Tạo token đặt lại mật khẩu
         $token = Password::createToken($user);
 
-        // Gửi email đến email tài khoản chứa liên kết đặt lại mật khẩu
         try {
             Mail::send('auth.mail', ['user' => $user, 'token' => $token], function ($message) use ($user) {
                 $message->to($user->email);
@@ -129,10 +125,8 @@ class AuthenController extends Controller
     }
     public function clickInEmailForgot($id, $token)
     {
-        // Tìm kiếm người dùng qua ID
         $user = User::find($id);
 
-        // Kiểm tra user có tồn tại hay token có hợp lệ không
         if (!$user || !Password::tokenExists($user, $token)) {
             return redirect()->route('auth.showFormLogin')
                 ->with('error', 'The link is invalid or has expired.');
@@ -143,20 +137,17 @@ class AuthenController extends Controller
 
     public function handleForgotPass(HandleForgotPassRequest $request, $id, $token)
     {
-        // Tìm người dùng
+     
         $user = User::find($id);
 
-        // Kiểm tra token có hợp lệ không
         if (!Password::tokenExists($user, $token)) {
             return redirect()->route('auth.showFormLogin')->with('error', 'The password reset link is invalid.');
         }
 
-        // Cập nhật mật khẩu mới
         $user->update([
             'password' => Hash::make($request->password),
         ]);
 
-        // Xóa token sau khi mật khẩu được cập nhật
         Password::deleteToken($user);
         return redirect()->route('messageSuccessReset')
             ->with('success', 'Your password has been successfully reset. Please log in again.');

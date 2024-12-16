@@ -1,5 +1,9 @@
 @extends('client.layouts.master')
 
+@section('title')
+    Products List
+@endsection
+
 @section('content')
     <section class="breadcrumb-option">
         <div class="container">
@@ -38,35 +42,38 @@
                             <div class="row" id="product-list">
                                 @include('client.partials.products', ['products' => $prds])
                                 @foreach ($prds as $item)
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card">
-                                            <div class="border-bottom" style="width: 100%">
-                                                <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
-                                                    alt="..." height="200px">
-                                            </div>
-                                            <div class="card-body" style="height: 180px">
-                                                <a href="" class="text-dark card-title fs-6 fw-bold">
-                                                    {{ $item->name }}
-                                                </a>
-                                                @if ($item->price_sale > 0)
-                                                    <p class="card-text text-danger">
-                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
-                                                        <span class="text-decoration-line-through">
-                                                            {{ number_format($item->price_sale, 0, ',', '.') }} VNĐ</span>
-                                                    </p>
-                                                @else
-                                                    <p class="card-text text-danger">
-                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
-                                                    </p>
-                                                @endif
-                                                <div class="mb-3 text-center">
-                                                    <a style="background-color: #d17572"
-                                                        href="{{ route('productDetail', $item->slug) }}"
-                                                        class="btn btn-secondary btn-sm w-100">Show more</a>
+                                    @if ($item->is_active == 1)
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <div class="border-bottom" style="width: 100%">
+                                                    <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                        alt="..." height="200px">
+                                                </div>
+                                                <div class="card-body" style="height: 180px">
+                                                    <a href="" class="text-dark card-title fs-6 fw-bold">
+                                                        {{ $item->name }}
+                                                    </a>
+                                                    @if ($item->price_sale > 0)
+                                                        <p class="card-text text-danger">
+                                                            {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ -
+                                                            <span class="text-decoration-line-through">
+                                                                {{ number_format($item->price_sale, 0, ',', '.') }}
+                                                                VNĐ</span>
+                                                        </p>
+                                                    @else
+                                                        <p class="card-text text-danger">
+                                                            {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
+                                                        </p>
+                                                    @endif
+                                                    <div class="mb-3 text-center">
+                                                        <a style="background-color: #d17572"
+                                                            href="{{ route('productDetail', $item->slug) }}"
+                                                            class="btn btn-secondary btn-sm w-100">Show more</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -78,6 +85,7 @@
         </div>
     </section>
 @endsection
+
 @section('css')
     <style>
         /* Product Card */

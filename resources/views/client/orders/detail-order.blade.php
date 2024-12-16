@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Chi tiết đơn hàng
+    Order Detail - Fshoes
 @endsection
 @section('css')
     <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
@@ -15,6 +15,10 @@
     <!-- custom Css-->
     <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
+        .container {
+            max-width: 1400px;
+        }
+
         .footer {
             background-color: black !important;
             margin-top: 80px;
@@ -43,6 +47,41 @@
         .footer .footer__widget {
             padding-right: 50px;
         }
+
+        // star
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            position: relative;
+        }
+
+        .star-rating label::before {
+            content: '★';
+            font-size: inherit;
+        }
+
+        .star-rating input:checked~label {
+            color: #ffc107;
+        }
+
+        .star-rating input:hover~label,
+        .star-rating label:hover~label {
+            color: #ffcc00;
+        }
     </style>
 @endsection
 @section('content')
@@ -54,7 +93,7 @@
                         <h4>Order Detail</h4>
                         <div class="breadcrumb__links">
                             <a href="{{ route('client.home') }}">Home</a>
-                            <a href="./shop.html">Shop</a>
+                            <a href="{{ route('getListOrderHistory') }}">Order History</a>
                             <span>Order Detail</span>
                         </div>
                     </div>
@@ -78,14 +117,18 @@
                                 <thead class="table-light text-muted">
                                     <tr>
                                         <th scope="col">Product Details</th>
-                                        <th scope="col">Item Price</th>
+                                        <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
-                                        <th scope="col" class="text-end">Total Amount</th>
+                                        <th scope="col" class="text-center">Total Amount</th>
+                                        <th scope="col" class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $total = 0;
+                                    @endphp
                                     @foreach ($order->orderItems as $item)
-                                        <tr>
+                                        <tr class="">
                                             <td>
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
@@ -93,12 +136,13 @@
                                                             alt="" class="img-fluid d-block">
                                                     </div>
                                                     <div class="flex-grow-1 ms-3">
-                                                        <h5 class="fs-15"><a
-                                                                href="{{ route('productDetail', $item->productVariant->product->slug) }}"
-                                                                class="link-primary">{{ $item->productVariant->product->name }}</a>
+                                                        <h5 class="fs-15">
+                                                            <a href="{{ route('productDetail', $item->productVariant->product->slug) }}"
+                                                                class="link-primary text-wrap w-100">{{ $item->productVariant->product->name }}</a>
                                                         </h5>
-                                                        <p class="text-muted mb-0">Color: <span
-                                                                class="fw-medium">{{ $item->productVariant->color->name }}</span>
+                                                        <p class="text-muted mb-0">Color:
+                                                            <span class="fw-medium ms-2"
+                                                                style="background: {{ $item->productVariant->color->name }}; padding:0px 10px"></span>
                                                         </p>
                                                         <p class="text-muted mb-0">Size: <span
                                                                 class="fw-medium">{{ $item->productVariant->size->name }}</span>
@@ -106,134 +150,144 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-center">{{ number_format($item->price, 0, '.', '.') }}</td>
-                                            <td class="text-center">{{ $item->quantity }}</td>
-                                            <td class="fw-medium text-end">
+                                            <td class="text-center align-middle">
+                                                {{ number_format($item->price, 0, '.', '.') }}</td>
+                                            <td class="text-center align-middle">{{ $item->quantity }}</td>
+                                            <td class="fw-medium text-center align-middle">
                                                 {{ number_format($item->quantity * $item->price, 0, '.', '.') }}
+                                                @php
+                                                    $total += $item->quantity * $item->price;
+                                                @endphp
                                             </td>
-                                            <td>
-                                                <a href="{{ route('ratings.create', [
-                                                    'orderId' => $order->id,
-                                                    'productId' => $item->productVariant->product->id,
-                                                    'productVariantId' => $item->productVariant->id,
-                                                ]) }}"
-                                                    class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Review</a>
 
-                                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <p class="modal-title fs-5" id="exampleModalLabel">Ratings
-                                                                    and
-                                                                    Reviews</p>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                            {{-- @dd($order->ratings)
+                                            @php
+                                                $test = $order->ratings;
+                                                if ($test == null) {
+                                                    $test = [];
+                                                }
+                                            @endphp --}}
+                                            @if ($order->status_order == 'delivered')
+                                                <td class="text-center align-middle">
+                                                    <a href="#" class="btn badge badge-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#reviewModal-{{ $item->id }}">Review</a>
+                                                </td>
+                                            @else
+                                                @foreach ($order->ratings as $productRating)
+                                                    @dd($productRating->product_id - $item->productVariant->product_id)
+                                                    @if ($productRating->product_id == $item->productVariant->product_id)
+                                                        <td class="text-center align-middle">
+                                                            <a href="">323</a>
+                                                        </td>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+
+
+
+                                        </tr>
+                                        <div class="modal fade" id="reviewModal-{{ $item->id }}" tabindex="-1"
+                                            aria-labelledby="reviewModalLabel-{{ $item->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <p class="modal-title fs-5"
+                                                            id="reviewModalLabel-{{ $item->id }}">Ratings and Reviews
+                                                        </p>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="card card-rating mb-3">
+                                                        <div class="row g-0">
+                                                            <div class="col-md-4">
+                                                                <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
+                                                                    class="img-fluid rounded-start w-100 h-auto"
+                                                                    alt="Sản phẩm" />
                                                             </div>
-                                                            <div class="card card-rating mb-4">
-                                                                <div class="row g-0">
-                                                                    <!-- Cột chứa hình ảnh -->
-                                                                    <div class="col-md-4">
-                                                                        <img src="{{ Storage::url($item->productVariant->product->img_thumbnail) }}"
-                                                                            class="img-fluid rounded-start w-100 h-auto"
-                                                                            alt="Sản phẩm" />
-                                                                    </div>
-                                                                    <!-- Cột chứa nội dung văn bản -->
-                                                                    <div class="col-md-8">
+                                                            <div class="col-md-8">
+                                                                <div
+                                                                    class="card-body d-flex flex-column justify-content-center h-100">
+                                                                    <h5 class="card-title text-truncate"
+                                                                        style="max-width: 100%;">
+                                                                        {{ $item->productVariant->product->name }}
+                                                                    </h5>
+                                                                    <p class="card-text text-muted mb-1">Price:
+                                                                        {{ $item->price }}</p>
+                                                                    <p class="card-text text-muted mb-1">Size:
+                                                                        {{ $item->productVariant->size->name }}</p>
+                                                                    <div class="d-flex align-items-center mb-1">
+                                                                        <p class="card-text text-muted mb-0 me-2">Color:</p>
                                                                         <div
-                                                                            class="card-body d-flex flex-column justify-content-center h-100">
-                                                                            <h5 class="card-title text-truncate"
-                                                                                style="max-width: 100%;">
-                                                                                {{ $item->productVariant->product->name }}
-                                                                            </h5>
-                                                                            <p class="card-text text-muted mb-1">Price:
-                                                                                {{ $item->price }}</p>
-                                                                            <p class="card-text text-muted mb-1">Size:
-                                                                                {{ $item->productVariant->size->name }}</p>
-                                                                            <div class="d-flex align-items-center mb-1">
-                                                                                <p class="card-text text-muted mb-0 me-2">
-                                                                                    Color:
-                                                                                </p>
-                                                                                <!-- Ô tròn màu sắc -->
-                                                                                <div
-                                                                                    style="
-                                                                                            width: 20px;
-                                                                                            height: 20px;
-                                                                                            border-radius: 50%;
-                                                                                            background-color: {{ $item->productVariant->color->name }};
-                                                                                            border: 1px solid #ddd;">
-                                                                                </div>
-
-                                                                            </div>
+                                                                            style="
+                                                                                width: 20px;
+                                                                                height: 20px;
+                                                                                border-radius: 50%;
+                                                                                background-color: {{ $item->productVariant->color->name }};
+                                                                                border: 1px solid #ddd;">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <form action="{{ route('ratings.store') }}" method="POST">
-                                                                @csrf
-                                                                <div class="modal-body">
-                                                                    <input type="hidden" name="user_id"
-                                                                        value="{{ auth()->id() }}" />
-                                                                    <input type="hidden" name="order_id"
-                                                                        value="{{ $order->id }}" />
-
-                                                                    <input type="hidden" name="product_id"
-                                                                        value="{{ $item->productVariant->product->id }}">
-                                                                    <input type="hidden" name="product_variant_id"
-                                                                        value="{{ $item->productVariant->id }}">
-
-                                                                    <!-- Đánh giá -->
-                                                                    <div class="mb-4">
-                                                                        <label for="rating" class="form-label">Your
-                                                                            rating:</label>
-                                                                        <div class="rating">
-                                                                            <input type="radio" id="star5"
-                                                                                name="value" value="5" required />
-                                                                            <label for="star5"
-                                                                                title="Tuyệt vời">&#9733;</label>
-
-                                                                            <input type="radio" id="star4"
-                                                                                name="value" value="4" required />
-                                                                            <label for="star4"
-                                                                                title="Tốt">&#9733;</label>
-
-                                                                            <input type="radio" id="star3"
-                                                                                name="value" value="3" required />
-                                                                            <label for="star3"
-                                                                                title="Bình thường">&#9733;</label>
-
-                                                                            <input type="radio" id="star2"
-                                                                                name="value" value="2" required />
-                                                                            <label for="star2"
-                                                                                title="Tệ">&#9733;</label>
-
-                                                                            <input type="radio" id="star1"
-                                                                                name="value" value="1" required />
-                                                                            <label for="star1"
-                                                                                title="Rất tệ">&#9733;</label>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <!-- Nhận xét -->
-                                                                    <div class="mb-4">
-                                                                        <label for="comment" class="form-label">Your
-                                                                            review:</label>
-                                                                        <textarea class="form-control" id="comment" name="comment" rows="4"
-                                                                            placeholder="Please share your thoughts about this product..." required></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit"
-                                                                        class="btn btn-rating btn-primary w-100">Send</button>
-                                                                </div>
-                                                            </form>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    <form action="{{ route('ratings.store') }}" method="POST">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="user_id"
+                                                                value="{{ auth()->id() }}" />
+                                                            <input type="hidden" name="order_id"
+                                                                value="{{ $order->id }}" />
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $item->productVariant->product->id }}">
+                                                            <input type="hidden" name="product_variant_id"
+                                                                value="{{ $item->productVariant->id }}">
 
-                                            </td>
-                                        </tr>
+                                                            <div class="mb-3">
+                                                                <label for="rating" class="form-label">Your
+                                                                    rating:</label>
+                                                                <div class="star-rating">
+                                                                    <input type="radio" id="star5-{{ $item->id }}"
+                                                                        name="value" value="5" />
+                                                                    <label for="star5-{{ $item->id }}"
+                                                                        title="Excellent"></label>
+
+                                                                    <input type="radio" id="star4-{{ $item->id }}"
+                                                                        name="value" value="4" />
+                                                                    <label for="star4-{{ $item->id }}"
+                                                                        title="Good"></label>
+
+                                                                    <input type="radio" id="star3-{{ $item->id }}"
+                                                                        name="value" value="3" />
+                                                                    <label for="star3-{{ $item->id }}"
+                                                                        title="Average"></label>
+
+                                                                    <input type="radio" id="star2-{{ $item->id }}"
+                                                                        name="value" value="2" />
+                                                                    <label for="star2-{{ $item->id }}"
+                                                                        title="Poor"></label>
+
+                                                                    <input type="radio" id="star1-{{ $item->id }}"
+                                                                        name="value" value="1" />
+                                                                    <label for="star1-{{ $item->id }}"
+                                                                        title="Very Poor"></label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <label for="comment-{{ $item->id }}"
+                                                                    class="form-label">Your review:</label>
+                                                                <textarea class="form-control" id="comment-{{ $item->id }}" name="comment" rows="4"
+                                                                    placeholder="Please share your thoughts about this product..." required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit"
+                                                                class="btn btn-rating btn-primary w-100">Send</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                     <tr class="border-top border-top-dashed">
                                         <td colspan="3">
@@ -246,26 +300,33 @@
                                                         $subTotal = $order->total_amount;
                                                         $discount = $order->coupon->value ?? null;
                                                         $shippingCharge = $subTotal < 1000000 ? 50000 : 0;
-                                                        $total = $subTotal - $discount + $shippingCharge;
                                                     @endphp
                                                     <tr>
                                                         <td>Sub Total :</td>
                                                         <td class="text-end">
-                                                            {{ number_format($subTotal, 0, '.', '.') }} VNĐ
+                                                            {{ number_format($total, 0, '.', '.') }} VNĐ
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         @if ($discount)
-                                                            <td>Discount <span
-                                                                    class="text-muted">({{ $order->coupon->name ?? null }})</span>
-                                                                :
-                                                            </td>
-                                                            <td class="text-end">
-                                                                {{ number_format($discount, 0, '.', '.') }}
-                                                            </td>
+                                                            @if ($order->coupon->type == 'percent')
+                                                                <td>Discount <span
+                                                                        class="text-muted">({{ $order->coupon->code }})</span>
+                                                                    :
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    {{ number_format($discount, 0, '.', '.') }} %
+                                                                </td>
+                                                            @else
+                                                                <td>Discount <span
+                                                                        class="text-muted">({{ $order->coupon->code }})</span>
+                                                                    :
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    {{ number_format($discount, 0, '.', '.') }} VNĐ
+                                                                </td>
+                                                            @endif
                                                         @endif
-
-
                                                     </tr>
                                                     <tr>
                                                         <td>Shipping Charge :</td>
@@ -279,7 +340,7 @@
                                                             Total:
                                                         </th>
                                                         <th class="text-end" style="font-weight: 800; font-size: 20px;">
-                                                            {{ number_format($total, 0, '.', '.') }} VNĐ
+                                                            {{ number_format($subTotal, 0, '.', '.') }} VNĐ
                                                         </th>
                                                     </tr>
                                                 </tbody>
@@ -312,8 +373,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="cancelOrderModalLabel">Hủy
-                                                        đơn hàng #{{ $order->sku_order }}</h5>
+                                                    <h5 class="modal-title" id="cancelOrderModalLabel">Cancel order
+                                                        #{{ $order->sku_order }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
@@ -323,25 +384,23 @@
                                                         @csrf
                                                         <div class="row mb-5">
                                                             <div class="col-sm-5">
-                                                                <span>Chọn lý do hủy
-                                                                    đơn:</span>
+                                                                <span>Select reason for cancellation:</span>
                                                             </div>
                                                             <div class="col-sm-7">
                                                                 <select class="pb-0" name="cancel_reason">
 
-                                                                    <option value="">Chọn lý do
+                                                                    <option value="">Select reason
                                                                     </option>
 
                                                                     <option value="Thay đổi phương thức thanh toán">
-                                                                        Thay
-                                                                        đổi phương thức thanh toán</option>
-                                                                    <option value="Giá không hợp lý">Giá
-                                                                        không hợp lý</option>
+                                                                        Change payment method</option>
+                                                                    <option value="Giá không hợp lý">Unreasonable price
+                                                                    </option>
                                                                     <option value="Thay đổi địa chỉ nhận hàng">
-                                                                        Thay đổi địa chỉ nhận hàng</option>
+                                                                        Change delivery address</option>
                                                                     <option value="Thời gian giao hàng lâu">
-                                                                        Thời gian giao hàng lâu</option>
-                                                                    <option value="Khác">Khác</option>
+                                                                        Long delivery time</option>
+                                                                    <option value="Khác">Other</option>
                                                                 </select>
 
                                                                 @error('cancel_reason')
@@ -356,8 +415,8 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-5">
-                                                                <label for="otherReason" class="form-label">Lý
-                                                                    do khác (nếu có):</label>
+                                                                <label for="otherReason" class="form-label">Other reasons
+                                                                    (if any):</label>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="mb-3">
@@ -370,9 +429,9 @@
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Đóng</button>
-                                                            <button type="submit" class="btn btn-danger">Xác nhận
-                                                                hủy</button>
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-danger">Confirm
+                                                                Cancellation</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -555,8 +614,13 @@
                                     <li>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
-                                                <img src="{{ Storage::url($order->user->avatar) }}" alt=""
-                                                    class="avatar-sm  rounded-circle">
+                                                @if (!empty($order->user->avatar))
+                                                    <img src="{{ Storage::url($order->user->avatar) }}" alt=""
+                                                        class="avatar-sm rounded-circle">
+                                                @else
+                                                    <img src="{{ asset('image-default/avatar.jpg') }}" alt=""
+                                                        class="avatar-sm rounded">
+                                                @endif
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h6 class="fs-14 mb-1">{{ $order->user->name }}</h6>
@@ -599,6 +663,7 @@
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
+
                                 <li class="fw-medium fs-14">
                                     <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                                     {{ $order->user_name }}
@@ -659,7 +724,7 @@
                                     </p>
                                 </div>
                                 <div class="flex-grow-1 ms-2">
-                                    <p class="mb-0 fw-bold">{{ $order->total_amount }}</p>
+                                    <p class="mb-0 fw-bold">{{ number_format($order->total_amount, 0, ',', '.') }} VNĐ</p>
                                 </div>
                             </div>
 
@@ -672,17 +737,17 @@
             @endif
         </div>
     </div>
-
     <!-- Shopping Cart Section End -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
 
-            @if ($errors->any())
-                var formModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
-                formModal.show();
-            @endif
-        });
-    </script>
+    @if ($errors->has('cancel_reason'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const modal = new bootstrap.Modal(document.getElementById("cancelOrderModal"));
+                modal.show();
+            });
+        </script>
+    @endif
+
 @endsection
 @section('scripts')
     <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>

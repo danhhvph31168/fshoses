@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-Tra cứu đơn hàng
+Order Tracking - Fshoes
 @endsection
 
 @section('content')
@@ -48,7 +48,7 @@ Tra cứu đơn hàng
             </span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-danger mt-2">Search</button>
+        <button type="submit" class="btn btn-primary mt-2">Search</button>
     </form>
 </div>
 @endsection

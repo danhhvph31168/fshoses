@@ -27,7 +27,7 @@ class AddVnpayServices
         ]);
 
         Payment::query()->where('id', $payment)->update([
-            'status' => Payment::STATUS_COMPLETED
+            'status' => Payment::STATUS_PAID
         ]);
 
         session()->forget('cart');

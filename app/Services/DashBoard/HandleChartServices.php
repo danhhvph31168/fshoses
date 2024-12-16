@@ -113,9 +113,9 @@ class HandleChartServices
     public function handleMap($orderPercentages)
     {
         $orderCount3 = Order::query()
-            ->select('user_address', DB::raw('count(*) as total'))
+            ->select('user_province', DB::raw('count(*) as total'))
             ->where('status_order', Order::STATUS_ORDER_DELIVERED)
-            ->groupBy('user_address')
+            ->groupBy('user_province')
             ->limit(3)
             ->orderByDesc('total')
             ->get();
@@ -124,13 +124,13 @@ class HandleChartServices
             ->where('status_order', Order::STATUS_ORDER_DELIVERED)->count();
 
         foreach ($orderCount3 as $item) {
-            $orderPercentages[$item->user_address] = $totalOrders > 0 ? ($item->total / $totalOrders) * 100 : 0;
+            $orderPercentages[$item->user_province] = $totalOrders > 0 ? ($item->total / $totalOrders) * 100 : 0;
         }
 
         return $orderPercentages;
     }
 
-    public function handleSellingProduct(Request $request)
+    public function handleSellingProduct(Request $request, $perPage)
     {
         if ($request->has('fillterProduct')) {
             session(['fillterProduct' => $request->fillterProduct]);
@@ -140,26 +140,27 @@ class HandleChartServices
             session()->forget('fillterProduct');
         }
 
-        $filterProduct = function ($query, $filProduct) {
-            if ($filProduct == 'all') {
-                return $query->paginate(5);
+        $filterProduct = function ($query, $filProduct) use ($perPage) {
+            if ($filProduct == 'today') {
+                return $query->whereDate('orders.created_at', Carbon::now())->paginate($perPage);
             } else if ($filProduct == 'yesterday') {
-                return $query->whereDate('orders.created_at', Carbon::yesterday())->paginate(5);
+                return $query->whereDate('orders.created_at', Carbon::yesterday())->paginate($perPage);
             } else if ($filProduct == 'last_7_days') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(7), Carbon::now()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(7), Carbon::now()])->paginate($perPage);
             } else if ($filProduct == 'last_30_days') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(30), Carbon::now()])->paginate(5);
-            } else if ($filProduct == 'this_mouth') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->startOfMonth(), Carbon::now()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(30), Carbon::now()])->paginate($perPage);
+            } else if ($filProduct == 'this_month') {
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->startOfMonth(), Carbon::now()])->paginate($perPage);
             } else if ($filProduct == 'last_month') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()])->paginate($perPage);
             } else if ($filProduct == 'last_year') {
-                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(365), Carbon::now()])->paginate(5);
+                return $query->whereBetween(DB::raw('DATE(orders.created_at)'), [Carbon::now()->subDays(365), Carbon::now()])->paginate($perPage);
             } else {
-                return $query->whereDate('orders.created_at', Carbon::now())->paginate(5);
+                return $query->paginate($perPage);
             }
         };
 
+        // data top product
         if (!$request->page) {
             $topProducts = $filterProduct(
                 Product::query()
@@ -194,6 +195,7 @@ class HandleChartServices
                         'products.img_thumbnail',
                         'products.description',
                         DB::raw('SUM(order_items.quantity) as total_sold'),
+                        DB::raw('SUM(orders.total_amount) as total_amount'),
                         DB::raw('count(orders.id) as count_orders'),
                         DB::raw('SUM(product_variants.quantity) as stock'),
                     )
@@ -208,30 +210,27 @@ class HandleChartServices
             );
         }
 
+
         // top Categories
         $topCategory = Product::query()
             ->select(
                 'categories.name as category_name',
                 'categories.id as category_id',
                 'categories.image as category_image',
-                'products.id as product_id',
-                'products.name as product_name',
+                'categories.description as category_description',
                 DB::raw('SUM(order_items.quantity) as total_sold'),
                 DB::raw('SUM(orders.total_amount) as total_amount'),
-                DB::raw('SUM(product_variants.quantity) as stock'),
+                DB::raw('SUM(product_variants.quantity) as stock')
             )
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
             ->join('order_items', 'product_variants.id', '=', 'order_items.product_variant_id')
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->where('orders.status_order', Order::STATUS_ORDER_DELIVERED)
-            ->groupBy('categories.name', 'products.id')
+            ->groupBy('categories.id', 'categories.name', 'categories.image')
             ->orderByDesc('total_sold')
             ->take(6)
             ->get();
-
-
-        // dd($topProducts);
 
         return [$topProducts, $topCategory];
     }

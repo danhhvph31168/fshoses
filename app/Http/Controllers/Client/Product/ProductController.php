@@ -57,39 +57,51 @@ class ProductController extends Controller
 
     public function listProductByCategory(Category $cate)
     {
-        $prds = $cate->products()->paginate(3);
+        $prds = $cate->products()->where('status', '1')->paginate(3);
 
         return view('client.products.productByCategory', compact('cate', 'prds'));
     }
 
     public function productDetail($slug)
     {
-        $product = Product::query()->with(['productVariants', 'category', 'galleries'])->where('slug', $slug)->first();
+        $product = Product::query()->with(['productVariants', 'category', 'galleries', 'ratings'])->where('slug', $slug)->first();
 
 
-        // Kiểm tra sản phẩm có tồn tại hay không
         if (!$product) {
             abort(404);
         }
-        // Lấy 4 hình ảnh của sản phẩm galleries
+
         $productGalleries =  $product->galleries()->limit(4)->get();
 
-        // Lấy danh sách màu sắc và kích thước
+   
         $colors = ProductColor::query()->pluck('name', 'id')->all();
         $sizes = ProductSize::query()->pluck('name', 'id')->all();
 
-        // Lấy các bình luận cho sản phẩm
-        $comments = Review::with('user')->where('product_id', $product->id)
-            ->where('is_show', 0)
-            ->orderBy('id', 'DESC')->get();
+     
+        $relatedProducts = Product::with(['galleries', 'productVariants'])
+            ->where('category_id', $product->category_id)
+            ->where('id', '<>', $product->id)
+            ->limit(4)->get();
 
-        // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
-        $relatedProducts = Product::with(['galleries', 'productVariants'])->where('category_id', $product->category_id)->where('id', '<>', $product->id)->limit(4)->get();
         // Thông tin đánh giá
-        $averageRating = $product->averageRating(); 
-        $totalRatings = $product->totalRatings(); 
+        $averageRating = $product->averageRating();
+        $totalRatings = $product->totalRatings();
         $ratingBreakdown = $product->ratingBreakdown();
 
-        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts', 'productGalleries','averageRating','totalRatings','ratingBreakdown'));
+        $relatedProducts = Product::query()
+            ->where('category_id', $product->category_id)
+            ->limit(4)->get();
+
+        return view('client.products.product-detail', compact(
+            'product',
+            'colors',
+            'sizes',
+            'relatedProducts',
+            'productGalleries',
+            'averageRating',
+            'totalRatings',
+            'ratingBreakdown',
+            'relatedProducts'
+        ));
     }
 }

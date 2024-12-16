@@ -7,14 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Cart;
 use App\Models\CouponUsage;
+use App\Models\Order;
 
 class CouponController extends Controller
 {
     public function applyCoupon(Request $request)
     {
         $cart = session('cart');
-        $totalAmount = 0;
 
+        $totalAmount = 0;
 
         // Tính toán tổng giá trị đơn hàng
         if ($cart) {
@@ -23,52 +24,63 @@ class CouponController extends Controller
                 $totalAmount += $item['quatity'] * ($price ?: $item['price_regular']);
             }
         }
-        // dd($totalAmount);
 
         $couponCode = $request->input('code');
         $coupon = Coupon::findByCode($couponCode);
 
-        $messages = [];
+        // $messages = [];
+        if (trim($couponCode) == '') {
+            return redirect()->route('check-out')->with('error', 'Please enter coupon code');
+        }
         if (!$coupon) {
-            $messages[] = 'Coupon does not exist!!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('check-out')->with('error', 'Coupon does not exist!!');
         }
 
         if (!$coupon->is_active) {
-            $messages[] = 'Coupon is no longer valid!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('check-out')->with('error', 'Coupon is no longer valid!');
         }
 
         $currentDate = now();
         if ($currentDate < $coupon->start_date || $currentDate > $coupon->end_date) {
-            $messages[] = 'Coupon is no longer valid!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('check-out')->with('error', 'Coupon is no longer valid!');
         }
 
         if ($coupon->quantity <= 0) {
-            $messages[] = 'Coupon is out of stock!';
-            return redirect()->route('cart.list')->withErrors($messages);
+            return redirect()->route('check-out')->with('error', 'Coupon is out of stock!');
         }
+
+        // Kiểm tra người dùng đã dùng mã giảm giá này chưa
+        $userId = auth()->id();
+        $hasUsedCoupon = Order::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
+
+        if ($hasUsedCoupon) {
+            return redirect()->route('check-out')->with('error', 'The Coupon code has been used!');
+        }
+
         // Tính toán giảm giá
         $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);
 
-        // Giảm số lượng coupon còn lại trong cơ sở dữ liệu
-        $coupon->decrement('quantity', 1);
-
-        // Lưu coupon vào session
-        session(['coupon' => [
-            'code' => $coupon->code,
-            'type' => $coupon->type,
-            'value' => $coupon->value,
-        ]]);
+        // Kiểm tra mã giảm giá và Lưu vào session
+        if (empty(session('coupon')) || ((session('coupon') && session('coupon')['coupon_id'] != $coupon->id))) {
+            session(['coupon' => [
+                'coupon_id' => $coupon->id,
+                'code' => $coupon->code,
+                'type' => $coupon->type,
+                'value' => $coupon->value,
+                'quantity' => $coupon->quantity
+            ]]);
+        } else {
+            return back()->with('info', 'This discount code is currently being used.');
+        }
 
         session([
             'discount' => $discount
         ]);
+
         session()->put('cart', $cart);
 
 
         // Chuyển hướng về view cart với thông báo thành công
-        return redirect()->route('cart.list')->with(['discount' => $discount]);
+        return redirect()->route('check-out')->with(['discount' => $discount]);
     }
 }

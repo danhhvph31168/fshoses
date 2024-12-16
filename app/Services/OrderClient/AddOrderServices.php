@@ -11,19 +11,16 @@ class AddOrderServices
 {
     public function dataOrderItem()
     {
-        $totalAmount = 0;
         $dataItem = [];
         foreach (session('cart') as $variantID => $item) {
             $price = $item['price_regular'] * ((100 - $item['price_sale']) / 100);
-
             $totalAmount = session('totalAmount');
-
             $dataItem[] = [
                 'product_variant_id' => $variantID,
                 'quantity'           => $item['quatity'],
                 'price'              => $price ?: $item['price_regular'],
             ];
-        }
+        }      
 
         return [$totalAmount, $dataItem];
     }
@@ -45,14 +42,17 @@ class AddOrderServices
                 'email' => $request->user_email,
                 'phone' => $request->user_phone,
                 'address' => $request->user_address,
-                'role_id' => 1,
                 'status'  => false,
+                'role_id' => 3,
             ]);
+        }
+
+        if(Order::where('user_phone',$request->user_phone)->exists()){
+
         }
 
         $order = Order::query()->create([
             'user_id'    => $user->id,
-            'role_id'    => 1,
             'sku_order'  => 'DH-' . strtoupper(Str::random(6)),
             'user_name'  => $request->user_name,
             'user_email' => $request->user_email,
@@ -63,16 +63,20 @@ class AddOrderServices
             'user_ward' => $request->wardText,
             'user_note'    => $request->user_note,
             'total_amount' => $totalAmount,
+            'coupon_id' => session('coupon')['coupon_id'] ?? null,
         ]);
+
+        session()->forget('cart');
+        session()->forget('coupon');
 
         return $order;
     }
 
     public function loggedIn(CheckoutRequest $request, $totalAmount)
     {
+        // dd($totalAmount);
         $order = Order::query()->create([
             'user_id'    => Auth::user()->id,
-            'role_id'    => Auth::user()->role_id,
             'sku_order'  => 'DH-' . strtoupper(Str::random(6)),
             'user_name'  => $request->user_name,
             'user_email' => $request->user_email,
@@ -83,8 +87,11 @@ class AddOrderServices
             'user_ward' => $request->wardText,
             'user_note'    => $request->user_note,
             'total_amount' => $totalAmount,
+            'coupon_id' => session('coupon')['coupon_id'] ?? null,
         ]);
 
+        session()->forget('cart');
+        session()->forget('coupon');
         return $order;
     }
 }

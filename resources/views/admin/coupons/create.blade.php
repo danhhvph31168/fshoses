@@ -72,57 +72,43 @@
                         <div class="live-preview">
                             <div class="row gy-4">
                                 <div class="col-md-4">
-                                    <div>
+                                    <div class="mb-3">
                                         <label for="code" class="form-label">Code</label>
                                         <input type="text" class="form-control" name="code" id="code">
-
                                     </div>
-                                    <div>
+
+                                    <div class="mb-3">
                                         <label for="value" class="form-label">Value</label>
-                                        <input type="number" class="form-control" name="value" id="value">
-
+                                        <input type="number" class="form-control" name="value" id="value">   
                                     </div>
-                                    <div>
+
+                                    <div class="mb-3">
                                         <label for="type">Type</label>
                                         <select name="type" id="type" class="form-control">
                                             <option value="fixed">VND</option>
                                             <option value="percent">%</option>
                                         </select>
-
                                     </div>
-                                    <div>
+
+                                    <div class="mb-3">
                                         <label for="quantity" class="form-label">Quantity</label>
                                         <input type="number" class="form-control" name="quantity" id="quantity">
-
                                     </div>
 
-                                    <div>
+                                    <div class="mb-3">
+                                        <label for="condition" class="form-label">Condition</label>
+                                        <input type="number" class="form-control" name="minimum_order_value" id="minimum_order_value">
+                                    </div>
+
+                                    <div class="mb-3">
                                         <label for="start_date" class="form-label">Start date</label>
                                         <input type="date" class="form-control" name="start_date" id="start_date">
-
                                     </div>
 
-                                    <div>
+                                    <div class="mb-3">
                                         <label for="end_date" class="form-label">End date</label>
                                         <input type="date" class="form-control" name="end_date" id="end_date">
-
                                     </div>
-
-                                    {{-- <div class="mt-3">
-                                        <label for="parent_id" class="form-label">Category</label>
-                                        <select type="text" class="form-select" name="parent_id" id="parent_id">
-                                            <option value="" selected>Trống</option>
-
-                                            @foreach ($parentCategories as $parent)
-                                                @php($each = '')
-
-                                                @include('admin.categories.nested-category', [
-                                                    'category' => $parent,
-                                                ])
-                                            @endforeach
-                                        </select>
-                                    </div> --}}
-
                                 </div>
                             </div>
 

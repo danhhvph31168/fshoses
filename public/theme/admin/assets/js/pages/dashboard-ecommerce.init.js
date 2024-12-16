@@ -87,7 +87,7 @@ var options,
                         "Apr",
                         "May",
                         "Jun",
-                        "Jul",
+"Jul",
                         "Aug",
                         "Sep",
                         "Oct",
@@ -161,7 +161,7 @@ var options,
                 dataLabels: { dropShadow: { enabled: !1 } },
                 colors: chartDonutBasicColors,
             }),
-            (chart = new ApexCharts(
+(chart = new ApexCharts(
                 document.querySelector("#store-visits-source"),
                 options
             )).render()),
@@ -242,7 +242,7 @@ layoutRightSideBtn &&
             "semibox" == document.documentElement.getAttribute("data-layout") &&
                 (e.classList.remove("d-block"), e.classList.add("d-none"));
     }),
-    (overlay = document.querySelector(".overlay"))) &&
+(overlay = document.querySelector(".overlay"))) &&
     document.querySelector(".overlay").addEventListener("click", function () {
         1 ==
             document

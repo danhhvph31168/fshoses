@@ -1,9 +1,5 @@
 @extends('admin.layouts.master')
 
-@section('meta')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-@endsection
-
 @section('title')
     Products List
 @endsection
@@ -60,242 +56,117 @@
     @endif
 
     <div class="row">
-        <div class="col-xl-3 col-lg-4">
+        <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="d-flex mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="fs-16">Filters</h5>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <a href="#" class="text-decoration-underline" id="clearall">Clear All</a>
-                        </div>
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <a class="btn btn-primary" href="{{ route('admin.products.create') }}">
+                            <i class="ri-add-fill"></i> Add product </a>
                     </div>
-
-                    <div class="filter-choices-input">
-                        <input class="form-control" data-choices data-choices-removeItem type="text"
-                            id="filter-choices-input" value="" />
+                    <div>
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
+                            title="Type in a name">
                     </div>
                 </div>
 
-                <div class="accordion accordion-flush filter-accordion">
-                    <div class="card-body border-bottom">
-                        <div>
-                            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Products</p>
-                            <ul class="list-unstyled mb-0 filter-list">
-                                @foreach ($categories as $key => $value)
-                                    <li>
-                                        <a href="#" class="d-flex py-1 align-items-center">
-                                            <div class="flex-grow-1">
-                                                <h5 class="fs-13 mb-0 listname">{{ $value }}</h5>
-                                            </div>
-                                            <div class="flex-shrink-0 ms-2">
-                                                <span class="badge bg-light text-muted">5</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
+                <div class="card-body">
+                    <table id="myTable" class="table table-bordered nowrap dt-responsive table-striped align-middle"
+                        style="width:100%">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Sku</th>
+                                <th>Img Thumbnail</th>
+                                <th>Name</th>
+                                <th>Brand</th>
+                                <th>Category</th>
+                                <th>Price Regular</th>
+                                <th>Price Sale (%)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data as $item)
+                                @php
+                                    $price = $item->price_regular * ((100 - $item->price_sale) / 100);
+                                @endphp
 
-                    <div class="card-body border-bottom">
-                        <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Price</p>
-
-                        <div id="product-price-range"></div>
-                        <div class="formCost d-flex gap-2 align-items-center mt-3">
-                            <input class="form-control form-control-sm" type="text" id="minCost" value="0" />
-                            <span class="fw-semibold text-muted">to</span> <input class="form-control form-control-sm"
-                                type="text" id="maxCost" value="20000000" />
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingBrands">
-                            <button class="accordion-button bg-transparent shadow-none" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#flush-collapseBrands" aria-expanded="true"
-                                aria-controls="flush-collapseBrands">
-                                <span class="text-muted text-uppercase fs-12 fw-medium">Brands</span> <span
-                                    class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                            </button>
-                        </h2>
-
-                        <div id="flush-collapseBrands" class="accordion-collapse collapse show"
-                            aria-labelledby="flush-headingBrands">
-                            <div class="accordion-body text-body pt-0">
-                                <div class="search-box search-box-sm">
-                                    <input type="text" class="form-control bg-light border-0" id="searchBrandsList"
-                                        placeholder="Search Brands...">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                                <div class="d-flex flex-column gap-2 mt-3 filter-check">
-                                    @foreach ($brands as $key => $value)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $value }}"
-                                                id="productBrandRadio5">
-                                            <label class="form-check-label"
-                                                for="productBrandRadio5">{{ $value }}</label>
+                                <tr class="align-middle text-center">
+                                    <td>{{ $item->sku }}</td>
+                                    <td>
+                                        @if (\Str::contains($item->img_thumbnail, 'http'))
+                                            <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
+                                                height="100px" width="50px">
+                                        @else
+                                            <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                alt="..." height="100px" width="50px">
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->brand?->name }}</td>
+                                    <td>{{ $item->category->name }}</td>
+                                    <td>{{ number_format($item->price_regular, 0, ',', '.') }} VNĐ</td>
+                                    <td class="text-primary">{{ $item->price_sale }}%</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}" {{ $item->is_active == 1 ? 'checked' : '' }}>
                                         </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end accordion-item -->
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.products.show', $item->id) }}" class="btn btn-light"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
+                                                class="ri-eye-fill align-bottom"></i></a>
+
+                                        <a href="{{ route('admin.products.edit', $item->id) }}" class="btn btn-light"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
+                                                class="ri-pencil-fill align-bottom"></i></a>
+
+                                        <form action="{{ route('admin.products.destroy', $item->id) }}" method="POST"
+                                            class="d-inline"
+                                            onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
+                                                title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $data->links() }}
                 </div>
             </div>
-            <!-- end card -->
         </div>
-        <!-- end col -->
-
-        <div class="col-xl-9 col-lg-8">
-            <div>
-                <div class="card">
-                    <div class="card-header border-0">
-                        <div class="row g-4">
-                            <div class="col-sm-auto">
-                                <div>
-                                    <a href="{{ route('admin.products.create') }}" class="btn btn-success"
-                                        id="addproduct-btn"><i class="ri-add-line align-bottom me-1"></i> Add Product</a>
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="d-flex justify-content-sm-end">
-                                    <div class="search-box ms-2">
-                                        <input type="text" class="form-control" id="searchProductList"
-                                            placeholder="Search Products...">
-                                        <i class="ri-search-line search-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab"
-                                            href="#productnav-all" role="tab">
-                                            All <span
-                                                class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">{{ count($data) }}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            {{-- <div class="col-auto">
-                                <div id="selection-element">
-                                    <div class="my-n1 d-flex align-items-center text-muted">
-                                        Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
-                                        <button type="button" class="btn btn-link link-danger p-0 ms-3"
-                                            data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <table class="table table-bordered table-striped mt-3">
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Brand</th>
-                                        <th>Slug</th>
-                                        <th>Sku</th>
-                                        <th>Price Regular</th>
-                                        <th>Price Sale</th>
-                                        <th>Status</th>
-                                        <th>is_active</th>
-                                        <th>is_sale</th>
-                                        <th>is_show_home</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $key => $item)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->category->name }}</td>
-                                            <td>{{ $item->brand->name }}</td>
-                                            <td>{{ $item->slug }}</td>
-                                            <td>{{ $item->sku }}</td>
-                                            <td>{{ $item->price_regular }}</td>
-                                            <td>{{ $item->price_sale }}</td>
-                                            <td class="{{ $item->status == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->status == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td class="{{ $item->is_active == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->is_active == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td class="{{ $item->is_sale == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->is_sale == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td class="{{ $item->is_show_home == 1 ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->is_show_home == 1 ? 'Active' : 'Inactive' }}</td>
-                                            <td>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- end card header -->
-                    <div class="card-body">
-
-                        <div class="tab-content text-muted">
-                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
-                                <div id="table-product-list-all" class="table-card gridjs-border-none"></div>
-                            </div>
-                            <!-- end tab pane -->
-
-                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                <div class="py-4 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                        colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                    </lord-icon>
-                                    <h5 class="mt-4">Sorry! No Result Found</h5>
-                                </div>
-                            </div>
-                            <!-- end tab pane -->
-                        </div>
-                        <!-- end tab content -->
-
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-            </div>
-        </div>
-        <!-- end col -->
+        <!--end col-->
     </div>
+    <!--end row-->
+@endsection
 
-    <!-- removeItemModal -->
-    <div id="removeItemModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="btn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mt-2 text-center">
-                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                            colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Are you Sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Product ?</p>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger " id="delete-product">Yes, Delete It!</button>
-                    </div>
-                </div>
+@section('scripts')
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let productId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
 
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            $.ajax({
+                url: "{{ route('admin.products.updateProduct', ':id') }}".replace(':id', productId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    is_active: newValue
+                },
+                success: function(response) {
+                    toastr.success('Status updated success')
+                    console.log(200);
+                },
+                error: function() {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
 @endsection
 
 @section('css')
@@ -305,24 +176,12 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-
-    <link href="{{ URL::asset('theme/admin/assets/libs/nouislider/nouislider.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ URL::asset('theme/admin/assets/libs/gridjs/theme/mermaid.min.css') }}">
 @endsection
 
 @section('js')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <script>
-        const detailRoute = "{{ route('admin.products.show', ':id') }}"
-        const deleteRoute = "{{ route('admin.products.destroy', ':id') }}";
-        const editRoute = "{{ route('admin.products.edit', ':id') }}"
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const data = @json($data);
-        const brand = @json($brands);
-        const category = @json($categories);
-    </script>
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
@@ -334,11 +193,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-    <script src="{{ URL::asset('theme/admin/assets/libs/nouislider/nouislider.min.js') }}"></script>
-    <script src="{{ URL::asset('theme/admin/assets/libs/wnumb/wNumb.min.js') }}"></script>
-    <script src="{{ URL::asset('theme/admin/assets/libs/gridjs/gridjs.umd.js') }}"></script>
-    <script src="https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"></script>
+    {{-- <script>
+        new DataTable("#example", {
+            order: [0, 'asc']
+        });
+    </script> --}}
 
-
-    {{-- <script src="{{ URL::asset('theme/admin/assets/js/pages/ecommerce-product-list.init.js') }}"></script> --}}
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 @endsection

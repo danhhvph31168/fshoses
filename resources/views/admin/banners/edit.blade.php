@@ -89,9 +89,9 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="title" class="form-label">Title</label>
-                                        <input type="text" class="form-control" name="title" id="title"
-                                            value="{{ $model->title }}">
+                                        <label for="title" class="form-label">Url</label>
+                                        <input type="text" class="form-control" name="url" id="title"
+                                            value="{{ $model->url }}">
                                     </div>
 
                                     <div class="mb-3">

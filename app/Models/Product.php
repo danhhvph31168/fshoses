@@ -67,24 +67,27 @@ class Product extends Model
     {
         return $this->hasMany(Rating::class);
     }
-     // Tính trung bình số sao
-     public function averageRating()
-     {
-         return $this->ratings()->avg('value') ?? 0;
-     }
-      // Tổng số lượt đánh giá
+
+    // Tính trung bình số sao
+    public function averageRating()
+    {
+        return $this->ratings()->avg('value') ?? 0;
+    }
+
+    // Tổng số lượt đánh giá
     public function totalRatings()
     {
         return $this->ratings()->count();
     }
-     // Thống kê số lượt đánh giá theo từng số sao
-     public function ratingBreakdown()
-     {
-         return $this->ratings()
-             ->selectRaw('value, COUNT(*) as count')
-             ->groupBy('value')
-             ->orderBy('value', 'desc')
-             ->get()
-             ->pluck('count', 'value');
-     }
+    
+    // Thống kê số lượt đánh giá theo từng số sao
+    public function ratingBreakdown()
+    {
+        return $this->ratings()
+            ->selectRaw('value, COUNT(*) as count')
+            ->groupBy('value')
+            ->orderBy('value', 'desc')
+            ->get()
+            ->pluck('count', 'value');
+    }
 }
