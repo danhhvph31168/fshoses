@@ -86,7 +86,7 @@
 
                                     <td>{{ $item->sku_order }}</td>
                                     <td>{{ $item->user->name }}</td>
-                                    <td>{{ $item->user_address }}</td>
+                                    <td>{{ $item->user_province }}</td>
                                     <td>{{ $item->user_email }}</td>
                                     <td>{{ $item->user_phone }}</td>
                                     <td>{{ number_format($item->total_amount) }} vnđ</td>
@@ -108,7 +108,7 @@
                                     </td>
 
                                     <td>
-                                        <span class="badge rounded-pill text-bg-primary">
+                                        <span class="badge text-bg-primary">
                                             {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</span>
                                     </td>
 

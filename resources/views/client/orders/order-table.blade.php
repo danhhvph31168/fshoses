@@ -35,16 +35,16 @@
             </td>
             <td>
                 <span
-                    class="badge rounded-pill
-                        {{ $item->payment->status === 'unpaid'
-                            ? 'bg-secondary'
-                            : ($item->payment->status === 'pending'
-                                ? 'bg-warning text-dark'
-                                : ($item->payment->status === 'paid'
-                                    ? 'bg-success'
-                                    : ($item->payment->status === 'refunded'
-                                        ? 'bg-info text-dark'
-                                        : 'bg-danger'))) }}">
+                    class="badge rounded-pill 
+                                                    {{ $item->payment->status === 'unpaid'
+                                                        ? 'bg-secondary'
+                                                        : ($item->payment->status === 'pending'
+                                                            ? 'bg-warning text-dark'
+                                                            : ($item->payment->status === 'paid'
+                                                                ? 'bg-success'
+                                                                : ($item->payment->status === 'refunded'
+                                                                    ? 'bg-info text-dark'
+                                                                    : 'bg-danger'))) }}">
                     {{ $item->payment->status }}
                 </span>
             </td>

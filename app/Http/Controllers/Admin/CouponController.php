@@ -16,7 +16,7 @@ class CouponController extends Controller
 
     public function index()
     {
-        $coupons = Coupon::latest()->paginate(10);
+        $coupons = Coupon::latest('created_at')->paginate(10);
         $user = Auth::user();
         if ($user->role_id === 1) {
             return view('admin.coupons.index', compact('coupons'));
@@ -62,7 +62,7 @@ class CouponController extends Controller
 
 
     public function update(UpdateCouponRequest $request, $id)
-    {        
+    {
         $coupon = Coupon::findOrFail($id);
 
         $validatedData = $request->validated(); // Sử dụng validated() để lấy dữ liệu đã kiểm tra        

@@ -73,7 +73,14 @@ class CheckoutController extends Controller
                 } else {
                     $totalAmount = $total - session('coupon')['value'];
                 }
+            } else {
+                $totalAmount = $total;
             }
+
+            $shippingCharge = $totalAmount < 1000000 ? 50000 : 0;
+
+            $totalAmount = $totalAmount +  $shippingCharge;
+
             session()->put('totalAmount', $totalAmount);
 
             [$totalAmount, $dataItem]  = $this->addOrderServices->dataOrderItem();

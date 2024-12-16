@@ -173,6 +173,7 @@ class HandleChartServices
                         'products.description',
                         DB::raw('SUM(order_items.quantity) as total_sold'),
                         DB::raw('count(orders.id) as count_orders'),
+                        DB::raw('SUM(orders.total_amount) as total_amount'),
                         DB::raw('SUM(product_variants.quantity) as stock'),
                     )
                     ->join('product_variants', 'products.id', '=', 'product_variants.product_id')

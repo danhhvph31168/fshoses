@@ -10,6 +10,30 @@
         </div>
 
         <div class=" mb-4">
+            <h3 class="text-uppercase fw-bold mb-3">Products</h3>
+            <div class="list-group">
+
+                <div class="list-group-item d-flex align-items-center justify-content-between">
+                    <div>
+                        <input type="checkbox" class="form-check-input me-2 common_selector brand"
+                            value="">
+                        <span>All Products</span>
+                    </div>
+                    <span class="badge rounded-pill bg-danger text-white"></span>
+                </div>
+
+                <div class="list-group-item d-flex align-items-center justify-content-between">
+                    <div>
+                        <input type="checkbox" class="form-check-input me-2 common_selector brand"
+                            value="">
+                        <span>Best Seller</span>
+                    </div>
+                    <span class="badge rounded-pill bg-danger text-white"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class=" mb-4">
             <h3 class="text-uppercase fw-bold mb-3">Brands</h3>
             <div class="list-group">
                 @foreach ($brd as $item)
@@ -32,7 +56,8 @@
                     <div class="list-group-item d-flex align-items-center justify-content-between">
                         <div>
                             <input type="checkbox" class="form-check-input me-2 common_selector category"
-                                value="{{ $item->name }}">
+                                value="{{ $item->id }}"
+                                {{ isset($selectedCategory) && $selectedCategory == $item->id ? 'checked' : '' }}>
                             <span>{{ $item->name }}</span>
                         </div>
                         <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
@@ -168,19 +193,28 @@
 </style>
 <script>
     $(document).ready(function() {
-        function fetchProducts(pageUrl = null) {
 
+        const categoryId = "{{ $selectedCategory }}";
+        $('.common_selector.category').each(function() {
+            if ($(this).val() == categoryId) {
+                $(this).prop('checked', true);
+            }
+        });
+
+
+        function fetchProducts(pageUrl = null) {
             const brands = [];
             const categories = [];
             const minPrice = $('#hidden_min_price').val();
             const maxPrice = $('#hidden_max_price').val();
 
-            $('.common_selector.brand:checked').each(function() {
-                brands.push($(this).val());
-            });
 
             $('.common_selector.category:checked').each(function() {
                 categories.push($(this).val());
+            });
+
+            $('.common_selector.brand:checked').each(function() {
+                brands.push($(this).val());
             });
 
             const url = pageUrl ? pageUrl : "{{ route('search.products') }}";
@@ -196,7 +230,6 @@
                 success: function(response) {
                     $('#product-list').html(response.html);
                     $('.pagination-container').html(response.pagination);
-
                     const currentMaxPrice = $('#price_range').slider('option', 'max');
                     if (response.maxPrice && response.maxPrice !== currentMaxPrice) {
                         $('#price_range').slider('option', 'max', response.maxPrice);
@@ -213,9 +246,11 @@
             });
         }
 
+
         $('.common_selector').on('change', function() {
             fetchProducts();
         });
+
 
         $(document).on('click', '.pagination a', function(event) {
             event.preventDefault();
@@ -230,7 +265,7 @@
             value: parseInt($('#hidden_min_price').val()),
             step: 100000,
             slide: function(event, ui) {
-                $('#price_show').html(
+                $('#price_sho  w').html(
                     `Price: ${ui.value.toLocaleString('vi-VN')} VNĐ - ${parseInt($('#hidden_max_price').val()).toLocaleString('vi-VN')} VNĐ`
                 );
                 $('#hidden_min_price').val(ui.value);
@@ -240,11 +275,16 @@
             }
         });
 
-        fetchProducts();
 
+        fetchProducts();
     });
 </script>
 
 @section('js')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
+
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+@endpush

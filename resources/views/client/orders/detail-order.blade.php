@@ -159,7 +159,9 @@
                                                     $total += $item->quantity * $item->price;
                                                 @endphp
                                             </td>
+
                                             @if (!$checkReviewed)
+                                                {{-- @dd($checkReviewed); --}}
                                                 @if ($order->status_order == 'delivered')
                                                     <td class="text-center align-middle">
                                                         <a href="#" class="btn badge badge-primary"
@@ -281,9 +283,8 @@
                                             <table class="table table-borderless mb-0">
                                                 <tbody>
                                                     @php
-                                                        $subTotal = $order->total_amount;
                                                         $discount = $order->coupon->value ?? null;
-                                                        $shippingCharge = $subTotal < 1000000 ? 50000 : 0;
+                                                        $shippingCharge = $total < 1000000 ? 50000 : 0;
                                                     @endphp
                                                     <tr>
                                                         <td>Sub Total :</td>
@@ -324,7 +325,7 @@
                                                             Total:
                                                         </th>
                                                         <th class="text-end" style="font-weight: 800; font-size: 20px;">
-                                                            {{ number_format($subTotal, 0, '.', '.') }} VNĐ
+                                                            {{ number_format($order->total_amount, 0, '.', '.') }} VNĐ
                                                         </th>
                                                     </tr>
                                                 </tbody>

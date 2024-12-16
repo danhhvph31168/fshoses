@@ -48,24 +48,21 @@
 
         p {
             line-height: 1.8em;
+            font-size: 15px;
         }
 
         a:hover {
             color: red;
-            /* Màu chữ chuyển sang đỏ khi hover */
         }
 
         ul {
             list-style: none;
-            /* Loại bỏ dấu chấm */
             padding-left: 0;
         }
 
         .cont ul li::before {
             content: '\25C6';
-            /* Thêm hình thoi nhỏ */
             color: #000;
-            /* Màu của hình thoi */
             display: inline-block;
             margin-right: 8px;
             font-size: 14px;
@@ -74,6 +71,10 @@
         li {
             padding-left: 20px;
             margin-left: 15px;
+            font-size: 15px;
+        }
+        .row .cont{
+            line-height: 1.8em;
         }
     </style>
     <main>
@@ -148,7 +149,7 @@
             <div class="row divider-2"></div>
             <div class="row title-1">3. QUY ĐỊNH VỀ BẢO MẬT THÔNG TIN</div>
             <div class="row cont">
-                <p ><strong>Fshoes</strong> luôn coi trọng việc bảo mật thông tin và cam kết sẽ sử
+                <p><strong>Fshoes</strong> luôn coi trọng việc bảo mật thông tin và cam kết sẽ sử
                     dụng mọi biện pháp tốt
                     nhất
                     nhằm bảo vệ thông tin bạn đã cung cấp cho chúng tôi.<br />
@@ -188,7 +189,7 @@
             </div>
             <div class="row divider-2"></div>
             <div class="row title-1">5. PHƯƠNG THỨC THANH TOÁN</div>
-            <div class="row cont" style="line-height: 1.8em;">
+            <div class="row cont">
                 <p><span style="font-weight: 400;">Hiện tại, chúng tôi đang có các phương thức thanh toán sau:</span>
                 </p>
                 <ul>
@@ -203,8 +204,8 @@
                                 dịch vụ POS (Point of sale).</li>
                         </ul>
                     </li>
-                    <li><span>Đặt mua hàng tại website </span><a
-                            href="http://fshoses.test/"><span style="font-weight: 400;">fshose.vn</span></a>:
+                    <li><span>Đặt mua hàng tại website </span><a href="http://fshoses.test/"><span
+                                style="font-weight: 400;">fshose.vn</span></a>:
                         <ul>
                             <li style="font-weight: 400;"><span style="font-weight: 400;">COD (cash on delivery): là
                                     hình
@@ -234,13 +235,13 @@
                     chính
                     sách khuyến mãi cố định hoặc tùy thời điểm về phí giao hàng, quà tặng và ưu đãi đặc biệt, được ghi
                     rõ
-                    tại <a href="https://Fshoes.vn/faqs/">FAQs</a> &#8211; mục “III. Chính sách Khuyến mãi”.</p>
+                    tại <a href="#">FAQs</a> &#8211; mục “III. Chính sách Khuyến mãi”.</p>
             </div>
             <div class="row divider-2"></div>
             <div class="row title-1">7. THAY ĐỔI HOẶC HỦY BỎ CÁC GIAO DỊCH</div>
             <div class="row cont">
                 <p>Bạn được quyền thay đổi hoặc chấm dứt giao dịch theo hướng dẫn đã được ghi rõ tại phần <a
-                        href="https://Fshoes.vn/faqs/">FAQs</a> &#8211; mục <strong>“I. Mua Hàng &#8211; Đặt Hàng
+                        href="#">FAQs</a> &#8211; mục <strong>“I. Mua Hàng &#8211; Đặt Hàng
                         &#8211;
                         Tra
                         Cứu Đơn Hàng”</strong>.</p>
@@ -319,7 +320,7 @@
                     </ul>
                     <p><span style="font-weight: 400;">Để yêu cầu bảo hành sản phẩm, bạn có thể xem thêm hướng dẫn tại
                             phần
-                        </span><a href="https://Fshoes.vn/faqs/"><span style="font-weight: 400;">FAQs</span></a><span
+                        </span><a href="#"><span style="font-weight: 400;">FAQs</span></a><span
                             style="font-weight: 400;"> – mục </span><b>“III. Quy định Đổi hàng – Bảo hành sản
                             phẩm”</b><span style="font-weight: 400;">.</span></p>
                 </div>

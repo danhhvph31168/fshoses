@@ -61,6 +61,7 @@ class DashboardController extends Controller
 
     public function exportProduct(Request $request)
     {
+        // dd($this->handleChartServices->handleSellingProduct($request, perPage: null)[0]->collect());
         return Excel::download(new ProductExport($this->handleChartServices->handleSellingProduct($request, perPage: null)[0]->collect()), 'product.xlsx');
     }
 

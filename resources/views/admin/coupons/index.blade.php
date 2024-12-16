@@ -46,7 +46,7 @@
                         class="table table-bordered dt-responsive nowrap table-striped align-middle text-center"
                         style="width:100%">
                         <thead>
-                            <tr class="">
+                            <tr>
                                 <th>#</th>
                                 <th>Code</th>
                                 <th>Value</th>
@@ -199,7 +199,7 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
+                [0, 'asc']
             ]
         });
     </script>

@@ -69,7 +69,7 @@ class AuthenController extends Controller
     public function handleLogin(HandleLoginRequest $request)
     {
         $checkStatus = User::where('email', $request->email)->where('status', 0)->first();
-        
+
         if ($checkStatus) {
             return back()->with('error', 'account does not exist');
         } else {
@@ -81,6 +81,7 @@ class AuthenController extends Controller
             $remember = $request->has('remember');
 
             if (Auth::attempt($data, $remember)) {
+
                 $request->session()->regenerate();
 
                 return redirect()->intended()->with('success', 'Login successfully');

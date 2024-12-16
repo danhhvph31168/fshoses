@@ -32,7 +32,7 @@
                                                     @foreach ($product->galleries as $item)
                                                         <div class="swiper-slide">
                                                             <img src="{{ \Storage::url($item->image) }}" class=""
-                                                                style="margin: auto;" height="400px">
+                                                                style="margin: auto; object-fit: cover;" height="400px">
                                                         </div>
                                                     @endforeach
                                                 @endif
@@ -48,7 +48,7 @@
                                                         <div class="swiper-slide">
                                                             <div class="nav-slide-item" style="max-width: 150px;">
                                                                 <img src="{{ \Storage::url($item->image) }}" height="100px"
-                                                                    width="100px;">
+                                                                    width="100px;" style="object-fit: cover;">
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -415,7 +415,7 @@
             <div class="container my-5">
                 <div class="row mb-4">
                     <div class="col-md-12">
-                        <h3 class="text-center text-uppercase text-secondary border-bottom pb-3">Related Products</h3>
+                        <h3 class="text-center text-uppercase border-bottom pb-3">Related Products</h3>
                     </div>
                 </div>
 
@@ -495,7 +495,6 @@
     <link href="{{ asset('theme/client/cssfix/detail/app.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/client/cssfix/detail/custom.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/client/cssfix/detail/comment.css') }}" rel="stylesheet" type="text/css" />
-
 
     <style>
         .container {
@@ -593,5 +592,10 @@
     <script src="{{ asset('theme/admin/assets/libs/node-waves/waves.min.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
+    {{-- <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script> --}}
+@endsection
+
+@section('script')
+    <!--Swiper slider js-->
+    <script src="{{ asset('theme/admin/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 @endsection

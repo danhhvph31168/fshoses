@@ -28,14 +28,14 @@ class SearchController extends Controller
 
         if ($request->has('brand') && !empty($request->brand)) {
             $query->whereHas('brand', function ($q) use ($request) {
-                $q->whereIn('name', (array)$request->brand)->where('status', '1');
-            });
+                $q->whereIn('name', (array)$request->brand);
+            })->orderByDesc('id')->where('is_active', '1');
         }
 
         if ($request->has('category') && !empty($request->category)) {
             $query->whereHas('category', function ($q) use ($request) {
-                $q->whereIn('name', (array)$request->category)->where('status', '1');
-            });
+                $q->whereIn('id', (array)$request->category);
+            })->orderByDesc('id')->where('is_active', '1');
         }
 
         if ($request->min_price) {
@@ -48,13 +48,17 @@ class SearchController extends Controller
             });
         }
 
-        $products = $query->with('brand', 'category')->paginate(3);
+        $products = $query->with('brand', 'category')->orderByDesc('id')->where('is_active', '1')->paginate(6);
 
         $highestPrice = Product::max('price_regular');
-        $maxPrice = $highestPrice ? $highestPrice + 2000000 : 2000000;
+        $maxPrice = $highestPrice ? $highestPrice + 500000 : 500000;
 
         $html = view('client.partials.products', compact('products'))->render();
 
-        return response()->json(['html' => $html, 'maxPrice' => $maxPrice, 'pagination' => $products->links('pagination::bootstrap-5')->toHtml()]);
+        return response()->json([
+            'html' => $html,
+            'maxPrice' => $maxPrice,
+            'pagination' => $products->links('pagination::bootstrap-5')->toHtml(),
+        ]);
     }
 }

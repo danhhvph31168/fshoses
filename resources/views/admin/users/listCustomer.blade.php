@@ -93,7 +93,7 @@
                         <tbody>
                             @foreach ($customer as $item)
                                 <tr class="align-middle text-center">
-                                    <td style="width: 10px">{{ $item->id }}</td>
+                                    <td style="width: 10px">{{ $loop->iteration }}</td>
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}" alt=""
                                             width="50px">
                                     </td>

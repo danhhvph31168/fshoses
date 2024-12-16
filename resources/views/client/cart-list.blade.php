@@ -160,8 +160,8 @@
 @endsection
 
 @section('js')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> --}}
 
     <script>
         function validateQuantity(input) {
@@ -171,8 +171,8 @@
 
             if (isNaN(value) || value < 1) {
                 input.value = 1;
-            } else if (value > 5) {
-                input.value = 5;
+            } else if (value > 100) {
+                input.value = 100;
             }
         }
 

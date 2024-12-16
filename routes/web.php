@@ -19,6 +19,7 @@ use App\Http\Controllers\Client\PolicyController;
 Route::get('/',                                     [ProductController::class, 'index'])->name('client.home');
 Route::get('/brand/{brd}',                          [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
 Route::get('/category/{cate}',                      [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
+Route::get('/product-status',                       [ProductController::class, 'listProductByStatus'])->name('client.productByStatus');
 Route::get('/products',                             [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
 Route::get('search-order',                          [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');
@@ -30,8 +31,8 @@ Route::prefix('auth')
     ->name('auth.')
     ->group(function () {
 
-        Route::get('google',                        [GoogleController::class, 'redirectToGoogle'])->name('google');
-        Route::get('google/callback',               [GoogleController::class, 'handleGoogleCallback']);
+        // Route::get('google',                        [GoogleController::class, 'redirectToGoogle'])->name('google');
+        // Route::get('google/callback',               [GoogleController::class, 'handleGoogleCallback']);
 
         Route::get('register',                      [AuthenController::class, 'showFormRegister'])->name('showFormRegister');
         Route::post('register',                     [AuthenController::class, 'handleRegister'])->name('handleRegister');
@@ -64,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/search',                    [OrderHistoryController::class, 'searchOrders'])->name('searchOrders');
 });
 
+Route::get('orders',                                [OrderHistoryController::class, 'filterStatusOrder'])->name('filterStatusOrder');
 Route::get('order-item/{slug}',                     [OrderHistoryController::class, 'getDetailOrderItem'])->name('getDetailOrderItem');
 Route::post('order/{slug}/cancel',                  [OrderHistoryController::class, 'cancelOrder'])->name('orders.cancel');
 Route::get('product-detail/{slug}',                 [ProductController::class, 'productDetail'])->name('productDetail');

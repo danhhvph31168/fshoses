@@ -41,7 +41,6 @@
                                     @endif
                                 </div>
 
-
                                 <div class="card-body d-flex flex-column">
                                     <a href="{{ route('productDetail', $item->slug) }}"
                                         class="text-dark card-title fs-6 fw-bold mb-2 text-truncate">
@@ -49,17 +48,20 @@
                                     </a>
 
                                     @if ($item->price_sale > 0)
-                                        <p class="card-text text-danger text-center">
+                                        <p class="card-text text-danger">
                                             {{ number_format($price, 0, ',', '.') }} VNĐ -
                                             <span class="text-decoration-line-through text-muted">
                                                 {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
                                             </span>
                                         </p>
                                     @else
-                                        <p class="card-text text-danger text-center">
+                                        <p class="card-text text-danger">
                                             {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
                                         </p>
                                     @endif
+
+                                    <p style="opacity: 50%"> <i class="fas fa-eye"></i> {{ $item->views }}</p>
+
                                     <div class="mb-3 text-center">
                                         <a style="background-color: #d17572"
                                             href="{{ route('productDetail', $item->slug) }}"
@@ -113,6 +115,7 @@
                                         </div>
                                     @endif
                                 </div>
+
                                 <div class="card-body d-flex flex-column">
                                     <a href="{{ route('productDetail', $item->slug) }}"
                                         class="text-dark card-title fs-6 fw-bold mb-2 text-truncate">
@@ -131,7 +134,9 @@
                                             {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
                                         </p>
                                     @endif
-                                    <p>{{ $orderCount['count_orders'] ?? 0 }}</p>
+
+                                    <p style="opacity: 50%"> <i class="fas fa-eye"></i> {{ $item->views }}</p>
+
                                     <div class="mb-3 text-center">
                                         <a style="background-color: #d17572"
                                             href="{{ route('productDetail', $item->slug) }}"
@@ -215,6 +220,10 @@
                                                             {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
                                                         </p>
                                                     @endif
+
+                                                    <p style="opacity: 50%"> <i class="fas fa-eye"></i> {{ $item->views }}
+                                                    </p>
+
                                                     <div class="mb-3 text-center">
                                                         <a style="background-color: #d17572"
                                                             href="{{ route('productDetail', $item->slug) }}"
@@ -230,7 +239,7 @@
 
                         <!-- Nút "Xem thêm" -->
                         <div class="col-md-12 text-center">
-                            <a href="{{ route('client.productByCategory', $category->id) }}"
+                            <a href="{{ route('client.productByCategory', ['cate' => $item->id]) }}"
                                 class="btn btn-outline-secondary my-3">
                                 More >>
                             </a>

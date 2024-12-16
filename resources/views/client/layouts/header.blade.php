@@ -24,13 +24,14 @@
                                 href="/">Home</a></li>
                         </li>
 
-                        <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
-                                href="#">Category</a>
+                        <li class="active mx-3">
+                            <a style="font-weight:500 !important;" class="text-uppercase" href="#">Category</a>
                             <ul class="dropdown">
                                 @foreach ($cate as $item)
                                     @if ($item->is_active == 1)
-                                        <li><a
-                                                href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
+                                        <li>
+                                            <a
+                                                href="{{ route('client.productByCategory', ['cate' => $item->id]) }}">{{ $item->name }}</a>
                                         </li>
                                     @endif
                                 @endforeach
@@ -99,7 +100,7 @@
                     @else
                         <button type="button" class="btn" id="page-header-user-dropdown-1"
                             data-bs-toggle="dropdown-1" aria-haspopup="true" aria-expanded="false">
-                            <a class="d-flex align-items-center text-black">
+                            <a class="d-flex align-items-center text-black" href="{{ route('cart.list') }}">
                                 {{-- <i class="fa-solid fa-cart-shopping fs-4"></i> --}}
                                 <i class="mdi mdi-cart-outline text-muted fs-4"></i>
                             </a>

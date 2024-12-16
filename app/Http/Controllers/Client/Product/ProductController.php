@@ -66,34 +66,6 @@ class ProductController extends Controller
         return view('client.products.product-list', compact('getAllProducts'));
     }
 
-    // public function listProductByBrand(Brand $brd)
-    // {
-    //     $prds = $brd->products()->paginate(3);
-
-    //     return view('client.products.productByBrand', compact('brd', 'prds'));
-    // }
-
-    // public function listProductByCategory(Category $cate)
-    // {
-    //     $prds = $cate->products()->where('status', '1')->paginate(3);
-
-    //     return view('client.products.productByCategory', compact('cate', 'prds'));
-    // }
-
-    // public function listProductByBrand(Brand $brd)
-    // {
-    //     $prds = $brd->products()->paginate(3);
-
-    //     return view('client.products.productByBrand', compact('brd', 'prds'));
-    // }
-
-    // public function listProductByCategory(Category $cate)
-    // {
-    //     $prds = $cate->products()->paginate(3);
-    //     // dd($prds);
-
-    //     return view('client.products.productByCategory', compact('cate', 'prds'));
-    // }
     public function listProductByBrand(Brand $brd, Request $request)
     {
         if ($request->ajax()) {
@@ -112,7 +84,9 @@ class ProductController extends Controller
 
     public function listProductByCategory(Category $cate, Request $request)
     {
+        $selectedCategory = $cate->id;
         if ($request->ajax()) {
+
             $prds = $cate->products()->paginate(3);
             $html = view('client.partials.products', compact('prds'))->render();
 
@@ -122,9 +96,27 @@ class ProductController extends Controller
             ]);
         }
 
-        $prds = $cate->products()->paginate(3);
-        return view('client.products.productByCategory', compact('cate', 'prds'));
+        $prds = $cate->products()->latest('created_at')->paginate(3);
+        return view('client.products.productByCategory', compact('cate', 'prds', 'selectedCategory'));
     }
+
+    // public function listProductByStatus(Product $products, Request $request)
+    // {
+    //     $selectedProduct = $products->is_sale;
+    //     if ($request->ajax()) {
+
+    //         $prds =  $products->products()->paginate(3);
+    //         $html = view('client.partials.products', compact('prds'))->render();
+
+    //         return response()->json([
+    //             'html' => $html,
+    //             'pagination' => $prds->links('pagination::bootstrap-4')->toHtml()
+    //         ]);
+    //     }
+
+    //     $prds =  $products->products()->paginate(3);
+    //     return view('client.products.productByCategory', compact('cate', 'prds', 'selectedCategory'));
+    // }
 
     public function productDetail(Request $request, $slug)
     {
