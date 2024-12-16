@@ -41,51 +41,131 @@ class ProductController extends Controller
         );
     }
 
+   
+
+    // public function listProductByBrand(Brand $brd)
+    // {
+    //     $prds = $brd->products()->paginate(3);
+
+    //     return view('client.products.productByBrand', compact('brd', 'prds'));
+    // }
+
+    // public function listProductByCategory(Category $cate)
+    // {
+    //     $prds = $cate->products()->where('status', '1')->paginate(3);
+
+    //     return view('client.products.productByCategory', compact('cate', 'prds'));
+    // }
+
+    // public function listProductByBrand(Brand $brd)
+    // {
+    //     $prds = $brd->products()->paginate(3);
+
+    //     return view('client.products.productByBrand', compact('brd', 'prds'));
+    // }
+
+    // public function listProductByCategory(Category $cate)
+    // {
+    //     $prds = $cate->products()->paginate(3);
+    //     // dd($prds);
+
+    //     return view('client.products.productByCategory', compact('cate', 'prds'));
+    // }
     public function getAllProducts()
     {
         $getAllProducts = Product::query()->paginate(9);
 
         return view('client.products.product-list', compact('getAllProducts'));
     }
-
-    public function listProductByBrand(Brand $brd)
+    public function listProductByBrand(Brand $brd, Request $request)
     {
-        $prds = $brd->products()->paginate(3);
+        if ($request->ajax()) {
+            $prds = $brd->products()->paginate(3);
+            $html = view('client.partials.products', compact('prds'))->render();
 
+            return response()->json([
+                'html' => $html,
+                'pagination' => $prds->links('pagination::bootstrap-4')->toHtml()
+            ]);
+        }
+
+        $prds = $brd->products()->paginate(3);
         return view('client.products.productByBrand', compact('brd', 'prds'));
     }
 
-    public function listProductByCategory(Category $cate)
-    {
-        $prds = $cate->products()->paginate(3);
+    // public function listProductByCategory(Category $cate, Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $prds = $cate->products()->paginate(3);
+    //         $html = view('client.partials.products', compact('prds'))->render();
 
-        return view('client.products.productByCategory', compact('cate', 'prds'));
+    //         return response()->json([
+    //             'html' => $html,
+    //             'pagination' => $prds->links('pagination::bootstrap-4')->toHtml()
+    //         ]);
+    //     }
+
+    //     $prds = $cate->products()->paginate(3);
+    //     return view('client.products.productByCategory', compact('cate', 'prds'));
+    // }
+
+
+    public function listProductByCategory(Category $cate, Request $request)
+{
+    $selectedCategory = $cate->id;
+    if ($request->ajax()) {
+        
+        $prds = $cate->products()->paginate(3);
+        $html = view('client.partials.products', compact('prds'))->render();
+
+        return response()->json([
+            'html' => $html,
+            'pagination' => $prds->links('pagination::bootstrap-4')->toHtml()
+        ]);
     }
+
+    $prds = $cate->products()->paginate(3);
+    return view('client.products.productByCategory', compact('cate', 'prds', 'selectedCategory'));
+}
+
+
 
     public function productDetail($slug)
     {
-        $product = Product::query()->with(['productVariants', 'category', 'galleries'])->where('slug', $slug)->first();
+        $product = Product::query()->with(['productVariants', 'category', 'galleries', 'ratings'])->where('slug', $slug)->first();
 
-
-        // Kiểm tra sản phẩm có tồn tại hay không
         if (!$product) {
             abort(404);
         }
-        // Lấy 4 hình ảnh của sản phẩm galleries
+
         $productGalleries =  $product->galleries()->limit(4)->get();
 
-        // Lấy danh sách màu sắc và kích thước
         $colors = ProductColor::query()->pluck('name', 'id')->all();
         $sizes = ProductSize::query()->pluck('name', 'id')->all();
 
-        // Lấy các bình luận cho sản phẩm
-        $comments = Review::with('user')->where('product_id', $product->id)
-            ->where('is_show', 0)
-            ->orderBy('id', 'DESC')->get();
+        $relatedProducts = Product::with(['galleries', 'productVariants'])
+            ->where('category_id', $product->category_id)
+            ->where('id', '<>', $product->id)
+            ->limit(4)->get();
 
-        // Lấy các sản phẩm liên quan dựa trên danh mục của sản phẩm hiện tại
-        $relatedProducts = Product::with(['galleries', 'productVariants'])->where('category_id', $product->category_id)->where('id', '<>', $product->id)->limit(4)->get();
+        $averageRating = $product->averageRating();
+        $totalRatings = $product->totalRatings();
+        $ratingBreakdown = $product->ratingBreakdown();
 
-        return view('client.products.product-detail', compact('product', 'colors', 'sizes', 'comments', 'relatedProducts', 'productGalleries'));
+        $relatedProducts = Product::query()
+            ->where('category_id', $product->category_id)
+            ->limit(4)->get();
+
+        return view('client.products.product-detail', compact(
+            'product',
+            'colors',
+            'sizes',
+            'relatedProducts',
+            'productGalleries',
+            'averageRating',
+            'totalRatings',
+            'ratingBreakdown',
+            'relatedProducts'
+        ));
     }
 }

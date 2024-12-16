@@ -1,5 +1,9 @@
-<header class="header" style="position: sticky; top: 0; z-index: 1000; font-size: 18px; font-family: sans-serif; ">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.4.47/css/materialdesignicons.min.css"
+    integrity="sha512-/k658G6UsCvbkGRB3vPXpsPHgWeduJwiWGPCGS14IQw3xpr63AEMdA8nMYG2gmYkXitQxDTn6iiK/2fD4T87qA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<header class="header" style="position: sticky; top: 0; z-index: 1000; font-size: 18px; font-family: sans-serif; ">
     <div class="container p-0">
         <div class="row" style="padding-left: 10px;  justify-content: space-evenly">
             <div class="" style="width: 160px;">
@@ -20,20 +24,39 @@
                                 href="/">Home</a></li>
                         </li>
 
-                        <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
+                        <!-- <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
                                 href="#">Category</a>
                             <ul class="dropdown">
                                 @foreach ($cate as $item)
+                                    @if ($item->is_active == 1)
+                                        <li><a
+                                                href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </li> -->
+
+
+
+                        <li class="active mx-3">
+                            <a style="font-weight:500 !important;" class="text-uppercase" href="#">Category</a>
+                            <ul class="dropdown">
+                                @foreach ($cate as $item)
                                 @if ($item->is_active == 1)
-                                <li><a href="{{ route('client.productByCategory', $item->id) }}">{{ $item->name }}</a>
+                                <li>
+                                    <a
+                                        href="{{ route('client.productByCategory', ['cate' => $item->id]) }}">{{ $item->name }}</a>
                                 </li>
                                 @endif
                                 @endforeach
                             </ul>
                         </li>
 
+
+
                         <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
-                                href="#">Contact</a>
+                                href="{{ route('policy') }}">Policy</a>
                         </li>
 
                         <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
@@ -47,22 +70,15 @@
                     <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
                         aria-haspopup="true" aria-expanded="false">
                         <a href="{{ route('cart.list') }}" class="d-flex align-items-center  text-black">
-                            <i class="bi bi-cart"></i>
+                            <i class="fa-solid fa-cart-shopping fs-5"></i>
                         </a>
                     </button>
 
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-
-
-                            @if (\Str::contains(Auth::user()->avatar, 'http'))
-                            <img src="{{ Auth::user()->avatar }}" alt="" style="border-radius: 50%" width="30px"
-                                height="30px">
-                            @else
                             <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="" style="border-radius: 50%"
                                 width="30px" height="25px">
-                            @endif
                         </span>
                         </a>
                     </button>
@@ -73,13 +89,15 @@
                             style="font-size: 18px; font-family: sans-serif; "><strong>Hi,
                                 {{ implode(' ', array_slice(explode(' ', Auth::user()->name), -2)) }}
                             </strong></span>
+
                         @if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
-                        <a class="dropdown-item" target="#" href="{{ route('admin.') }}"><i
-                                class="mdi mdi-view-dashboard-outline text-muted fs-16 align-middle me-1"></i>
+                        <a class="dropdown-item" target="#" href="{{ route('admin.') }}">
+                            <i class="mdi mdi-view-dashboard-outline text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle">Admin Page</span></a>
                         @endif
-                        <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}"><i
-                                class="mdi mdi-account-circle-outline text-muted fs-16 align-middle me-1"></i>
+
+                        <a class="dropdown-item" href="{{ route('showFormUpdateProfile', Auth::user()->id) }}">
+                            <i class="mdi mdi-account-circle-outline text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle">Profile</span></a>
                         <a class="dropdown-item" href="{{ route('showFormChangePassword') }}"><i
                                 class="mdi mdi-lock-outline text-muted fs-16 align-middle me-1"></i>
@@ -99,16 +117,19 @@
                     @else
                     <button type="button" class="btn" id="page-header-user-dropdown-1" data-bs-toggle="dropdown-1"
                         aria-haspopup="true" aria-expanded="false">
-                        <a href="{{ route('cart.list') }}" class="d-flex align-items-center  text-black">
-                            <i class="bi bi-cart"></i>
+                        <a class="d-flex align-items-center text-black">
+                            {{-- <i class="fa-solid fa-cart-shopping fs-4"></i> --}}
+                            <i class="mdi mdi-cart-outline text-muted fs-4"></i>
                         </a>
                     </button>
 
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <span
-                            class="d-flex align-items-center text-start ms-xl-2 d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                            <i class="mdi mdi-account-outline text-muted fs-16" style="color: black;"></i>
+                            class="d-flex align-items-center text-start ms-xl-2 d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                            style="font-size: 18px; font-family: sans-serif;">
+                            {{-- <i class="fa-regular fa-user fs-4"></i> --}}
+                            <i class="mdi mdi-account-outline text-muted fs-3"></i>
                         </span>
                     </button>
 
@@ -214,12 +235,15 @@ $(document).ready(function() {
                     let results = '';
                     if (data.length > 0) {
                         data.forEach(item => {
+                            let formattedPrice = formatPriceVND(item
+                                .price_regular);
+
                             results += `
                                         <a href="/product-detail/${item.slug}"  >
                                             <div class="dropdown-item">
-                                                <img src="${item.img_thumbnail}" alt="${item.name}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                                                <img src="http://fshoses.test/storage/${item.img_thumbnail}" alt="${item.name}" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
                                                 <span>${item.name}</span>
-                                                <span style="float: right; color: #007bff;">${item.price_regular}</span>
+                                                <span style="float: right; color: #007bff;">${formattedPrice}</span>
                                             </div>
                                         </a>
                                         
@@ -241,5 +265,12 @@ $(document).ready(function() {
             $('#search-results').fadeOut();
         }
     });
+
+    function formatPriceVND(price) {
+        return price.toLocaleString('vi-VN');
+    }
 });
 </script>
+
+@section('css')
+@endsection

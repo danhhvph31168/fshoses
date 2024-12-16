@@ -37,7 +37,10 @@
 
                         <div class="row" id="product-list">
                             @include('client.partials.products', ['products' => $prds])
-                            {{ $prds->links() }}
+                        </div>
+
+                        <div class="pagination-container mt-3">
+                            {!! $prds->links('pagination::bootstrap-5') !!}
                         </div>
                     </div>
 

@@ -1,3 +1,4 @@
+@if ($products->count() > 0)
 @foreach ($products as $item)
 @php
 $price = $item->price_regular * ((100 - $item->price_sale) / 100);
@@ -14,9 +15,7 @@ $price = $item->price_regular * ((100 - $item->price_sale) / 100);
             @endif
         </div>
         <div class="card-body" style="height: 180px">
-            <h3 href="#" class="text-dark card-title fs-6 fw-bold">
-                {{ $item->name }}
-            </h3>
+            <h3 href="#" class="text-dark card-title fs-6 fw-bold">{{ $item->name }}</h3>
             @if ($item->price_sale > 0)
             <p class="card-text text-danger text-center">
                 {{ number_format($price, 0, ',', '.') }} VNĐ -
@@ -37,3 +36,6 @@ $price = $item->price_regular * ((100 - $item->price_sale) / 100);
     </div>
 </div>
 @endforeach
+@else
+<p class="text-center">No products found.</p>
+@endif
