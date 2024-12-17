@@ -52,7 +52,6 @@
 </section>
 @endsection
 @section('css')
-
 <style>
 /* Product Card */
 .card {

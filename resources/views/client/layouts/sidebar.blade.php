@@ -9,6 +9,14 @@
             <div id="price_range"></div>
         </div>
 
+        <div class="mb-4">
+            <h3 class="text-uppercase fw-bold mb-3">Products</h3>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input common_selector is_sale" value="1"
+                    {{ request('is_sale') == 1 ? 'checked' : '' }}>
+                <label class="form-check-label">Sale products</label>
+            </div>
+        </div>
         <div class=" mb-4">
             <h3 class="text-uppercase fw-bold mb-3">Brands</h3>
             <div class="list-group">
@@ -19,7 +27,8 @@
                             value="{{ $item->name }}">
                         <span>{{ $item->name }}</span>
                     </div>
-                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
+                    <span
+                        class="badge rounded-pill bg-danger text-white">{{ $item->products->where('is_active', 1)->count() }}</span>
                 </div>
                 @endforeach
             </div>
@@ -27,20 +36,6 @@
 
         <div class="mb-4">
             <h3 class="text-uppercase fw-bold mb-3">Categories</h3>
-            <!-- <div class="list-group">
-                @foreach ($cate as $item)
-                <div class="list-group-item d-flex align-items-center justify-content-between">
-                    <div>
-                        <input type="checkbox" class="form-check-input me-2 common_selector category"
-                            value="{{ $item->name }}">
-                        <span>{{ $item->name }}</span>
-                    </div>
-                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
-                </div>
-                @endforeach
-            </div> -->
-
-
             <div class="list-group">
                 @foreach ($cate as $item)
                 <div class="list-group-item d-flex align-items-center justify-content-between">
@@ -50,7 +45,8 @@
                             {{ isset($selectedCategory) && $selectedCategory == $item->id ? 'checked' : '' }}>
                         <span>{{ $item->name }}</span>
                     </div>
-                    <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
+                    <span
+                        class="badge rounded-pill bg-danger text-white">{{ $item->products->where('is_active', 1)->count() }}</span>
                 </div>
                 @endforeach
             </div>
@@ -182,85 +178,9 @@ h3::after {
 }
 </style>
 <script>
-// $(document).ready(function() {
-//     function fetchProducts(pageUrl = null) {
-
-//         const brands = [];
-//         const categories = [];
-//         const minPrice = $('#hidden_min_price').val();
-//         const maxPrice = $('#hidden_max_price').val();
-
-//         $('.common_selector.brand:checked').each(function() {
-//             brands.push($(this).val());
-//         });
-
-//         $('.common_selector.category:checked').each(function() {
-//             categories.push($(this).val());
-//         });
-
-//         const url = pageUrl ? pageUrl : "{{ route('search.products') }}";
-//         $.ajax({
-//             url: url,
-//             method: "GET",
-//             data: {
-//                 brand: brands,
-//                 category: categories,
-//                 min_price: minPrice,
-//                 max_price: maxPrice,
-//             },
-//             success: function(response) {
-//                 $('#product-list').html(response.html);
-//                 $('.pagination-container').html(response.pagination);
-
-//                 const currentMaxPrice = $('#price_range').slider('option', 'max');
-//                 if (response.maxPrice && response.maxPrice !== currentMaxPrice) {
-//                     $('#price_range').slider('option', 'max', response.maxPrice);
-//                     $('#hidden_max_price').val(response.maxPrice);
-//                 }
-
-//                 $('#price_show').html(
-//                     `Price: ${parseInt($('#hidden_min_price').val()).toLocaleString('vi-VN')} VNĐ - ${parseInt($('#hidden_max_price').val()).toLocaleString('vi-VN')} VNĐ`
-//                 );
-//             },
-//             error: function(xhr) {
-//                 console.log(xhr.responseText);
-//             }
-//         });
-//     }
-
-//     $('.common_selector').on('change', function() {
-//         fetchProducts();
-//     });
-
-//   $(document).on('click', '.pagination a', function(event) {
-//         event.preventDefault();
-//         const pageUrl = $(this).attr('href');
-//         fetchProducts(pageUrl);
-//     });
-
-//     $('#price_range').slider({
-//         range: "min",
-//         min: 0,
-//         max: $('#price_range').data('max'),
-//         value: parseInt($('#hidden_min_price').val()),
-//         step: 100000,
-//         slide: function(event, ui) {
-//             $('#price_sho  w').html(
-//                 `Price: ${ui.value.toLocaleString('vi-VN')} VNĐ - ${parseInt($('#hidden_max_price').val()).toLocaleString('vi-VN')} VNĐ`
-//             );
-//             $('#hidden_min_price').val(ui.value);
-//         },
-//         stop: function(event, ui) {
-//             fetchProducts();
-//         }
-//     });
-
-//     fetchProducts();
-
-// });
 $(document).ready(function() {
 
-    const categoryId = "{{ $selectedCategory }}";
+    const categoryId = "{{ $selectedCategory ?? '' }}";
     $('.common_selector.category').each(function() {
         if ($(this).val() == categoryId) {
             $(this).prop('checked', true);
@@ -273,7 +193,7 @@ $(document).ready(function() {
         const categories = [];
         const minPrice = $('#hidden_min_price').val();
         const maxPrice = $('#hidden_max_price').val();
-
+        const isSale = $('.common_selector.is_sale:checked').val();
 
         $('.common_selector.category:checked').each(function() {
             categories.push($(this).val());
@@ -292,6 +212,7 @@ $(document).ready(function() {
                 category: categories,
                 min_price: minPrice,
                 max_price: maxPrice,
+                is_sale: isSale,
             },
             success: function(response) {
                 $('#product-list').html(response.html);
@@ -349,3 +270,8 @@ $(document).ready(function() {
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+@endpush

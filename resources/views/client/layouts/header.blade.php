@@ -55,9 +55,7 @@
 
 
 
-                        <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
-                                href="{{ route('policy') }}">Policy</a>
-                        </li>
+
 
                         <li class="active mx-3"><a style="font-weight:500 !important;" class="text-uppercase"
                                 href="{{ route('showFormSearchOrder') }}">Order Tracking</a></li>
