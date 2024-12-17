@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\MessageSuccessResetController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\PolicyController;
 
+
 Route::get('/',                                     [ProductController::class, 'index'])->name('client.home');
 Route::get('/brand/{brd}',                          [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
 Route::get('/category/{cate}',                      [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
@@ -29,9 +30,6 @@ Route::get('/policies',                             [PolicyController::class, 'i
 Route::prefix('auth')
     ->name('auth.')
     ->group(function () {
-
-        Route::get('google',                        [GoogleController::class, 'redirectToGoogle'])->name('google');
-        Route::get('google/callback',               [GoogleController::class, 'handleGoogleCallback']);
 
         Route::get('register',                      [AuthenController::class, 'showFormRegister'])->name('showFormRegister');
         Route::post('register',                     [AuthenController::class, 'handleRegister'])->name('handleRegister');
@@ -110,3 +108,5 @@ Route::post('/apply-coupon',                        [CouponController::class, 'a
 //Rating
 Route::get('ratings/create/{orderId}',              [RatingController::class, 'create'])->name('ratings.create');
 Route::post('ratings/store',                        [RatingController::class, 'store'])->name('ratings.store');
+
+

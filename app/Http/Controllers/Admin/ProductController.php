@@ -399,4 +399,45 @@ class ProductController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
     }
+
+    public function filterProducts(Request $request)
+    {
+        $brands = Brand::pluck('name', 'id')->all();
+        $categories = Category::pluck('name', 'id')->all();
+        $brandName = $request->get('brand_name');
+        $categoryName = $request->get('category_name');
+        $productName = $request->get('product_name');
+
+        $products = Product::query();
+
+        if (!empty($brandName)) {
+            $products->whereHas('brand', function ($query) use ($brandName) {
+                $query->where('name', $brandName);
+            });
+        }
+
+        if (!empty($categoryName)) {
+            $products->whereHas('category', function ($query) use ($categoryName) {
+                $query->where('name', $categoryName);
+            });
+        }
+
+        if (!empty($productName)) {
+            $products->where('name', 'LIKE', "%{$productName}%");
+        }
+
+        $data = $products->orderBy('created_at', 'DESC')
+            ->paginate(5)
+            ->appends([
+                'brand_name' => $brandName,
+                'category_name' => $categoryName,
+                'product_name' => $productName,
+            ]);
+
+        return view('admin.products.index', compact(
+            'data',
+            'brands',
+            'categories'
+        ));
+    }
 }

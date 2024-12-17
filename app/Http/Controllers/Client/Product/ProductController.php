@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Client\Product;
 
 use App\Models\Brand;
 use App\Models\Banner;
-use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductSize;
 use App\Models\ProductColor;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ProductController extends Controller

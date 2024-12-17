@@ -63,10 +63,40 @@
                         <a class="btn btn-primary" href="{{ route('admin.products.create') }}">
                             <i class="ri-add-fill"></i> Add product </a>
                     </div>
-                    <div>
-                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
-                            title="Type in a name">
-                    </div>
+                    <form action="{{ route('admin.filterProducts') }}" method="GET" class="row">
+                        <div class="col-md-3">
+                            <select id="brand_name" name="brand_name" class="form-control">
+                                <option value="" {{ request('brand_name') == '' ? 'selected' : '' }}>Select Brand
+                                </option>
+                                @foreach ($brands as $id => $name)
+                                    <option value="{{ $name }}"
+                                        {{ request('brand_name') == $name ? 'selected' : '' }}>{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <select name="category_name" id="category_name" type="text" class="form-control">
+                                <option value="" {{ request('category_name') == '' ? 'selected' : '' }}>Select
+                                    Category</option>
+                                @foreach ($categories as $id => $name)
+                                    <option value="{{ $name }}"
+                                        {{ request('category_name') == $name ? 'selected' : '' }}>{{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="product_name" placeholder="Enter product name"
+                                value="{{ request('product_name') }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </form>
+
                 </div>
 
                 <div class="card-body">
@@ -86,53 +116,61 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
-                                @php
-                                    $price = $item->price_regular * ((100 - $item->price_sale) / 100);
-                                @endphp
-
-                                <tr class="align-middle text-center">
-                                    <td>{{ $item->sku }}</td>
-                                    <td>
-                                        @if (\Str::contains($item->img_thumbnail, 'http'))
-                                            <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
-                                                height="100px" width="50px">
-                                        @else
-                                            <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
-                                                alt="..." height="100px" width="50px">
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->brand?->name }}</td>
-                                    <td>{{ $item->category->name }}</td>
-                                    <td>{{ number_format($item->price_regular, 0, ',', '.') }} VNĐ</td>
-                                    <td class="text-primary">{{ $item->price_sale }}%</td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input toggle-switch" type="checkbox"
-                                                data-id="{{ $item->id }}" {{ $item->is_active == 1 ? 'checked' : '' }}>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.products.show', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
-                                                class="ri-eye-fill align-bottom"></i></a>
-
-                                        <a href="{{ route('admin.products.edit', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
-                                                class="ri-pencil-fill align-bottom"></i></a>
-
-                                        <form action="{{ route('admin.products.destroy', $item->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('Are you sure you want to delete this product?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
-                                                title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
-                                        </form>
-                                    </td>
+                            @if ($data->isEmpty())
+                                <tr>
+                                    <td colspan="9" class="text-muted fw-bold text-center">No products found. Please
+                                        try adjusting your filters!</td>
                                 </tr>
-                            @endforeach
+                            @else
+                                @foreach ($data as $item)
+                                    @php
+                                        $price = $item->price_regular * ((100 - $item->price_sale) / 100);
+                                    @endphp
+
+                                    <tr class="align-middle text-center">
+                                        <td>{{ $item->sku }}</td>
+                                        <td>
+                                            @if (\Str::contains($item->img_thumbnail, 'http'))
+                                                <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
+                                                    height="100px" width="50px">
+                                            @else
+                                                <img src="{{ Storage::url($item->img_thumbnail) }}" class="card-img-top"
+                                                    alt="..." height="100px" width="50px">
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->brand?->name }}</td>
+                                        <td>{{ $item->category->name }}</td>
+                                        <td>{{ number_format($item->price_regular, 0, ',', '.') }} VNĐ</td>
+                                        <td class="text-primary">{{ $item->price_sale }}%</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input toggle-switch" type="checkbox"
+                                                    data-id="{{ $item->id }}"
+                                                    {{ $item->is_active == 1 ? 'checked' : '' }}>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.products.show', $item->id) }}" class="btn btn-light"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="View"><i
+                                                    class="ri-eye-fill align-bottom"></i></a>
+
+                                            <a href="{{ route('admin.products.edit', $item->id) }}" class="btn btn-light"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
+                                                    class="ri-pencil-fill align-bottom"></i></a>
+
+                                            <form action="{{ route('admin.products.destroy', $item->id) }}" method="POST"
+                                                class="d-inline"
+                                                onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
+                                                    title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     {{ $data->links() }}

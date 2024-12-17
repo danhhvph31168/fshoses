@@ -85,12 +85,8 @@ Route::prefix('admin')->as('admin.')
             Route::put('/{id}/update',   [RoleController::class, 'updateStatus'])->name('updateStatus');
         });
 
-        // auth
-        Route::get('showFormLogin', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
-        Route::post('login',        [LoginController::class, 'login'])->name('login');
-        Route::post('logout',       [LoginController::class, 'logout'])->name('logout');
-
         // products
+        Route::get('product',                      [ProductController::class, 'filterProducts'])->name('filterProducts');
         Route::resource('products', ProductController::class);
         Route::prefix('products')->as('products.')->group(function () {
             Route::put('/{id}/update',   [ProductController::class, 'updateProduct'])->name('updateProduct');
