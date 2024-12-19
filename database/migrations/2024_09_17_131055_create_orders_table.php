@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Account;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
@@ -18,7 +19,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor('staff_id')->constrained('users');
+            $table->foreignIdFor(Coupon::class)->constrained()->nullable();
+            $table->foreignId('staff_id')->constrained('users');
             $table->string('sku_order')->unique();
             $table->string('user_name');
             $table->string('user_email');

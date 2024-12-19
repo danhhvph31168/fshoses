@@ -19,10 +19,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->foreignIdFor(ProductVariant::class)->constrained();
             $table->foreignIdFor(Product::class)->constrained();
             $table->integer('value')->default(0);
             $table->string('comment');
+            $table->integer('is_show')->default(1);
             $table->timestamps();
         });
     }

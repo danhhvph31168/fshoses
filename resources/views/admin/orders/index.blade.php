@@ -84,7 +84,8 @@
                                         </div>
                                     </th>
 
-                                    <td>{{ $item->sku_order }}</td>
+                                    <td class="{{ !$item->cancel_reason == null ? 'text-danger' : '' }}">
+                                        {{ $item->sku_order }}</td>
                                     <td>{{ $item->user->name }}</td>
                                     <td>{{ $item->user_province }}</td>
                                     <td>{{ $item->user_email }}</td>
@@ -156,7 +157,7 @@
                                         <ul class="list-inline hstack gap-2 mb-0">
                                             <li class="list-inline-item edit" data-bs-toggle="tooltip"
                                                 data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                <a href="{{ route('admin.orders.edit', $item) }}" class="btn btn-warning">
+                                                <a href="{{ route('admin.orders.edit', $item) }}" class="btn btn-primary">
                                                     <i class="ri-pencil-fill"></i>
                                                 </a>
                                             </li>

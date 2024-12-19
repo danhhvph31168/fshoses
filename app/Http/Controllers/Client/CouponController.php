@@ -53,9 +53,9 @@ class CouponController extends Controller
         $userId = auth()->id();
         $hasUsedCoupon = Order::where('user_id', $userId)->where('coupon_id', $coupon->id)->exists();
 
-        // if ($hasUsedCoupon) {
-        //     return redirect()->route('check-out')->with('error', 'The Coupon code has been used!');
-        // }
+        if ($hasUsedCoupon) {
+            return redirect()->route('check-out')->with('error', 'The Coupon code has been used!');
+        }
 
         // Tính toán giảm giá
         $discount = $coupon->type === 'fixed' ? $coupon->value : ($totalAmount * $coupon->value / 100);

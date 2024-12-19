@@ -15,13 +15,21 @@ class Rating extends Model
         'product_id',
         'value',
         'comment',
+        'is_show',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

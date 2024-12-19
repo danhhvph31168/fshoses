@@ -15,7 +15,7 @@ class Authenticate extends Middleware
     public function handle($request, Closure $next, ...$guard)
     {
         if (!Auth::check()) {
-            return redirect()->back();
+            return back()->with('info', 'Please login!');
         }
 
         $user = Auth::user();

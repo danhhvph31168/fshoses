@@ -1,19 +1,20 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Coupons List
+    List Ratings
 @endsection
+
 @section('content')
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
-            <div class="page-title-box align-items-center">
-                {{-- <h4 class="mb-sm-0">Danh sách tài khoản</h4> --}}
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0">List Ratings</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.categories.create') }}">Categories</a></li>
-                        <li class="breadcrumb-item text-danger">List</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ratings</a></li>
+                        <li class="breadcrumb-item active">List</li>
                     </ol>
                 </div>
 
@@ -25,103 +26,82 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="card-title mb-0">
-                        <h3>Coupon List</h3>
-                    </div>
-                    <div>
-                        <a href="{{ route('admin.coupons.create') }}"><i class="btn btn-primary ri-add-fill"></i></a>
-                    </div>
-                </div>
+                
                 <div class="card-body">
-                    {{-- Hiển thị thông báo thành công --}}
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismis="alert" aria-label="Close">
-                            </button>
-                        </div>
-                    @endif
-                    <table id="example"
-                        class="table table-bordered dt-responsive nowrap table-striped align-middle text-center"
+                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
+
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Value</th>
-                                <th>Quantity</th>
-                                <th>Condition</th>
-                                <th>Start date</th>
-                                <th>End date</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>ID</th>
+                                <th>Image Product</th>
+                                <th>Sku Order</th>
+                                <th>User</th>
+                                <th>Product</th>
+                                <th>Content</th>
+                                <th>Date</th>
+                                <th>Show</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($coupons as $key => $item)
-                                <tr class="align-middle">
-                                    <th>{{ $key + 1 }}</th>
-                                    <th>{{ $item->code }}</th>
-                                    <th>{{ $item->type == 'percent' ? $item->value . '%' : number_format($item->value, 0, ',', '.') . ' VND' }}
-                                    </th>
-                                    <th>{{ $item->quantity }}</th>
-                                    <th>{{ number_format($item->minimum_order_value, 0, ',', '.') }} VNĐ</th>
-                                    <th>{{ \Carbon\Carbon::parse($item->start_date)->format('d/m/Y') }}</th>
-                                    <th>{{ \Carbon\Carbon::parse($item->end_date)->format('d/m/Y') }}</th>
-                                    <th>
+                            @foreach ($ratings as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        <img src="{{ Storage::url($item->product->img_thumbnail) }}" width="100"
+                                            height="100" alt="">
+                                    </td>
+                                    <td>
+                                        {{ $item->order->sku_order }}
+                                    </td>
+                                    <td>{{ $item->user->name }}</td>
+                                    <td>
+                                        <a href="{{ route('productDetail', $item->product->slug) }}" target="_blank">
+                                            {{ \Str::limit($item->product->name, 30) }}
+                                        </a>
+                                    </td>
+                                    <td>{{ \Str::limit($item->comment, 30) }}</td>
+                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    <td>
                                         <div class="form-check form-switch text-center">
                                             <input class="form-check-input toggle-switch" type="checkbox"
-                                                data-id="{{ $item->id }}"
-                                                {{ $item->is_active == 1 ? 'checked' : '' }}>
+                                                data-id="{{ $item->id }}" {{ $item->is_show == 1 ? 'checked' : '' }}>
                                         </div>
-                                    </th>
-                                    <td>
-                                        <a href="{{ route('admin.coupons.edit', $item->id) }}" class="btn btn-light"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
-                                                class="ri-pencil-fill align-bottom"></i></a>
-
-                                        {{-- <form action="{{ route('admin.coupons.destroy', $item->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('Are you sure you want to delete this coupon?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
-                                                title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
-                                        </form> --}}
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-light" href="{{ route('admin.ratings.show', $item->id) }}"><i
+                                                class="ri-eye-fill align-bottom"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
+
+
                     </table>
-                    {{ $coupons->links() }}
                 </div>
             </div>
         </div><!--end col-->
-    </div><!--end row-->
+    </div>
 @endsection
 
 @section('scripts')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script>
         $(document).on('change', '.toggle-switch', function() {
-            let couponId = $(this).data('id');
+            let reviewId = $(this).data('id');
             let newValue = $(this).is(':checked') ? 1 : 0;
 
             $.ajax({
-                url: "{{ route('admin.coupons.updateStatus', ':id') }}".replace(':id', couponId),
+                url: "{{ route('admin.ratings.update', ':id') }}".replace(':id', reviewId),
                 method: "PUT",
                 data: {
                     _token: "{{ csrf_token() }}",
-                    is_active: newValue
+                    is_show: newValue
                 },
                 success: function(response) {
+                    toastr.success(`Status updated successfully`);
                     console.log(200);
-                    toastr.success(
-                        `Status updated successfully!`
-                    );
                 },
                 error: function() {
                     alert('An error occurred while updating the status.');

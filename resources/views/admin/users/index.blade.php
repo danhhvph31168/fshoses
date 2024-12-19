@@ -61,7 +61,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div>
-                        <a class="btn btn-success" href="{{ route('admin.users.create') }}">
+                        <a class="btn btn-primary" href="{{ route('admin.users.create') }}">
                             <i class="ri-add-fill"></i> Add User </a>
                     </div>
                     <div class="d-flex">
@@ -69,7 +69,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" aria-label="Recipient's username"
                                     aria-describedby="button-addon2" name="key" placeholder="Search ...">
-                                <button class="btn btn-success ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
+                                <button class="btn btn-primary ms-2" type="submit" id="button-addon2">Tìm kiếm</button>
                             </div>
                         </form>
                     </div>
@@ -93,7 +93,7 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr class="align-middle text-center">
-                                    <td style="width: 10px">{{ $item->id }}</td>
+                                    <td style="width: 10px">{{ $loop->iteration }}</td>
                                     <td style="width: 100px"> <img src="{{ Storage::url($item->avatar) }}" alt=""
                                             width="50px">
                                     </td>
@@ -115,7 +115,7 @@
 
                                     </td>
                                     <td>
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch text-center">
                                             <input class="form-check-input toggle-switch" type="checkbox"
                                                 data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
                                         </div>

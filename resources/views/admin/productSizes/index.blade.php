@@ -30,7 +30,7 @@
                         <h3>Product Size List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.productSizes.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.productSizes.create') }}"><i class="btn btn-primary ri-add-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -48,9 +48,10 @@
                         <thead>
                             <tr class="">
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
+                                <th>Size</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -59,21 +60,27 @@
                                 <tr class="align-middle">
                                     <th>{{ $key + 1 }}</th>
                                     <th>{{ $item->name }}</th>
-                                    <th>{{ $item->created_at }}</th>
-                                    <th>{{ $item->updated_at }}</th>
+                                    <th>{{ $item->created_at->format('d/m/Y') }}</th>
+                                    <th>{{ $item->updated_at->format('d/m/Y') }}</th>
+                                    <td>
+                                        <div class="form-check form-switch text-center">
+                                            <input class="form-check-input toggle-switch" type="checkbox"
+                                                data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
                                     <td>
                                         <a href="{{ route('admin.productSizes.edit', $item->id) }}" class="btn btn-light"
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
 
-                                        <form action="{{ route('admin.productSizes.destroy', $item->id) }}" method="POST"
+                                        {{-- <form action="{{ route('admin.productSizes.destroy', $item->id) }}" method="POST"
                                             class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this category?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
                                                 title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
@@ -86,11 +93,34 @@
     </div><!--end row-->
 @endsection
 
+@section('scripts')
+    <script>
+        $(document).on('change', '.toggle-switch', function() {
+            let productId = $(this).data('id');
+            let newValue = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: "{{ route('admin.productSizes.updateStatus', ':id') }}".replace(':id', productId),
+                method: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    status: newValue
+                },
+                success: function(response) {
+                    toastr.success('Status updated success')
+                    console.log(200);
+                },
+                error: function() {
+                    console.log('An error occurred while updating the status.');
+                }
+            });
+        });
+    </script>
+@endsection
+
 @section('css')
     <!--datatable css-->
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" /> --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
@@ -103,8 +133,7 @@
 
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-    {{-- <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script> --}}
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
@@ -113,7 +142,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-    {{-- <script>
-        new DataTable("#myTable");
-    </script> --}}
 @endsection

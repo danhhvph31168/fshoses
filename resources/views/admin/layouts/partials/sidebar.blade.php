@@ -7,12 +7,10 @@
 
         <a href="{{ route('admin.') }}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/client/img/logo/newlogoblack1.png') }}" alt="" width="150"
-                    style="height: 100px; !important">
+                <img src="{{ asset('theme/client/img/logo/newlogoblack1.png') }}" alt="" width="150">
             </span>
             <span class="logo-lg fs-1 text-black">
-                <img src="{{ asset('theme/client/img/logo/newlogowhite1.png') }}" alt="" width="150"
-                    style="height: 100px; !important">
+                <img src="{{ asset('theme/client/img/logo/newlogowhite1.png') }}" alt="" width="150">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -108,7 +106,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.brands.create') }}" class="nav-link"
-                                        data-key="t-horizontal">Add new</a>
+                                        data-key="t-horizontal">Add</a>
                                 </li>
                             </ul>
                         </div>
@@ -163,6 +161,13 @@
                             </div>
                         </li>
                     @endif
+
+                    {{-- Ratings --}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="{{ route('admin.ratings.index') }}">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Ratings</span>
+                        </a>
+                    </li>
 
                     {{-- Comment --}}
                     <li class="nav-item">

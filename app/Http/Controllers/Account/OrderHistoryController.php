@@ -109,7 +109,12 @@ class OrderHistoryController extends Controller
             'status_order' => 'canceled',
             'cancel_reason' => $request->cancel_reason,
         ];
-        $order->update($data);
+
+        if ($order->status_order == Order::STATUS_ORDER_DELIVERED || $order->status_order == Order::STATUS_ORDER_SHIPPING) {
+            return back()->with('info', 'Order cancellation failed, please contact hotline for support!');
+        } else {
+            $order->update($data);
+        }
 
         return redirect()->back()->with('info', 'Order was canceled successfully.');
     }

@@ -17,14 +17,12 @@
             </div>
 
             <div class="row">
-                @foreach ($listLatestProduct as $item)
-                    @if ($item->is_active == 1 && $item->is_sale == 1)
+                @foreach ($bestSeller as $item)
                         @php
                             $price = $item->price_regular * ((100 - $item->price_sale) / 100);
                         @endphp
                         <div class="col-md-3 mb-4">
                             <div class="card shadow-sm h-100">
-
                                 <div class="border-bottom" style="position: relative; overflow: hidden;">
                                     @if (\Str::contains($item->img_thumbnail, 'http'))
                                         <img src="{{ $item->img_thumbnail }}" class="card-img-top" alt="..."
@@ -70,13 +68,13 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
                 @endforeach
             </div>
 
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <a href="{{ route('client.product-list') }}" class="btn btn-outline-secondary my-3">
+                    <a href="{{ route('client.productByCategory', ['is_sale' => 1]) }}"
+                        class="btn btn-outline-secondary my-3">
                         More >>
                     </a>
                 </div>
@@ -151,7 +149,8 @@
 
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <a href="{{ route('client.product-list') }}" class="btn btn-outline-secondary my-3">
+                    <a href="{{ route('client.productByCategory', ['cate' => $selectedCategory, 'is_sale' => request('is_sale')]) }}"
+                        class="btn btn-outline-secondary my-3">
                         More >>
                     </a>
                 </div>
@@ -169,7 +168,7 @@
                     <div class="row mb-4">
                         <!-- Tiêu đề danh mục -->
                         <div class="col-md-12">
-                            <h3 class="text-center text-uppercase text-secondary border-bottom pb-3">
+                            <h3 class="text-center text-uppercase text-secondary border-top py-3">
                                 {{ $category->name }}
                             </h3>
                         </div>
@@ -179,67 +178,65 @@
                         <!-- Sản phẩm -->
                         <div class="col-md-12">
                             <div class="row">
-                                @foreach ($category->products()->take(4)->get() as $item)
-                                    @if ($item->is_active == 1)
-                                        <div class="col-md-3 mb-4">
-                                            <div class="card shadow-sm h-100">
-                                                <!-- Hình ảnh sản phẩm -->
-                                                <div class="border-bottom" style="position: relative; overflow: hidden;">
-                                                    @if (\Str::contains($item->img_thumbnail, 'http'))
-                                                        <img src="{{ $item->img_thumbnail }}" class="card-img-top"
-                                                            alt="..." style="height: 200px; object-fit: cover;">
-                                                    @else
-                                                        <img src="{{ Storage::url($item->img_thumbnail) }}"
-                                                            class="card-img-top" alt="..."
-                                                            style="height: 200px; object-fit: cover;">
-                                                    @endif
-                                                    @if ($item->price_sale > 0)
-                                                        <div
-                                                            class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
-                                                            {{ $item->price_sale }}%
-                                                        </div>
-                                                    @endif
-                                                </div>
-
-                                                <!-- Nội dung sản phẩm -->
-                                                <div class="card-body d-flex flex-column">
-                                                    <a href="{{ route('productDetail', $item->slug) }}"
-                                                        class="text-dark card-title fs-6 fw-bold text-center mb-2 text-truncate">
-                                                        {{ $item->name }}
-                                                    </a>
-
-                                                    @if ($item->price_sale > 0)
-                                                        <p class="card-text text-danger text-center">
-                                                            {{ number_format($price, 0, ',', '.') }} VNĐ -
-                                                            <span class="text-decoration-line-through text-muted">
-                                                                {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
-                                                            </span>
-                                                        </p>
-                                                    @else
-                                                        <p class="card-text text-danger text-center">
-                                                            {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
-                                                        </p>
-                                                    @endif
-
-                                                    <p style="opacity: 50%"> <i class="fas fa-eye"></i> {{ $item->views }}
-                                                    </p>
-
-                                                    <div class="mb-3 text-center">
-                                                        <a style="background-color: #d17572"
-                                                            href="{{ route('productDetail', $item->slug) }}"
-                                                            class="btn btn-secondary btn-sm w-100">Show more</a>
+                                @foreach ($category->products()->where('is_active', '1')->take(8)->get() as $item)
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card shadow-sm h-100">
+                                            <!-- Hình ảnh sản phẩm -->
+                                            <div class="border-bottom" style="position: relative; overflow: hidden;">
+                                                @if (\Str::contains($item->img_thumbnail, 'http'))
+                                                    <img src="{{ $item->img_thumbnail }}" class="card-img-top"
+                                                        alt="..." style="height: 200px; object-fit: cover;">
+                                                @else
+                                                    <img src="{{ Storage::url($item->img_thumbnail) }}"
+                                                        class="card-img-top" alt="..."
+                                                        style="height: 200px; object-fit: cover;">
+                                                @endif
+                                                @if ($item->price_sale > 0)
+                                                    <div
+                                                        class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 small">
+                                                        {{ $item->price_sale }}%
                                                     </div>
+                                                @endif
+                                            </div>
+
+                                            <!-- Nội dung sản phẩm -->
+                                            <div class="card-body d-flex flex-column">
+                                                <a href="{{ route('productDetail', $item->slug) }}"
+                                                    class="text-dark card-title fs-6 fw-bold text-center mb-2 text-truncate">
+                                                    {{ $item->name }}
+                                                </a>
+
+                                                @if ($item->price_sale > 0)
+                                                    <p class="card-text text-danger text-center">
+                                                        {{ number_format($price, 0, ',', '.') }} VNĐ -
+                                                        <span class="text-decoration-line-through text-muted">
+                                                            {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
+                                                        </span>
+                                                    </p>
+                                                @else
+                                                    <p class="card-text text-danger text-center">
+                                                        {{ number_format($item->price_regular, 0, ',', '.') }} VNĐ
+                                                    </p>
+                                                @endif
+
+                                                <p style="opacity: 50%"> <i class="fas fa-eye"></i> {{ $item->views }}
+                                                </p>
+
+                                                <div class="mb-3 text-center">
+                                                    <a style="background-color: #d17572"
+                                                        href="{{ route('productDetail', $item->slug) }}"
+                                                        class="btn btn-secondary btn-sm w-100">Show more</a>
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
 
                         <!-- Nút "Xem thêm" -->
                         <div class="col-md-12 text-center">
-                            <a href="{{ route('client.productByCategory', ['cate' => $item->id]) }}"
+                            <a href="{{ route('client.productByCategory', $category->id) }}"
                                 class="btn btn-outline-secondary my-3">
                                 More >>
                             </a>

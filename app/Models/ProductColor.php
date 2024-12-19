@@ -10,6 +10,7 @@ class ProductColor extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'status',
     ];
     public function variants(){
         return $this->hasMany(ProductVariant::class);

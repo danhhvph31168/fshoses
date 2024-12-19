@@ -73,7 +73,8 @@
             margin-left: 15px;
             font-size: 15px;
         }
-        .row .cont{
+
+        .row .cont {
             line-height: 1.8em;
         }
     </style>
@@ -193,39 +194,20 @@
                 <p><span style="font-weight: 400;">Hiện tại, chúng tôi đang có các phương thức thanh toán sau:</span>
                 </p>
                 <ul>
-                    <li style="font-weight: 400;"><span style="font-weight: 400;">Tại cửa hàng:</span>
-                        <ul>
-                            <li style="font-weight: 400;"><span style="font-weight: 400;">Thanh toán bằng tiền
-                                    mặt</span>
-                            </li>
-                            <li style="font-weight: 400;">Thanh toán bằng thẻ, mã QR từ ví điện tử và các ứng dụng ngân
-                                hàng
-                                qua
-                                dịch vụ POS (Point of sale).</li>
-                        </ul>
-                    </li>
-                    <li><span>Đặt mua hàng tại website </span><a href="http://fshoses.test/"><span
-                                style="font-weight: 400;">fshose.vn</span></a>:
-                        <ul>
-                            <li style="font-weight: 400;"><span style="font-weight: 400;">COD (cash on delivery): là
-                                    hình
-                                    thức
-                                    thanh toán trực tiếp bằng tiền mặt khi bạn nhận hàng.</span></li>
-                            <li style="font-weight: 400;">Thanh toán bằng thẻ nội địa &#8211; được phát hành bởi các
-                                ngân
-                                hàng
-                                trong nước (Vietcombank, Vietinbank, Sacombank,…). Lưu ý: Thẻ của bạn cần được đăng ký
-                                dịch
-                                vụ
-                                thanh toán thực tuyến tại ngân hàng để có thể sử dụng được hình thức này.</li>
-                            <li style="font-weight: 400;">Thanh toán bằng thẻ quốc tế &#8211; được các ngân hàng trong
-                                nước
-                                liên
-                                kết với những tổ chức thẻ quốc tế (Visa, Master Card, JCB,…) phát hành.</li>
-                            <li style="font-weight: 400;">Thanh toán bằng QR Code thông qua cổng thanh toán điện tử</li>
-                        </ul>
-                    </li>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">COD (cash on delivery): là
+                            hình
+                            thức
+                            thanh toán trực tiếp bằng tiền mặt khi bạn nhận hàng.</span></li>
+                    <li style="font-weight: 400;">Thanh toán bằng thẻ nội địa &#8211; được phát hành bởi các
+                        ngân
+                        hàng
+                        trong nước (Vietcombank, Vietinbank, Sacombank,…). Lưu ý: Thẻ của bạn cần được đăng ký
+                        dịch
+                        vụ
+                        thanh toán thực tuyến tại ngân hàng để có thể sử dụng được hình thức này.</li>
+                    <li style="font-weight: 400;">Thanh toán bằng QR Code thông qua cổng thanh toán điện tử</li>
                 </ul>
+
             </div>
             <div class="row divider-2"></div>
             <div class="row title-1">6. CHÍNH SÁCH KHUYẾN MÃI</div>
@@ -233,28 +215,35 @@
                 <p>Với mong muốn giúp bạn có những trải nghiệm mua sắm tốt nhất, <strong>Fshoes</strong> sẽ áp dụng một
                     số
                     chính
-                    sách khuyến mãi cố định hoặc tùy thời điểm về phí giao hàng, quà tặng và ưu đãi đặc biệt, được ghi
-                    rõ
-                    tại <a href="#">FAQs</a> &#8211; mục “III. Chính sách Khuyến mãi”.</p>
+                    sách khuyến mãi cố định hoặc tùy thời điểm về phí giao hàng, quà tặng và ưu đãi đặc biệt.</p>
             </div>
             <div class="row divider-2"></div>
-            <div class="row title-1">7. THAY ĐỔI HOẶC HỦY BỎ CÁC GIAO DỊCH</div>
+            <div class="row title-1">7. QUY ĐỊNH ĐỔI HÀNG VÀ BẢO HÀNH</div>
+
             <div class="row cont">
-                <p>Bạn được quyền thay đổi hoặc chấm dứt giao dịch theo hướng dẫn đã được ghi rõ tại phần <a
-                        href="#">FAQs</a> &#8211; mục <strong>“I. Mua Hàng &#8211; Đặt Hàng
-                        &#8211;
-                        Tra
-                        Cứu Đơn Hàng”</strong>.</p>
-            </div>
-            <div class="row divider-2"></div>
-            <div class="row title-1">8. QUY ĐỊNH ĐỔI HÀNG VÀ BẢO HÀNH</div>
-            <div class="row cont">
-                <p><strong>1. Quy định đổi hàng:</strong></p>
-                <ul>
-                    <li style="font-weight: 400;">Với sản phẩm mua tại cửa hàng, thời hạn đổi sản phẩm là 07 ngày, tính
-                        từ
-                        ngày
-                        bạn mua hàng. Còn với sản phẩm mua online, thời hạn đổi sản phẩm là 03 ngày, tính từ ngày nhận
+                <p><strong>1. Quy định mua hàng:</strong></p>
+                <div class="row cont">
+                    <ul>
+                        <li style="font-weight: 400;"><span style="font-weight: 400;">Khi mua hàng tại Fshoes khách hàng có
+                                thể mua tối đa
+                            </span><b>05 sản phẩm </b>cùng loại trên 01 đơn hàng.</li>
+
+                        <li>Đối với những đơn hàng có giá trị trên <strong>5.000.000 VND</strong> (Năm triệu đồng), Fshoes
+                            sẽ liên hệ với khách hàng qua số hotline: <strong>1800 5678</strong>
+                            để xác nhận và khách hàng vui lòng thanh toán <strong>100%</strong>
+                            giá trị đơn hàng qua số tài khoản:
+                            <ul>
+                                <li style="font-weight: 400;">Ngân hàng thương mại cổ phần kỹ thương Việt Nam - Techcombank</li>
+                                <li style="font-weight: 400;">Số tài khoản: 0981208891</li>
+                                <li style="font-weight: 400;">Chủ tài khoản: Công ty trách nhiệm hữu hạn Fshoes</li>
+                            </ul>
+                        </li>
+                        <li style="font-weight: 400;"><span style="font-weight: 400;">Sau khi xác nhận là khách hàng đã thanh toán Fshoes sẽ giao hàng cho khách hàng trong thời gian sớm nhất.</li>
+                    </ul>
+                </div>
+                <p><strong>2. Quy định đổi hàng:</strong></p>
+                <ul class="mb-3">
+                    <li style="font-weight: 400;">Thời hạn đổi sản phẩm là 03 ngày, tính từ ngày nhận
                         được
                         hàng.</li>
                     {{-- <li style="font-weight: 400;">Chỉ áp dụng đổi hàng 01 lần duy nhất cho sản phẩm Giày và Thời trang.
@@ -292,11 +281,8 @@
                         </ul>
                     </li>
                 </ul>
-                <p><span style="font-weight: 400;">Để đổi hàng, bạn có thể xem thêm hướng dẫn tại phần FAQs – mục “III.
-                        Quy
-                        định
-                        Đổi hàng – Bảo hành sản phẩm”.</span></p>
-                <p><strong>2. Quy định bảo hành:</strong></p>
+
+                <p><strong>3. Quy định bảo hành:</strong></p>
                 <div class="row cont">
                     <ul>
                         <li style="font-weight: 400;"><span style="font-weight: 400;">Đối với các sản phẩm giày,
@@ -318,12 +304,8 @@
                             nhận
                             được giày.</li>
                     </ul>
-                    <p><span style="font-weight: 400;">Để yêu cầu bảo hành sản phẩm, bạn có thể xem thêm hướng dẫn tại
-                            phần
-                        </span><a href="#"><span style="font-weight: 400;">FAQs</span></a><span
-                            style="font-weight: 400;"> – mục </span><b>“III. Quy định Đổi hàng – Bảo hành sản
-                            phẩm”</b><span style="font-weight: 400;">.</span></p>
                 </div>
+
                 <div class="row divider-2"></div>
                 <div class="row title-1">9. QUYỀN PHÁP LÝ</div>
                 <div class="row cont">

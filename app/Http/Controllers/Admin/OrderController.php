@@ -60,14 +60,6 @@ class OrderController extends Controller
 
             $order = Order::query()->findOrFail($id);
 
-            if ($order->status_order == Order::STATUS_ORDER_CANCELED || $request->status_order == Order::STATUS_ORDER_CANCELED) {
-                foreach ($order->orderItems as $item) {
-                    $quantity = $item->productVariant->quantity + $item->quantity;
-                    $item->productVariant->update(['quantity' => $quantity]);
-                }
-            }
-
-
 
             // status order
             if (!($order->status_order == Order::STATUS_ORDER_CANCELED || $order->status_order == Order::STATUS_ORDER_DELIVERED)) {
@@ -89,15 +81,6 @@ class OrderController extends Controller
                 $payment->update([
                     'status' => request('payment_status'),
                 ]);
-
-                $order->update([
-                    'status_order' => Order::STATUS_ORDER_CANCELED,
-                ]);
-
-                foreach ($order->orderItems as $item) {
-                    $quantity = $item->productVariant->quantity + $item->quantity;
-                    $item->productVariant->update(['quantity' => $quantity]);
-                }
 
                 if ($order->status_order == Order::STATUS_ORDER_CONFIRMED) {
                     $request->validate([
@@ -141,6 +124,14 @@ class OrderController extends Controller
 
             if ($order->status_order == Order::STATUS_ORDER_DELIVERED) {
                 OrderDelivered::dispatch($order);
+            }
+
+
+            if ($order->status_order == Order::STATUS_ORDER_CANCELED || $request->status_order == Order::STATUS_ORDER_CANCELED) {
+                foreach ($order->orderItems as $item) {
+                    $quantity = $item->productVariant->quantity + $item->quantity;
+                    $item->productVariant->update(['quantity' => $quantity]);
+                }
             }
 
             DB::commit();

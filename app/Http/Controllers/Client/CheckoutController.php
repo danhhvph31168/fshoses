@@ -146,15 +146,17 @@ class CheckoutController extends Controller
 
     public function removeCoupon(Request $request)
     {
-        // Xóa mã giảm giá khỏi session
-        if ($request->session()->has('coupon')) {
-            $request->session()->forget('coupon');
+        if (session()->has('coupon')) {
+            session()->forget('coupon');
+            return response()->json([
+                'success' => true,
+                'message' => 'The coupon code has been canceled.',
+            ]);
         }
 
-        // Có thể thêm thông báo hoặc xử lý bổ sung nếu cần
         return response()->json([
-            'success' => true,
-            'message' => 'Mã giảm giá đã được hủy.',
+            'success' => false,
+            'message' => 'There are no coupon codes to cancel.',
         ]);
     }
 
@@ -170,6 +172,8 @@ class CheckoutController extends Controller
     {
         $order2 = Order::query()->where('id', $order)->first();
 
+        session()->forget('coupon');
+
         if ($request->vnp_TransactionStatus == 02) {
             foreach ($order2->orderItems as $item) {
                 $item->delete();
@@ -179,6 +183,12 @@ class CheckoutController extends Controller
             if (!Auth::check()) {
                 $order2->user->delete();
             }
+
+            foreach ($order2->orderItems as $item) {
+                $quantity = $item->productVariant->quantity + $item->quantity;
+                $item->productVariant->update(['quantity' => $quantity]);
+            }
+
             return redirect()->route('check-out');
         }
 

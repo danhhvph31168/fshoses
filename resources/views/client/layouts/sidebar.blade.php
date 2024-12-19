@@ -12,40 +12,14 @@
         <div class=" mb-4">
             <h3 class="text-uppercase fw-bold mb-3">Products</h3>
             <div class="list-group">
-
                 <div class="list-group-item d-flex align-items-center justify-content-between">
                     <div>
-                        <input type="checkbox" class="form-check-input me-2 common_selector brand"
-                            value="">
-                        <span>All Products</span>
-                    </div>
-                    <span class="badge rounded-pill bg-danger text-white"></span>
-                </div>
-
-                <div class="list-group-item d-flex align-items-center justify-content-between">
-                    <div>
-                        <input type="checkbox" class="form-check-input me-2 common_selector brand"
-                            value="">
+                        <input type="checkbox" class="form-check-input common_selector is_sale" value="1"
+                            {{ request('is_sale') == 1 ? 'checked' : '' }}>
                         <span>Best Seller</span>
                     </div>
                     <span class="badge rounded-pill bg-danger text-white"></span>
                 </div>
-            </div>
-        </div>
-
-        <div class=" mb-4">
-            <h3 class="text-uppercase fw-bold mb-3">Brands</h3>
-            <div class="list-group">
-                @foreach ($brd as $item)
-                    <div class="list-group-item d-flex align-items-center justify-content-between">
-                        <div>
-                            <input type="checkbox" class="form-check-input me-2 common_selector brand"
-                                value="{{ $item->name }}">
-                            <span>{{ $item->name }}</span>
-                        </div>
-                        <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
-                    </div>
-                @endforeach
             </div>
         </div>
 
@@ -60,7 +34,27 @@
                                 {{ isset($selectedCategory) && $selectedCategory == $item->id ? 'checked' : '' }}>
                             <span>{{ $item->name }}</span>
                         </div>
-                        <span class="badge rounded-pill bg-danger text-white">{{ $item->products->count() }}</span>
+                        <span
+                            class="badge rounded-pill bg-danger text-white">{{ $item->products->where('is_active', 1)->count() }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-uppercase fw-bold mb-3">Brands</h3>
+            <div class="list-group" style="max-height: 300px; overflow-y: auto;">
+                @foreach ($brd as $index => $item)
+                    <!-- Chỉ hiển thị 4 mục đầu tiên -->
+                    <div class="list-group-item d-flex align-items-center justify-content-between">
+                        <div>
+                            <input type="checkbox" class="form-check-input me-2 common_selector brand"
+                                value="{{ $item->name }}">
+                            <span>{{ $item->name }}</span>
+                        </div>
+                        <span class="badge rounded-pill bg-danger text-white">
+                            {{ $item->products->where('is_active', 1)->count() }}
+                        </span>
                     </div>
                 @endforeach
             </div>
@@ -194,20 +188,19 @@
 <script>
     $(document).ready(function() {
 
-        const categoryId = "{{ $selectedCategory }}";
+        const categoryId = "{{ $selectedCategory ?? '' }}";
         $('.common_selector.category').each(function() {
             if ($(this).val() == categoryId) {
                 $(this).prop('checked', true);
             }
         });
 
-
         function fetchProducts(pageUrl = null) {
             const brands = [];
             const categories = [];
             const minPrice = $('#hidden_min_price').val();
             const maxPrice = $('#hidden_max_price').val();
-
+            const isSale = $('.common_selector.is_sale:checked').val();
 
             $('.common_selector.category:checked').each(function() {
                 categories.push($(this).val());
@@ -226,6 +219,7 @@
                     category: categories,
                     min_price: minPrice,
                     max_price: maxPrice,
+                    is_sale: isSale,
                 },
                 success: function(response) {
                     $('#product-list').html(response.html);
@@ -245,7 +239,6 @@
                 }
             });
         }
-
 
         $('.common_selector').on('change', function() {
             fetchProducts();
@@ -274,7 +267,6 @@
                 fetchProducts();
             }
         });
-
 
         fetchProducts();
     });

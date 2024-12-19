@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\{
     RoleController,
     UserController,
@@ -14,7 +13,8 @@ use App\Http\Controllers\Admin\{
     DashboardController,
     ProductSizeController,
     ProductColorController,
-    CouponController
+    CouponController,
+    RatingController
 };
 
 Route::prefix('admin')->as('admin.')
@@ -36,10 +36,15 @@ Route::prefix('admin')->as('admin.')
         Route::put('orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
         Route::get('orders/search',     [OrderController::class, 'search'])->name('orders.search');
 
-        // review
+        // comment
         Route::get('reviews',               [ReviewController::class, 'index'])->name('reviews.index');
         Route::get('reviews/{id}/show',     [ReviewController::class, 'show'])->name('reviews.show');
         Route::put('reviews/{id}/update',   [ReviewController::class, 'update'])->name('reviews.update');
+
+        // rating
+        Route::get('ratings',               [RatingController::class, 'index'])->name('ratings.index');
+        Route::get('ratings/{id}/show',     [RatingController::class, 'show'])->name('ratings.show');
+        Route::put('ratings/{id}/update',   [RatingController::class, 'update'])->name('ratings.update');
 
         // categories
         Route::prefix('categories')
@@ -51,7 +56,7 @@ Route::prefix('admin')->as('admin.')
                 Route::get('{id}/edit',         [CategoryController::class, 'edit'])->name('edit');
                 Route::put('{id}/update',       [CategoryController::class, 'update'])->name('update');
                 Route::delete('{id}/destroy',   [CategoryController::class, 'destroy'])->name('destroy');
-                Route::put('/{id}/update',     [CategoryController::class, 'updateStatus'])->name('updateStatus');
+                Route::put('/{id}/updateStatus',      [CategoryController::class, 'updateStatus'])->name('updateStatus');
             });
 
         // coupon
@@ -85,12 +90,8 @@ Route::prefix('admin')->as('admin.')
             Route::put('/{id}/update',   [RoleController::class, 'updateStatus'])->name('updateStatus');
         });
 
-        // auth
-        Route::get('showFormLogin', [LoginController::class, 'showFormLogin'])->name('showFormLogin');
-        Route::post('login',        [LoginController::class, 'login'])->name('login');
-        Route::post('logout',       [LoginController::class, 'logout'])->name('logout');
-
         // products
+        Route::get('product',  [ProductController::class, 'filterProducts'])->name('filterProducts');
         Route::resource('products', ProductController::class);
         Route::prefix('products')->as('products.')->group(function () {
             Route::put('/{id}/update',   [ProductController::class, 'updateProduct'])->name('updateProduct');

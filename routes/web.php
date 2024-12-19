@@ -18,8 +18,7 @@ use App\Http\Controllers\Client\PolicyController;
 
 Route::get('/',                                     [ProductController::class, 'index'])->name('client.home');
 Route::get('/brand/{brd}',                          [ProductController::class, 'listProductByBrand'])->name('client.productByBrand');
-Route::get('/category/{cate}',                      [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
-Route::get('/product-status',                       [ProductController::class, 'listProductByStatus'])->name('client.productByStatus');
+Route::get('/category/{cate?}',                     [ProductController::class, 'listProductByCategory'])->name('client.productByCategory');
 Route::get('/products',                             [ProductController::class, 'getAllProducts'])->name('client.product-list');
 
 Route::get('search-order',                          [OrderSearchController::class, 'showFormSearchOrder'])->name('showFormSearchOrder');

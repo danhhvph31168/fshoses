@@ -161,7 +161,6 @@
                                             </td>
 
                                             @if (!$checkReviewed)
-                                                {{-- @dd($checkReviewed); --}}
                                                 @if ($order->status_order == 'delivered')
                                                     <td class="text-center align-middle">
                                                         <a href="#" class="btn badge badge-primary"
@@ -171,7 +170,6 @@
                                                 @endif
                                             @endif
                                         </tr>
-                                        {{-- @dd($item->productVariant->product->id) --}}
                                         <div class="modal fade" id="reviewModal-{{ $item->id }}" tabindex="-1"
                                             aria-labelledby="reviewModalLabel-{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -358,10 +356,9 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="cancelOrderModalLabel">Hủy
-                                                        đơn hàng #{{ $order->sku_order }}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+                                                    <h5 class="modal-title" id="cancelOrderModalLabel">Cancel order #{{ $order->sku_order }}</h5>
+                                                    {{-- <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button> --}}
                                                 </div>
                                                 <div class="modal-body">
                                                     <form action="{{ route('orders.cancel', $order->sku_order) }}"
@@ -369,25 +366,23 @@
                                                         @csrf
                                                         <div class="row mb-5">
                                                             <div class="col-sm-5">
-                                                                <span>Chọn lý do hủy
-                                                                    đơn:</span>
+                                                                <span>Select reason for cancellation:</span>
                                                             </div>
                                                             <div class="col-sm-7">
-                                                                <select class="pb-0" name="cancel_reason">
+                                                                <select class="pb-0 w-75" name="cancel_reason">
 
-                                                                    <option value="">Chọn lý do
-                                                                    </option>
+                                                                    <option value="">Select reason</option>
 
                                                                     <option value="Thay đổi phương thức thanh toán">
-                                                                        Thay
-                                                                        đổi phương thức thanh toán</option>
-                                                                    <option value="Giá không hợp lý">Giá
-                                                                        không hợp lý</option>
+                                                                        Change payment method</option>
+
+                                                                    <option value="Giá không hợp lý">Unreasonable price</option>
+
                                                                     <option value="Thay đổi địa chỉ nhận hàng">
-                                                                        Thay đổi địa chỉ nhận hàng</option>
+                                                                        Change delivery address</option>
                                                                     <option value="Thời gian giao hàng lâu">
-                                                                        Thời gian giao hàng lâu</option>
-                                                                    <option value="Khác">Khác</option>
+                                                                        Long delivery time</option>
+                                                                    <option value="Khác">Other</option>
                                                                 </select>
 
                                                                 @error('cancel_reason')
@@ -402,23 +397,19 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-5">
-                                                                <label for="otherReason" class="form-label">Lý
-                                                                    do khác (nếu có):</label>
+                                                                <label for="otherReason" class="form-label">Other reasons (if any):</label>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="mb-3">
-
-                                                                    <textarea class="form-control" id="otherReason" name="other_reason" rows="3"></textarea>
-
+                                                                    <textarea class="form-control" id="otherReason" name="other_reason" rows="4"></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Đóng</button>
-                                                            <button type="submit" class="btn btn-danger">Xác nhận
-                                                                hủy</button>
+                                                            {{-- <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Đóng</button> --}}
+                                                            <button type="submit" class="btn btn-danger me-4">Confirm Cancellation</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -728,7 +719,17 @@
             @endif
         </div>
     </div>
+
     <!-- Shopping Cart Section End -->
+    @if ($errors->has('cancel_reason'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const modal = new bootstrap.Modal(document.getElementById("cancelOrderModal"));
+                modal.show();
+            });
+        </script>
+    @endif
+
 @endsection
 @section('scripts')
     <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>

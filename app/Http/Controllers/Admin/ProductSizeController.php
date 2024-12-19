@@ -88,6 +88,20 @@ class ProductSizeController extends Controller
         };
     }
 
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        $product = ProductSize::findOrFail($id);
+        $product->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

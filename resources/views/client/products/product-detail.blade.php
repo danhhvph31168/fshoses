@@ -96,8 +96,7 @@
                                             </div>
 
                                             <div class="mt-4 text-muted">
-                                                <h5 class="fs-14 mb-2">Description :</h5>
-                                                <p>{{ $product->description ?? '' }}</p>
+                                                <p>{!! $product->description ?? '' !!}</p>
                                             </div>
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14 mb-2"></h5>
@@ -262,7 +261,7 @@
                                                         <div class="me-lg-n3 pe-lg-4 mt-3" data-simplebar
                                                             style="max-height: 225px">
                                                             <ul class="list-unstyled mb-0">
-                                                                @foreach ($product->ratings as $item)
+                                                                @foreach ($product->ratings()->where('is_show', 1)->get() as $item)
                                                                     <li class="">
                                                                         <div class="row d-flex">
                                                                             <div class="col-md-12 p-0 mt-3">
@@ -348,7 +347,7 @@
                                                                 @enderror
 
 
-                                                                @foreach ($product->reviews as $item)
+                                                                @foreach ($product->reviews()->where('is_show', 1)->get() as $item)
                                                                     <div class="row d-flex">
                                                                         <form
                                                                             action="{{ route('destroyComment', $item) }}"
@@ -474,14 +473,6 @@
                             </div>
                         @endif
                     @endforeach
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <a href="{{ route('client.product-list') }}" class="btn btn-outline-secondary my-3">
-                            More >>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->enum('type', ['fixed', 'percent'])->default('fixed');
-            $table->decimal('value', 20, 2);
+            $table->decimal('value', 20, 0);
             $table->integer('quantity')->default(0);
             $table->boolean('is_active')->default(true);
             $table->decimal('minimum_order_value', 20, 2)->default(0);

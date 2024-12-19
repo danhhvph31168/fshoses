@@ -115,7 +115,7 @@
                                     </td>
 
                                     <td>
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch text-center">
                                             <input class="form-check-input toggle-switch" type="checkbox"
                                                 data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
                                         </div>

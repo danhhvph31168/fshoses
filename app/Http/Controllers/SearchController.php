@@ -16,7 +16,7 @@ class SearchController extends Controller
         }
 
         $results = Product::where('name', 'LIKE', "{$query}%")
-            ->take(5)
+            ->take(6)
             ->get(['name', 'slug', 'price_regular', 'img_thumbnail']);
 
         return response()->json($results);
@@ -46,6 +46,10 @@ class SearchController extends Controller
                             ->where('price_regular', '>=', (float)$request->min_price);
                     });
             });
+        }
+
+        if ($request->has('is_sale') && $request->is_sale == 1) {
+            $query->where('is_sale', 1)->where('is_active', '1');
         }
 
         $products = $query->with('brand', 'category')->orderByDesc('id')->where('is_active', '1')->paginate(6);

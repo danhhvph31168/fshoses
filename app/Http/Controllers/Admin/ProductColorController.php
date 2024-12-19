@@ -88,6 +88,20 @@ class ProductColorController extends Controller
         };
     }
 
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        $product = ProductColor::findOrFail($id);
+        $product->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

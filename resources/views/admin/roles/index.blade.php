@@ -30,7 +30,7 @@
                         <h3>Roles List</h3>
                     </div>
                     <div>
-                        <a href="{{ route('admin.roles.create') }}"><i class="btn btn-success ri-add-fill"></i></a>
+                        <a href="{{ route('admin.roles.create') }}"><i class="btn btn-primary ri-add-fill"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -64,7 +64,7 @@
                                     <th>{{ $item->updated_at->format('d/m/Y') }}</th>
 
                                     <th>
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch text-center">
                                             <input class="form-check-input toggle-switch" type="checkbox"
                                                 data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
                                         </div>

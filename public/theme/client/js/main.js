@@ -96,7 +96,7 @@
         animateIn: "fadeIn",
         smartSpeed: 1200,
         autoHeight: false,
-        autoplay: false,
+        autoplay: true,
     });
 
     /*--------------------------

@@ -60,13 +60,13 @@
                                     <td>{{ \Str::limit($item->comment, 30) }}</td>
                                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                     <td>
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch text-center">
                                             <input class="form-check-input toggle-switch" type="checkbox"
                                                 data-id="{{ $item->id }}" {{ $item->is_show == 1 ? 'checked' : '' }}>
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{ route('admin.reviews.show', $item->id) }}"><i
+                                    <td class="text-center">
+                                        <a class="btn btn-light" href="{{ route('admin.reviews.show', $item->id) }}"><i
                                                 class="ri-eye-fill align-bottom"></i></a>
                                     </td>
                                 </tr>
@@ -175,7 +175,7 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
+                [0, 'asc']
             ]
         });
     </script>

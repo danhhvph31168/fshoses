@@ -53,7 +53,9 @@
                                                 </div>
                                                 <div class="product__cart__item__text pt-0">
                                                     <div class="mb-2 fs-6 fw-bold">
-                                                        {{ $item['name'] }}
+                                                        <a class="text-black" href="{{ route('productDetail', $item['slug']) }}">
+                                                            {{ $item['name'] }}
+                                                        </a>
                                                     </div>
                                                     @foreach ($colors as $id => $color)
                                                         <div>
@@ -123,8 +125,8 @@
                                         <h4 class="text-danger">Total: </h4>
                                     </td>
                                     <td></td>
-                                    <td class="cart-price total text-danger">
-                                        <p class="text-danger fs-5 fw-bold">{{ number_format($totalAmount) }} VNĐ</p>
+                                    <td class="cart-price text-danger">
+                                        <p class="text-danger total fs-5 fw-bold">{{ number_format($totalAmount) }} VNĐ</p>
                                     </td>
                                 </tr>
                             </tbody>
@@ -160,9 +162,6 @@
 @endsection
 
 @section('js')
-    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> --}}
-
     <script>
         function validateQuantity(input) {
             input.value = input.value.replace(/[^0-9]/g, '');
@@ -171,8 +170,8 @@
 
             if (isNaN(value) || value < 1) {
                 input.value = 1;
-            } else if (value > 100) {
-                input.value = 100;
+            } else if (value > 5) {
+                input.value = 5;
             }
         }
 

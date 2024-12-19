@@ -21,7 +21,7 @@ class ProductExport implements FromCollection, ShouldAutoSize, WithHeadings
                 'name' => $item->name,
                 'price_regular' => $item->price_regular,
                 'price_sale' => $item->price_sale,
-                'description' => $item->description,
+                'description' => html_entity_decode(strip_tags($item->description), ENT_QUOTES, 'UTF-8'),
                 'total_sold' => $item->total_sold,
                 'total_amount' => number_format($item->total_amount),
                 'count_orders' => $item->count_orders,

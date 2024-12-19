@@ -16,20 +16,25 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::query()->where('is_active', '1')
             ->with(['productVariants', 'category', 'brand'])
             ->orderBy('name', 'asc')->limit(9)->get();
 
-        $categories = Category::query()->where('is_active', '1')->with('products')->get();
+        $categories = Category::query()->latest('id')->where('is_active', '1')->with('products')->get();
 
         $brands = Brand::query()->where('status', '1')->get();
 
-        $listLatestProduct = Product::query()->where('is_active', '1')->latest('id')->limit(12)->get();
+        $listLatestProduct = Product::query()->where('is_active', '1')->latest('id')->limit(8)->get();
+
+        $bestSeller = Product::query()->where('is_active', '1')->where('is_sale', '1')->latest('id')->limit(8)->get();
 
         $banners = Banner::query()->where('status', '1')
             ->orderBy('name', 'asc')->get();
+
+        $productMaxPriceSale = Product::orderBy('price_sale', 'desc')->where('is_active', '1')->latest('id')->first();
+
 
         $orderCount = Product::query()->select(
             'products.id',
@@ -46,6 +51,7 @@ class ProductController extends Controller
             ->orderByDesc('total_sold')
             ->first();
 
+        $selectedCategory = $request->input('cate', null);
         return view(
             'client.home',
             compact(
@@ -54,7 +60,10 @@ class ProductController extends Controller
                 'brands',
                 'listLatestProduct',
                 'banners',
-                'orderCount'
+                'orderCount',
+                'selectedCategory',
+                'bestSeller',
+                'productMaxPriceSale'
             )
         );
     }
@@ -69,54 +78,47 @@ class ProductController extends Controller
     public function listProductByBrand(Brand $brd, Request $request)
     {
         if ($request->ajax()) {
-            $prds = $brd->products()->paginate(3);
+            $prds = $brd->products()->paginate(8);
             $html = view('client.partials.products', compact('prds'))->render();
 
             return response()->json([
                 'html' => $html,
-                'pagination' => $prds->links('pagination::bootstrap-4')->toHtml()
+                'pagination' => $prds->links('pagination::bootstrap-5')->toHtml()
             ]);
         }
 
-        $prds = $brd->products()->paginate(3);
+        $prds = $brd->products()->paginate(8);
         return view('client.products.productByBrand', compact('brd', 'prds'));
     }
 
-    public function listProductByCategory(Category $cate, Request $request)
+    public function listProductByCategory(Category $cate = null, Request $request)
     {
-        $selectedCategory = $cate->id;
-        if ($request->ajax()) {
+        $selectedCategory = $cate ? $cate->id : null;
 
-            $prds = $cate->products()->paginate(3);
+        $query = Product::where('is_active', 1);
+        $isSale = $request->has('is_sale') ? $request->get('is_sale') : null;
+        if ($cate) {
+            $query->where('category_id', $cate->id);
+        }
+
+        if ($request->has('is_sale') && $request->is_sale == 1) {
+            $query->where('is_sale', 1);
+        }
+        $query->orderByDesc('id');
+
+        $prds = $query->paginate(8);
+
+        if ($request->ajax()) {
             $html = view('client.partials.products', compact('prds'))->render();
 
             return response()->json([
                 'html' => $html,
-                'pagination' => $prds->links('pagination::bootstrap-4')->toHtml()
+                'pagination' => $prds->links('pagination::bootstrap-5')->toHtml()
             ]);
         }
 
-        $prds = $cate->products()->latest('created_at')->paginate(3);
-        return view('client.products.productByCategory', compact('cate', 'prds', 'selectedCategory'));
+        return view('client.products.productByCategory', compact('cate', 'prds', 'selectedCategory', 'isSale'));
     }
-
-    // public function listProductByStatus(Product $products, Request $request)
-    // {
-    //     $selectedProduct = $products->is_sale;
-    //     if ($request->ajax()) {
-
-    //         $prds =  $products->products()->paginate(3);
-    //         $html = view('client.partials.products', compact('prds'))->render();
-
-    //         return response()->json([
-    //             'html' => $html,
-    //             'pagination' => $prds->links('pagination::bootstrap-4')->toHtml()
-    //         ]);
-    //     }
-
-    //     $prds =  $products->products()->paginate(3);
-    //     return view('client.products.productByCategory', compact('cate', 'prds', 'selectedCategory'));
-    // }
 
     public function productDetail(Request $request, $slug)
     {

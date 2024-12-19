@@ -41,15 +41,18 @@
                         <form action="{{ route('cart.applyCoupon') }}" method="post">
                             @csrf
                             <div class="checkout__order input-group">
-                                <select class="select-group" name="code" style="width:375px;">
-                                    <option value="">-- Select Coupon --</option>
+                                <select class="select-group border border-primary rounded" name="code"
+                                    style="width:375px;">
+                                    <option value="">Select Coupon</option>
                                     @foreach ($coupons as $coupon)
                                         <option value="{{ $coupon->code }}">{{ $coupon->code }} -
                                             {{ number_format($coupon->value, 0, ',', '.') }}
                                             @php
                                                 if ($coupon->type == 'percent') {
+                                                    $pt = ' %';
                                                     echo '%';
                                                 } else {
+                                                    $pt = ' VNĐ';
                                                     echo 'VNĐ';
                                                 }
                                             @endphp
@@ -57,15 +60,20 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <button type="submit" class="btn btn-secondary px-4 ms-2">Apply</button>
-                            </div>
-                            <div class="checkout__order input-group py-0" style="justify-content: flex-end">
-                                @if (session('coupon'))
-                                    <input class="ps-2" type="text" value="{{ session('coupon')['code'] }}" disabled>
-                                    <button id="remove-coupon-btn" class="btn btn-danger ms-1">X</button>
-                                @endif
+                                <button type="submit" class="btn btn-dark rounded px-4 ms-2">Apply</button>
                             </div>
                         </form>
+
+                        <div class="checkout__order input-group py-0 pt-3" >
+                            @if (session('coupon'))
+                                <input class="form-control ps-2 bg-white border border-primary rounded" type="text"
+                                    value="{{ session('coupon')['type'] == 'percent' ? session('coupon')['code'] . ' - ' . session('coupon')['value'] . ' %' : session('coupon')['code'] . ' - ' . number_format(session('coupon')['value']) . ' VDN' }}"
+                                     readonly>
+                                <button style="padding: 0 42px" id="remove-coupon-btn"
+                                    class="btn btn-danger rounded ms-2">X</button>
+                            @endif
+                        </div>
+
                     </div>
                 </div>
                 <form action="{{ route('addOrder') }}" method="post">
@@ -314,7 +322,7 @@
                                             @endphp
                                         @endif
 
-                                        
+
                                         <li>Shipping Charge :<span>{{ number_format($shippingCharge) }} VNĐ</span></li>
                                         <li>Total :<span>{{ number_format($total) }} VNĐ</span></li>
                                     </ul>
@@ -331,7 +339,67 @@
 
                                 <input type="hidden" name="totalAmount" value="{{ $total }}">
 
-                                <button type="submit" name="redirect" id="submit" class="site-btn">Pay</button>
+                                {{-- <button type="submit" name="redirect" id="submit" class="site-btn">Pay</button> --}}
+
+                                <!-- Button trigger modal -->
+                                <button type="button" class="site-btn" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop">
+                                    Pay
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel"><a
+                                                        class="text-primary" href="{{ route('policy') }}"
+                                                        target="_blank">Terms of use </a></h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <textarea name="" id="" rows="15" class="form-control" readonly>
+1. QUY ĐỊNH MUA HÀNG:
+    - Khi mua hàng tại Fshoes khách hàng có thể mua tối đa 05 sản phẩm cùng loại trên 01 đơn hàng.
+    - Đối với những đơn hàng có giá trị trên 5.000.000 VND (Năm triệu đồng), Fshoes sẽ liên hệ với khách hàng qua số hotline: 1800 5678 để xác 
+       nhận và khách hàng vui lòng thanh toán 100% giá trị đơn hàng qua số tài khoản:
+    - Ngân hàng thương mại cổ phần kỹ thương Việt Nam - Techcombank
+    - Số tài khoản: 0981208891
+    - Chủ tài khoản: Công ty trách nhiệm hữu hạn Fshoes
+    - Sau khi xác nhận là khách hàng đã thanh toán Fshoes sẽ giao hàng cho khách hàng trong thời gian sớm nhất.
+
+2. QUY ĐỊNH ĐỔI TRẢ:
+    - Thời hạn đổi sản phẩm là 03 ngày, tính từ ngày nhận được hàng.
+    - Sản phẩm đổi phải còn mới, còn nguyên tem, hộp, nhãn mác và chưa có dấu hiệu đã sử dụng, đã giặt tẩy, bám bẩn hay biến dạng.
+    - Fshoes sẽ không áp dụng việc đổi hàng với các sản phẩm đang áp dụng chương trình Sale Off từ 40% trở lên, các sản phẩm thuộc phiên bản giới 
+       hạn (limited edition).
+    - Tuỳ theo chương trình khuyến mãi, sẽ có thể áp dụng chính sách đổi hàng theo quy định riêng theo từng kênh.
+    - Việc đổi hàng chỉ áp dụng tại đúng kênh (cửa hàng) mà bạn đã mua hàng.
+    - Không áp dụng việc trả hàng – hoàn tiền trong bất cứ trường hợp nào. Mong bạn thông cảm.
+    - Fshoes ưu tiên hỗ trợ đổi size, đổi màu sắc khác cùng loại. Hoặc trong trường hợp mong muốn đổi sang 01 sản phẩm khác, tôi vẫn hỗ trợ bạn:
+        + Nếu bạn muốn đổi sang sản phẩm có giá trị cao hơn, bạn sẽ cần bù khoản chênh lệch tại thời điểm đổi (nếu có).
+        + Nếu bạn muốn đổi sang sản phẩm có giá trị thấp hơn, chúng tôi sẽ không hoàn lại tiền.
+
+3. QUY ĐỊNH BẢO HÀNH:
+    - Đối với các sản phẩm giày, Fshoes hỗ trợ bảo hành trong vòng 06 tháng kể từ ngày mua với các trường hợp bung keo, sứt chỉ, gãy đế hoặc 1 đổi 1 
+       với trường hợp phát sinh lỗi từ trong quá trình sản xuất.
+    - Để việc bảo hành thuận tiện và nhanh chóng hơn, bạn vui lòng vệ sinh giày sạch sẽ trước khi gửi về Fshoes. Chúng tôi xin từ chối thực hiện việc 
+       bảo hành nếu như sản phẩm chưa được vệ sinh khi nhận được giày.
+                                                </textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Do not agree</button>
+                                                <button name="redirect" type="submit" id="submit" class="btn btn-primary">Agree &
+                                                    Continue</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -351,14 +419,14 @@
         const host = "https://provinces.open-api.vn/api/";
         var callAPI = (api) => {
             let row =
-                `<option value="{{ auth()->user()?->province ? auth()->user()?->province : 'Chọn' }}">{{ auth()->user()?->province ? auth()->user()?->province : 'Chọn' }}</option>`;
+                `<option value="{{ auth()->user()?->province ? auth()->user()?->province : '' }}">{{ auth()->user()?->province ? auth()->user()?->province : 'Select' }}</option>`;
             return axios.get(api)
                 .then((response) => {
                     renderData(response.data, "province", row);
                 });
         }
         callAPI('https://provinces.open-api.vn/api/?depth=1');
-        let row = `<option  value="">Chọn</option>`;
+        let row = `<option  value="">Select</option>`;
         var callApiDistrict = (api) => {
             return axios.get(api)
                 .then((response) => {
@@ -366,7 +434,7 @@
                 });
         }
         var callApiWard = (api) => {
-            let row = `<option  value="">Chọn</option>`;
+            let row = `<option  value="">Select</option>`;
             return axios.get(api)
                 .then((response) => {
                     renderData(response.data.wards, "ward", row);
@@ -424,9 +492,9 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     if (data.success) {
                         alert(data.message);
-                        // Tùy chọn: Làm mới giỏ hàng để cập nhật giá trị
                         location.reload();
                     }
                 })

@@ -31,7 +31,7 @@
                 <div class="card ribbon-box ribbon-fill shadow-none right">
                     <div class="tab-content">
                         <div>
-                            @if ($order->total_amount >= 500000)
+                            @if ($order->total_amount >= 1000000)
                                 <div class="ribbon-two ribbon-two-danger"><span>Free Ship</span></div>
                             @endif
 
@@ -75,7 +75,7 @@
                                                             value="{{ $id }}" checked>
                                                         <label
                                                             class="btn
-                                                        {{ $order->status_order == App\Models\Order::STATUS_ORDER_CANCELED ? 'btn-outline-danger' : 'btn-outline-success' }}"
+                                                        {{ $order->status_order == App\Models\Order::STATUS_ORDER_CANCELED ? 'btn-outline-danger' : 'btn-outline-primary' }}"
                                                             for="status_order_{{ $id }}">{{ $id }}</label>
                                                     @else
                                                         <input type="radio" class="btn-check" name="status_order"
@@ -83,7 +83,7 @@
                                                             value="{{ $id }}" @disabled(
                                                                 $order->status_order == App\Models\Order::STATUS_ORDER_CANCELED ||
                                                                     $order->status_order == App\Models\Order::STATUS_ORDER_DELIVERED)>
-                                                        <label class="btn btn-outline-success "
+                                                        <label class="btn btn-outline-primary "
                                                             for="status_order_{{ $id }}">{{ $id }}</label>
                                                     @endif
                                                 @endforeach
@@ -101,7 +101,7 @@
                                                             id="paymetnStatus_{{ $id }}"
                                                             value="{{ $id }}" checked>
                                                         <label
-                                                            class="btn {{ $order->payment->status == App\Models\Payment::STATUS_FAILED ? 'btn-outline-danger' : 'btn-outline-success' }}"
+                                                            class="btn {{ $order->payment->status == App\Models\Payment::STATUS_FAILED ? 'btn-outline-danger' : 'btn-outline-primary' }}"
                                                             for="paymetnStatus_{{ $id }}">{{ $id }}</label>
                                                     @else
                                                         <input type="radio" class="btn-check" name="payment_status"
@@ -110,7 +110,7 @@
                                                                 $order->payment->status == App\Models\Payment::STATUS_FAILED ||
                                                                     $order->payment->status == App\Models\Payment::STATUS_PAID ||
                                                                     $order->status_order == App\Models\Order::STATUS_ORDER_CANCELED)>
-                                                        <label class="btn btn-outline-success"
+                                                        <label class="btn btn-outline-primary"
                                                             for="paymetnStatus_{{ $id }}">{{ $id }}</label>
                                                     @endif
                                                 @endforeach
@@ -168,7 +168,7 @@
                                     </td>
                                     <td style="align-content: center !important;">
                                         <p class="rounded-circle text-muted mb-0">
-                                            Color: <i class="ri-checkbox-blank-circle-fill"
+                                            Color: <i class="ri-checkbox-blank-circle-fill border border-primary rounded-circle"
                                                 style="color: {{ $item->productVariant->color->name }};"></i> -
                                             Size: {{ $item->productVariant->size->name }}</p>
                                         <p class="text-muted mb-0">
@@ -226,8 +226,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-semibold text-danger text-start" colspan="3">Discount
-                                        ({{ $order->coupon->code }}) :</td>
+                                    <td class="fw-semibold text-danger text-start" colspan="3">Discount :</td>
                                     <td class="fw-semibold text-danger text-end"> 0 </td>
                                 </tr>
                                 <tr>

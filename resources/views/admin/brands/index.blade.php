@@ -66,7 +66,7 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                     <td>
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch text-center">
                                             <input class="form-check-input toggle-switch" type="checkbox"
                                                 data-id="{{ $item->id }}" {{ $item->status == 1 ? 'checked' : '' }}>
                                         </div>
@@ -77,14 +77,14 @@
                                             data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                                 class="ri-pencil-fill align-bottom"></i></a>
 
-                                        <form action="{{ route('admin.brands.destroy', $item->id) }}" method="POST"
+                                        {{-- <form action="{{ route('admin.brands.destroy', $item->id) }}" method="POST"
                                             class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this brand?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-light" data-bs-toggle="tooltip"
                                                 title="Delete"><i class="ri-delete-bin-5-fill"></i></button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach

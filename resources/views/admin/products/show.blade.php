@@ -165,7 +165,7 @@
                                                 <div class="flex-grow-1">
                                                     <p class="text-muted mb-1">Total Revenue :</p>
                                                     <h5 class="mb-0">
-                                                        {{ number_format($orderCount['total_amount']) ?? 0 }}</h5>
+                                                        {{ number_format($orderCount['total_amount'] ?? 0) }}</h5>
                                                 </div>
                                             </div>
                                         </div>

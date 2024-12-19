@@ -74,7 +74,6 @@ class VnpayServices
             header('Location: ' . $vnp_Url);
             die();
         } else {
-            dd(2);
             echo json_encode($returnData);
         }
     }

@@ -71,13 +71,13 @@
                         <a href="{{ route('admin.users.edit', $data->id) }}"><i
                                 class="ri-pencil-fill text-muted fs-18 rounded-2 border p-2"></i></a>
 
-                        <form action="{{ route('admin.users.destroy', $data->id) }}" method="POST" class="d-inline"
+                        {{-- <form action="{{ route('admin.users.destroy', $data->id) }}" method="POST" class="d-inline"
                             onsubmit="return confirm('Are you sure you want to delete this account?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="border-0 bg-white"><i
                                     class="ri-delete-bin-5-fill text-muted fs-18 rounded-2 border p-2"></i></button>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
 
